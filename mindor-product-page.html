@@ -1460,8 +1460,9 @@
   /* ── RESPONSIVE ── */
   @media (max-width: 860px) {
     .nav-links { display: none; }
-    .hero-inner { grid-template-columns: 1fr; gap: 48px; padding: 80px 20px; }
-    .hero-product-card { max-width: 360px; }
+    .hero-inner { grid-template-columns: 1fr; gap: 40px; padding: 56px 20px 64px; }
+    .hero-card-border-wrap { max-width: 420px; width: 100%; }
+    .hero-product-card { width: 100%; }
     .overview-layout { grid-template-columns: 1fr; gap: 48px; }
     .overview-grid { grid-template-columns: 1fr 1fr; }
     .benefits-grid { grid-template-columns: 1fr 1fr; }
@@ -1482,6 +1483,27 @@
     .benefits-grid { grid-template-columns: 1fr; }
     .comparison-table th:nth-child(3),
     .comparison-table td:nth-child(3) { display: none; }
+  }
+
+  /* ── MOVING BORDER ── */
+  .hero-card-border-wrap {
+    position: relative;
+    border-radius: 14px;
+  }
+
+  .hero-card-border-svg {
+    position: absolute;
+    inset: -1px;
+    width: calc(100% + 2px);
+    height: calc(100% + 2px);
+    pointer-events: none;
+    z-index: 0;
+    overflow: visible;
+  }
+
+  .hero-product-card {
+    position: relative;
+    z-index: 1;
   }
 
   /* ── SHIMMER TEXT ── */
@@ -1557,7 +1579,8 @@
       </div>
     </div>
 
-    <div class="hero-product-card" id="order">
+    <div class="hero-card-border-wrap" id="order">
+      <div class="hero-product-card">
       <div class="product-card-zipper"></div>
       <div class="product-card-inner">
         <div class="product-card-wordmark">MINDOR</div>
@@ -1605,6 +1628,23 @@
         <a href="#" class="product-card-cta">Add to Cart</a>
         <p class="product-card-note">Free shipping over $75 · Subscribe &amp; save 15%</p>
       </div>
+    </div>
+      <svg class="hero-card-border-svg" id="hero-border-svg" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="overflow:visible">
+        <defs>
+          <filter id="hero-glow-filter" x="-80%" y="-80%" width="260%" height="260%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="tight"/>
+            <feGaussianBlur in="SourceGraphic" stdDeviation="9" result="wide"/>
+            <feMerge>
+              <feMergeNode in="wide"/>
+              <feMergeNode in="tight"/>
+            </feMerge>
+          </filter>
+        </defs>
+        <!-- Static faint border -->
+        <rect id="hero-border-bg"   fill="none" stroke="rgba(226,255,71,0.07)" stroke-width="1"/>
+        <!-- Soft glow — no sharp edge, two blur passes merged -->
+        <rect id="hero-border-glow" fill="none" stroke="rgba(226,255,71,0.55)" stroke-width="2.5" filter="url(#hero-glow-filter)"/>
+      </svg>
     </div>
   </div>
 </section>
@@ -2180,6 +2220,67 @@
 </footer>
 
 <script>
+  // Moving border — SVG dash animation
+  (function () {
+    var wrap     = document.getElementById('order');
+    var card     = wrap.querySelector('.hero-product-card');
+    var svg      = document.getElementById('hero-border-svg');
+    var bgRect   = document.getElementById('hero-border-bg');
+    var glowRect = document.getElementById('hero-border-glow');
+    var duration = 5500;
+
+    function syncDimensions() {
+      // Measure the card itself so the path always traces the card's visual border,
+      // regardless of how wide the wrapper happens to be.
+      var wB = wrap.getBoundingClientRect();
+      var cB = card.getBoundingClientRect();
+      var wW = wB.width;
+      var wH = wB.height;
+      if (wW === 0 || wH === 0) return;
+      // Card offset relative to the wrapper (accounts for centering, padding, etc.)
+      var ox = cB.left - wB.left;
+      var oy = cB.top  - wB.top;
+      var cW = cB.width;
+      var cH = cB.height;
+      svg.setAttribute('viewBox', '0 0 ' + wW + ' ' + wH);
+      [bgRect, glowRect].forEach(function (r) {
+        r.setAttribute('x',      ox);
+        r.setAttribute('y',      oy);
+        r.setAttribute('width',  cW);
+        r.setAttribute('height', cH);
+        r.setAttribute('rx', '12');
+        r.setAttribute('ry', '12');
+      });
+    }
+
+    // ResizeObserver fires on any layout change, including breakpoint switches
+    if (window.ResizeObserver) {
+      new ResizeObserver(syncDimensions).observe(wrap);
+      new ResizeObserver(syncDimensions).observe(card);
+    } else {
+      window.addEventListener('resize', syncDimensions);
+    }
+    window.addEventListener('load', syncDimensions);
+    syncDimensions();
+
+    function animate(time) {
+      var length = glowRect.getTotalLength();
+      if (length) {
+        var dashLen = Math.round(length * 0.09); // ~9% of perimeter
+        var gap     = length - dashLen;
+        var offset  = -(time * (length / duration)) % length;
+        var da      = dashLen + ' ' + gap;
+        glowRect.style.strokeDasharray  = da;
+        glowRect.style.strokeDashoffset = offset;
+        bgRect.style.strokeDasharray    = da;
+        bgRect.style.strokeDashoffset   = offset;
+      }
+      requestAnimationFrame(animate);
+    }
+
+    requestAnimationFrame(animate);
+  })();
+
   // FAQ accordion
   document.querySelectorAll('.faq-question').forEach(btn => {
     btn.addEventListener('click', () => {
