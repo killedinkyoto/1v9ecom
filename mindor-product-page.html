@@ -773,9 +773,9 @@
     border-radius: 20px;
     padding: 5px 12px;
     border: 0.5px solid rgba(255,255,255,0.08);
-    font-size: 8px;
+    font-size: 10px;
     font-weight: 700;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.12em;
     color: var(--fbtn-color, #E2FF47);
     text-transform: uppercase;
     white-space: nowrap;
@@ -1895,6 +1895,8 @@
     .hero-inner { grid-template-columns: 1fr; gap: 40px; padding: 56px 20px 64px; }
     .hero-card-border-wrap { max-width: 420px; width: 100%; }
     .hero-product-card { width: 100%; }
+    /* Flavor buttons readable on tablet */
+    .fbtn-inner { font-size: 10px; letter-spacing: 0.11em; }
     .overview-layout { grid-template-columns: 1fr; gap: 48px; }
     .overview-grid { grid-template-columns: 1fr 1fr; }
     .benefits-grid { grid-template-columns: 1fr 1fr; }
@@ -1913,8 +1915,26 @@
   @media (max-width: 560px) {
     .overview-grid { grid-template-columns: 1fr; }
     .benefits-grid { grid-template-columns: 1fr; }
-    .comparison-table th:nth-child(3),
-    .comparison-table td:nth-child(3) { display: none; }
+
+    /* Comparison table — scroll horizontally instead of hiding columns */
+    .comparison-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .comparison-table { min-width: 560px; }
+
+    /* Flavor buttons — larger text, allow wrap so they don't get crushed */
+    .flavor-selector { flex-wrap: wrap; gap: 6px; }
+    .flavor-btn { flex: 1 1 calc(50% - 4px); min-width: 0; }
+    .fbtn-inner {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      padding: 7px 10px;
+      justify-content: center;
+    }
+
+    /* Product card inner padding on small screens */
+    .product-card-inner { padding: 20px 16px; }
+
+    /* Hero card border wrap full width */
+    .hero-card-border-wrap { max-width: 100%; }
   }
 
   /* ── MOVING BORDER ── */
@@ -2134,7 +2154,7 @@
         <div class="product-card-footer">
           <div>
             <div class="product-card-price">$49<span>/bag</span></div>
-            <div style="font-size:10px; color:var(--text-muted); margin-top:3px; letter-spacing:0.06em;">$1.63 per serving</div>
+            <div id="card-per-serving" style="font-size:10px; color:var(--text-muted); margin-top:3px; letter-spacing:0.06em;">$1.63 per serving</div>
           </div>
           <div class="product-card-servings">30 Servings</div>
         </div>
@@ -2737,6 +2757,201 @@
 </footer>
 
 <script>
+  // ══════════════════════════════════════════
+  //  SHOPIFY STOREFRONT CONFIG
+  // ══════════════════════════════════════════
+  //
+  //  How to set up (one-time, ~5 min):
+  //  1. Shopify Admin → Settings → Apps and sales channels
+  //     → Develop apps → Create an app
+  //  2. Under "Configuration" tab → Storefront API access scopes:
+  //     enable  unauthenticated_read_product_listings
+  //             unauthenticated_write_checkouts
+  //  3. Install the app → copy your Storefront access token below
+  //  4. Set productHandle to the URL slug of your product
+  //     (find it in Shopify Admin → Products → your product → URL handle)
+  //  5. Make sure Shopify variant titles match FLAVOR_VARIANT_MAP exactly
+
+  var SHOPIFY_CONFIG = {
+    domain:         'mindor-1950.myshopify.com',
+    storefrontToken:'c1f8ad6a65722ad1a022b7e5f8a8660c',
+    apiVersion:     '2024-01',
+  };
+
+  // Each flavor is its own Shopify product. Update handles here if you rename them in Shopify Admin.
+  // If you change your store domain later, update SHOPIFY_CONFIG.domain above — that's the only line to touch.
+  var FLAVOR_PRODUCTS = {
+    'sour-candy': {
+      handle: 'mindor-performance-stack-sour-candy',
+      label:  'Sour Candy',
+      // Pre-seeded variant ID (refreshed from Shopify on page load)
+      variantId: 'gid://shopify/ProductVariant/48144449568923',
+    },
+    'sour-grape': {
+      handle: 'mindor-performance-stack-sour-grape',
+      label:  'Sour Grape',
+      variantId: 'gid://shopify/ProductVariant/48144474931355',
+    },
+    'sour-gummy-worms': {
+      handle: 'mindor-performance-stack-sour-gummy-worms',
+      label:  'Sour Gummy Worms',
+      variantId: 'gid://shopify/ProductVariant/48144477651099',
+    },
+  };
+
+  // ── SHOPIFY STOREFRONT API MODULE ──
+  (function () {
+    var cfg = SHOPIFY_CONFIG;
+    var isConfigured = cfg.domain && cfg.domain !== 'YOUR-STORE.myshopify.com';
+    var endpoint = 'https://' + cfg.domain + '/api/' + cfg.apiVersion + '/graphql.json';
+    var hdrs = {
+      'Content-Type': 'application/json',
+      'X-Shopify-Storefront-Access-Token': cfg.storefrontToken,
+    };
+
+    // Shared state read by the cart system below
+    window._mindorShopify = {
+      variants: {},     // flavorKey → { id, price, availableForSale }
+      ready: false,
+      createCart: null,
+    };
+
+    function graphql(query, variables) {
+      return fetch(endpoint, {
+        method: 'POST',
+        headers: hdrs,
+        body: JSON.stringify({ query: query, variables: variables || {} }),
+      }).then(function (r) {
+        if (!r.ok) throw new Error('Shopify API ' + r.status);
+        return r.json();
+      });
+    }
+
+    // GraphQL: fetch all 3 flavor products in one round-trip using aliases.
+    // Each alias (p0, p1, p2) maps to one flavor's product handle.
+    function buildMultiProductQuery(flavorKeys) {
+      var fields =
+        '{ variants(first:1) { nodes { id availableForSale price { amount currencyCode } } } }';
+      var aliases = flavorKeys.map(function (k, i) {
+        return 'p' + i + ': product(handle: "' + FLAVOR_PRODUCTS[k].handle + '") ' + fields;
+      });
+      return '{ ' + aliases.join(' ') + ' }';
+    }
+
+    // GraphQL: create a Shopify cart and get its checkout URL
+    var CART_CREATE =
+      'mutation CartCreate($lines: [CartLineInput!]!) {' +
+      '  cartCreate(input: { lines: $lines }) {' +
+      '    cart { id checkoutUrl }' +
+      '    userErrors { field message }' +
+      '  }' +
+      '}';
+
+    function fmtPrice(amount) {
+      return '$' + (amount % 1 === 0 ? Math.round(amount) : amount.toFixed(2));
+    }
+
+    function updatePrices(variants) {
+      // Use the first available variant price for all CTAs
+      var first = variants[Object.keys(variants)[0]];
+      if (!first) return;
+      var p = first.price;
+      var fmt = fmtPrice(p);
+
+      var cardPrice = document.querySelector('.product-card-price');
+      if (cardPrice) cardPrice.innerHTML = fmt + '<span>/bag</span>';
+
+      var perServing = document.getElementById('card-per-serving');
+      if (perServing) perServing.textContent = fmtPrice(p / 30) + ' per serving';
+
+      var navCta = document.querySelector('.nav-cta');
+      if (navCta) navCta.textContent = 'Get Yours \u2014 ' + fmt;
+
+      var heroCta = document.querySelector('.hero-actions .btn-primary');
+      if (heroCta) heroCta.textContent = 'Add to Cart \u2014 ' + fmt;
+
+      var finalCta = document.querySelector('.final-cta-btn-primary');
+      if (finalCta) finalCta.textContent = 'Get Mindor \u2014 ' + fmt;
+    }
+
+    function updateInventory(variants) {
+      document.querySelectorAll('.flavor-btn').forEach(function (btn) {
+        var v = variants[btn.dataset.flavor];
+        if (v && !v.availableForSale) {
+          btn.disabled = true;
+          btn.title = 'Sold out';
+          btn.style.opacity = '0.38';
+          btn.style.pointerEvents = 'none';
+          if (!btn.querySelector('.fbtn-soldout')) {
+            var tag = document.createElement('span');
+            tag.className = 'fbtn-soldout';
+            tag.textContent = 'Sold Out';
+            tag.style.cssText = 'position:absolute;top:50%;right:10px;transform:translateY(-50%);font-size:9px;letter-spacing:0.08em;text-transform:uppercase;opacity:0.7;pointer-events:none;';
+            btn.style.position = 'relative';
+            btn.appendChild(tag);
+          }
+        }
+      });
+    }
+
+    function fetchProduct() {
+      if (!isConfigured) {
+        console.info('[Mindor] Shopify domain not configured.');
+        return;
+      }
+      // Pre-seed from hardcoded variant IDs so checkout works even before the fetch completes.
+      var flavorKeys = Object.keys(FLAVOR_PRODUCTS);
+      flavorKeys.forEach(function (key) {
+        window._mindorShopify.variants[key] = {
+          id: FLAVOR_PRODUCTS[key].variantId,
+          price: 45,
+          availableForSale: false,
+        };
+      });
+      window._mindorShopify.ready = true;
+      updatePrices(window._mindorShopify.variants);
+
+      // Fetch live data (availability + price) from Shopify in one query.
+      graphql(buildMultiProductQuery(flavorKeys))
+        .then(function (res) {
+          if (!res.data) throw new Error('Empty response from Shopify');
+          flavorKeys.forEach(function (key, i) {
+            var product = res.data['p' + i];
+            if (!product) return;
+            var variant = product.variants && product.variants.nodes && product.variants.nodes[0];
+            if (!variant) return;
+            window._mindorShopify.variants[key] = {
+              id: variant.id,
+              price: parseFloat(variant.price.amount),
+              availableForSale: variant.availableForSale,
+            };
+          });
+          updatePrices(window._mindorShopify.variants);
+          updateInventory(window._mindorShopify.variants);
+        })
+        .catch(function (err) {
+          console.warn('[Mindor] Shopify live data fetch failed (pre-seeded IDs still work for checkout):', err);
+        });
+    }
+
+    function createCart(localItems) {
+      var lines = [];
+      localItems.forEach(function (item) {
+        var v = window._mindorShopify.variants[item.flavor];
+        if (v && v.id) lines.push({ merchandiseId: v.id, quantity: item.quantity });
+      });
+      if (!lines.length) return Promise.reject(new Error('No Shopify variants matched cart items'));
+      return graphql(CART_CREATE, { lines: lines }).then(function (res) {
+        var cart = res.data && res.data.cartCreate && res.data.cartCreate.cart;
+        if (!cart) throw new Error('Shopify cart creation returned no cart');
+        return cart.checkoutUrl;
+      });
+    }
+
+    window._mindorShopify.createCart = createCart;
+    document.addEventListener('DOMContentLoaded', fetchProduct);
+  })();
+
   // Moving border — SVG dash animation
   (function () {
     var wrap     = document.getElementById('order');
@@ -2919,7 +3134,9 @@
       if (existing) {
         existing.quantity = Math.min(existing.quantity + 1, 10);
       } else {
-        cart.items.push({ id: 'mindor-' + flavor, name: 'Mindor Performance Stack', flavor: flavor, flavorName: cfg.name, price: 49, quantity: 1, accent: cfg.accent, accentRgb: cfg.accentRgb, secondary: cfg.secondary, bg: cfg.bg });
+        var _sv = window._mindorShopify && window._mindorShopify.variants[flavor];
+        var itemPrice = (_sv && _sv.price) ? _sv.price : 49;
+        cart.items.push({ id: 'mindor-' + flavor, name: 'Mindor Performance Stack', flavor: flavor, flavorName: cfg.name, price: itemPrice, quantity: 1, accent: cfg.accent, accentRgb: cfg.accentRgb, secondary: cfg.secondary, bg: cfg.bg });
       }
       saveCart(cart);
       renderCart();
@@ -3060,6 +3277,45 @@
 
     // Initial render
     renderCart();
+
+    // ── SHOPIFY CHECKOUT ──
+    // When Shopify is fully configured, intercept the checkout button click,
+    // create a real Shopify cart from the local cart items, and redirect the
+    // customer to Shopify's hosted checkout (handles payment, shipping, taxes,
+    // customer accounts). Falls back to mindor-checkout.html if Shopify is
+    // not yet configured or the API call fails.
+    var checkoutBtn = document.getElementById('cart-checkout-btn');
+    if (checkoutBtn) {
+      checkoutBtn.addEventListener('click', function (e) {
+        var shopify = window._mindorShopify;
+        if (!shopify || !shopify.ready || typeof shopify.createCart !== 'function') {
+          // Shopify not configured — fall through to the href (mindor-checkout.html)
+          return;
+        }
+        e.preventDefault();
+        var currentCart = loadCart();
+        if (!currentCart.items.length) return;
+
+        // Show loading state
+        var origHTML = checkoutBtn.innerHTML;
+        checkoutBtn.innerHTML = 'Redirecting\u2026';
+        checkoutBtn.style.opacity = '0.7';
+        checkoutBtn.style.pointerEvents = 'none';
+
+        shopify.createCart(currentCart.items)
+          .then(function (url) {
+            window.location.href = url;
+          })
+          .catch(function (err) {
+            console.warn('[Mindor] Shopify checkout failed, falling back:', err);
+            // Restore button and go to custom checkout page
+            checkoutBtn.innerHTML = origHTML;
+            checkoutBtn.style.opacity = '';
+            checkoutBtn.style.pointerEvents = '';
+            window.location.href = 'mindor-checkout.html';
+          });
+      });
+    }
   })();
 
   // ── MORPHING HEADLINE ──
