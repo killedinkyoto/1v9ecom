@@ -1483,6 +1483,32 @@
     .comparison-table th:nth-child(3),
     .comparison-table td:nth-child(3) { display: none; }
   }
+
+  /* ── SHIMMER TEXT ── */
+  .hero-lock-shimmer {
+    -webkit-text-fill-color: transparent;
+    background-color: currentColor;
+    background-image: linear-gradient(
+      to right,
+      currentColor 0%,
+      rgba(255, 255, 255, 0.72) 40%,
+      rgba(255, 255, 255, 0.72) 60%,
+      currentColor 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    background-repeat: no-repeat;
+    background-size: 50% 200%;
+    background-position: -100% 0%;
+    animation: hero-shimmer-move 3s linear 1.5s infinite;
+    animation-fill-mode: backwards;
+  }
+
+  @keyframes hero-shimmer-move {
+    0%   { background-position: -100% 0%; }
+    50%  { background-position: 250% 0%; }
+    100% { background-position: 250% 0%; }
+  }
 </style>
 </head>
 <body>
@@ -1515,7 +1541,7 @@
   <div class="hero-inner">
     <div class="hero-content">
       <p class="hero-eyebrow">Performance Stack · Sour Candy Flavor</p>
-      <div class="hero-display">LOCK IN.</div>
+      <div class="hero-display hero-lock-shimmer">LOCK IN.</div>
       <div class="hero-display" style="color: var(--text-primary); font-size: clamp(48px, 7vw, 80px); margin-bottom: 12px;">STAY THERE.</div>
       <h1 class="hero-headline">Deep Work Without The Jitters,<br>Chaos, Or Crash.</h1>
       <p class="hero-body">Mindor is a powdered nootropic focus drink engineered for founders, builders, creators, and students who need to perform — not just stay awake. Calm alertness. Sustained output. Clean exit.</p>
@@ -1864,7 +1890,7 @@
       <div class="reviews-score">4.8</div>
       <div>
         <div class="reviews-stars">★★★★★</div>
-        <div class="reviews-count">From 847 verified reviews</div>
+        <div class="reviews-count">From 597 verified reviews</div>
       </div>
       <div class="reviews-divider-v"></div>
       <div class="reviews-stat">
