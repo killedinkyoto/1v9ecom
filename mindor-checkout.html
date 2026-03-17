@@ -1410,17 +1410,47 @@
     btn.style.opacity = '0.7';
     btn.disabled = true;
 
-    setTimeout(function () {
-      // Clear cart
+    var subtotal = cart.items.reduce(function (sum, item) { return sum + item.price * item.quantity; }, 0);
+    var discount = isSubscribed ? Math.round(subtotal * 0.15) : 0;
+    var total = subtotal - discount;
+    var email = document.getElementById('email').value.trim();
+
+    var orderData = {
+      email: email,
+      firstName: document.getElementById('first-name').value.trim(),
+      lastName: document.getElementById('last-name').value.trim(),
+      address: addressInput.value.trim(),
+      city: document.getElementById('city').value.trim(),
+      state: document.getElementById('state').value,
+      zip: document.getElementById('zip').value.trim(),
+      items: cart.items,
+      subtotal: subtotal,
+      total: total,
+      subscription: isSubscribed
+    };
+
+    fetch('/api/checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(orderData)
+    })
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
+      if (data.error) throw new Error(data.error);
       localStorage.removeItem('mindorCart');
-      // Show confirmation
-      var email = document.getElementById('email').value.trim();
       var body = isSubscribed
         ? 'Your Mindor Performance Stack is on its way. Your subscription is now active — your next bag ships in 30 days at 15% off. A confirmation has been sent to <strong>' + esc(email) + '</strong>.'
         : 'Your Mindor Performance Stack is on its way. A confirmation has been sent to <strong>' + esc(email) + '</strong>.';
       document.getElementById('confirm-body').innerHTML = body;
       document.getElementById('confirm-overlay').classList.add('show');
-    }, 1600);
+    })
+    .catch(function (err) {
+      console.error('Order submission failed:', err);
+      btn.textContent = 'Place Order';
+      btn.style.opacity = '1';
+      btn.disabled = false;
+      alert('There was a problem placing your order. Please try again.');
+    });
   };
 
   // Init
