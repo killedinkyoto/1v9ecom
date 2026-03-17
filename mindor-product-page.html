@@ -108,6 +108,16 @@
     border-bottom: 0.5px solid var(--border-subtle);
   }
 
+  #benefits {
+    position: relative;
+    overflow: hidden;
+  }
+
+  #benefits .container {
+    position: relative;
+    z-index: 1;
+  }
+
   .section-label {
     font-size: 9px;
     font-weight: 600;
@@ -1697,6 +1707,10 @@
      BENEFITS
 ══════════════════════════════════════════ -->
 <section class="section" id="benefits">
+  <div class="hero-falling-bg" aria-hidden="true">
+    <div class="hero-falling-pattern"></div>
+    <div class="hero-falling-overlay"></div>
+  </div>
   <div class="container">
     <p class="section-label">Why It Works</p>
     <div class="section-divider"></div>
