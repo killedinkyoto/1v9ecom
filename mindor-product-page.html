@@ -1,3 +1,62 @@
+<!--
+  mindor-product-page.html — PRIMARY PRODUCT PAGE
+  ════════════════════════════════════════════════
+  Purpose:     Full product marketing page for MINDOR Performance Stack
+               (nootropic focus drink). Handles browsing, flavor selection,
+               cart management, and initiates checkout flow.
+
+  Self-contained: All CSS and JavaScript are inline — no external .css/.js files.
+
+  CSS sections (inside <style>, lines 11–1910):
+    DESIGN TOKENS        line 12   — CSS custom properties (colors, surfaces)
+    FLAVOR THEMES        line 35   — [data-theme] overrides (grape, gummi-worm)
+    NAV                  line 82   — Sticky header
+    HERO                 line 182  — Full-height hero section
+    HERO FALLING PATTERN line 213  — Animated particle background (32 radial gradients)
+    PRODUCT CARD         line 485  — Right-column card with animated SVG border
+    FLAVOR SELECTOR      line 661  — Flavor button group
+    PRODUCT OVERVIEW     line 753  — Two-column ingredient/spec layout
+    BENEFITS             line 822  — Benefit card grid
+    HOW IT WORKS         line 895  — Step-by-step instructions
+    INGREDIENTS          line 973  — Ingredient list with function badges
+    SUPPLEMENT FACTS     line 1052 — Nutrition label styles
+    REVIEWS              line 1159 — Testimonial cards
+    COMPARISON           line 1316 — Competitor comparison table
+    FAQ                  line 1393 — Accordion FAQ section
+    FINAL CTA            line 1482 — Bottom conversion section
+    FOOTER               line 1607 — Footer links
+    SLIDER CART          line 1656 — Cart drawer (slides from right)
+    RESPONSIVE           line 1833 — Media queries (860px, 560px)
+    MOVING BORDER        line 1861 — SVG stroke animation CSS
+    SHIMMER TEXT         line 1882 — Logo shimmer effect
+
+  HTML body sections (lines 1911–2680):
+    NAV                  line 1911 — Sticky navigation bar
+    SLIDER CART          line 1934 — Cart drawer HTML (hidden until opened)
+    HERO                 line 1968 — Hero + flavor buttons + product card
+    PRODUCT OVERVIEW     line 2150 — Ingredient highlights + product stats
+    BENEFITS             line 2206 — Benefit card grid
+    HOW IT WORKS         line 2243 — Step-by-step usage instructions
+    INGREDIENTS          line 2305 — Full ingredient list
+    SUPPLEMENT FACTS     line 2377 — Nutrition panel
+    REVIEWS              line 2487 — Customer testimonials
+    COMPARISON           line 2570 — Competitor comparison
+    FAQ                  line 2640 — FAQ accordion
+    FOOTER               line 2662 — Site footer
+
+  JavaScript modules (IIFEs, lines 2681–3080):
+    SVG BORDER ANIMATION line 2681 — Animated stroke on hero product card
+    FLAVOR SWITCHER      line 2742 — Applies data-theme + SVG stroke colors
+    CART SYSTEM          line 2821 — localStorage cart: add/remove/render/open/close
+    MORPHING HEADLINE    line 3006 — Cycles 'Jitters → Chaos → Crash' with blur morph
+
+  Dependencies:
+    Google Fonts: Barlow Condensed, DM Sans, Bebas Neue
+    No JS libraries. No CSS framework. No build step.
+
+  Links to:   mindor-checkout.html (via Add to Cart CTA buttons)
+  Cart key:   localStorage['mindorCart'] — shared with checkout page
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,6 +84,45 @@
     --text-primary: #F0F0E8;
     --text-muted: #6A7A5A;
     --text-dim: #3A4A30;
+    /* theme-switchable RGB channels */
+    --accent-rgb: 226, 255, 71;
+    --sprint-rgb: 66, 87, 67;
+    --bg-rgb: 17, 19, 9;
+    --pattern-hue: 0deg;
+  }
+
+  /* ── SOUR GRAPE THEME ── */
+  [data-theme="sour-grape"] {
+    --execution-green: #C084FC;
+    --locked-lime: #C084FC;
+    --sprint-green: #4A3060;
+    --bg: #0E0B14;
+    --surface: #130F1C;
+    --surface2: #1A1428;
+    --border: rgba(192,132,252,0.12);
+    --text-muted: #7A6A90;
+    --text-dim: #3A2A4E;
+    --accent-rgb: 192, 132, 252;
+    --sprint-rgb: 74, 48, 96;
+    --bg-rgb: 14, 11, 20;
+    --pattern-hue: 212deg;
+  }
+
+  /* ── SOUR GUMMI WORM THEME ── */
+  [data-theme="sour-gummi-worm"] {
+    --execution-green: #FF7EB3;
+    --locked-lime: #FF7EB3;
+    --sprint-green: #6A3050;
+    --bg: #120910;
+    --surface: #1A0E15;
+    --surface2: #231420;
+    --border: rgba(255,126,179,0.12);
+    --text-muted: #8A6070;
+    --text-dim: #502040;
+    --accent-rgb: 255, 126, 179;
+    --sprint-rgb: 106, 48, 80;
+    --bg-rgb: 18, 9, 16;
+    --pattern-hue: 268deg;
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -37,6 +135,7 @@
     font-size: 14px;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
+    transition: background-color 0.6s ease, color 0.6s ease;
   }
 
   /* ── NAV ── */
@@ -44,7 +143,8 @@
     position: sticky;
     top: 0;
     z-index: 100;
-    background: rgba(17,19,9,0.92);
+    background: rgba(var(--bg-rgb),0.92);
+    transition: background-color 0.6s ease;
     backdrop-filter: blur(12px);
     border-bottom: 0.5px solid var(--border);
     padding: 0 40px;
@@ -135,6 +235,7 @@
     background: var(--execution-green);
     margin-bottom: 20px;
     border-radius: 1px;
+    transition: background 0.6s ease;
   }
 
   /* ── HERO ── */
@@ -153,7 +254,8 @@
     position: absolute;
     top: -120px; right: -200px;
     width: 700px; height: 700px;
-    background: radial-gradient(circle, rgba(235,255,71,0.055) 0%, transparent 65%);
+    background: radial-gradient(circle, rgba(var(--accent-rgb),0.055) 0%, transparent 65%);
+    transition: background 0.6s ease;
     pointer-events: none;
   }
 
@@ -162,7 +264,8 @@
     position: absolute;
     bottom: -60px; left: -100px;
     width: 500px; height: 500px;
-    background: radial-gradient(circle, rgba(66,87,67,0.12) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(var(--sprint-rgb),0.12) 0%, transparent 70%);
+    transition: background 0.6s ease;
     pointer-events: none;
   }
 
@@ -174,6 +277,8 @@
     opacity: 0;
     animation: heroPatternFadeIn 0.3s ease 0.1s forwards;
     pointer-events: none;
+    filter: hue-rotate(var(--pattern-hue, 0deg));
+    transition: filter 0.6s ease;
   }
 
   .hero-falling-pattern {
@@ -238,7 +343,7 @@
     inset: 0;
     backdrop-filter: blur(1em);
     -webkit-backdrop-filter: blur(1em);
-    background-image: radial-gradient(circle at 50% 50%, transparent 0, transparent 2px, #111309 2px);
+    background-image: radial-gradient(circle at 50% 50%, transparent 0, transparent 2px, var(--bg) 2px);
     background-size: 8px 8px;
   }
 
@@ -332,6 +437,28 @@
     margin-bottom: 24px;
   }
 
+  .morph-wrap {
+    display: inline-block;
+    position: relative;
+    width: 5.4em;
+    height: 1.05em;
+    vertical-align: -0.28em;
+    filter: url(#morph-threshold) blur(0.6px);
+    color: var(--execution-green);
+  }
+
+  .morph-wrap span {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    letter-spacing: inherit;
+  }
+
   .hero-body {
     font-family: 'DM Sans', sans-serif;
     font-size: 16px;
@@ -387,7 +514,7 @@
     transition: border-color 0.15s, color 0.15s;
   }
 
-  .btn-ghost:hover { border-color: rgba(235,255,71,0.4); color: var(--execution-green); }
+  .btn-ghost:hover { border-color: rgba(var(--accent-rgb),0.4); color: var(--execution-green); }
 
   .hero-trust-row {
     display: flex;
@@ -465,11 +592,12 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: rgba(235,255,71,0.08);
-    border: 0.5px solid rgba(235,255,71,0.2);
+    background: rgba(var(--accent-rgb),0.08);
+    border: 0.5px solid rgba(var(--accent-rgb),0.2);
     padding: 6px 14px;
     border-radius: 20px;
     margin-bottom: 20px;
+    transition: background 0.6s ease, border-color 0.6s ease;
   }
 
   .product-card-flavor span {
@@ -511,7 +639,7 @@
     flex-shrink: 0;
   }
 
-  .stat-label { color: #5A7040; font-size: 12px; }
+  .stat-label { color: var(--text-muted); font-size: 12px; transition: color 0.6s ease; }
 
   .product-card-footer {
     display: flex;
@@ -593,8 +721,8 @@
   .flavor-selector {
     display: flex;
     gap: 8px;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
+    flex-wrap: nowrap;
+    margin-bottom: 14px;
   }
 
   .flavor-btn {
@@ -605,6 +733,7 @@
     padding: 1px;
     border-radius: 20px;
     display: inline-flex;
+    flex: 1;
     font-family: 'Barlow Condensed', sans-serif;
     outline: none;
     box-shadow: 0 4px 16px rgba(0,0,0,0.5);
@@ -762,16 +891,18 @@
     border: 0.5px solid var(--border-subtle);
     border-radius: 4px;
     padding: 28px 24px 24px;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, background-color 0.6s ease;
   }
 
   .benefit-card:hover {
-    border-color: rgba(235,255,71,0.2);
+    border-color: rgba(var(--accent-rgb),0.2);
   }
 
   .benefit-icon {
     width: 36px; height: 36px;
-    background: rgba(235,255,71,0.08);
+    background: rgba(var(--accent-rgb),0.08);
+    transition: background 0.6s ease;
+    color: var(--execution-green);
     border-radius: 3px;
     display: flex;
     align-items: center;
@@ -835,6 +966,7 @@
     background: var(--surface);
     padding: 36px 28px 32px;
     position: relative;
+    transition: background-color 0.6s ease;
   }
 
   .how-step-num {
@@ -913,7 +1045,7 @@
     gap: 24px;
     padding: 20px 28px;
     border-radius: 3px;
-    transition: background 0.15s;
+    transition: background 0.15s, background-color 0.6s ease;
   }
 
   .ingredient-row:hover { background: var(--surface2); }
@@ -943,8 +1075,8 @@
   }
 
   .ingredient-badge {
-    background: rgba(235,255,71,0.08);
-    border: 0.5px solid rgba(235,255,71,0.15);
+    background: rgba(var(--accent-rgb),0.08);
+    border: 0.5px solid rgba(var(--accent-rgb),0.15);
     padding: 4px 10px;
     border-radius: 2px;
     font-size: 9px;
@@ -1179,7 +1311,7 @@
     transition: border-color 0.2s;
   }
 
-  .review-card:hover { border-color: rgba(235,255,71,0.18); }
+  .review-card:hover { border-color: rgba(var(--accent-rgb),0.18); }
 
   .review-stars {
     color: var(--execution-green);
@@ -1281,7 +1413,7 @@
 
   .comparison-table th.highlight {
     color: var(--execution-green);
-    background: rgba(235,255,71,0.04);
+    background: rgba(var(--accent-rgb),0.04);
   }
 
   .comparison-table td {
@@ -1301,7 +1433,7 @@
   }
 
   .comparison-table td.highlight {
-    background: rgba(235,255,71,0.04);
+    background: rgba(var(--accent-rgb),0.04);
     color: var(--execution-green);
     font-weight: 600;
     font-size: 14px;
@@ -1408,7 +1540,7 @@
 
   /* ── FINAL CTA ── */
   .final-cta {
-    background: linear-gradient(135deg, #1E2416 0%, #111309 60%, #161A0E 100%);
+    background: linear-gradient(135deg, var(--surface2) 0%, var(--bg) 60%, var(--surface) 100%);
     position: relative;
     overflow: hidden;
     padding: 0;
@@ -1421,7 +1553,7 @@
     top: -100px; left: 50%;
     transform: translateX(-50%);
     width: 800px; height: 600px;
-    background: radial-gradient(circle, rgba(235,255,71,0.06) 0%, transparent 60%);
+    background: radial-gradient(circle, rgba(var(--accent-rgb),0.06) 0%, transparent 60%);
     pointer-events: none;
   }
 
@@ -1594,8 +1726,9 @@
   .cart-drawer {
     position: fixed; top: 0; right: 0;
     width: 420px; height: 100%;
-    background: #131610;
+    background: var(--surface);
     border-left: 0.5px solid var(--border);
+    transition: background-color 0.6s ease;
     z-index: 201;
     display: flex; flex-direction: column;
     transform: translateX(100%);
@@ -1621,6 +1754,8 @@
     display: flex; align-items: center; gap: 10px;
   }
 
+  .cart-header-title svg { color: var(--execution-green); }
+
   .cart-badge {
     background: var(--execution-green); color: #1A1F14;
     font-size: 9px; font-weight: 700;
@@ -1637,7 +1772,7 @@
     color: var(--text-muted);
     transition: border-color 0.15s, color 0.15s; flex-shrink: 0;
   }
-  .cart-close-btn:hover { border-color: rgba(235,255,71,0.3); color: var(--execution-green); }
+  .cart-close-btn:hover { border-color: rgba(var(--accent-rgb),0.3); color: var(--execution-green); }
 
   .cart-body {
     flex: 1; overflow-y: auto;
@@ -1745,7 +1880,7 @@
     display: flex; align-items: center; justify-content: center;
     color: var(--text-muted); transition: border-color 0.15s, color 0.15s;
   }
-  .nav-cart-btn:hover { border-color: rgba(235,255,71,0.3); color: var(--execution-green); }
+  .nav-cart-btn:hover { border-color: rgba(var(--accent-rgb),0.3); color: var(--execution-green); }
   .nav-cart-dot {
     position: absolute; top: 4px; right: 4px;
     width: 7px; height: 7px;
@@ -1836,7 +1971,7 @@
 <nav class="nav">
   <a href="#" class="nav-logo">
     <svg width="22" height="16" viewBox="0 0 40 28" fill="none">
-      <path d="M4 22 L10 8 L16 18 L20 10 L24 18 L30 8 L36 22" stroke="#E2FF47" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M4 22 L10 8 L16 18 L20 10 L24 18 L30 8 L36 22" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
     MINDOR
   </a>
@@ -1861,7 +1996,7 @@
   <div class="cart-header">
     <div class="cart-header-title">
       <svg width="16" height="12" viewBox="0 0 40 28" fill="none">
-        <path d="M4 22 L10 8 L16 18 L20 10 L24 18 L30 8 L36 22" stroke="#E2FF47" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M4 22 L10 8 L16 18 L20 10 L24 18 L30 8 L36 22" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
       Your Cart
       <span class="cart-badge" id="cart-badge">0</span>
@@ -1902,7 +2037,7 @@
       <p class="hero-eyebrow">Performance Stack · Sour Candy Flavor</p>
       <div class="hero-display hero-lock-shimmer">LOCK IN.</div>
       <div class="hero-display" style="color: var(--text-primary); font-size: clamp(48px, 7vw, 80px); margin-bottom: 12px;">STAY THERE.</div>
-      <h1 class="hero-headline">Deep Work Without The Jitters,<br>Chaos, Or Crash.</h1>
+      <h1 class="hero-headline">Deep Work Without The <span class="morph-wrap"><span class="morph-t1" id="morph-t1"></span><span class="morph-t2" id="morph-t2"></span></span></h1>
       <p class="hero-body">Mindor is a powdered nootropic focus drink engineered for founders, builders, creators, and students who need to perform — not just stay awake. Calm alertness. Sustained output. Clean exit.</p>
       <div class="hero-actions">
         <a href="#order" class="btn-primary">Add to Cart — $49</a>
@@ -2037,8 +2172,8 @@
       <div>
         <div class="section-divider"></div>
         <h2 class="overview-headline">The Focus Stack For People Who Have To <em>Perform.</em></h2>
-        <p class="overview-body">Coffee is a gamble. Energy drinks are stimulant chaos. Mindor is a deliberately engineered focus system — a 2:1 L-Theanine-to-caffeine ratio that pairs every milligram of stimulation with a circuit breaker. You get the output without the edge, the alertness without the anxiety.</p>
-        <p class="overview-body" style="margin-top: 0; margin-bottom: 0;">Built for deep work sessions, not quick fixes. Designed around the compounds that actually move the needle on cognition, sustained attention, and clean energy metabolism.</p>
+        <p class="overview-body">Coffee is a gamble. Energy drinks are stimulant chaos. Mindor is a deliberately engineered focus system: a 2:1 L-Theanine-to-caffeine ratio that pairs every milligram of stimulation with a circuit breaker. You get the output without the edge, the alertness without the anxiety.</p>
+        <p class="overview-body" style="margin-top: 0; margin-bottom: 0;">Mindor is built for deep work sessions, not quick fixes. It was designed around the compounds that actually move the needle on cognition, sustained attention, and clean energy metabolism.</p>
       </div>
       <div class="overview-grid">
         <div class="overview-cell">
@@ -2088,36 +2223,36 @@
       <div class="benefit-card">
         <div class="benefit-icon">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-            <circle cx="12" cy="12" r="9" stroke="#E2FF47" stroke-width="1.5"/>
-            <path d="M12 7v5l3 3" stroke="#E2FF47" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M12 7v5l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
           </svg>
         </div>
         <div class="benefit-title">Calm Focus</div>
-        <p class="benefit-desc">L-Theanine modulates caffeine's stimulant effect, producing alpha brainwave activity associated with relaxed concentration — no tunnel-vision anxiety.</p>
+        <p class="benefit-desc">L-Theanine modulates caffeine's stimulant effect, producing alpha brainwave activity associated with relaxed concentration. This means no tunnel-vision anxiety.</p>
       </div>
       <div class="benefit-card">
         <div class="benefit-icon">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="#E2FF47" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </div>
         <div class="benefit-title">No Jitters</div>
-        <p class="benefit-desc">Green tea caffeine absorbs slower than synthetic anhydrous caffeine. Paired with theanine, the curve is smooth — energy rises steadily, not in a spike.</p>
+        <p class="benefit-desc">Green tea caffeine absorbs slower than synthetic anhydrous caffeine. Paired with theanine, the curve is smooth: energy rises steadily, not in a spike.</p>
       </div>
       <div class="benefit-card">
         <div class="benefit-icon">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-            <path d="M22 12h-4l-3 9L9 3l-3 9H2" stroke="#E2FF47" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </div>
         <div class="benefit-title">No Crash</div>
-        <p class="benefit-desc">B-vitamins support energy metabolism at the cellular level. Ginseng stabilizes cognitive output. When it wears off, it simply wears off — no floor-drop.</p>
+        <p class="benefit-desc">B-vitamins support energy metabolism at the cellular level. Ginseng stabilizes cognitive output. When it wears off, it simply wears off, not plummet.</p>
       </div>
       <div class="benefit-card">
         <div class="benefit-icon">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-            <rect x="3" y="3" width="18" height="18" rx="2" stroke="#E2FF47" stroke-width="1.5"/>
-            <path d="M8 12h8M12 8v8" stroke="#E2FF47" stroke-width="1.5" stroke-linecap="round"/>
+            <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M8 12h8M12 8v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
           </svg>
         </div>
         <div class="benefit-title">Deep Work</div>
@@ -2135,25 +2270,25 @@
     <p class="section-label">The Protocol</p>
     <div class="section-divider"></div>
     <h2 class="how-headline">Simple Ritual.<br><em>Compound Results.</em></h2>
-    <p class="how-body">No complicated stacks. No 30-pill morning routine. One scoop, mixed in water, taken 20 minutes before the work starts. That's the protocol.</p>
+    <p class="how-body">No complicated stacks or 30-pill morning routine. Simply mix one scoop in water 20 minutes before the work starts. Easy as that.</p>
     <div class="how-steps">
       <div class="how-step">
         <div class="how-step-accent"></div>
         <span class="how-step-num">01</span>
         <div class="how-step-title">Mix One Scoop</div>
-        <p class="how-step-desc">Add one scoop (7.5g) to 10–12oz cold water. Stir or shake for 10 seconds. Sour Candy is light and clean — not thick, not sweet, not chemical.</p>
+        <p class="how-step-desc">Add one scoop (7.5g) to 10–12oz cold water. Stir or shake for 10 seconds. Our sour flavors are light and clean. Not thick, not sweet, and much less chemical.</p>
       </div>
       <div class="how-step">
         <div class="how-step-accent"></div>
         <span class="how-step-num">02</span>
         <div class="how-step-title">Take 20 Min Before</div>
-        <p class="how-step-desc">Drink it 15–20 minutes before the session starts. L-Theanine and caffeine peak together. Alpha-GPC onset is gradual — it builds over 30–60 minutes.</p>
+        <p class="how-step-desc">Drink it 15–20 minutes before the session starts. L-Theanine and caffeine peak together. Alpha-GPC onset is gradual, so it builds over 30–60 minutes.</p>
       </div>
       <div class="how-step">
         <div class="how-step-accent"></div>
         <span class="how-step-num">03</span>
         <div class="how-step-title">Lock In</div>
-        <p class="how-step-desc">Sit down and work. The stack does its job quietly in the background. No need to think about it. No checking how you feel. Just the work.</p>
+        <p class="how-step-desc">Time to outperform. The stack does its job quietly in the background. No need to think about it, or worrying about the "crash." Just the work.</p>
       </div>
     </div>
     <div style="margin-top: 24px; padding: 20px 28px; background: var(--surface); border: 0.5px solid var(--border); border-radius: 3px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
@@ -2587,7 +2722,7 @@
 <footer class="site-footer">
   <div class="footer-wordmark">
     <svg width="20" height="14" viewBox="0 0 40 28" fill="none">
-      <path d="M4 22 L10 8 L16 18 L20 10 L24 18 L30 8 L36 22" stroke="#E2FF47" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M4 22 L10 8 L16 18 L20 10 L24 18 L30 8 L36 22" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
     MINDOR
   </div>
@@ -2719,6 +2854,8 @@
       s.boxShadow  = '0 30px 80px rgba(0,0,0,0.7), inset 0 0 0 0.5px ' + f.subtle;
       if (glowRect) glowRect.setAttribute('stroke', f.glowStroke);
       if (bgRect)   bgRect.setAttribute('stroke',   f.bgStroke);
+      // Apply page-wide theme
+      document.documentElement.dataset.theme = name === 'sour-candy' ? '' : name;
     }
 
     document.querySelectorAll('.flavor-btn').forEach(function (btn) {
@@ -2826,7 +2963,7 @@
         body.innerHTML =
           '<div class="cart-empty">' +
             '<svg class="cart-empty-icon" width="52" height="52" viewBox="0 0 24 24" fill="none">' +
-              '<path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0" stroke="#E2FF47" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>' +
+              '<path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>' +
             '</svg>' +
             '<div class="cart-empty-title">Cart is empty</div>' +
             '<div class="cart-empty-body">Select a flavor below and add the Performance Stack to get started.</div>' +
@@ -2924,7 +3061,79 @@
     // Initial render
     renderCart();
   })();
+
+  // ── MORPHING HEADLINE ──
+  (function () {
+    var texts = ['Jitters.', 'Chaos.', 'Crash.'];
+    var MORPH_TIME = 1.5;
+    var COOLDOWN_TIME = 0.5;
+
+    var textIndex = 0;
+    var morphProgress = 0;
+    var cooldown = 0;
+    var lastTime = Date.now();
+
+    var t1 = document.getElementById('morph-t1');
+    var t2 = document.getElementById('morph-t2');
+
+    if (!t1 || !t2) return;
+
+    t1.textContent = texts[0];
+    t2.textContent = texts[1];
+
+    function setStyles(fraction) {
+      var inv = 1 - fraction;
+      t2.style.filter  = 'blur(' + Math.min(8 / fraction - 8, 100) + 'px)';
+      t2.style.opacity = Math.pow(fraction, 0.4);
+      t1.style.filter  = 'blur(' + Math.min(8 / inv - 8, 100) + 'px)';
+      t1.style.opacity = Math.pow(inv, 0.4);
+      t1.textContent = texts[textIndex % texts.length];
+      t2.textContent = texts[(textIndex + 1) % texts.length];
+    }
+
+    function doMorph() {
+      morphProgress -= cooldown;
+      cooldown = 0;
+      var fraction = morphProgress / MORPH_TIME;
+      if (fraction > 1) { cooldown = COOLDOWN_TIME; fraction = 1; }
+      setStyles(fraction);
+      if (fraction === 1) textIndex++;
+    }
+
+    function doCooldown() {
+      morphProgress = 0;
+      t2.style.filter  = 'none';
+      t2.style.opacity = 1;
+      t1.style.filter  = 'none';
+      t1.style.opacity = 0;
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      var now = Date.now();
+      var dt = (now - lastTime) / 1000;
+      lastTime = now;
+      cooldown -= dt;
+      if (cooldown <= 0) { morphProgress += dt; doMorph(); }
+      else doCooldown();
+    }
+
+    animate();
+  })();
 </script>
+
+<!-- SVG threshold filter for morphing headline -->
+<svg style="display:none;position:absolute;width:0;height:0" aria-hidden="true">
+  <defs>
+    <filter id="morph-threshold">
+      <feColorMatrix in="SourceGraphic" type="matrix"
+        values="1 0 0 0 0
+                0 1 0 0 0
+                0 0 1 0 0
+                0 0 0 255 -140"/>
+    </filter>
+  </defs>
+</svg>
 
 </body>
 </html>

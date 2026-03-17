@@ -1,3 +1,48 @@
+<!--
+  mindor-checkout.html — CHECKOUT PAGE
+  ══════════════════════════════════════
+  Purpose:     Multi-step checkout form: contact info, shipping address,
+               payment, order summary sidebar, and Subscribe & Save upsell.
+               Reads cart from localStorage; no server-side processing.
+
+  Self-contained: All CSS and JavaScript are inline — no external .css/.js files.
+
+  CSS sections (inside <style>, lines 11–950):
+    DESIGN TOKENS        line 11  — CSS custom properties (same palette as product page)
+    NAV                  line 43  — Checkout header (back link + secure badge)
+    LAYOUT               line 75  — Two-column grid (form left, summary right)
+    SECTION TITLES       line 86  — Step heading styles
+    FORM FIELDS          line 110 — Input/select states (error, success, focus)
+    ORDER BUMP           line 208 — Subscribe & Save 15% upsell toggle section
+    COMPARISON BOX       line 281 — Price comparison block inside order bump
+    PAYMENT FIELD ICONS  line 336 — Card/CVV icon overlays
+    ORDER SUMMARY        line 354 — Right-column sticky sidebar styles
+    SUBMIT BUTTON        line 481 — CTA button + loading state
+    FORM BREADCRUMB      line 514 — Step indicator (Contact / Shipping / Payment)
+    MISC                 line 533 — Misc utilities
+    CONFIRMATION OVERLAY line 551 — Post-submit success screen
+    RESPONSIVE           line 619 — Media queries (860px: single column; 560px: field stacks)
+
+  JavaScript sections (lines 951–1387):
+    FLAVOR CONFIG        line 951  — Flavor name → display label + price mapping
+    LOAD CART            line 976  — Reads localStorage['mindorCart']
+    RENDER ORDER SUMMARY line 985  — Renders item list in right sidebar
+    SUBSCRIBE TOGGLE     line 1086 — Subscribe & Save checkbox handler
+    EMAIL VALIDATION     line 1102 — Real-time email field validation
+    ADDRESS AUTOCOMPLETE line 1156 — Address input helpers
+    CARD NUMBER FORMAT   line 1249 — 16-digit card formatting (XXXX XXXX XXXX XXXX)
+    FIELD HELPERS        line 1271 — Generic field show/hide error helpers
+    FORM VALIDATION      line 1296 — Full form validation before submit
+    SUBMIT               line 1355 — Form submit handler + confirmation overlay
+
+  Dependencies:
+    Google Fonts: Barlow Condensed, DM Sans
+    localStorage: reads 'mindorCart' (written by mindor-product-page.html)
+    No JS libraries. No CSS framework. No build step. No real payment processing.
+
+  Linked from: mindor-product-page.html (checkout CTAs)
+  Cart key:    localStorage['mindorCart'] — shared with product page
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
