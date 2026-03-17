@@ -416,17 +416,25 @@
 
   /* ── PRODUCT CARD (hero right) ── */
   .hero-product-card {
+    --card-accent: #E2FF47;
+    --card-secondary: #425743;
+    --card-btn-text: #1A1F14;
+    --card-accent-soft: rgba(235,255,71,0.08);
+    --card-accent-subtle: rgba(235,255,71,0.12);
+    --card-accent-border: rgba(235,255,71,0.2);
     background: linear-gradient(170deg, #243018 0%, #161A0C 60%, #0E1208 100%);
     border-radius: 12px;
     overflow: hidden;
     position: relative;
-    box-shadow: 0 30px 80px rgba(0,0,0,0.7), inset 0 0 0 0.5px rgba(235,255,71,0.12);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.7), inset 0 0 0 0.5px var(--card-accent-subtle);
+    transition: background 0.5s ease, box-shadow 0.5s ease;
   }
 
   .product-card-zipper {
     height: 10px;
-    background: var(--execution-green);
+    background: var(--card-accent, var(--execution-green));
     width: 100%;
+    transition: background 0.5s ease;
   }
 
   .product-card-inner {
@@ -437,18 +445,20 @@
     font-family: 'Barlow Condensed', sans-serif;
     font-weight: 900;
     font-size: 52px;
-    color: var(--execution-green);
+    color: var(--card-accent, var(--execution-green));
     letter-spacing: 0.02em;
     line-height: 1;
+    transition: color 0.5s ease;
   }
 
   .product-card-sub {
     font-size: 9px;
     font-weight: 500;
     letter-spacing: 0.22em;
-    color: var(--sprint-green);
+    color: var(--card-secondary, var(--sprint-green));
     text-transform: uppercase;
     margin-bottom: 20px;
+    transition: color 0.5s ease;
   }
 
   .product-card-flavor {
@@ -507,8 +517,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-top: 0.5px solid rgba(235,255,71,0.08);
+    border-top: 0.5px solid var(--card-accent-soft, rgba(235,255,71,0.08));
     padding-top: 16px;
+    transition: border-color 0.5s ease;
   }
 
   .product-card-price {
@@ -529,19 +540,20 @@
   .product-card-servings {
     font-size: 9px;
     font-weight: 700;
-    color: var(--execution-green);
-    border: 0.5px solid var(--execution-green);
+    color: var(--card-accent, var(--execution-green));
+    border: 0.5px solid var(--card-accent, var(--execution-green));
     padding: 4px 10px;
     border-radius: 2px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
+    transition: color 0.5s ease, border-color 0.5s ease;
   }
 
   .product-card-cta {
     display: block;
     width: 100%;
-    background: var(--execution-green);
-    color: #1A1F14;
+    background: var(--card-accent, var(--execution-green));
+    color: var(--card-btn-text, #1A1F14);
     font-family: 'Barlow Condensed', sans-serif;
     font-size: 17px;
     font-weight: 800;
@@ -566,6 +578,107 @@
     margin-top: 10px;
     letter-spacing: 0.08em;
   }
+
+  /* Scoped card overrides for stat colors */
+  .hero-product-card .stat-val {
+    color: var(--card-accent, var(--execution-green));
+    transition: color 0.5s ease;
+  }
+  .hero-product-card .stat-dash {
+    background: var(--card-secondary, var(--sprint-green));
+    transition: background 0.5s ease;
+  }
+
+  /* ── FLAVOR SELECTOR BUTTONS ── */
+  .flavor-selector {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .flavor-btn {
+    position: relative;
+    cursor: pointer;
+    border: none;
+    background: rgba(11,13,7,0.9);
+    padding: 1px;
+    border-radius: 20px;
+    display: inline-flex;
+    font-family: 'Barlow Condensed', sans-serif;
+    outline: none;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .flavor-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,0,0,0.6); }
+  .flavor-btn:active { transform: translateY(0); }
+
+  .fbtn-glow {
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .fbtn-glow::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(75% 100% at 50% 0%, var(--fbtn-glow, rgba(226,255,71,0.6)) 0%, transparent 75%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  .flavor-btn:hover .fbtn-glow::after,
+  .flavor-btn.active .fbtn-glow::after { opacity: 1; }
+
+  .fbtn-inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(11,13,7,0.95);
+    border-radius: 20px;
+    padding: 5px 12px;
+    border: 0.5px solid rgba(255,255,255,0.08);
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: var(--fbtn-color, #E2FF47);
+    text-transform: uppercase;
+    white-space: nowrap;
+    transition: border-color 0.3s ease;
+  }
+
+  .flavor-btn.active .fbtn-inner {
+    border-color: var(--fbtn-border, rgba(226,255,71,0.3));
+  }
+
+  .fbtn-icon, .fbtn-arrow { color: var(--fbtn-color, #E2FF47); flex-shrink: 0; }
+
+  .fbtn-arrow {
+    opacity: 0.7;
+    transition: transform 0.2s ease;
+  }
+  .flavor-btn:hover .fbtn-arrow { transform: translateX(2px); }
+
+  .fbtn-shimmer {
+    position: absolute;
+    bottom: 0;
+    left: 1rem;
+    right: 1rem;
+    height: 1px;
+    background: linear-gradient(to right, transparent 0%, var(--fbtn-shimmer, rgba(226,255,71,0.9)) 50%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+  }
+
+  .flavor-btn:hover .fbtn-shimmer { opacity: 0.4; }
+  .flavor-btn.active .fbtn-shimmer { opacity: 0.65; }
 
   /* ── PRODUCT OVERVIEW ── */
   .overview-grid {
@@ -1595,11 +1708,52 @@
       <div class="product-card-inner">
         <div class="product-card-wordmark">MINDOR</div>
         <div class="product-card-sub">Performance Stack</div>
-        <div class="product-card-flavor">
-          <svg width="12" height="9" viewBox="0 0 40 28" fill="none">
-            <path d="M4 22 L10 8 L16 18 L20 10 L24 18 L30 8 L36 22" stroke="#E2FF47" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <span>Sour Candy</span>
+        <div class="flavor-selector" id="flavor-selector">
+          <!-- SOUR CANDY -->
+          <button class="flavor-btn active" data-flavor="sour-candy"
+            style="--fbtn-glow:rgba(226,255,71,0.6);--fbtn-color:#E2FF47;--fbtn-shimmer:rgba(226,255,71,0.9);--fbtn-border:rgba(226,255,71,0.3);">
+            <span class="fbtn-glow" aria-hidden="true"></span>
+            <span class="fbtn-inner">
+              <svg class="fbtn-icon" width="11" height="8" viewBox="0 0 40 28" fill="none">
+                <path d="M4 22 L10 8 L16 18 L20 10 L24 18 L30 8 L36 22" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Sour Candy
+              <svg class="fbtn-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.75 8.75L14.25 12L10.75 15.25"/>
+              </svg>
+            </span>
+            <span class="fbtn-shimmer" aria-hidden="true"></span>
+          </button>
+          <!-- SOUR GRAPE -->
+          <button class="flavor-btn" data-flavor="sour-grape"
+            style="--fbtn-glow:rgba(192,132,252,0.6);--fbtn-color:#C084FC;--fbtn-shimmer:rgba(192,132,252,0.9);--fbtn-border:rgba(192,132,252,0.3);">
+            <span class="fbtn-glow" aria-hidden="true"></span>
+            <span class="fbtn-inner">
+              <svg class="fbtn-icon" width="11" height="8" viewBox="0 0 40 28" fill="none">
+                <path d="M4 22 L10 8 L16 18 L20 10 L24 18 L30 8 L36 22" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Sour Grape
+              <svg class="fbtn-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.75 8.75L14.25 12L10.75 15.25"/>
+              </svg>
+            </span>
+            <span class="fbtn-shimmer" aria-hidden="true"></span>
+          </button>
+          <!-- SOUR GUMMI WORM -->
+          <button class="flavor-btn" data-flavor="sour-gummi-worm"
+            style="--fbtn-glow:rgba(255,107,157,0.6);--fbtn-color:#FF6B9D;--fbtn-shimmer:rgba(255,107,157,0.9);--fbtn-border:rgba(255,107,157,0.3);">
+            <span class="fbtn-glow" aria-hidden="true"></span>
+            <span class="fbtn-inner">
+              <svg class="fbtn-icon" width="11" height="8" viewBox="0 0 40 28" fill="none">
+                <path d="M4 22 L10 8 L16 18 L20 10 L24 18 L30 8 L36 22" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Sour Gummi Worm
+              <svg class="fbtn-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.75 8.75L14.25 12L10.75 15.25"/>
+              </svg>
+            </span>
+            <span class="fbtn-shimmer" aria-hidden="true"></span>
+          </button>
         </div>
         <ul class="product-card-stats">
           <li class="stat-row">
@@ -2293,6 +2447,73 @@
     }
 
     requestAnimationFrame(animate);
+  })();
+
+  // ── FLAVOR SWITCHER ──
+  (function () {
+    var card     = document.querySelector('.hero-product-card');
+    var glowRect = document.getElementById('hero-border-glow');
+    var bgRect   = document.getElementById('hero-border-bg');
+
+    var flavors = {
+      'sour-candy': {
+        accent:        '#E2FF47',
+        secondary:     '#425743',
+        btnText:       '#1A1F14',
+        soft:          'rgba(235,255,71,0.08)',
+        subtle:        'rgba(235,255,71,0.12)',
+        border:        'rgba(235,255,71,0.2)',
+        bg:            'linear-gradient(170deg, #243018 0%, #161A0C 60%, #0E1208 100%)',
+        glowStroke:    'rgba(226,255,71,0.55)',
+        bgStroke:      'rgba(226,255,71,0.07)',
+      },
+      'sour-grape': {
+        accent:        '#C084FC',
+        secondary:     '#5A3A7A',
+        btnText:       '#0A0612',
+        soft:          'rgba(192,132,252,0.08)',
+        subtle:        'rgba(192,132,252,0.12)',
+        border:        'rgba(192,132,252,0.2)',
+        bg:            'linear-gradient(170deg, #1C0E2E 0%, #120A1E 60%, #0A0612 100%)',
+        glowStroke:    'rgba(192,132,252,0.55)',
+        bgStroke:      'rgba(192,132,252,0.07)',
+      },
+      'sour-gummi-worm': {
+        accent:        '#FF6B9D',
+        secondary:     '#7A3050',
+        btnText:       '#0F0508',
+        soft:          'rgba(255,107,157,0.08)',
+        subtle:        'rgba(255,107,157,0.12)',
+        border:        'rgba(255,107,157,0.2)',
+        bg:            'linear-gradient(170deg, #2E0E1A 0%, #1E0910 60%, #0F0508 100%)',
+        glowStroke:    'rgba(255,107,157,0.55)',
+        bgStroke:      'rgba(255,107,157,0.07)',
+      },
+    };
+
+    function applyFlavor(name) {
+      var f = flavors[name];
+      if (!f) return;
+      var s = card.style;
+      s.setProperty('--card-accent',         f.accent);
+      s.setProperty('--card-secondary',      f.secondary);
+      s.setProperty('--card-btn-text',       f.btnText);
+      s.setProperty('--card-accent-soft',    f.soft);
+      s.setProperty('--card-accent-subtle',  f.subtle);
+      s.setProperty('--card-accent-border',  f.border);
+      s.background = f.bg;
+      s.boxShadow  = '0 30px 80px rgba(0,0,0,0.7), inset 0 0 0 0.5px ' + f.subtle;
+      if (glowRect) glowRect.setAttribute('stroke', f.glowStroke);
+      if (bgRect)   bgRect.setAttribute('stroke',   f.bgStroke);
+    }
+
+    document.querySelectorAll('.flavor-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('.flavor-btn').forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        applyFlavor(btn.dataset.flavor);
+      });
+    });
   })();
 
   // FAQ accordion
