@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mindor — Checkout</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --execution-green: #E2FF47;
+    --deep-work-black: #0A0A0A;
+    --sprint-green: #425743;
+    --clean-cream: #F8ECC3;
+    --fog-grey: #C8C9B8;
+    --bg: #111309;
+    --surface: #161A0E;
+    --surface2: #1E2416;
+    --border: rgba(235,255,71,0.12);
+    --border-subtle: rgba(255,255,255,0.06);
+    --text-primary: #F0F0E8;
+    --text-muted: #6A7A5A;
+    --text-dim: #3A4A30;
+    --error: #FF6B6B;
+    --success: #4ADE80;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  /* ── NAV ── */
+  .checkout-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(17,19,9,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 0.5px solid var(--border);
+    padding: 0 40px;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 56px;
+  }
+
+  .nav-logo {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+    font-size: 24px; color: var(--execution-green);
+    letter-spacing: 0.04em; text-decoration: none;
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  .nav-back {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text-muted);
+    text-decoration: none; transition: color 0.15s;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .nav-back:hover { color: var(--text-primary); }
+
+  .nav-secure {
+    font-size: 10px; color: var(--text-dim);
+    letter-spacing: 0.1em; text-transform: uppercase;
+    display: flex; align-items: center; gap: 6px;
+  }
+
+  /* ── LAYOUT ── */
+  .checkout-layout {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 48px 40px 100px;
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 48px;
+    align-items: start;
+  }
+
+  /* ── SECTION TITLES ── */
+  .form-section { margin-bottom: 32px; }
+
+  .form-section-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800; font-size: 18px;
+    color: var(--text-primary);
+    text-transform: uppercase; letter-spacing: 0.06em;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 0.5px solid var(--border-subtle);
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  .form-section-num {
+    width: 20px; height: 20px; border-radius: 50%;
+    background: rgba(235,255,71,0.08);
+    border: 0.5px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 700; color: var(--execution-green);
+    letter-spacing: 0; flex-shrink: 0;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  /* ── FORM FIELDS ── */
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .field-row.single { grid-template-columns: 1fr; }
+  .field-row.three { grid-template-columns: 2fr 1fr 1fr; }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    position: relative;
+  }
+
+  .field-label {
+    font-size: 9px; font-weight: 600;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .field-input {
+    background: var(--surface);
+    border: 0.5px solid var(--border-subtle);
+    border-radius: 3px;
+    padding: 12px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text-primary);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    width: 100%;
+  }
+  .field-input::placeholder { color: var(--text-dim); }
+  .field-input:focus {
+    border-color: rgba(235,255,71,0.35);
+    box-shadow: 0 0 0 3px rgba(235,255,71,0.05);
+  }
+  .field-input.valid {
+    border-color: rgba(74,222,128,0.4);
+  }
+  .field-input.error {
+    border-color: rgba(255,107,107,0.5);
+  }
+
+  .field-hint {
+    font-size: 10px; color: var(--text-muted);
+    letter-spacing: 0.04em;
+  }
+  .field-hint.error-msg { color: var(--error); display: none; }
+  .field-hint.success-msg { color: var(--success); display: none; }
+  .field.has-error .error-msg { display: block; }
+  .field.has-error .success-msg { display: none; }
+  .field.is-valid .success-msg { display: block; }
+  .field.is-valid .error-msg { display: none; }
+
+  .field-valid-icon {
+    position: absolute; right: 12px; bottom: 13px;
+    color: var(--success); display: none;
+    pointer-events: none;
+  }
+  .field.is-valid .field-valid-icon { display: block; }
+
+  /* Address autocomplete */
+  .address-suggestions {
+    position: absolute;
+    top: calc(100% + 4px); left: 0; right: 0;
+    background: #1A1F12;
+    border: 0.5px solid var(--border);
+    border-radius: 4px;
+    z-index: 50;
+    overflow: hidden;
+    display: none;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  }
+  .address-suggestions.visible { display: block; }
+
+  .addr-suggestion {
+    padding: 10px 14px;
+    font-size: 13px; color: var(--fog-grey);
+    cursor: pointer;
+    border-bottom: 0.5px solid var(--border-subtle);
+    transition: background 0.1s;
+    line-height: 1.4;
+  }
+  .addr-suggestion:last-child { border-bottom: none; }
+  .addr-suggestion:hover { background: rgba(235,255,71,0.05); color: var(--text-primary); }
+  .addr-suggestion strong { color: var(--execution-green); font-weight: 600; }
+
+  .addr-loading {
+    padding: 10px 14px;
+    font-size: 12px; color: var(--text-dim);
+    letter-spacing: 0.06em;
+  }
+
+  /* ── ORDER BUMP ── */
+  .order-bump {
+    background: linear-gradient(135deg, rgba(235,255,71,0.06) 0%, rgba(235,255,71,0.02) 100%);
+    border: 1px solid rgba(235,255,71,0.25);
+    border-radius: 6px;
+    padding: 20px 20px 18px;
+    margin-bottom: 32px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .order-bump:hover { border-color: rgba(235,255,71,0.4); }
+  .order-bump::before {
+    content: 'SAVE 15%';
+    position: absolute; top: 0; right: 0;
+    background: var(--execution-green); color: #1A1F14;
+    font-size: 8px; font-weight: 700; letter-spacing: 0.16em;
+    padding: 4px 12px; border-radius: 0 6px 0 4px;
+  }
+
+  .bump-row {
+    display: flex; align-items: flex-start; gap: 14px;
+  }
+
+  .bump-checkbox {
+    width: 20px; height: 20px; flex-shrink: 0; margin-top: 1px;
+    appearance: none; -webkit-appearance: none;
+    background: rgba(235,255,71,0.08);
+    border: 1.5px solid rgba(235,255,71,0.5);
+    border-radius: 3px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; transition: all 0.15s;
+  }
+  .bump-checkbox:checked {
+    background: var(--execution-green);
+    border-color: var(--execution-green);
+  }
+  .bump-checkbox:checked::after {
+    content: '';
+    position: absolute;
+    width: 5px; height: 9px;
+    border: 2px solid #1A1F14;
+    border-top: none; border-left: none;
+    transform: rotate(42deg) translate(-1px, -1px);
+  }
+
+  .bump-content { flex: 1; }
+
+  .bump-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800; font-size: 17px;
+    color: var(--execution-green); letter-spacing: 0.04em;
+    text-transform: uppercase; margin-bottom: 4px;
+  }
+
+  .bump-desc {
+    font-size: 12px; color: var(--fog-grey);
+    line-height: 1.5; margin-bottom: 8px;
+  }
+
+  .bump-tags {
+    display: flex; flex-wrap: wrap; gap: 6px;
+  }
+
+  .bump-tag {
+    font-size: 9px; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text-muted);
+    background: rgba(255,255,255,0.04);
+    border: 0.5px solid var(--border-subtle);
+    padding: 3px 8px; border-radius: 2px;
+  }
+
+  /* ── COMPARISON BOX ── */
+  .comparison-box {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 6px;
+    padding: 18px 20px;
+    margin-bottom: 32px;
+  }
+
+  .comparison-box-title {
+    font-size: 9px; font-weight: 600; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--text-muted);
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 0.5px solid var(--border-subtle);
+  }
+
+  .comparison-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 0.5px solid var(--border-subtle);
+  }
+  .comparison-row:last-child { border-bottom: none; }
+
+  .comparison-row-label {
+    font-size: 12px; color: var(--fog-grey); line-height: 1.3;
+  }
+  .comparison-row-label strong { display: block; color: var(--text-primary); font-size: 13px; }
+  .comparison-row-label span { display: block; font-size: 10px; color: var(--text-muted); margin-top: 1px; }
+
+  .comparison-row-price {
+    text-align: right;
+  }
+  .comparison-row-price .price-main {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900; font-size: 22px; line-height: 1;
+    color: var(--text-primary);
+  }
+  .comparison-row-price .price-per {
+    font-size: 10px; color: var(--text-muted);
+    letter-spacing: 0.04em; margin-top: 2px;
+  }
+  .comparison-row-price.savings .price-main { color: var(--execution-green); }
+
+  .comparison-savings-badge {
+    display: inline-block;
+    background: rgba(235,255,71,0.1);
+    border: 0.5px solid rgba(235,255,71,0.25);
+    color: var(--execution-green);
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 3px 8px; border-radius: 2px;
+    margin-top: 4px;
+  }
+
+  /* ── PAYMENT FIELD ICONS ── */
+  .card-icons {
+    display: flex; gap: 6px; align-items: center;
+    position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+    pointer-events: none;
+  }
+  .card-icon {
+    width: 30px; height: 19px;
+    border-radius: 2px;
+    background: var(--surface2);
+    border: 0.5px solid var(--border-subtle);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 7px; font-weight: 700; letter-spacing: 0.04em;
+    color: var(--text-dim);
+  }
+
+  .field.with-card-icons .field-input { padding-right: 90px; }
+
+  /* ── ORDER SUMMARY (RIGHT COLUMN) ── */
+  .order-summary {
+    position: sticky;
+    top: 72px;
+  }
+
+  .summary-panel {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .summary-header {
+    padding: 18px 20px 14px;
+    border-bottom: 0.5px solid var(--border-subtle);
+  }
+
+  .summary-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800; font-size: 16px;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--text-primary);
+  }
+
+  .summary-body {
+    padding: 16px 20px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+
+  .summary-item {
+    display: flex; gap: 12px; align-items: flex-start;
+  }
+
+  .summary-item-card {
+    width: 52px; height: 60px;
+    border-radius: 5px; overflow: hidden; flex-shrink: 0;
+    position: relative;
+  }
+
+  .summary-item-card-zipper { height: 3px; width: 100%; }
+  .summary-item-card-body {
+    padding: 6px 8px;
+    display: flex; flex-direction: column; gap: 1px;
+  }
+  .summary-item-card-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900; font-size: 9px; letter-spacing: 0.04em;
+    line-height: 1;
+  }
+  .summary-item-card-flavor {
+    font-size: 6px; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; opacity: 0.7;
+  }
+
+  .summary-item-qty-badge {
+    position: absolute; top: -5px; right: -5px;
+    width: 16px; height: 16px;
+    background: var(--execution-green); color: #1A1F14;
+    border-radius: 50%;
+    font-size: 8px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Sans', sans-serif;
+    border: 1.5px solid var(--surface);
+  }
+
+  .summary-item-info { flex: 1; }
+
+  .summary-item-name {
+    font-size: 13px; font-weight: 500;
+    color: var(--text-primary); margin-bottom: 2px;
+  }
+
+  .summary-item-meta {
+    font-size: 10px; color: var(--text-muted);
+    letter-spacing: 0.04em;
+  }
+
+  .summary-item-price {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800; font-size: 18px;
+    color: var(--text-primary); text-align: right;
+    flex-shrink: 0;
+  }
+
+  .summary-empty {
+    text-align: center; padding: 24px 0;
+    font-size: 12px; color: var(--text-muted);
+  }
+
+  .summary-divider { height: 0.5px; background: var(--border-subtle); margin: 4px 0; }
+
+  .summary-totals {
+    padding: 14px 20px;
+    border-top: 0.5px solid var(--border-subtle);
+  }
+
+  .summary-line {
+    display: flex; justify-content: space-between;
+    align-items: center; padding: 5px 0;
+  }
+
+  .summary-line-label {
+    font-size: 12px; color: var(--text-muted);
+    letter-spacing: 0.04em;
+  }
+
+  .summary-line-val {
+    font-size: 13px; color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  .summary-line.total { padding-top: 12px; margin-top: 4px; border-top: 0.5px solid var(--border-subtle); }
+  .summary-line.total .summary-line-label {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 800;
+    font-size: 14px; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--text-primary);
+  }
+  .summary-line.total .summary-line-val {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+    font-size: 26px; color: var(--execution-green); line-height: 1;
+  }
+
+  .summary-line.sub-discount .summary-line-val {
+    color: var(--execution-green);
+  }
+
+  /* ── SUBMIT BUTTON ── */
+  .submit-btn {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    width: 100%;
+    background: var(--execution-green); color: #1A1F14;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 20px; font-weight: 800;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 18px 32px; border-radius: 3px;
+    border: none; cursor: pointer;
+    margin-top: 8px;
+    transition: opacity 0.15s, transform 0.1s;
+  }
+  .submit-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+  .submit-btn:active { transform: translateY(0); }
+
+  .submit-trust {
+    display: flex; align-items: center; justify-content: center;
+    gap: 16px; flex-wrap: wrap;
+    margin-top: 14px;
+  }
+
+  .trust-item {
+    font-size: 10px; color: var(--text-dim);
+    letter-spacing: 0.1em; text-transform: uppercase;
+    display: flex; align-items: center; gap: 5px;
+  }
+
+  .trust-dot {
+    width: 3px; height: 3px; border-radius: 50%;
+    background: var(--text-dim); flex-shrink: 0;
+  }
+
+  /* ── FORM BREADCRUMB ── */
+  .checkout-steps {
+    display: flex; align-items: center; gap: 0;
+    margin-bottom: 36px;
+  }
+
+  .step-item {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 10px; font-weight: 600; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--text-dim);
+  }
+  .step-item.active { color: var(--text-muted); }
+  .step-item.done { color: var(--execution-green); }
+
+  .step-sep {
+    margin: 0 10px;
+    color: var(--text-dim); font-size: 10px;
+  }
+
+  /* ── MISC ── */
+  .divider-label {
+    display: flex; align-items: center; gap: 12px;
+    margin: 24px 0 16px;
+  }
+  .divider-label-line { flex: 1; height: 0.5px; background: var(--border-subtle); }
+  .divider-label-text {
+    font-size: 9px; font-weight: 600; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--text-dim);
+  }
+
+  .secure-badge {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 10px; color: var(--text-dim);
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  /* ── CONFIRMATION OVERLAY ── */
+  .confirm-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.8);
+    z-index: 500;
+    align-items: center; justify-content: center;
+    backdrop-filter: blur(4px);
+  }
+  .confirm-overlay.show { display: flex; }
+
+  .confirm-box {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 48px 40px;
+    max-width: 440px; width: 90%;
+    text-align: center;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.7);
+    animation: confirmIn 0.4s cubic-bezier(0.4,0,0.2,1) both;
+  }
+
+  @keyframes confirmIn {
+    from { opacity: 0; transform: scale(0.94) translateY(16px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .confirm-icon {
+    width: 64px; height: 64px;
+    background: rgba(235,255,71,0.08);
+    border: 1px solid rgba(235,255,71,0.2);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px;
+  }
+
+  .confirm-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900; font-size: 36px;
+    color: var(--execution-green);
+    letter-spacing: -0.01em; line-height: 0.9;
+    margin-bottom: 8px; text-transform: uppercase;
+  }
+
+  .confirm-sub {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 18px;
+    color: var(--text-primary); margin-bottom: 16px;
+    text-transform: uppercase; letter-spacing: 0.04em;
+  }
+
+  .confirm-body {
+    font-size: 13px; color: var(--fog-grey);
+    line-height: 1.6; margin-bottom: 28px;
+  }
+
+  .confirm-btn {
+    display: inline-block;
+    background: var(--execution-green); color: #1A1F14;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px; font-weight: 800;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 14px 40px; border-radius: 3px;
+    border: none; cursor: pointer; text-decoration: none;
+    transition: opacity 0.15s;
+  }
+  .confirm-btn:hover { opacity: 0.88; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 860px) {
+    .checkout-layout { grid-template-columns: 1fr; gap: 32px; padding: 32px 20px 80px; }
+    .order-summary { position: static; order: -1; }
+    .checkout-nav { padding: 0 20px; }
+    .field-row.three { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 560px) {
+    .field-row { grid-template-columns: 1fr; }
+    .field-row.three { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="checkout-nav">
+  <a href="mindor-product-page.html" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.25 8.75L11.75 12l3.5 3.25"/>
+    </svg>
+    Back to Shop
+  </a>
+  <a href="mindor-product-page.html" class="nav-logo">
+    <svg width="20" height="14" viewBox="0 0 40 28" fill="none">
+      <path d="M4 22 L10 8 L16 18 L20 10 L24 18 L30 8 L36 22" stroke="#E2FF47" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    MINDOR
+  </a>
+  <div class="nav-secure">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+      <rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/>
+      <path d="M7 11V7a5 5 0 0110 0v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    Secure Checkout
+  </div>
+</nav>
+
+<!-- ── MAIN ── -->
+<div class="checkout-layout">
+
+  <!-- ═══════════════════════
+       LEFT: FORM
+  ═══════════════════════ -->
+  <div class="checkout-form-col">
+
+    <!-- Breadcrumb -->
+    <div class="checkout-steps">
+      <div class="step-item active">
+        <span>Contact</span>
+      </div>
+      <span class="step-sep">›</span>
+      <div class="step-item active">
+        <span>Shipping</span>
+      </div>
+      <span class="step-sep">›</span>
+      <div class="step-item active">
+        <span>Payment</span>
+      </div>
+    </div>
+
+    <!-- ── ORDER BUMP ── -->
+    <div class="order-bump" id="order-bump" onclick="toggleSubscribe()">
+      <div class="bump-row">
+        <input type="checkbox" class="bump-checkbox" id="subscribe-checkbox" checked>
+        <div class="bump-content">
+          <div class="bump-title">Subscribe &amp; Save 15% — Lock In Your Supply</div>
+          <div class="bump-desc">Get Mindor delivered every 30 days automatically. Skip or cancel anytime — no lock-in, no penalty. 15% off every order, for as long as you subscribe.</div>
+          <div class="bump-tags">
+            <span class="bump-tag">Cancel Anytime</span>
+            <span class="bump-tag">Pause Anytime</span>
+            <span class="bump-tag">15% Off Every Order</span>
+            <span class="bump-tag">Priority Shipping</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── COMPARISON BOX ── -->
+    <div class="comparison-box" id="comparison-box">
+      <div class="comparison-box-title">Cost Breakdown — One-Time vs Subscribe</div>
+      <div class="comparison-row">
+        <div class="comparison-row-label">
+          <strong>Today's Order</strong>
+          <span id="today-flavor-label">Mindor Performance Stack</span>
+        </div>
+        <div class="comparison-row-price" id="today-price-col">
+          <div class="price-main" id="today-price">$49</div>
+          <div class="price-per" id="today-price-per">$1.63 / serving</div>
+        </div>
+      </div>
+      <div class="comparison-row" id="next-supply-row">
+        <div class="comparison-row-label">
+          <strong>Next Supply (30 days)</strong>
+          <span>Auto-ship with subscription — 15% off</span>
+        </div>
+        <div class="comparison-row-price savings">
+          <div class="price-main" id="next-price">$41.65</div>
+          <div class="price-per">$1.39 / serving</div>
+          <div class="comparison-savings-badge" id="savings-badge">Save $7.35</div>
+        </div>
+      </div>
+      <div class="comparison-row" style="display:none;" id="one-time-row">
+        <div class="comparison-row-label">
+          <strong>Next Supply (one-time)</strong>
+          <span>Full price each order — no discount</span>
+        </div>
+        <div class="comparison-row-price">
+          <div class="price-main" id="next-onetime-price">$49</div>
+          <div class="price-per">$1.63 / serving · vs $1.39 with sub</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 1: CONTACT ── -->
+    <div class="form-section">
+      <div class="form-section-title">
+        <span class="form-section-num">1</span>
+        Contact Information
+      </div>
+
+      <div class="field-row">
+        <div class="field" id="field-email">
+          <label class="field-label" for="email">Email address</label>
+          <input class="field-input" type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email">
+          <svg class="field-valid-icon" width="14" height="14" viewBox="0 0 24 24" fill="none">
+            <path d="M5 13l4 4L19 7" stroke="#4ADE80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="field-hint error-msg" id="email-error">Please enter a valid email address.</span>
+          <span class="field-hint success-msg" id="email-success">Email looks valid.</span>
+        </div>
+        <div class="field" id="field-phone">
+          <label class="field-label" for="phone">Phone (optional)</label>
+          <input class="field-input" type="tel" id="phone" name="phone" placeholder="+1 (555) 000-0000" autocomplete="tel">
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 2: SHIPPING ── -->
+    <div class="form-section">
+      <div class="form-section-title">
+        <span class="form-section-num">2</span>
+        Shipping Address
+      </div>
+
+      <div class="field-row">
+        <div class="field" id="field-first-name">
+          <label class="field-label" for="first-name">First Name</label>
+          <input class="field-input" type="text" id="first-name" name="first-name" placeholder="Alex" autocomplete="given-name">
+          <span class="field-hint error-msg">Required.</span>
+        </div>
+        <div class="field" id="field-last-name">
+          <label class="field-label" for="last-name">Last Name</label>
+          <input class="field-input" type="text" id="last-name" name="last-name" placeholder="Morgan" autocomplete="family-name">
+          <span class="field-hint error-msg">Required.</span>
+        </div>
+      </div>
+
+      <div class="field-row single" style="margin-bottom:12px;">
+        <div class="field" id="field-address" style="position:relative;">
+          <label class="field-label" for="address">Street Address</label>
+          <input class="field-input" type="text" id="address" name="address" placeholder="123 Main St" autocomplete="off">
+          <svg class="field-valid-icon" width="14" height="14" viewBox="0 0 24 24" fill="none">
+            <path d="M5 13l4 4L19 7" stroke="#4ADE80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="field-hint error-msg" id="address-error">Please enter a valid street address.</span>
+          <div class="address-suggestions" id="address-suggestions"></div>
+        </div>
+      </div>
+
+      <div class="field-row single" style="margin-bottom:12px;">
+        <div class="field">
+          <label class="field-label" for="address2">Apt, Suite, etc. (optional)</label>
+          <input class="field-input" type="text" id="address2" name="address2" placeholder="Apt 4B" autocomplete="address-line2">
+        </div>
+      </div>
+
+      <div class="field-row three">
+        <div class="field" id="field-city">
+          <label class="field-label" for="city">City</label>
+          <input class="field-input" type="text" id="city" name="city" placeholder="New York" autocomplete="address-level2">
+          <span class="field-hint error-msg">Required.</span>
+        </div>
+        <div class="field" id="field-state">
+          <label class="field-label" for="state">State</label>
+          <select class="field-input" id="state" name="state" autocomplete="address-level1">
+            <option value="">— State —</option>
+            <option>AL</option><option>AK</option><option>AZ</option><option>AR</option>
+            <option>CA</option><option>CO</option><option>CT</option><option>DE</option>
+            <option>FL</option><option>GA</option><option>HI</option><option>ID</option>
+            <option>IL</option><option>IN</option><option>IA</option><option>KS</option>
+            <option>KY</option><option>LA</option><option>ME</option><option>MD</option>
+            <option>MA</option><option>MI</option><option>MN</option><option>MS</option>
+            <option>MO</option><option>MT</option><option>NE</option><option>NV</option>
+            <option>NH</option><option>NJ</option><option>NM</option><option>NY</option>
+            <option>NC</option><option>ND</option><option>OH</option><option>OK</option>
+            <option>OR</option><option>PA</option><option>RI</option><option>SC</option>
+            <option>SD</option><option>TN</option><option>TX</option><option>UT</option>
+            <option>VT</option><option>VA</option><option>WA</option><option>WV</option>
+            <option>WI</option><option>WY</option>
+          </select>
+          <span class="field-hint error-msg">Required.</span>
+        </div>
+        <div class="field" id="field-zip">
+          <label class="field-label" for="zip">ZIP Code</label>
+          <input class="field-input" type="text" id="zip" name="zip" placeholder="10001" maxlength="10" autocomplete="postal-code">
+          <span class="field-hint error-msg">Required.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 3: PAYMENT ── -->
+    <div class="form-section">
+      <div class="form-section-title">
+        <span class="form-section-num">3</span>
+        Payment
+      </div>
+
+      <div class="secure-badge">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="11" width="18" height="11" rx="2" stroke="#3A4A30" stroke-width="1.5"/>
+          <path d="M7 11V7a5 5 0 0110 0v4" stroke="#3A4A30" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        256-bit SSL encrypted · PCI compliant
+      </div>
+
+      <div class="field-row single" style="margin-bottom:12px;">
+        <div class="field with-card-icons" id="field-card-number">
+          <label class="field-label" for="card-number">Card Number</label>
+          <input class="field-input" type="text" id="card-number" name="card-number" placeholder="1234 5678 9012 3456" maxlength="19" autocomplete="cc-number">
+          <div class="card-icons">
+            <div class="card-icon" id="visa-icon" style="color:#6A7A5A;">VISA</div>
+            <div class="card-icon" id="mc-icon" style="color:#6A7A5A;">MC</div>
+            <div class="card-icon" id="amex-icon" style="color:#6A7A5A;">AMEX</div>
+          </div>
+          <span class="field-hint error-msg">Enter a valid card number.</span>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field" id="field-expiry">
+          <label class="field-label" for="expiry">Expiry Date</label>
+          <input class="field-input" type="text" id="expiry" name="expiry" placeholder="MM / YY" maxlength="7" autocomplete="cc-exp">
+          <span class="field-hint error-msg">Enter a valid expiry date.</span>
+        </div>
+        <div class="field" id="field-cvv">
+          <label class="field-label" for="cvv">Security Code (CVV)</label>
+          <input class="field-input" type="text" id="cvv" name="cvv" placeholder="123" maxlength="4" autocomplete="cc-csc">
+          <span class="field-hint error-msg">Required.</span>
+        </div>
+      </div>
+
+      <div class="field-row single">
+        <div class="field" id="field-name-on-card">
+          <label class="field-label" for="name-on-card">Name on Card</label>
+          <input class="field-input" type="text" id="name-on-card" name="name-on-card" placeholder="Alex Morgan" autocomplete="cc-name">
+          <span class="field-hint error-msg">Required.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Submit -->
+    <button class="submit-btn" id="submit-btn" type="button" onclick="submitOrder()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+        <rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M7 11V7a5 5 0 0110 0v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <span id="submit-label">Complete Order</span>
+    </button>
+
+    <div class="submit-trust">
+      <span class="trust-item"><span class="trust-dot"></span>30-Day Guarantee</span>
+      <span class="trust-item"><span class="trust-dot"></span>Free Returns</span>
+      <span class="trust-item"><span class="trust-dot"></span>Cancel Anytime</span>
+      <span class="trust-item"><span class="trust-dot"></span>cGMP Certified</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════
+       RIGHT: ORDER SUMMARY
+  ═══════════════════════ -->
+  <div class="order-summary">
+    <div class="summary-panel">
+      <div class="summary-header">
+        <div class="summary-title">Order Summary</div>
+      </div>
+
+      <div class="summary-body" id="summary-body">
+        <div class="summary-empty">Your cart is empty.<br><a href="mindor-product-page.html" style="color:var(--execution-green);text-decoration:none;">← Back to shop</a></div>
+      </div>
+
+      <div class="summary-totals" id="summary-totals" style="display:none;">
+        <div class="summary-line">
+          <span class="summary-line-label">Subtotal</span>
+          <span class="summary-line-val" id="sum-subtotal">$0</span>
+        </div>
+        <div class="summary-line" id="sum-discount-line" style="display:none;">
+          <span class="summary-line-label">Subscribe &amp; Save (15%)</span>
+          <span class="summary-line-val sub-discount" id="sum-discount">−$0</span>
+        </div>
+        <div class="summary-line">
+          <span class="summary-line-label">Shipping</span>
+          <span class="summary-line-val" id="sum-shipping">Free</span>
+        </div>
+        <div class="summary-line total">
+          <span class="summary-line-label">Total</span>
+          <span class="summary-line-val" id="sum-total">$0</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── ORDER CONFIRMATION OVERLAY ── -->
+<div class="confirm-overlay" id="confirm-overlay">
+  <div class="confirm-box">
+    <div class="confirm-icon">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+        <path d="M5 13l4 4L19 7" stroke="#E2FF47" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="confirm-title">LOCKED IN.</div>
+    <div class="confirm-sub">Order Confirmed.</div>
+    <p class="confirm-body" id="confirm-body">Your Mindor Performance Stack is on its way. Expect a confirmation email shortly with your tracking info.</p>
+    <a href="mindor-product-page.html" class="confirm-btn">Back to Shop</a>
+  </div>
+</div>
+
+<script>
+(function () {
+  // ── FLAVOR CONFIG ──
+  var FLAVOR_CONFIG = {
+    'sour-candy': {
+      name: 'Sour Candy',
+      accent: '#E2FF47',
+      accentRgb: '226,255,71',
+      secondary: '#425743',
+      bg: 'linear-gradient(150deg, #243018 0%, #0E1208 100%)'
+    },
+    'sour-grape': {
+      name: 'Sour Grape',
+      accent: '#C084FC',
+      accentRgb: '192,132,252',
+      secondary: '#5A3A7A',
+      bg: 'linear-gradient(150deg, #1C0E2E 0%, #0A0612 100%)'
+    },
+    'sour-gummi-worm': {
+      name: 'Sour Gummi Worm',
+      accent: '#FF6B9D',
+      accentRgb: '255,107,157',
+      secondary: '#7A3050',
+      bg: 'linear-gradient(150deg, #2E0E1A 0%, #0F0508 100%)'
+    }
+  };
+
+  // ── LOAD CART ──
+  function loadCart() {
+    try { return JSON.parse(localStorage.getItem('mindorCart') || '{"items":[]}'); }
+    catch (e) { return { items: [] }; }
+  }
+
+  var cart = loadCart();
+  var isSubscribed = true;
+
+  // ── RENDER ORDER SUMMARY ──
+  function renderSummary() {
+    var body = document.getElementById('summary-body');
+    var totalsEl = document.getElementById('summary-totals');
+
+    if (!cart.items.length) {
+      body.innerHTML = '<div class="summary-empty">Your cart is empty.<br><a href="mindor-product-page.html" style="color:var(--execution-green);text-decoration:none;">← Back to shop</a></div>';
+      totalsEl.style.display = 'none';
+      return;
+    }
+
+    body.innerHTML = cart.items.map(function (item) {
+      var cfg = FLAVOR_CONFIG[item.flavor] || FLAVOR_CONFIG['sour-candy'];
+      var accent = cfg.accent;
+      var rgb = cfg.accentRgb;
+      return (
+        '<div class="summary-item">' +
+          '<div class="summary-item-card" style="background:' + cfg.bg + '; border: 0.5px solid rgba(' + rgb + ',0.18);">' +
+            '<div class="summary-item-card-zipper" style="background:' + accent + ';"></div>' +
+            '<div class="summary-item-card-body">' +
+              '<div class="summary-item-card-name" style="color:' + accent + ';">MINDOR</div>' +
+              '<div class="summary-item-card-flavor" style="color:' + cfg.secondary + ';">' + cfg.name + '</div>' +
+            '</div>' +
+            '<div class="summary-item-qty-badge">' + item.quantity + '</div>' +
+          '</div>' +
+          '<div class="summary-item-info">' +
+            '<div class="summary-item-name">Mindor Performance Stack</div>' +
+            '<div class="summary-item-meta">' + cfg.name + ' · 30 Servings · Qty ' + item.quantity + '</div>' +
+          '</div>' +
+          '<div class="summary-item-price">$' + (item.price * item.quantity) + '</div>' +
+        '</div>'
+      );
+    }).join('');
+
+    totalsEl.style.display = '';
+    updateTotals();
+  }
+
+  function updateTotals() {
+    var subtotal = cart.items.reduce(function (s, i) { return s + (i.price * i.quantity); }, 0);
+    var discount = isSubscribed ? Math.round(subtotal * 0.15 * 100) / 100 : 0;
+    var total = subtotal - discount;
+    var shipping = total >= 75 ? 'Free' : '$5.99';
+    var totalFinal = total + (shipping === 'Free' ? 0 : 5.99);
+
+    document.getElementById('sum-subtotal').textContent = '$' + subtotal.toFixed(0);
+    document.getElementById('sum-shipping').textContent = shipping;
+    document.getElementById('sum-total').textContent = '$' + totalFinal.toFixed(2);
+
+    var discountLine = document.getElementById('sum-discount-line');
+    if (isSubscribed && discount > 0) {
+      discountLine.style.display = '';
+      document.getElementById('sum-discount').textContent = '−$' + discount.toFixed(2);
+    } else {
+      discountLine.style.display = 'none';
+    }
+
+    // Update submit label
+    var label = document.getElementById('submit-label');
+    if (isSubscribed) {
+      label.textContent = 'Subscribe & Complete Order — $' + totalFinal.toFixed(2) + '/mo';
+    } else {
+      label.textContent = 'Complete Order — $' + totalFinal.toFixed(2);
+    }
+
+    // Update comparison box
+    updateComparisonBox(subtotal);
+  }
+
+  function updateComparisonBox(subtotal) {
+    var todayTotal = isSubscribed ? Math.round(subtotal * 0.85 * 100) / 100 : subtotal;
+    var todayPer = (todayTotal / 30).toFixed(2);
+    var nextSubPrice = (subtotal * 0.85).toFixed(2);
+    var savings = (subtotal - subtotal * 0.85).toFixed(2);
+
+    document.getElementById('today-price').textContent = '$' + todayTotal.toFixed(2);
+    document.getElementById('today-price-per').textContent = '$' + todayPer + ' / serving';
+    document.getElementById('next-price').textContent = '$' + nextSubPrice;
+    document.getElementById('savings-badge').textContent = 'Save $' + savings;
+    document.getElementById('next-onetime-price').textContent = '$' + subtotal.toFixed(0);
+
+    // Flavor label
+    if (cart.items.length > 0) {
+      var names = cart.items.map(function (i) {
+        var c = FLAVOR_CONFIG[i.flavor] || FLAVOR_CONFIG['sour-candy'];
+        return (i.quantity > 1 ? i.quantity + '× ' : '') + c.name;
+      }).join(', ');
+      document.getElementById('today-flavor-label').textContent = names;
+    }
+
+    var nextSubRow = document.getElementById('next-supply-row');
+    var nextOnetimeRow = document.getElementById('one-time-row');
+    if (isSubscribed) {
+      nextSubRow.style.display = '';
+      nextOnetimeRow.style.display = 'none';
+    } else {
+      nextSubRow.style.display = 'none';
+      nextOnetimeRow.style.display = '';
+    }
+  }
+
+  // ── SUBSCRIBE TOGGLE ──
+  window.toggleSubscribe = function () {
+    var cb = document.getElementById('subscribe-checkbox');
+    // If the click was directly on the checkbox, let it handle itself; otherwise toggle it
+    if (document.activeElement !== cb) {
+      cb.checked = !cb.checked;
+    }
+    isSubscribed = cb.checked;
+    updateTotals();
+  };
+
+  document.getElementById('subscribe-checkbox').addEventListener('change', function () {
+    isSubscribed = this.checked;
+    updateTotals();
+  });
+
+  // ── EMAIL VALIDATION ──
+  var COMMON_DOMAINS = ['gmail.com','yahoo.com','hotmail.com','outlook.com','icloud.com','aol.com','protonmail.com','live.com','msn.com'];
+
+  function levenshtein(a, b) {
+    var m = a.length, n = b.length;
+    var dp = Array.from({length: m+1}, function(_, i) {
+      return Array.from({length: n+1}, function(_, j) { return i === 0 ? j : j === 0 ? i : 0; });
+    });
+    for (var i = 1; i <= m; i++) {
+      for (var j = 1; j <= n; j++) {
+        dp[i][j] = a[i-1] === b[j-1] ? dp[i-1][j-1] : 1 + Math.min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]);
+      }
+    }
+    return dp[m][n];
+  }
+
+  function suggestEmailDomain(email) {
+    var parts = email.split('@');
+    if (parts.length !== 2 || !parts[1]) return null;
+    var domain = parts[1].toLowerCase();
+    if (COMMON_DOMAINS.indexOf(domain) !== -1) return null;
+    var best = null, bestDist = 3;
+    COMMON_DOMAINS.forEach(function (d) {
+      var dist = levenshtein(domain, d);
+      if (dist < bestDist) { bestDist = dist; best = d; }
+    });
+    return best ? parts[0] + '@' + best : null;
+  }
+
+  function validateEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+  }
+
+  var emailInput = document.getElementById('email');
+  var fieldEmail = document.getElementById('field-email');
+  var emailError = document.getElementById('email-error');
+
+  emailInput.addEventListener('blur', function () {
+    var val = this.value.trim();
+    if (!val) return;
+    if (!validateEmail(val)) {
+      setFieldError(fieldEmail, 'Please enter a valid email address.');
+      return;
+    }
+    var suggestion = suggestEmailDomain(val);
+    if (suggestion) {
+      emailError.textContent = 'Did you mean ' + suggestion + '?';
+      setFieldError(fieldEmail, 'Did you mean ' + suggestion + '?');
+    } else {
+      setFieldValid(fieldEmail);
+    }
+  });
+  emailInput.addEventListener('input', function () { clearFieldState(fieldEmail); });
+
+  // ── ADDRESS AUTOCOMPLETE ──
+  var addressInput = document.getElementById('address');
+  var suggestionsBox = document.getElementById('address-suggestions');
+  var fieldAddress = document.getElementById('field-address');
+  var selectedAddress = false;
+  var debounceTimer = null;
+
+  addressInput.addEventListener('input', function () {
+    selectedAddress = false;
+    clearFieldState(fieldAddress);
+    clearTimeout(debounceTimer);
+    var val = this.value.trim();
+    if (val.length < 4) { hideSuggestions(); return; }
+    debounceTimer = setTimeout(function () { fetchAddressSuggestions(val); }, 350);
+  });
+
+  addressInput.addEventListener('blur', function () {
+    setTimeout(function () { hideSuggestions(); }, 180);
+    if (addressInput.value.trim().length > 4 && !selectedAddress) {
+      setFieldValid(fieldAddress);
+    }
+  });
+
+  function fetchAddressSuggestions(query) {
+    suggestionsBox.innerHTML = '<div class="addr-loading">Looking up address…</div>';
+    showSuggestions();
+
+    var url = 'https://nominatim.openstreetmap.org/search?' +
+      'q=' + encodeURIComponent(query + ', USA') +
+      '&format=json&addressdetails=1&limit=5&countrycodes=us';
+
+    fetch(url, { headers: { 'Accept-Language': 'en-US,en' } })
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (!data.length) {
+          suggestionsBox.innerHTML = '<div class="addr-loading">No matches found. Please check your address.</div>';
+          return;
+        }
+        renderSuggestions(data);
+      })
+      .catch(function () { hideSuggestions(); });
+  }
+
+  function renderSuggestions(items) {
+    suggestionsBox.innerHTML = items.slice(0, 5).map(function (item) {
+      var addr = item.address || {};
+      var road = addr.road || addr.pedestrian || '';
+      var number = addr.house_number || '';
+      var street = number ? number + ' ' + road : road;
+      var city = addr.city || addr.town || addr.village || '';
+      var state = addr.state || '';
+      var zip = addr.postcode || '';
+      var display = item.display_name;
+      return '<div class="addr-suggestion" data-street="' + esc(street) + '" data-city="' + esc(city) + '" data-state="' + esc(stateAbbr(state)) + '" data-zip="' + esc(zip) + '">' +
+        (street ? '<strong>' + esc(street) + '</strong>, ' : '') +
+        esc(city) + (state ? ', ' + esc(stateAbbr(state)) : '') + (zip ? ' ' + esc(zip) : '') +
+        '</div>';
+    }).join('');
+
+    suggestionsBox.querySelectorAll('.addr-suggestion').forEach(function (el) {
+      el.addEventListener('mousedown', function (e) {
+        e.preventDefault();
+        addressInput.value = el.dataset.street || addressInput.value;
+        if (el.dataset.city) document.getElementById('city').value = el.dataset.city;
+        if (el.dataset.state) {
+          var sel = document.getElementById('state');
+          for (var i = 0; i < sel.options.length; i++) {
+            if (sel.options[i].value === el.dataset.state) { sel.selectedIndex = i; break; }
+          }
+        }
+        if (el.dataset.zip) document.getElementById('zip').value = el.dataset.zip;
+        selectedAddress = true;
+        setFieldValid(fieldAddress);
+        hideSuggestions();
+      });
+    });
+  }
+
+  function esc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  var STATE_MAP = { 'Alabama':'AL','Alaska':'AK','Arizona':'AZ','Arkansas':'AR','California':'CA','Colorado':'CO','Connecticut':'CT','Delaware':'DE','Florida':'FL','Georgia':'GA','Hawaii':'HI','Idaho':'ID','Illinois':'IL','Indiana':'IN','Iowa':'IA','Kansas':'KS','Kentucky':'KY','Louisiana':'LA','Maine':'ME','Maryland':'MD','Massachusetts':'MA','Michigan':'MI','Minnesota':'MN','Mississippi':'MS','Missouri':'MO','Montana':'MT','Nebraska':'NE','Nevada':'NV','New Hampshire':'NH','New Jersey':'NJ','New Mexico':'NM','New York':'NY','North Carolina':'NC','North Dakota':'ND','Ohio':'OH','Oklahoma':'OK','Oregon':'OR','Pennsylvania':'PA','Rhode Island':'RI','South Carolina':'SC','South Dakota':'SD','Tennessee':'TN','Texas':'TX','Utah':'UT','Vermont':'VT','Virginia':'VA','Washington':'WA','West Virginia':'WV','Wisconsin':'WI','Wyoming':'WY' };
+
+  function stateAbbr(s) {
+    if (!s) return '';
+    if (s.length === 2) return s.toUpperCase();
+    return STATE_MAP[s] || s;
+  }
+
+  function showSuggestions() { suggestionsBox.classList.add('visible'); }
+  function hideSuggestions() { suggestionsBox.classList.remove('visible'); }
+
+  // ── CARD NUMBER FORMATTING ──
+  var cardInput = document.getElementById('card-number');
+  cardInput.addEventListener('input', function () {
+    var v = this.value.replace(/\D/g,'').slice(0,16);
+    this.value = v.replace(/(.{4})/g,'$1 ').trim();
+    var visaEl = document.getElementById('visa-icon');
+    var mcEl = document.getElementById('mc-icon');
+    var amexEl = document.getElementById('amex-icon');
+    [visaEl, mcEl, amexEl].forEach(function (el) { el.style.color = '#6A7A5A'; });
+    if (/^4/.test(v)) visaEl.style.color = 'var(--execution-green)';
+    else if (/^5[1-5]/.test(v) || /^2[2-7]/.test(v)) mcEl.style.color = 'var(--execution-green)';
+    else if (/^3[47]/.test(v)) amexEl.style.color = 'var(--execution-green)';
+  });
+
+  // Expiry formatting
+  var expiryInput = document.getElementById('expiry');
+  expiryInput.addEventListener('input', function () {
+    var v = this.value.replace(/\D/g,'').slice(0,4);
+    if (v.length >= 2) v = v.slice(0,2) + ' / ' + v.slice(2);
+    this.value = v;
+  });
+
+  // ── FIELD HELPERS ──
+  function setFieldError(field, msg) {
+    field.classList.remove('is-valid');
+    field.classList.add('has-error');
+    field.querySelector('.field-input').classList.remove('valid');
+    field.querySelector('.field-input').classList.add('error');
+    if (msg) {
+      var errEl = field.querySelector('.error-msg');
+      if (errEl) errEl.textContent = msg;
+    }
+  }
+
+  function setFieldValid(field) {
+    field.classList.remove('has-error');
+    field.classList.add('is-valid');
+    field.querySelector('.field-input').classList.remove('error');
+    field.querySelector('.field-input').classList.add('valid');
+  }
+
+  function clearFieldState(field) {
+    field.classList.remove('has-error','is-valid');
+    var inp = field.querySelector('.field-input');
+    if (inp) { inp.classList.remove('error','valid'); }
+  }
+
+  // ── FORM VALIDATION ──
+  function validateForm() {
+    var valid = true;
+
+    // Email
+    var emailVal = emailInput.value.trim();
+    if (!emailVal || !validateEmail(emailVal)) {
+      setFieldError(fieldEmail, 'Please enter a valid email address.'); valid = false;
+    } else { setFieldValid(fieldEmail); }
+
+    // Name
+    ['first-name','last-name'].forEach(function (id) {
+      var f = document.getElementById('field-' + id);
+      var v = document.getElementById(id).value.trim();
+      if (!v) { setFieldError(f, 'Required.'); valid = false; }
+      else { setFieldValid(f); }
+    });
+
+    // Address
+    var addrVal = addressInput.value.trim();
+    if (addrVal.length < 5) {
+      setFieldError(fieldAddress, 'Please enter your street address.'); valid = false;
+    } else { setFieldValid(fieldAddress); }
+
+    // City, state, zip
+    var cityVal = document.getElementById('city').value.trim();
+    var stateVal = document.getElementById('state').value;
+    var zipVal = document.getElementById('zip').value.trim();
+
+    if (!cityVal) { setFieldError(document.getElementById('field-city'), 'Required.'); valid = false; }
+    if (!stateVal) { setFieldError(document.getElementById('field-state'), 'Required.'); valid = false; }
+    if (!zipVal || !/^\d{5}(-\d{4})?$/.test(zipVal)) {
+      setFieldError(document.getElementById('field-zip'), 'Enter a valid ZIP.'); valid = false;
+    }
+
+    // Card
+    var cardVal = document.getElementById('card-number').value.replace(/\s/g,'');
+    if (!cardVal || cardVal.length < 15) {
+      setFieldError(document.getElementById('field-card-number'), 'Enter a valid card number.'); valid = false;
+    }
+
+    var expVal = document.getElementById('expiry').value.replace(/\s/g,'');
+    if (!expVal || expVal.length < 4) {
+      setFieldError(document.getElementById('field-expiry'), 'Enter a valid expiry date.'); valid = false;
+    }
+
+    var cvvVal = document.getElementById('cvv').value.trim();
+    if (!cvvVal || cvvVal.length < 3) {
+      setFieldError(document.getElementById('field-cvv'), 'Required.'); valid = false;
+    }
+
+    var nameCardVal = document.getElementById('name-on-card').value.trim();
+    if (!nameCardVal) {
+      setFieldError(document.getElementById('field-name-on-card'), 'Required.'); valid = false;
+    }
+
+    return valid;
+  }
+
+  // ── SUBMIT ──
+  window.submitOrder = function () {
+    if (!validateForm()) {
+      var firstError = document.querySelector('.field.has-error .field-input');
+      if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    var btn = document.getElementById('submit-btn');
+    btn.textContent = 'Processing…';
+    btn.style.opacity = '0.7';
+    btn.disabled = true;
+
+    setTimeout(function () {
+      // Clear cart
+      localStorage.removeItem('mindorCart');
+      // Show confirmation
+      var email = document.getElementById('email').value.trim();
+      var body = isSubscribed
+        ? 'Your Mindor Performance Stack is on its way. Your subscription is now active — your next bag ships in 30 days at 15% off. A confirmation has been sent to <strong>' + esc(email) + '</strong>.'
+        : 'Your Mindor Performance Stack is on its way. A confirmation has been sent to <strong>' + esc(email) + '</strong>.';
+      document.getElementById('confirm-body').innerHTML = body;
+      document.getElementById('confirm-overlay').classList.add('show');
+    }, 1600);
+  };
+
+  // Init
+  renderSummary();
+})();
+</script>
+
+</body>
+</html>
