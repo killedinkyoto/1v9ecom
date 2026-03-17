@@ -1,0 +1,2052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mindor Performance Stack — Sour Candy · Lock In. Stay There.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  /* ── DESIGN TOKENS ── */
+  :root {
+    --execution-green: #E2FF47;
+    --locked-lime: #EBFF47;
+    --deep-work-black: #0A0A0A;
+    --sprint-green: #425743;
+    --clean-cream: #F8ECC3;
+    --fog-grey: #C8C9B8;
+    --bg: #111309;
+    --surface: #161A0E;
+    --surface2: #1E2416;
+    --border: rgba(235,255,71,0.12);
+    --border-subtle: rgba(255,255,255,0.06);
+    --text-primary: #F0F0E8;
+    --text-muted: #6A7A5A;
+    --text-dim: #3A4A30;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NAV ── */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(17,19,9,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 0.5px solid var(--border);
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+  }
+
+  .nav-logo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 26px;
+    color: var(--execution-green);
+    letter-spacing: 0.04em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .nav-links a:hover { color: var(--text-primary); }
+
+  .nav-cta {
+    background: var(--execution-green);
+    color: #1A1F14 !important;
+    font-weight: 700 !important;
+    padding: 8px 20px;
+    border-radius: 3px;
+    transition: opacity 0.15s !important;
+  }
+
+  .nav-cta:hover { opacity: 0.88; }
+
+  /* ── LAYOUT ── */
+  .container {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  .section {
+    padding: 96px 0;
+    border-bottom: 0.5px solid var(--border-subtle);
+  }
+
+  .section-label {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    padding-bottom: 10px;
+    border-bottom: 0.5px solid var(--border-subtle);
+  }
+
+  .section-divider {
+    width: 32px;
+    height: 2px;
+    background: var(--execution-green);
+    margin-bottom: 20px;
+    border-radius: 1px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    padding: 0;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -120px; right: -200px;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(235,255,71,0.055) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: -100px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(66,87,67,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-inner {
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: 80px;
+    align-items: center;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 120px 40px;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+  }
+
+  .hero-eyebrow {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 1px;
+    background: var(--execution-green);
+  }
+
+  .hero-display {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(72px, 10vw, 112px);
+    color: var(--execution-green);
+    line-height: 0.88;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+
+  .hero-headline {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: clamp(28px, 4vw, 42px);
+    color: var(--text-primary);
+    line-height: 1.0;
+    letter-spacing: 0em;
+    margin-bottom: 24px;
+  }
+
+  .hero-body {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--fog-grey);
+    line-height: 1.7;
+    max-width: 480px;
+    margin-bottom: 40px;
+  }
+
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 48px;
+  }
+
+  .btn-primary {
+    background: var(--execution-green);
+    color: #1A1F14;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 16px 36px;
+    border-radius: 3px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: opacity 0.15s, transform 0.1s;
+  }
+
+  .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+  .btn-primary:active { transform: translateY(0); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-primary);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 14px 24px;
+    border-radius: 3px;
+    border: 0.5px solid var(--border);
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: border-color 0.15s, color 0.15s;
+  }
+
+  .btn-ghost:hover { border-color: rgba(235,255,71,0.4); color: var(--execution-green); }
+
+  .hero-trust-row {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .hero-trust-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .trust-dot {
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--execution-green);
+    flex-shrink: 0;
+  }
+
+  /* ── PRODUCT CARD (hero right) ── */
+  .hero-product-card {
+    background: linear-gradient(170deg, #243018 0%, #161A0C 60%, #0E1208 100%);
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.7), inset 0 0 0 0.5px rgba(235,255,71,0.12);
+  }
+
+  .product-card-zipper {
+    height: 10px;
+    background: var(--execution-green);
+    width: 100%;
+  }
+
+  .product-card-inner {
+    padding: 28px 28px 32px;
+  }
+
+  .product-card-wordmark {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 52px;
+    color: var(--execution-green);
+    letter-spacing: 0.02em;
+    line-height: 1;
+  }
+
+  .product-card-sub {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    color: var(--sprint-green);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .product-card-flavor {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(235,255,71,0.08);
+    border: 0.5px solid rgba(235,255,71,0.2);
+    padding: 6px 14px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+
+  .product-card-flavor span {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--execution-green);
+  }
+
+  .product-card-stats {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  .stat-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+  }
+
+  .stat-val {
+    color: var(--execution-green);
+    font-weight: 700;
+    min-width: 48px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+  }
+
+  .stat-dash {
+    width: 16px;
+    height: 0.5px;
+    background: var(--sprint-green);
+    flex-shrink: 0;
+  }
+
+  .stat-label { color: #5A7040; font-size: 12px; }
+
+  .product-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 0.5px solid rgba(235,255,71,0.08);
+    padding-top: 16px;
+  }
+
+  .product-card-price {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 32px;
+    color: var(--text-primary);
+    line-height: 1;
+  }
+
+  .product-card-price span {
+    font-size: 14px;
+    color: var(--text-muted);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+  }
+
+  .product-card-servings {
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--execution-green);
+    border: 0.5px solid var(--execution-green);
+    padding: 4px 10px;
+    border-radius: 2px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .product-card-cta {
+    display: block;
+    width: 100%;
+    background: var(--execution-green);
+    color: #1A1F14;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 16px;
+    border-radius: 3px;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+    text-align: center;
+    text-decoration: none;
+    transition: opacity 0.15s;
+  }
+
+  .product-card-cta:hover { opacity: 0.88; }
+
+  .product-card-note {
+    text-align: center;
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-top: 10px;
+    letter-spacing: 0.08em;
+  }
+
+  /* ── PRODUCT OVERVIEW ── */
+  .overview-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    background: var(--border-subtle);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 40px;
+  }
+
+  .overview-cell {
+    background: var(--surface);
+    padding: 32px 32px 28px;
+  }
+
+  .overview-cell-label {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .overview-cell-value {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 28px;
+    color: var(--execution-green);
+    line-height: 1;
+  }
+
+  .overview-cell-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 6px;
+    line-height: 1.5;
+  }
+
+  .overview-headline {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(38px, 5vw, 58px);
+    color: var(--text-primary);
+    line-height: 0.95;
+    margin-bottom: 20px;
+  }
+
+  .overview-headline em {
+    font-style: normal;
+    color: var(--execution-green);
+  }
+
+  .overview-body {
+    font-size: 15px;
+    color: var(--fog-grey);
+    line-height: 1.7;
+    max-width: 540px;
+    margin-bottom: 32px;
+  }
+
+  .overview-layout {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 80px;
+    align-items: start;
+  }
+
+  /* ── BENEFITS ── */
+  .benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 40px;
+  }
+
+  .benefit-card {
+    background: var(--surface);
+    border: 0.5px solid var(--border-subtle);
+    border-radius: 4px;
+    padding: 28px 24px 24px;
+    transition: border-color 0.2s;
+  }
+
+  .benefit-card:hover {
+    border-color: rgba(235,255,71,0.2);
+  }
+
+  .benefit-icon {
+    width: 36px; height: 36px;
+    background: rgba(235,255,71,0.08);
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+
+  .benefit-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+    color: var(--text-primary);
+    line-height: 1;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .benefit-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.55;
+  }
+
+  .benefits-headline-block {
+    margin-bottom: 0;
+  }
+
+  .benefits-headline {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(38px, 5vw, 60px);
+    color: var(--text-primary);
+    line-height: 0.93;
+    margin-bottom: 16px;
+  }
+
+  .benefits-headline em {
+    font-style: normal;
+    color: var(--execution-green);
+  }
+
+  .benefits-body {
+    font-size: 15px;
+    color: var(--fog-grey);
+    line-height: 1.7;
+    max-width: 520px;
+  }
+
+  /* ── HOW IT WORKS ── */
+  .how-steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: var(--border-subtle);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 48px;
+  }
+
+  .how-step {
+    background: var(--surface);
+    padding: 36px 28px 32px;
+    position: relative;
+  }
+
+  .how-step-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 72px;
+    color: var(--text-dim);
+    line-height: 0.85;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .how-step-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    margin-bottom: 10px;
+    line-height: 1;
+  }
+
+  .how-step-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .how-step-accent {
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: transparent;
+  }
+
+  .how-step:hover .how-step-accent {
+    background: var(--execution-green);
+    transition: background 0.2s;
+  }
+
+  .how-headline {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(36px, 5vw, 56px);
+    color: var(--text-primary);
+    line-height: 0.95;
+    margin-bottom: 14px;
+  }
+
+  .how-headline em {
+    font-style: normal;
+    color: var(--execution-green);
+  }
+
+  .how-body {
+    font-size: 15px;
+    color: var(--fog-grey);
+    line-height: 1.7;
+    max-width: 560px;
+  }
+
+  /* ── INGREDIENTS ── */
+  .ingredients-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 40px;
+  }
+
+  .ingredient-row {
+    background: var(--surface);
+    display: grid;
+    grid-template-columns: 80px 1fr 1fr auto;
+    align-items: center;
+    gap: 24px;
+    padding: 20px 28px;
+    border-radius: 3px;
+    transition: background 0.15s;
+  }
+
+  .ingredient-row:hover { background: var(--surface2); }
+
+  .ingredient-dose {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 20px;
+    color: var(--execution-green);
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .ingredient-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  .ingredient-function {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .ingredient-badge {
+    background: rgba(235,255,71,0.08);
+    border: 0.5px solid rgba(235,255,71,0.15);
+    padding: 4px 10px;
+    border-radius: 2px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--execution-green);
+    white-space: nowrap;
+  }
+
+  .ingredients-headline {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(36px, 5vw, 56px);
+    color: var(--text-primary);
+    line-height: 0.95;
+    margin-bottom: 14px;
+  }
+
+  .ingredients-headline em {
+    font-style: normal;
+    color: var(--execution-green);
+  }
+
+  .ingredients-body {
+    font-size: 15px;
+    color: var(--fog-grey);
+    line-height: 1.7;
+    max-width: 560px;
+  }
+
+  /* ── SUPPLEMENT FACTS ── */
+  .supp-facts {
+    background: #F8ECC3;
+    color: #1A1A14;
+    border-radius: 4px;
+    padding: 24px 28px;
+    max-width: 340px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .supp-facts-title {
+    font-size: 22px;
+    font-weight: 700;
+    border-bottom: 6px solid #1A1A14;
+    padding-bottom: 6px;
+    margin-bottom: 4px;
+    font-family: 'Barlow Condensed', sans-serif;
+    letter-spacing: 0.02em;
+  }
+
+  .supp-serving {
+    font-size: 11px;
+    margin-bottom: 2px;
+    color: #3A3A30;
+  }
+
+  .supp-cal-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-top: 4px solid #1A1A14;
+    border-bottom: 1px solid #1A1A14;
+    padding: 4px 0;
+    margin-bottom: 8px;
+  }
+
+  .supp-cal-label { font-size: 12px; font-weight: 700; }
+  .supp-cal-val { font-size: 28px; font-weight: 700; font-family: 'Barlow Condensed', sans-serif; }
+
+  .supp-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+
+  .supp-table tr { border-top: 0.5px solid rgba(0,0,0,0.15); }
+  .supp-table td { padding: 4px 0; vertical-align: top; }
+  .supp-table .supp-ingredient { font-weight: 600; }
+  .supp-table .supp-dv { text-align: right; color: #5A5A40; }
+  .supp-table .supp-sub { padding-left: 12px; font-weight: 400; color: #4A4A30; }
+
+  .supp-disclaimer {
+    font-size: 9px;
+    color: #6A6A50;
+    margin-top: 10px;
+    line-height: 1.5;
+    border-top: 0.5px solid rgba(0,0,0,0.12);
+    padding-top: 8px;
+  }
+
+  .supp-layout {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .supp-content-headline {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(32px, 4vw, 48px);
+    color: var(--text-primary);
+    line-height: 0.95;
+    margin-bottom: 14px;
+  }
+
+  .supp-content-headline em {
+    font-style: normal;
+    color: var(--execution-green);
+  }
+
+  .supp-content-body {
+    font-size: 15px;
+    color: var(--fog-grey);
+    line-height: 1.7;
+    margin-bottom: 28px;
+  }
+
+  .clean-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .clean-list li {
+    font-size: 14px;
+    color: var(--text-primary);
+    padding-left: 18px;
+    position: relative;
+    line-height: 1.4;
+  }
+
+  .clean-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--execution-green);
+    font-size: 11px;
+  }
+
+  /* ── REVIEWS ── */
+  .reviews-headline {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(36px, 5vw, 56px);
+    color: var(--text-primary);
+    line-height: 0.95;
+    margin-bottom: 14px;
+  }
+
+  .reviews-headline em {
+    font-style: normal;
+    color: var(--execution-green);
+  }
+
+  .reviews-subhead {
+    font-size: 15px;
+    color: var(--fog-grey);
+    max-width: 480px;
+    margin-bottom: 48px;
+  }
+
+  .reviews-aggregate {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 48px;
+    padding: 24px 28px;
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 4px;
+    flex-wrap: wrap;
+  }
+
+  .reviews-score {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 56px;
+    color: var(--execution-green);
+    line-height: 1;
+  }
+
+  .reviews-stars {
+    color: var(--execution-green);
+    font-size: 20px;
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+  }
+
+  .reviews-count {
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+  }
+
+  .reviews-divider-v {
+    width: 1px;
+    height: 48px;
+    background: var(--border-subtle);
+  }
+
+  .reviews-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .reviews-stat-val {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 28px;
+    color: var(--text-primary);
+    line-height: 1;
+  }
+
+  .reviews-stat-label {
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .review-card {
+    background: var(--surface);
+    border: 0.5px solid var(--border-subtle);
+    border-radius: 4px;
+    padding: 24px;
+    transition: border-color 0.2s;
+  }
+
+  .review-card:hover { border-color: rgba(235,255,71,0.18); }
+
+  .review-stars {
+    color: var(--execution-green);
+    font-size: 13px;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+  }
+
+  .review-text {
+    font-size: 14px;
+    color: var(--text-primary);
+    line-height: 1.65;
+    margin-bottom: 16px;
+    font-style: italic;
+  }
+
+  .review-author {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .review-avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--surface2);
+    border: 0.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    color: var(--execution-green);
+  }
+
+  .review-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: 0.04em;
+  }
+
+  .review-role {
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .review-verified {
+    margin-left: auto;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--execution-green);
+    opacity: 0.6;
+  }
+
+  /* ── COMPARISON ── */
+  .comparison-headline {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(36px, 5vw, 56px);
+    color: var(--text-primary);
+    line-height: 0.95;
+    margin-bottom: 14px;
+  }
+
+  .comparison-headline em {
+    font-style: normal;
+    color: var(--execution-green);
+  }
+
+  .comparison-body {
+    font-size: 15px;
+    color: var(--fog-grey);
+    max-width: 520px;
+    margin-bottom: 48px;
+  }
+
+  .comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0;
+  }
+
+  .comparison-table th {
+    padding: 14px 20px;
+    text-align: left;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    border-bottom: 0.5px solid var(--border-subtle);
+  }
+
+  .comparison-table th.highlight {
+    color: var(--execution-green);
+    background: rgba(235,255,71,0.04);
+  }
+
+  .comparison-table td {
+    padding: 16px 20px;
+    font-size: 13px;
+    color: var(--text-muted);
+    border-bottom: 0.5px solid var(--border-subtle);
+    vertical-align: middle;
+  }
+
+  .comparison-table tr:last-child td { border-bottom: none; }
+
+  .comparison-table td.feature-name {
+    font-weight: 500;
+    color: var(--text-primary);
+    font-size: 14px;
+  }
+
+  .comparison-table td.highlight {
+    background: rgba(235,255,71,0.04);
+    color: var(--execution-green);
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .check { color: var(--execution-green); font-size: 15px; }
+  .cross { color: var(--text-dim); font-size: 15px; }
+
+  .comparison-wrapper {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  /* ── FAQ ── */
+  .faq-headline {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(36px, 5vw, 56px);
+    color: var(--text-primary);
+    line-height: 0.95;
+    margin-bottom: 14px;
+  }
+
+  .faq-headline em {
+    font-style: normal;
+    color: var(--execution-green);
+  }
+
+  .faq-body {
+    font-size: 15px;
+    color: var(--fog-grey);
+    max-width: 480px;
+    margin-bottom: 48px;
+  }
+
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .faq-item {
+    background: var(--surface);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .faq-question {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 22px 28px;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .faq-q-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+  }
+
+  .faq-toggle {
+    width: 24px; height: 24px;
+    border: 0.5px solid var(--border);
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--execution-green);
+    font-size: 16px;
+    font-weight: 300;
+    transition: background 0.15s;
+  }
+
+  .faq-item.open .faq-toggle {
+    background: var(--execution-green);
+    color: #1A1F14;
+    border-color: var(--execution-green);
+  }
+
+  .faq-answer {
+    display: none;
+    padding: 0 28px 22px;
+    font-size: 14px;
+    color: var(--fog-grey);
+    line-height: 1.7;
+    border-top: 0.5px solid var(--border-subtle);
+    padding-top: 16px;
+  }
+
+  .faq-item.open .faq-answer { display: block; }
+
+  /* ── FINAL CTA ── */
+  .final-cta {
+    background: linear-gradient(135deg, #1E2416 0%, #111309 60%, #161A0E 100%);
+    position: relative;
+    overflow: hidden;
+    padding: 0;
+    border-bottom: none;
+  }
+
+  .final-cta::before {
+    content: '';
+    position: absolute;
+    top: -100px; left: 50%;
+    transform: translateX(-50%);
+    width: 800px; height: 600px;
+    background: radial-gradient(circle, rgba(235,255,71,0.06) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .final-cta-inner {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 120px 40px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .final-cta-eyebrow {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .final-cta-eyebrow::before,
+  .final-cta-eyebrow::after {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 1px;
+    background: var(--execution-green);
+  }
+
+  .final-cta-headline {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(52px, 8vw, 88px);
+    color: var(--execution-green);
+    line-height: 0.88;
+    letter-spacing: -0.01em;
+    margin-bottom: 8px;
+  }
+
+  .final-cta-subhead {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: clamp(24px, 3vw, 36px);
+    color: var(--text-primary);
+    line-height: 1;
+    margin-bottom: 24px;
+  }
+
+  .final-cta-body {
+    font-size: 15px;
+    color: var(--fog-grey);
+    line-height: 1.7;
+    margin-bottom: 40px;
+  }
+
+  .final-cta-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+  }
+
+  .final-cta-btn-primary {
+    background: var(--execution-green);
+    color: #1A1F14;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 18px 48px;
+    border-radius: 3px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: opacity 0.15s, transform 0.1s;
+  }
+
+  .final-cta-btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+
+  .final-cta-trust {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .cta-trust-item {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .cta-trust-item .trust-dot { background: var(--text-dim); }
+
+  /* ── FOOTER ── */
+  .site-footer {
+    border-top: 0.5px solid var(--border);
+    padding: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .footer-wordmark {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 28px;
+    color: var(--execution-green);
+    letter-spacing: 0.04em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+  }
+
+  .footer-links a {
+    font-size: 11px;
+    color: var(--text-dim);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.15s;
+  }
+
+  .footer-links a:hover { color: var(--text-muted); }
+
+  .footer-note {
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.08em;
+  }
+
+  /* ── UTILITIES ── */
+  .green { color: var(--execution-green); }
+  .text-muted { color: var(--text-muted); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 860px) {
+    .nav-links { display: none; }
+    .hero-inner { grid-template-columns: 1fr; gap: 48px; padding: 80px 20px; }
+    .hero-product-card { max-width: 360px; }
+    .overview-layout { grid-template-columns: 1fr; gap: 48px; }
+    .overview-grid { grid-template-columns: 1fr 1fr; }
+    .benefits-grid { grid-template-columns: 1fr 1fr; }
+    .how-steps { grid-template-columns: 1fr; }
+    .ingredient-row { grid-template-columns: 60px 1fr; gap: 12px; }
+    .ingredient-badge { display: none; }
+    .ingredient-function { display: none; }
+    .supp-layout { grid-template-columns: 1fr; gap: 40px; }
+    .reviews-grid { grid-template-columns: 1fr; }
+    .container { padding: 0 20px; }
+    .section { padding: 64px 0; }
+    .nav { padding: 0 20px; }
+    .site-footer { padding: 32px 20px; flex-direction: column; align-items: flex-start; }
+  }
+
+  @media (max-width: 560px) {
+    .overview-grid { grid-template-columns: 1fr; }
+    .benefits-grid { grid-template-columns: 1fr; }
+    .comparison-table th:nth-child(3),
+    .comparison-table td:nth-child(3) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="nav">
+  <a href="#" class="nav-logo">
+    <svg width="22" height="16" viewBox="0 0 40 28" fill="none">
+      <path d="M4 22 L10 8 L16 18 L20 10 L24 18 L30 8 L36 22" stroke="#E2FF47" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    MINDOR
+  </a>
+  <ul class="nav-links">
+    <li><a href="#benefits">Benefits</a></li>
+    <li><a href="#ingredients">Ingredients</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#order" class="nav-cta">Get Yours — $49</a></li>
+  </ul>
+</nav>
+
+<!-- ══════════════════════════════════════════
+     HERO
+══════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-content">
+      <p class="hero-eyebrow">Performance Stack · Sour Candy Flavor</p>
+      <div class="hero-display">LOCK IN.</div>
+      <div class="hero-display" style="color: var(--text-primary); font-size: clamp(48px, 7vw, 80px); margin-bottom: 12px;">STAY THERE.</div>
+      <h1 class="hero-headline">Deep Work Without The Jitters,<br>Chaos, Or Crash.</h1>
+      <p class="hero-body">Mindor is a powdered nootropic focus drink engineered for founders, builders, creators, and students who need to perform — not just stay awake. Calm alertness. Sustained output. Clean exit.</p>
+      <div class="hero-actions">
+        <a href="#order" class="btn-primary">Add to Cart — $49</a>
+        <a href="#how-it-works" class="btn-ghost">See How It Works</a>
+      </div>
+      <div class="hero-trust-row">
+        <div class="hero-trust-item"><span class="trust-dot"></span>No Jitters</div>
+        <div class="hero-trust-item"><span class="trust-dot"></span>No Crash</div>
+        <div class="hero-trust-item"><span class="trust-dot"></span>30 Servings</div>
+        <div class="hero-trust-item"><span class="trust-dot"></span>Clinically Dosed</div>
+      </div>
+    </div>
+
+    <div class="hero-product-card" id="order">
+      <div class="product-card-zipper"></div>
+      <div class="product-card-inner">
+        <div class="product-card-wordmark">MINDOR</div>
+        <div class="product-card-sub">Performance Stack</div>
+        <div class="product-card-flavor">
+          <svg width="12" height="9" viewBox="0 0 40 28" fill="none">
+            <path d="M4 22 L10 8 L16 18 L20 10 L24 18 L30 8 L36 22" stroke="#E2FF47" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Sour Candy</span>
+        </div>
+        <ul class="product-card-stats">
+          <li class="stat-row">
+            <span class="stat-val">100mg</span>
+            <span class="stat-dash"></span>
+            <span class="stat-label">Green Tea Caffeine</span>
+          </li>
+          <li class="stat-row">
+            <span class="stat-val">200mg</span>
+            <span class="stat-dash"></span>
+            <span class="stat-label">L-Theanine</span>
+          </li>
+          <li class="stat-row">
+            <span class="stat-val">300mg</span>
+            <span class="stat-dash"></span>
+            <span class="stat-label">Alpha-GPC</span>
+          </li>
+          <li class="stat-row">
+            <span class="stat-val">200mg</span>
+            <span class="stat-dash"></span>
+            <span class="stat-label">Ginseng Extract</span>
+          </li>
+          <li class="stat-row">
+            <span class="stat-val">B6 · B12</span>
+            <span class="stat-dash"></span>
+            <span class="stat-label">Energy Metabolism</span>
+          </li>
+        </ul>
+        <div class="product-card-footer">
+          <div>
+            <div class="product-card-price">$49<span>/bag</span></div>
+            <div style="font-size:10px; color:var(--text-muted); margin-top:3px; letter-spacing:0.06em;">$1.63 per serving</div>
+          </div>
+          <div class="product-card-servings">30 Servings</div>
+        </div>
+        <a href="#" class="product-card-cta">Add to Cart</a>
+        <p class="product-card-note">Free shipping over $75 · Subscribe &amp; save 15%</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     PRODUCT OVERVIEW
+══════════════════════════════════════════ -->
+<section class="section" id="overview">
+  <div class="container">
+    <p class="section-label">Product Overview</p>
+    <div class="overview-layout">
+      <div>
+        <div class="section-divider"></div>
+        <h2 class="overview-headline">The Focus Stack For People Who Have To <em>Perform.</em></h2>
+        <p class="overview-body">Coffee is a gamble. Energy drinks are stimulant chaos. Mindor is a deliberately engineered focus system — a 2:1 L-Theanine-to-caffeine ratio that pairs every milligram of stimulation with a circuit breaker. You get the output without the edge, the alertness without the anxiety.</p>
+        <p class="overview-body" style="margin-top: 0; margin-bottom: 0;">Built for deep work sessions, not quick fixes. Designed around the compounds that actually move the needle on cognition, sustained attention, and clean energy metabolism.</p>
+      </div>
+      <div class="overview-grid">
+        <div class="overview-cell">
+          <div class="overview-cell-label">Servings</div>
+          <div class="overview-cell-value">30</div>
+          <div class="overview-cell-desc">Per resealable bag</div>
+        </div>
+        <div class="overview-cell">
+          <div class="overview-cell-label">Flavor</div>
+          <div class="overview-cell-value" style="font-size: 18px; padding-top: 4px;">Sour Candy</div>
+          <div class="overview-cell-desc">Light, clean, not sweet</div>
+        </div>
+        <div class="overview-cell">
+          <div class="overview-cell-label">Format</div>
+          <div class="overview-cell-value" style="font-size: 18px; padding-top: 4px;">Powder</div>
+          <div class="overview-cell-desc">Mix in 10–12oz water</div>
+        </div>
+        <div class="overview-cell">
+          <div class="overview-cell-label">Calories</div>
+          <div class="overview-cell-value">5</div>
+          <div class="overview-cell-desc">Per serving · No sugar</div>
+        </div>
+        <div class="overview-cell" style="grid-column: span 2;">
+          <div class="overview-cell-label">Key Ratio</div>
+          <div class="overview-cell-value">2:1</div>
+          <div class="overview-cell-desc">L-Theanine to Caffeine — the signal-to-noise ratio that makes the difference</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     BENEFITS
+══════════════════════════════════════════ -->
+<section class="section" id="benefits">
+  <div class="container">
+    <p class="section-label">Why It Works</p>
+    <div class="section-divider"></div>
+    <h2 class="benefits-headline">Calm Focus.<br><em>No Jitters. No Crash.</em></h2>
+    <p class="benefits-body">Four outcomes. Zero compromises. Built for the work that actually matters.</p>
+    <div class="benefits-grid">
+      <div class="benefit-card">
+        <div class="benefit-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="9" stroke="#E2FF47" stroke-width="1.5"/>
+            <path d="M12 7v5l3 3" stroke="#E2FF47" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="benefit-title">Calm Focus</div>
+        <p class="benefit-desc">L-Theanine modulates caffeine's stimulant effect, producing alpha brainwave activity associated with relaxed concentration — no tunnel-vision anxiety.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="#E2FF47" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="benefit-title">No Jitters</div>
+        <p class="benefit-desc">Green tea caffeine absorbs slower than synthetic anhydrous caffeine. Paired with theanine, the curve is smooth — energy rises steadily, not in a spike.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2" stroke="#E2FF47" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="benefit-title">No Crash</div>
+        <p class="benefit-desc">B-vitamins support energy metabolism at the cellular level. Ginseng stabilizes cognitive output. When it wears off, it simply wears off — no floor-drop.</p>
+      </div>
+      <div class="benefit-card">
+        <div class="benefit-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <rect x="3" y="3" width="18" height="18" rx="2" stroke="#E2FF47" stroke-width="1.5"/>
+            <path d="M8 12h8M12 8v8" stroke="#E2FF47" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="benefit-title">Deep Work</div>
+        <p class="benefit-desc">Alpha-GPC supports acetylcholine production — the neurotransmitter underlying working memory, learning, and the kind of sustained focus that long sessions demand.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     HOW IT WORKS
+══════════════════════════════════════════ -->
+<section class="section" id="how-it-works">
+  <div class="container">
+    <p class="section-label">The Protocol</p>
+    <div class="section-divider"></div>
+    <h2 class="how-headline">Simple Ritual.<br><em>Compound Results.</em></h2>
+    <p class="how-body">No complicated stacks. No 30-pill morning routine. One scoop, mixed in water, taken 20 minutes before the work starts. That's the protocol.</p>
+    <div class="how-steps">
+      <div class="how-step">
+        <div class="how-step-accent"></div>
+        <span class="how-step-num">01</span>
+        <div class="how-step-title">Mix One Scoop</div>
+        <p class="how-step-desc">Add one scoop (7.5g) to 10–12oz cold water. Stir or shake for 10 seconds. Sour Candy is light and clean — not thick, not sweet, not chemical.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-step-accent"></div>
+        <span class="how-step-num">02</span>
+        <div class="how-step-title">Take 20 Min Before</div>
+        <p class="how-step-desc">Drink it 15–20 minutes before the session starts. L-Theanine and caffeine peak together. Alpha-GPC onset is gradual — it builds over 30–60 minutes.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-step-accent"></div>
+        <span class="how-step-num">03</span>
+        <div class="how-step-title">Lock In</div>
+        <p class="how-step-desc">Sit down and work. The stack does its job quietly in the background. No need to think about it. No checking how you feel. Just the work.</p>
+      </div>
+    </div>
+    <div style="margin-top: 24px; padding: 20px 28px; background: var(--surface); border: 0.5px solid var(--border); border-radius: 3px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
+      <div style="font-size: 9px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-muted);">Best With</div>
+      <div style="width: 1px; height: 20px; background: var(--border-subtle);"></div>
+      <div style="font-size: 13px; color: var(--fog-grey);">Works on an empty stomach or after a light meal. Avoid stacking with high-dose caffeine. Best results with consistent daily use over 2–4 weeks as compounds accumulate.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     INGREDIENTS
+══════════════════════════════════════════ -->
+<section class="section" id="ingredients">
+  <div class="container">
+    <p class="section-label">The Stack — Every Ingredient, Explained</p>
+    <div class="section-divider"></div>
+    <h2 class="ingredients-headline">Nothing Hidden.<br><em>No Proprietary Blends.</em></h2>
+    <p class="ingredients-body">Full label transparency. Every dose is listed, sourced, and dosed at clinically-studied amounts — not sprinkled in to appear on the label.</p>
+    <div class="ingredients-list">
+      <div class="ingredient-row">
+        <div class="ingredient-dose">100mg</div>
+        <div>
+          <div class="ingredient-name">Green Tea Caffeine</div>
+        </div>
+        <div class="ingredient-function">Natural caffeine bound to catechins for slower absorption and less spike-and-crash than synthetic anhydrous caffeine.</div>
+        <div class="ingredient-badge">Energy</div>
+      </div>
+      <div class="ingredient-row">
+        <div class="ingredient-dose">200mg</div>
+        <div>
+          <div class="ingredient-name">L-Theanine</div>
+        </div>
+        <div class="ingredient-function">2:1 ratio to caffeine. Increases alpha brainwaves, reduces anxiety, sharpens signal-to-noise. The defining pairing in Mindor's formula.</div>
+        <div class="ingredient-badge">Focus</div>
+      </div>
+      <div class="ingredient-row">
+        <div class="ingredient-dose">300mg</div>
+        <div>
+          <div class="ingredient-name">Alpha-GPC 50%</div>
+        </div>
+        <div class="ingredient-function">Precursor to acetylcholine — the neurotransmitter of memory, attention, and learning. 300mg is the studied effective dose. Most products use 50–100mg.</div>
+        <div class="ingredient-badge">Cognition</div>
+      </div>
+      <div class="ingredient-row">
+        <div class="ingredient-dose">200mg</div>
+        <div>
+          <div class="ingredient-name">Panax Ginseng</div>
+        </div>
+        <div class="ingredient-function">Adaptogenic. Supports mental stamina and resistance to cognitive fatigue. Reduces the diminishing-returns effect that hits during long sessions.</div>
+        <div class="ingredient-badge">Endurance</div>
+      </div>
+      <div class="ingredient-row">
+        <div class="ingredient-dose">2mg</div>
+        <div>
+          <div class="ingredient-name">Vitamin B6</div>
+        </div>
+        <div class="ingredient-function">Cofactor in neurotransmitter synthesis. Required for converting tryptophan to serotonin and glutamate to GABA. Non-optional for mental energy baseline.</div>
+        <div class="ingredient-badge">Metabolism</div>
+      </div>
+      <div class="ingredient-row">
+        <div class="ingredient-dose">100mcg</div>
+        <div>
+          <div class="ingredient-name">Vitamin B12</div>
+        </div>
+        <div class="ingredient-function">Critical for myelin sheath integrity and mitochondrial energy production. Deficiency is the silent killer of cognitive performance.</div>
+        <div class="ingredient-badge">Metabolism</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SUPPLEMENT FACTS
+══════════════════════════════════════════ -->
+<section class="section" id="supplement-facts">
+  <div class="container">
+    <p class="section-label">Supplement Facts</p>
+    <div class="supp-layout">
+      <div>
+        <div class="section-divider"></div>
+        <h2 class="supp-content-headline">Full Label.<br><em>No Fine Print.</em></h2>
+        <p class="supp-content-body">The full supplement facts panel. Every amount, every ingredient. We put the full dose on the front label because we're proud of the formula — not hiding it in a proprietary blend.</p>
+        <ul class="clean-list">
+          <li>No artificial fillers or binding agents</li>
+          <li>No sucralose, aspartame, or acesulfame K</li>
+          <li>Sweetened with organic stevia leaf extract</li>
+          <li>Soy-free, gluten-free, vegan</li>
+          <li>Third-party tested for purity &amp; potency</li>
+          <li>Manufactured in a cGMP-certified facility</li>
+        </ul>
+      </div>
+      <div>
+        <div class="supp-facts">
+          <div class="supp-facts-title">Supplement Facts</div>
+          <div class="supp-serving">Serving Size: 1 Scoop (7.5g)</div>
+          <div class="supp-serving">Servings Per Container: 30</div>
+          <div class="supp-cal-row">
+            <span class="supp-cal-label">Calories</span>
+            <span class="supp-cal-val">5</span>
+          </div>
+          <table class="supp-table">
+            <tr>
+              <td><strong>Amount Per Serving</strong></td>
+              <td class="supp-dv"><strong>%DV</strong></td>
+            </tr>
+            <tr>
+              <td class="supp-ingredient">Vitamin B6 (Pyridoxine HCl)</td>
+              <td class="supp-dv">2mg · 118%</td>
+            </tr>
+            <tr>
+              <td class="supp-ingredient">Vitamin B12 (Methylcobalamin)</td>
+              <td class="supp-dv">100mcg · 4,167%</td>
+            </tr>
+            <tr>
+              <td colspan="2" style="padding-top: 6px; padding-bottom: 2px; font-weight: 700; font-size: 11px; border-top: 2px solid rgba(0,0,0,0.15);">Mindor Focus Blend</td>
+            </tr>
+            <tr>
+              <td class="supp-sub">Green Tea Caffeine (Camellia sinensis)</td>
+              <td class="supp-dv">100mg · †</td>
+            </tr>
+            <tr>
+              <td class="supp-sub">L-Theanine</td>
+              <td class="supp-dv">200mg · †</td>
+            </tr>
+            <tr>
+              <td class="supp-sub">Alpha-GPC 50% (L-Alpha-glycerylphosphorylcholine)</td>
+              <td class="supp-dv">300mg · †</td>
+            </tr>
+            <tr>
+              <td class="supp-sub">Panax Ginseng Root Extract (20% ginsenosides)</td>
+              <td class="supp-dv">200mg · †</td>
+            </tr>
+            <tr>
+              <td colspan="2" style="padding-top: 10px; font-size: 10px; color: #6A6A50; border-top: 1px solid rgba(0,0,0,0.1);">Other Ingredients: Citric acid, natural flavors (Sour Candy), organic stevia leaf extract, silicon dioxide.</td>
+            </tr>
+          </table>
+          <div class="supp-disclaimer">† Daily Value not established. * % Daily Values are based on a 2,000 calorie diet. These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     REVIEWS
+══════════════════════════════════════════ -->
+<section class="section" id="reviews">
+  <div class="container">
+    <p class="section-label">What People Say</p>
+    <div class="section-divider"></div>
+    <h2 class="reviews-headline">Real Work.<br><em>Real Results.</em></h2>
+    <p class="reviews-subhead">From founders pulling 10-hour sprints to students grinding through finals — this is how it shows up in practice.</p>
+
+    <div class="reviews-aggregate">
+      <div class="reviews-score">4.8</div>
+      <div>
+        <div class="reviews-stars">★★★★★</div>
+        <div class="reviews-count">From 847 verified reviews</div>
+      </div>
+      <div class="reviews-divider-v"></div>
+      <div class="reviews-stat">
+        <div class="reviews-stat-val">94%</div>
+        <div class="reviews-stat-label">Felt focus within 30 min</div>
+      </div>
+      <div class="reviews-divider-v"></div>
+      <div class="reviews-stat">
+        <div class="reviews-stat-val">91%</div>
+        <div class="reviews-stat-label">Would subscribe again</div>
+      </div>
+      <div class="reviews-divider-v"></div>
+      <div class="reviews-stat">
+        <div class="reviews-stat-val">88%</div>
+        <div class="reviews-stat-label">Replaced morning coffee</div>
+      </div>
+    </div>
+
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"I've tried Thesis, AG1, and a bunch of other focus products. Nothing hits like Mindor. The calm is real — it's not the fake calm of beta-blockers. My coding sessions went from 2-hour max to 4–5 hours deep work without checking my phone."</p>
+        <div class="review-author">
+          <div class="review-avatar">JK</div>
+          <div>
+            <div class="review-name">James K.</div>
+            <div class="review-role">SaaS Founder</div>
+          </div>
+          <div class="review-verified">Verified</div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Used to crash at 2pm hard. Started Mindor in the morning and the energy just... levels out. I don't feel stimulated, I feel functional. Huge difference. Sour Candy is actually good too — not fake sour, just clean."</p>
+        <div class="review-author">
+          <div class="review-avatar">SR</div>
+          <div>
+            <div class="review-name">Sofia R.</div>
+            <div class="review-role">Product Designer</div>
+          </div>
+          <div class="review-verified">Verified</div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Third finals season using this. I stack it with my study blocks — one scoop, 45-minute Pomodoros, no doom-scrolling in between. The Alpha-GPC is clearly doing something for retention. My GPA went up a full point this year."</p>
+        <div class="review-author">
+          <div class="review-avatar">MT</div>
+          <div>
+            <div class="review-name">Marcus T.</div>
+            <div class="review-role">Pre-med Student</div>
+          </div>
+          <div class="review-verified">Verified</div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★☆</div>
+        <p class="review-text">"I'm sensitive to caffeine so I was nervous about this. The green tea caffeine + theanine combo is genuinely different. No heart pounding, no wired feeling — just switched-on. Took off one star because I wish there was a sample size."</p>
+        <div class="review-author">
+          <div class="review-avatar">AL</div>
+          <div>
+            <div class="review-name">Alex L.</div>
+            <div class="review-role">Freelance Writer</div>
+          </div>
+          <div class="review-verified">Verified</div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Run a DTC brand, need 8–10 focused hours daily. Mindor is my morning ritual now. Clean, professional packaging, no bro-culture branding. The kind of thing I can have on my desk without explaining myself."</p>
+        <div class="review-author">
+          <div class="review-avatar">NP</div>
+          <div>
+            <div class="review-name">Nina P.</div>
+            <div class="review-role">Brand Founder</div>
+          </div>
+          <div class="review-verified">Verified</div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Switched from 3 cups of coffee to one cup + Mindor. The anxiety is gone. The output is higher. My team started asking what changed. I told them I fixed my morning. Honestly the best supplement investment I've made in 3 years."</p>
+        <div class="review-author">
+          <div class="review-avatar">DW</div>
+          <div>
+            <div class="review-name">David W.</div>
+            <div class="review-role">Engineering Lead</div>
+          </div>
+          <div class="review-verified">Verified</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     COMPARISON
+══════════════════════════════════════════ -->
+<section class="section" id="comparison">
+  <div class="container">
+    <p class="section-label">Mindor vs The Alternatives</p>
+    <div class="section-divider"></div>
+    <h2 class="comparison-headline">Coffee Isn't Focus.<br><em>It's A Gamble.</em></h2>
+    <p class="comparison-body">Here's how Mindor actually compares to the things people use to get through their day — on the metrics that matter for sustained cognitive performance.</p>
+    <div class="comparison-wrapper">
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th class="highlight">Mindor</th>
+            <th>Coffee</th>
+            <th>Energy Drinks</th>
+            <th>Preworkout</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="feature-name">Calm focus (no anxiety)</td>
+            <td class="highlight"><span class="check">✓</span> Yes</td>
+            <td><span class="cross">✕</span> Often no</td>
+            <td><span class="cross">✕</span> No</td>
+            <td><span class="cross">✕</span> No</td>
+          </tr>
+          <tr>
+            <td class="feature-name">No energy crash</td>
+            <td class="highlight"><span class="check">✓</span> Yes</td>
+            <td><span class="cross">✕</span> Hard crash</td>
+            <td><span class="cross">✕</span> Hard crash</td>
+            <td><span class="cross">✕</span> Hard crash</td>
+          </tr>
+          <tr>
+            <td class="feature-name">No jitters</td>
+            <td class="highlight"><span class="check">✓</span> Yes</td>
+            <td><span class="cross">✕</span> Common</td>
+            <td><span class="cross">✕</span> Common</td>
+            <td><span class="cross">✕</span> Very common</td>
+          </tr>
+          <tr>
+            <td class="feature-name">Cognitive support (ACh)</td>
+            <td class="highlight"><span class="check">✓</span> 300mg Alpha-GPC</td>
+            <td><span class="cross">✕</span> None</td>
+            <td><span class="cross">✕</span> None</td>
+            <td><span class="cross">✕</span> None</td>
+          </tr>
+          <tr>
+            <td class="feature-name">Clinically-dosed formula</td>
+            <td class="highlight"><span class="check">✓</span> Fully transparent</td>
+            <td>—</td>
+            <td><span class="cross">✕</span> Prop. blends</td>
+            <td><span class="cross">✕</span> Prop. blends</td>
+          </tr>
+          <tr>
+            <td class="feature-name">Sustained 4–6hr focus</td>
+            <td class="highlight"><span class="check">✓</span> Yes</td>
+            <td><span class="cross">✕</span> 1–2hr peak</td>
+            <td><span class="cross">✕</span> 1–2hr peak</td>
+            <td><span class="cross">✕</span> 45–90min</td>
+          </tr>
+          <tr>
+            <td class="feature-name">Sugar / sweetener load</td>
+            <td class="highlight"><span class="check">✓</span> 0g sugar</td>
+            <td><span class="check">✓</span> Black only</td>
+            <td><span class="cross">✕</span> 27–54g sugar</td>
+            <td>Varies</td>
+          </tr>
+          <tr>
+            <td class="feature-name">Adaptogenic support</td>
+            <td class="highlight"><span class="check">✓</span> 200mg Ginseng</td>
+            <td><span class="cross">✕</span> None</td>
+            <td><span class="cross">✕</span> None</td>
+            <td><span class="cross">✕</span> None</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     FAQ
+══════════════════════════════════════════ -->
+<section class="section" id="faq">
+  <div class="container">
+    <p class="section-label">Frequently Asked</p>
+    <div class="section-divider"></div>
+    <h2 class="faq-headline">Questions.<br><em>Straight Answers.</em></h2>
+    <p class="faq-body">No fluff. If you have a question not covered here, email us directly.</p>
+
+    <div class="faq-list">
+      <div class="faq-item open">
+        <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+          <span class="faq-q-text">How long until I feel it working?</span>
+          <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">Most people feel the caffeine + L-Theanine combination within 20–30 minutes. Alpha-GPC has a longer onset — its effects on working memory and attention tend to build over 45–60 minutes and compound over days of consistent use. We recommend taking it at the same time each morning for at least two weeks before drawing conclusions.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+          <span class="faq-q-text">Can I stack this with coffee?</span>
+          <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">You can, but you should be aware of total caffeine intake. Mindor contains 100mg of caffeine per serving. A 12oz cup of coffee contains roughly 100–180mg depending on brew strength. Stacking both puts you at 200–280mg caffeine, which most adults tolerate fine but could cause jitters in caffeine-sensitive individuals. If you do stack, we recommend replacing coffee with Mindor rather than adding on top.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+          <span class="faq-q-text">Is this safe to use every day?</span>
+          <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">All ingredients in Mindor are generally recognized as safe (GRAS) at the doses used and have extensive human safety data. L-Theanine, Alpha-GPC, and Ginseng are commonly taken daily. The 100mg caffeine dose is below the threshold associated with adverse effects in healthy adults (400mg/day per FDA guidance). That said, if you're pregnant, nursing, under 18, or on medications — especially blood thinners or stimulants — consult your doctor first.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+          <span class="faq-q-text">Why Sour Candy? What does it taste like?</span>
+          <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">Sour Candy is deliberately light. We used natural citric acid and a low-concentration sour flavor profile with organic stevia — not sucralose, which can leave a metallic aftertaste. The result is something that tastes like watered-down sour candy: clean, slightly tart, not sweet-forward. It doesn't taste like a supplement. Most people find it easy to drink fast, which means faster absorption.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+          <span class="faq-q-text">What's a proprietary blend and why don't you use one?</span>
+          <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">A proprietary blend groups multiple ingredients under one listed weight — so a label might say "Cognitive Support Blend 750mg" with 5 ingredients inside. You have no idea how much of each is in there. It's common when a company wants to include trendy ingredient names without dosing them at effective levels. We list every ingredient individually with its exact dose because our formula can stand on its own.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+          <span class="faq-q-text">What's your return policy?</span>
+          <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">We offer a 30-day performance guarantee. If you try Mindor for at least 14 days consistently and don't feel a meaningful difference in your focus quality, email us and we'll refund the full purchase price — no questions, no restocking fee. We ask for 14 days of use because some of the effects (particularly Alpha-GPC and Ginseng) take time to accumulate.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+          <span class="faq-q-text">How is this different from Thesis, Gorilla Mind, or Nooceptin?</span>
+          <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">Thesis is personalized but expensive ($79–120/month) and uses capsules. Gorilla Mind is dosed for gym performance, not cognitive work — their focus products are heavier on stimulants. Nooceptin is a solid stack but capsule-based and not designed as a daily ritual drink. Mindor is built specifically around the calm-focus use case, in a powdered format you can mix once and drink as part of your morning workflow, at a more accessible price point.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     FINAL CTA
+══════════════════════════════════════════ -->
+<section class="final-cta">
+  <div class="final-cta-inner">
+    <p class="final-cta-eyebrow">Ready To Work</p>
+    <div class="final-cta-headline">LOCK IN.</div>
+    <div class="final-cta-subhead">Stay There.</div>
+    <p class="final-cta-body">30 servings of calm, controlled, crash-free focus. The stack built for the work that actually matters — shipped to your door.</p>
+    <div class="final-cta-actions">
+      <a href="#" class="final-cta-btn-primary">Get Mindor — $49</a>
+      <a href="#" class="btn-ghost">Subscribe &amp; Save 15%</a>
+    </div>
+    <div class="final-cta-trust">
+      <span class="cta-trust-item"><span class="trust-dot" style="background:var(--text-dim);"></span>Free shipping over $75</span>
+      <span class="cta-trust-item"><span class="trust-dot" style="background:var(--text-dim);"></span>30-day guarantee</span>
+      <span class="cta-trust-item"><span class="trust-dot" style="background:var(--text-dim);"></span>Cancel anytime</span>
+      <span class="cta-trust-item"><span class="trust-dot" style="background:var(--text-dim);"></span>cGMP certified</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer class="site-footer">
+  <div class="footer-wordmark">
+    <svg width="20" height="14" viewBox="0 0 40 28" fill="none">
+      <path d="M4 22 L10 8 L16 18 L20 10 L24 18 L30 8 L36 22" stroke="#E2FF47" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    MINDOR
+  </div>
+  <ul class="footer-links">
+    <li><a href="#">Ingredients</a></li>
+    <li><a href="#">Reviews</a></li>
+    <li><a href="#">FAQ</a></li>
+    <li><a href="#">Subscribe</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+  <span class="footer-note">Performance Stack · Est. 2026 · All rights reserved</span>
+</footer>
+
+<script>
+  // FAQ accordion
+  document.querySelectorAll('.faq-question').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.parentElement;
+      const wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!wasOpen) item.classList.add('open');
+    });
+  });
+</script>
+
+</body>
+</html>
