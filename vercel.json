@@ -1,7 +1,6 @@
 {
   "rewrites": [
-    { "source": "/checkout", "destination": "/mindor-checkout.html" },
-    { "source": "/", "destination": "/mindor-product-page.html" }
+    { "source": "/checkout", "destination": "/mindor-checkout.html" }
   ],
   "headers": [
     {
