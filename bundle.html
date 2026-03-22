@@ -1,0 +1,1698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mindor Bundle Builder — Lock In. Stay There.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ═══════════════════════════════
+   DESIGN TOKENS
+═══════════════════════════════ */
+:root {
+  --execution-green: #E2FF47;
+  --sprint-green: #425743;
+  --clean-cream: #F8ECC3;
+  --fog-grey: #C8C9B8;
+  --bg: #111309;
+  --surface: #161A0E;
+  --surface2: #1E2416;
+  --border: rgba(235,255,71,0.12);
+  --border-subtle: rgba(255,255,255,0.06);
+  --text-primary: #F0F0E8;
+  --text-muted: #6A7A5A;
+  --text-dim: #3A4A30;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ═══════════════════════════════
+   ANNOUNCEMENT BANNER
+═══════════════════════════════ */
+.announcement-bar {
+  background: var(--execution-green);
+  color: #1A1F14;
+  text-align: center;
+  padding: 10px 20px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  position: relative;
+}
+.announcement-bar .bar-dot {
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: rgba(26,31,20,0.35);
+  flex-shrink: 0;
+}
+.bar-close {
+  position: absolute;
+  right: 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #1A1F14;
+  font-size: 16px;
+  line-height: 1;
+  opacity: 0.5;
+  padding: 4px;
+  transition: opacity 0.15s;
+}
+.bar-close:hover { opacity: 1; }
+
+/* ═══════════════════════════════
+   NAV
+═══════════════════════════════ */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(17,19,9,0.94);
+  backdrop-filter: blur(14px);
+  border-bottom: 0.5px solid var(--border);
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+}
+.nav-logo {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: 26px;
+  color: var(--execution-green);
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.nav-links a:hover { color: var(--text-primary); }
+.nav-cta {
+  background: var(--execution-green) !important;
+  color: #1A1F14 !important;
+  font-weight: 700 !important;
+  padding: 8px 20px !important;
+  border-radius: 3px !important;
+}
+.nav-cta:hover { opacity: 0.88; }
+
+/* ═══════════════════════════════
+   LAYOUT
+═══════════════════════════════ */
+.container { max-width: 1080px; margin: 0 auto; padding: 0 40px; }
+.section { padding: 88px 0; border-bottom: 0.5px solid var(--border-subtle); }
+.section-label {
+  font-size: 9px; font-weight: 600; letter-spacing: 0.22em;
+  color: var(--text-dim); text-transform: uppercase;
+  margin-bottom: 24px; padding-bottom: 10px;
+  border-bottom: 0.5px solid var(--border-subtle);
+}
+.section-divider {
+  width: 32px; height: 2px;
+  background: var(--execution-green);
+  margin-bottom: 20px; border-radius: 1px;
+}
+
+/* ═══════════════════════════════
+   PRODUCT HERO SECTION
+═══════════════════════════════ */
+.product-hero {
+  padding: 64px 0 80px;
+  border-bottom: 0.5px solid var(--border-subtle);
+  position: relative;
+  overflow: hidden;
+}
+.product-hero::before {
+  content: '';
+  position: absolute;
+  top: -80px; right: -160px;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(235,255,71,0.05) 0%, transparent 65%);
+  pointer-events: none;
+}
+.product-hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 480px;
+  gap: 80px;
+  align-items: start;
+}
+
+/* Left — product info */
+.product-eyebrow {
+  font-size: 10px; font-weight: 500; letter-spacing: 0.22em;
+  color: var(--text-muted); text-transform: uppercase;
+  margin-bottom: 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+.product-eyebrow::before {
+  content: ''; width: 20px; height: 1px;
+  background: var(--execution-green); flex-shrink: 0;
+}
+.product-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: clamp(48px, 6vw, 76px);
+  color: var(--text-primary);
+  line-height: 0.9;
+  letter-spacing: -0.01em;
+  margin-bottom: 6px;
+}
+.product-title em { font-style: normal; color: var(--execution-green); }
+.product-subtitle {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 22px;
+  color: var(--text-muted); text-transform: uppercase;
+  letter-spacing: 0.04em; margin-bottom: 24px;
+}
+.product-rating-row {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 20px; flex-wrap: wrap;
+}
+.rating-stars { color: var(--execution-green); font-size: 15px; letter-spacing: 2px; }
+.rating-score {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800; font-size: 17px; color: var(--text-primary);
+}
+.rating-count {
+  font-size: 12px; color: var(--text-muted); text-decoration: underline;
+  text-underline-offset: 3px; cursor: pointer;
+}
+.rating-divider { width: 1px; height: 14px; background: var(--border-subtle); }
+.product-badge {
+  background: rgba(235,255,71,0.1); border: 0.5px solid rgba(235,255,71,0.2);
+  color: var(--execution-green); font-size: 9px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase; padding: 4px 10px;
+  border-radius: 2px;
+}
+.product-price-row {
+  display: flex; align-items: baseline; gap: 10px;
+  margin-bottom: 28px;
+}
+.price-from { font-size: 12px; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; }
+.price-main {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900; font-size: 44px; color: var(--text-primary); line-height: 1;
+}
+.price-per {
+  font-size: 13px; color: var(--text-muted); line-height: 1.3;
+}
+.price-compare {
+  font-size: 16px; color: var(--text-dim); text-decoration: line-through;
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 700;
+}
+
+/* Benefits list */
+.product-benefits {
+  list-style: none; display: flex; flex-direction: column; gap: 9px;
+  margin-bottom: 32px;
+}
+.product-benefits li {
+  font-size: 14px; color: var(--text-primary);
+  display: flex; align-items: flex-start; gap: 10px; line-height: 1.4;
+}
+.benefit-check {
+  width: 18px; height: 18px; border-radius: 50%;
+  background: rgba(235,255,71,0.1); border: 0.5px solid rgba(235,255,71,0.25);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 1px;
+  color: var(--execution-green); font-size: 10px;
+}
+.product-meta-row {
+  display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 32px;
+}
+.meta-chip {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; color: var(--text-muted); letter-spacing: 0.06em;
+}
+.meta-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--text-dim); flex-shrink: 0; }
+
+/* ═══════════════════════════════
+   BUNDLE BUILDER (right col)
+═══════════════════════════════ */
+.bundle-builder {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  position: sticky;
+  top: 72px;
+}
+.bundle-builder-header {
+  background: var(--execution-green);
+  padding: 14px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.bundle-builder-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800; font-size: 16px;
+  color: #1A1F14; letter-spacing: 0.1em; text-transform: uppercase;
+}
+.bundle-builder-save {
+  font-size: 11px; font-weight: 700; color: #1A1F14;
+  letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.65;
+}
+
+/* Step progress */
+.step-progress {
+  display: flex; border-bottom: 0.5px solid var(--border-subtle);
+}
+.step-tab {
+  flex: 1; padding: 14px 8px; text-align: center;
+  border: none; background: none; cursor: default;
+  border-right: 0.5px solid var(--border-subtle);
+  transition: background 0.2s;
+  position: relative;
+}
+.step-tab:last-child { border-right: none; }
+.step-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800; font-size: 18px; color: var(--text-dim);
+  line-height: 1; display: block;
+  transition: color 0.2s;
+}
+.step-name {
+  font-size: 8px; font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--text-dim);
+  display: block; margin-top: 2px;
+  transition: color 0.2s;
+}
+.step-tab.active { background: rgba(235,255,71,0.05); }
+.step-tab.active .step-num { color: var(--execution-green); }
+.step-tab.active .step-name { color: var(--text-muted); }
+.step-tab.done .step-num { color: var(--execution-green); font-size: 14px; }
+.step-tab.done .step-name { color: var(--text-muted); }
+.step-tab.done::after {
+  content: '✓';
+  position: absolute; top: 10px; right: 8px;
+  font-size: 10px; color: var(--execution-green); opacity: 0.7;
+}
+
+/* Step panels */
+.step-panels { position: relative; }
+.step-panel { display: none; padding: 24px; }
+.step-panel.active { display: block; }
+.step-panel-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800; font-size: 20px; color: var(--text-primary);
+  text-transform: uppercase; letter-spacing: 0.04em;
+  margin-bottom: 4px; line-height: 1;
+}
+.step-panel-sub {
+  font-size: 11px; color: var(--text-muted); letter-spacing: 0.06em;
+  margin-bottom: 18px;
+}
+
+/* Bundle cards */
+.bundle-options { display: flex; flex-direction: column; gap: 8px; }
+.bundle-option {
+  border: 0.5px solid var(--border-subtle);
+  border-radius: 4px; padding: 14px 16px;
+  cursor: pointer; transition: border-color 0.15s, background 0.15s;
+  display: flex; align-items: center; gap: 14px;
+  position: relative;
+}
+.bundle-option:hover { border-color: rgba(235,255,71,0.25); }
+.bundle-option.selected {
+  border-color: var(--execution-green);
+  background: rgba(235,255,71,0.04);
+}
+.bundle-radio {
+  width: 16px; height: 16px; border-radius: 50%;
+  border: 1.5px solid var(--text-dim);
+  flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+  transition: border-color 0.15s;
+}
+.bundle-option.selected .bundle-radio {
+  border-color: var(--execution-green);
+  background: var(--execution-green);
+}
+.bundle-option.selected .bundle-radio::after {
+  content: ''; width: 6px; height: 6px; border-radius: 50%; background: #1A1F14;
+}
+.bundle-info { flex: 1; }
+.bundle-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800; font-size: 17px; color: var(--text-primary);
+  text-transform: uppercase; letter-spacing: 0.04em; line-height: 1; margin-bottom: 3px;
+}
+.bundle-desc { font-size: 11px; color: var(--text-muted); }
+.bundle-price-col { text-align: right; flex-shrink: 0; }
+.bundle-price {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900; font-size: 22px; color: var(--text-primary); line-height: 1;
+}
+.bundle-price-orig {
+  font-size: 11px; color: var(--text-dim); text-decoration: line-through; display: block;
+}
+.bundle-badge {
+  position: absolute; top: -1px; right: 12px;
+  background: var(--execution-green); color: #1A1F14;
+  font-size: 8px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 3px 8px; border-radius: 0 0 3px 3px;
+}
+
+/* Flavor pickers */
+.flavor-slots { display: flex; flex-direction: column; gap: 12px; }
+.flavor-slot-label {
+  font-size: 9px; font-weight: 600; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px;
+}
+.flavor-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+.flavor-pill {
+  padding: 9px 16px;
+  border: 0.5px solid var(--border-subtle);
+  border-radius: 3px; background: var(--surface2);
+  font-size: 12px; font-weight: 500; color: var(--text-primary);
+  cursor: pointer; transition: border-color 0.15s, background 0.15s;
+  font-family: 'DM Sans', sans-serif;
+  display: flex; align-items: center; gap: 6px;
+}
+.flavor-pill:hover { border-color: rgba(235,255,71,0.3); }
+.flavor-pill.selected {
+  border-color: var(--execution-green);
+  background: rgba(235,255,71,0.06);
+  color: var(--execution-green);
+}
+.flavor-pip { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+/* Gift options */
+.gift-options { display: flex; flex-direction: column; gap: 8px; }
+.gift-option {
+  border: 0.5px solid var(--border-subtle);
+  border-radius: 4px; padding: 14px 16px;
+  cursor: pointer; transition: border-color 0.15s, background 0.15s;
+  display: flex; align-items: center; gap: 14px;
+}
+.gift-option:hover { border-color: rgba(235,255,71,0.25); }
+.gift-option.selected {
+  border-color: var(--execution-green);
+  background: rgba(235,255,71,0.04);
+}
+.gift-radio {
+  width: 16px; height: 16px; border-radius: 50%;
+  border: 1.5px solid var(--text-dim); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color 0.15s;
+}
+.gift-option.selected .gift-radio { border-color: var(--execution-green); background: var(--execution-green); }
+.gift-option.selected .gift-radio::after { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #1A1F14; }
+.gift-icon {
+  width: 36px; height: 36px; border-radius: 3px;
+  background: var(--surface2); border: 0.5px solid var(--border-subtle);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0;
+}
+.gift-info { flex: 1; }
+.gift-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 16px; color: var(--text-primary);
+  text-transform: uppercase; letter-spacing: 0.03em; line-height: 1; margin-bottom: 2px;
+}
+.gift-note { font-size: 11px; color: var(--text-muted); }
+.gift-free {
+  font-size: 10px; font-weight: 700; color: var(--execution-green);
+  letter-spacing: 0.1em; text-transform: uppercase;
+}
+
+/* Order summary */
+.summary-lines { display: flex; flex-direction: column; gap: 0; margin-bottom: 16px; }
+.summary-line {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  padding: 10px 0; border-bottom: 0.5px solid var(--border-subtle);
+}
+.summary-line:last-child { border-bottom: none; }
+.summary-line-label { font-size: 13px; color: var(--text-muted); line-height: 1.4; }
+.summary-line-label strong { display: block; color: var(--text-primary); font-size: 14px; font-weight: 500; }
+.summary-line-val {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800; font-size: 18px; color: var(--text-primary); white-space: nowrap;
+}
+.summary-line-val.green { color: var(--execution-green); }
+.summary-total-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 0; border-top: 1.5px solid var(--border);
+  margin-bottom: 16px;
+}
+.summary-total-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800; font-size: 18px; color: var(--text-primary);
+  text-transform: uppercase; letter-spacing: 0.04em;
+}
+.summary-total-price {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900; font-size: 32px; color: var(--execution-green); line-height: 1;
+}
+.summary-savings-note {
+  font-size: 11px; color: var(--execution-green); opacity: 0.7;
+  text-align: right; margin-top: 2px;
+}
+.edit-link {
+  font-size: 10px; color: var(--text-dim); text-decoration: underline;
+  text-underline-offset: 3px; cursor: pointer; letter-spacing: 0.06em;
+  background: none; border: none;
+  transition: color 0.15s;
+}
+.edit-link:hover { color: var(--text-muted); }
+
+/* Step nav buttons */
+.step-nav {
+  display: flex; gap: 8px; padding: 0 24px 20px;
+}
+.btn-step-back {
+  background: transparent;
+  border: 0.5px solid var(--border);
+  color: var(--text-muted);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 13px 20px; border-radius: 3px; cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+  flex-shrink: 0;
+}
+.btn-step-back:hover { border-color: rgba(235,255,71,0.3); color: var(--text-primary); }
+.btn-step-next {
+  flex: 1;
+  background: var(--execution-green);
+  border: none;
+  color: #1A1F14;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800; font-size: 17px; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 14px; border-radius: 3px; cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+}
+.btn-step-next:hover { opacity: 0.88; transform: translateY(-1px); }
+.btn-step-next:active { transform: translateY(0); }
+.btn-lock-in {
+  width: 100%; background: var(--execution-green); border: none;
+  color: #1A1F14; font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900; font-size: 22px; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 18px; border-radius: 3px; cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+.btn-lock-in:hover { opacity: 0.88; transform: translateY(-1px); }
+.btn-lock-in:active { transform: translateY(0); }
+.btn-lock-in svg { flex-shrink: 0; }
+.lock-in-note {
+  text-align: center; font-size: 10px; color: var(--text-dim);
+  letter-spacing: 0.08em; padding: 0 24px 20px;
+}
+.btn-step-next:disabled {
+  opacity: 0.35; cursor: not-allowed; transform: none;
+}
+
+/* ═══════════════════════════════
+   REVIEWS
+═══════════════════════════════ */
+.reviews-headline {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900; font-size: clamp(36px, 5vw, 56px);
+  color: var(--text-primary); line-height: 0.93; margin-bottom: 14px;
+}
+.reviews-headline em { font-style: normal; color: var(--execution-green); }
+.reviews-subhead { font-size: 15px; color: var(--fog-grey); max-width: 480px; margin-bottom: 40px; }
+.reviews-agg {
+  display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
+  padding: 22px 28px; background: var(--surface);
+  border: 0.5px solid var(--border); border-radius: 4px; margin-bottom: 40px;
+}
+.reviews-score {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900; font-size: 52px; color: var(--execution-green); line-height: 1;
+}
+.reviews-stars-big { color: var(--execution-green); font-size: 18px; letter-spacing: 2px; margin-bottom: 3px; }
+.reviews-count-text { font-size: 12px; color: var(--text-muted); }
+.reviews-vdiv { width: 1px; height: 44px; background: var(--border-subtle); }
+.reviews-stat { display: flex; flex-direction: column; gap: 3px; }
+.reviews-stat-val {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800; font-size: 26px; color: var(--text-primary); line-height: 1;
+}
+.reviews-stat-lbl { font-size: 10px; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; }
+.reviews-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+}
+.review-card {
+  background: var(--surface); border: 0.5px solid var(--border-subtle);
+  border-radius: 4px; padding: 22px;
+  transition: border-color 0.2s;
+}
+.review-card:hover { border-color: rgba(235,255,71,0.18); }
+.review-stars { color: var(--execution-green); font-size: 12px; letter-spacing: 2px; margin-bottom: 10px; }
+.review-text {
+  font-size: 13px; color: var(--text-primary); line-height: 1.65;
+  margin-bottom: 14px; font-style: italic;
+}
+.review-author { display: flex; align-items: center; gap: 10px; }
+.review-avatar {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--surface2); border: 0.5px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 800;
+  font-size: 13px; color: var(--execution-green); flex-shrink: 0;
+}
+.review-name { font-size: 12px; font-weight: 600; color: var(--text-primary); }
+.review-role { font-size: 10px; color: var(--text-muted); letter-spacing: 0.06em; text-transform: uppercase; }
+.review-verified { margin-left: auto; font-size: 9px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--execution-green); opacity: 0.6; }
+
+/* ═══════════════════════════════
+   FAQ
+═══════════════════════════════ */
+.faq-headline {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900; font-size: clamp(36px, 5vw, 56px);
+  color: var(--text-primary); line-height: 0.93; margin-bottom: 14px;
+}
+.faq-headline em { font-style: normal; color: var(--execution-green); }
+.faq-sub { font-size: 15px; color: var(--fog-grey); max-width: 480px; margin-bottom: 40px; }
+.faq-list { display: flex; flex-direction: column; gap: 2px; }
+.faq-item { background: var(--surface); border-radius: 3px; overflow: hidden; }
+.faq-question {
+  width: 100%; background: none; border: none; padding: 20px 24px;
+  text-align: left; cursor: pointer;
+  display: flex; align-items: center; justify-content: space-between; gap: 20px;
+}
+.faq-q-text {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 17px; color: var(--text-primary);
+  text-transform: uppercase; letter-spacing: 0.02em; line-height: 1.1;
+}
+.faq-toggle {
+  width: 22px; height: 22px; border: 0.5px solid var(--border);
+  border-radius: 2px; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; color: var(--execution-green); font-size: 16px;
+  transition: background 0.15s; font-weight: 300;
+}
+.faq-item.open .faq-toggle { background: var(--execution-green); color: #1A1F14; border-color: var(--execution-green); }
+.faq-answer {
+  display: none; padding: 0 24px 20px;
+  font-size: 13px; color: var(--fog-grey); line-height: 1.7;
+  border-top: 0.5px solid var(--border-subtle); padding-top: 14px;
+}
+.faq-item.open .faq-answer { display: block; }
+
+/* ═══════════════════════════════
+   FINAL CTA
+═══════════════════════════════ */
+.final-cta {
+  background: linear-gradient(135deg, #1E2416 0%, #111309 60%, #161A0E 100%);
+  position: relative; overflow: hidden; border-bottom: none;
+}
+.final-cta::before {
+  content: ''; position: absolute; top: -80px; left: 50%; transform: translateX(-50%);
+  width: 700px; height: 500px;
+  background: radial-gradient(circle, rgba(235,255,71,0.06) 0%, transparent 60%);
+  pointer-events: none;
+}
+.final-cta-inner {
+  max-width: 640px; margin: 0 auto;
+  padding: 100px 40px; text-align: center; position: relative; z-index: 1;
+}
+.final-cta-eyebrow {
+  font-size: 10px; font-weight: 500; letter-spacing: 0.22em;
+  color: var(--text-muted); text-transform: uppercase; margin-bottom: 18px;
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+}
+.final-cta-eyebrow::before, .final-cta-eyebrow::after {
+  content: ''; display: block; width: 20px; height: 1px; background: var(--execution-green);
+}
+.final-cta-headline {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900; font-size: clamp(52px, 8vw, 86px);
+  color: var(--execution-green); line-height: 0.88; margin-bottom: 8px;
+}
+.final-cta-subhead {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800; font-size: clamp(24px, 3vw, 34px);
+  color: var(--text-primary); line-height: 1; margin-bottom: 22px;
+}
+.final-cta-body { font-size: 15px; color: var(--fog-grey); line-height: 1.7; margin-bottom: 36px; }
+.final-cta-btn {
+  display: inline-block; background: var(--execution-green); color: #1A1F14;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 20px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 18px 48px; border-radius: 3px; border: none; cursor: pointer;
+  text-decoration: none; margin-bottom: 24px;
+  transition: opacity 0.15s, transform 0.1s;
+}
+.final-cta-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+.final-cta-trust {
+  display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap;
+}
+.cta-trust-item {
+  font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text-dim); display: flex; align-items: center; gap: 6px;
+}
+.cdot { width: 3px; height: 3px; border-radius: 50%; background: var(--text-dim); }
+
+/* ═══════════════════════════════
+   FOOTER
+═══════════════════════════════ */
+.site-footer {
+  border-top: 0.5px solid var(--border); padding: 36px 40px;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+}
+.footer-wordmark {
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+  font-size: 26px; color: var(--execution-green); letter-spacing: 0.04em;
+  display: flex; align-items: center; gap: 10px;
+}
+.footer-links { display: flex; gap: 20px; list-style: none; }
+.footer-links a {
+  font-size: 11px; color: var(--text-dim); text-decoration: none;
+  letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.15s;
+}
+.footer-links a:hover { color: var(--text-muted); }
+.footer-note { font-size: 11px; color: var(--text-dim); letter-spacing: 0.08em; }
+
+/* ═══════════════════════════════
+   EMAIL POPUP
+═══════════════════════════════ */
+.popup-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.72);
+  z-index: 999;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s;
+}
+.popup-overlay.visible { opacity: 1; pointer-events: all; }
+.popup {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: 8px; overflow: hidden;
+  max-width: 480px; width: 100%;
+  transform: translateY(16px);
+  transition: transform 0.3s;
+  position: relative;
+}
+.popup-overlay.visible .popup { transform: translateY(0); }
+.popup-top {
+  background: var(--execution-green);
+  padding: 28px 32px 24px;
+  position: relative;
+}
+.popup-eyebrow {
+  font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(26,31,20,0.55); margin-bottom: 8px;
+}
+.popup-headline {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900; font-size: 48px; color: #1A1F14; line-height: 0.88; margin-bottom: 4px;
+}
+.popup-subhead {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 18px; color: #1A1F14; opacity: 0.7;
+}
+.popup-close {
+  position: absolute; top: 14px; right: 14px;
+  background: rgba(26,31,20,0.12); border: none; cursor: pointer;
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: #1A1F14; font-size: 16px; line-height: 1;
+  transition: background 0.15s;
+}
+.popup-close:hover { background: rgba(26,31,20,0.22); }
+.popup-body { padding: 28px 32px; }
+.popup-body-text {
+  font-size: 14px; color: var(--fog-grey); line-height: 1.6; margin-bottom: 20px;
+}
+.popup-form { display: flex; flex-direction: column; gap: 10px; }
+.popup-input {
+  background: var(--surface2); border: 0.5px solid var(--border);
+  border-radius: 3px; padding: 13px 16px;
+  font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text-primary);
+  outline: none; transition: border-color 0.15s; width: 100%;
+}
+.popup-input::placeholder { color: var(--text-dim); }
+.popup-input:focus { border-color: var(--execution-green); }
+.popup-submit {
+  background: var(--execution-green); color: #1A1F14;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 17px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 14px; border-radius: 3px; border: none; cursor: pointer;
+  transition: opacity 0.15s; width: 100%;
+}
+.popup-submit:hover { opacity: 0.88; }
+.popup-disclaimer {
+  text-align: center; font-size: 10px; color: var(--text-dim);
+  margin-top: 10px; letter-spacing: 0.04em; line-height: 1.5;
+}
+.popup-dismiss {
+  display: block; text-align: center; font-size: 11px; color: var(--text-dim);
+  margin-top: 12px; cursor: pointer; text-decoration: underline;
+  text-underline-offset: 3px; letter-spacing: 0.06em;
+  background: none; border: none; width: 100%;
+  transition: color 0.15s;
+}
+.popup-dismiss:hover { color: var(--text-muted); }
+.popup-success {
+  display: none; text-align: center; padding: 28px 32px;
+}
+.popup-success-icon {
+  width: 48px; height: 48px; border-radius: 50%;
+  background: rgba(235,255,71,0.1); border: 0.5px solid rgba(235,255,71,0.25);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 16px; font-size: 20px;
+}
+.popup-success-head {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900; font-size: 32px; color: var(--execution-green); margin-bottom: 8px;
+}
+.popup-success-sub { font-size: 14px; color: var(--fog-grey); line-height: 1.6; }
+
+/* ═══════════════════════════════
+   RESPONSIVE
+═══════════════════════════════ */
+@media (max-width: 900px) {
+  .product-hero-grid { grid-template-columns: 1fr; gap: 48px; }
+  .bundle-builder { position: static; }
+  .reviews-grid { grid-template-columns: 1fr 1fr; }
+  .nav-links { display: none; }
+  .container { padding: 0 20px; }
+  .site-footer { padding: 28px 20px; flex-direction: column; align-items: flex-start; }
+  .nav { padding: 0 20px; }
+}
+@media (max-width: 560px) {
+  .reviews-grid { grid-template-columns: 1fr; }
+  .reviews-agg { flex-wrap: wrap; gap: 16px; }
+  .reviews-vdiv { display: none; }
+  .announcement-bar { font-size: 12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════
+     EMAIL POPUP
+═══════════════════════════════ -->
+<div class="popup-overlay" id="emailPopup" role="dialog" aria-modal="true">
+  <div class="popup">
+    <div class="popup-top">
+      <button class="popup-close" id="popupClose" aria-label="Close">✕</button>
+      <p class="popup-eyebrow">Exclusive offer</p>
+      <div class="popup-headline">15%<br>OFF</div>
+      <div class="popup-subhead">Your first order. Right now.</div>
+    </div>
+    <div class="popup-body" id="popupFormWrap">
+      <p class="popup-body-text">Join the Mindor inner circle. Get your discount code instantly — plus early access to new flavors and drops.</p>
+      <div class="popup-form">
+        <input class="popup-input" type="email" id="popupEmail" placeholder="your@email.com" autocomplete="email">
+        <button class="popup-submit" id="popupSubmit">Claim My 15% Off</button>
+      </div>
+      <p class="popup-disclaimer">No spam. One email to send your code. Unsubscribe any time.</p>
+      <button class="popup-dismiss" id="popupDismiss">No thanks, I'll pay full price</button>
+    </div>
+    <div class="popup-success" id="popupSuccess">
+      <div class="popup-success-icon">✓</div>
+      <div class="popup-success-head">Locked In.</div>
+      <p class="popup-success-sub">Check your inbox — your 15% off code is on its way. Use it on any bundle.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════
+     ANNOUNCEMENT BANNER
+═══════════════════════════════ -->
+<div class="announcement-bar" id="announcementBar">
+  <span>Free shipping on orders $75+</span>
+  <span class="bar-dot"></span>
+  <span>Peak Performance bundle — save $20</span>
+  <span class="bar-dot"></span>
+  <span>30-day performance guarantee</span>
+  <button class="bar-close" id="barClose" aria-label="Dismiss">✕</button>
+</div>
+
+<!-- ═══════════════════════════════
+     NAV
+═══════════════════════════════ -->
+<nav class="nav">
+  <a href="/" class="nav-logo">
+    <svg width="20" height="14" viewBox="0 0 40 28" fill="none">
+      <path d="M4 22 L10 8 L16 18 L20 10 L24 18 L30 8 L36 22" stroke="#E2FF47" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    MINDOR
+  </a>
+  <ul class="nav-links">
+    <li><a href="/#benefits">Benefits</a></li>
+    <li><a href="/#ingredients">Ingredients</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#bundle" class="nav-cta">Build Your Bundle</a></li>
+  </ul>
+</nav>
+
+<!-- ═══════════════════════════════
+     PRODUCT HERO
+═══════════════════════════════ -->
+<div style="padding: 56px 0 72px; border-bottom: 0.5px solid var(--border-subtle); position: relative; overflow: hidden;" id="bundle">
+  <div style="position:absolute;top:-80px;right:-160px;width:600px;height:600px;background:radial-gradient(circle,rgba(235,255,71,0.05) 0%,transparent 65%);pointer-events:none;"></div>
+  <div class="container">
+    <div class="product-hero-grid">
+
+      <!-- LEFT: Product info -->
+      <div>
+        <p class="product-eyebrow">Mindor Performance Stack · Bundle Builder</p>
+        <h1 class="product-title">LOCK IN.<br><em>SAVE MORE.</em></h1>
+        <p class="product-subtitle">Nootropic Focus Drink · 30 Servings/Tub</p>
+
+        <div class="product-rating-row">
+          <span class="rating-stars">★★★★★</span>
+          <span class="rating-score">4.8</span>
+          <span class="rating-count" onclick="document.getElementById('reviews').scrollIntoView({behavior:'smooth'})">847 reviews</span>
+          <span class="rating-divider"></span>
+          <span class="product-badge">Best Seller</span>
+          <span class="product-badge">Clinically Dosed</span>
+        </div>
+
+        <div class="product-price-row">
+          <span class="price-from">From</span>
+          <span class="price-main" id="heroPrice">$45</span>
+          <div>
+            <span class="price-per">per tub · 30 servings</span>
+            <span class="price-per" style="display:block;">$1.50/serving on Peak Bundle</span>
+          </div>
+        </div>
+
+        <ul class="product-benefits">
+          <li>
+            <span class="benefit-check">✓</span>
+            <span><strong style="color:var(--text-primary);">Calm focus without anxiety</strong> — 2:1 L-Theanine to caffeine ratio modulates stimulation</span>
+          </li>
+          <li>
+            <span class="benefit-check">✓</span>
+            <span><strong style="color:var(--text-primary);">No jitters, no crash</strong> — green tea caffeine absorbs slowly for a smooth, sustained curve</span>
+          </li>
+          <li>
+            <span class="benefit-check">✓</span>
+            <span><strong style="color:var(--text-primary);">Deep work support</strong> — 300mg Alpha-GPC fuels acetylcholine for working memory and retention</span>
+          </li>
+          <li>
+            <span class="benefit-check">✓</span>
+            <span><strong style="color:var(--text-primary);">Sustained 4–6hr output</strong> — Panax Ginseng and B-vitamins combat cognitive fade on long sessions</span>
+          </li>
+          <li>
+            <span class="benefit-check">✓</span>
+            <span><strong style="color:var(--text-primary);">Full label transparency</strong> — no proprietary blends, every dose listed, third-party tested</span>
+          </li>
+        </ul>
+
+        <div class="product-meta-row">
+          <span class="meta-chip"><span class="meta-dot"></span>Vegan</span>
+          <span class="meta-chip"><span class="meta-dot"></span>Gluten-Free</span>
+          <span class="meta-chip"><span class="meta-dot"></span>No Sucralose</span>
+          <span class="meta-chip"><span class="meta-dot"></span>cGMP Certified</span>
+          <span class="meta-chip"><span class="meta-dot"></span>Third-Party Tested</span>
+        </div>
+
+        <!-- Ingredient callouts -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;">
+          <div style="background:var(--surface);border:0.5px solid var(--border-subtle);border-radius:4px;padding:14px 16px;">
+            <div style="font-size:9px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px;">Green Tea Caffeine</div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:24px;color:var(--execution-green);line-height:1;">100mg</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:3px;">Smooth, sustained energy</div>
+          </div>
+          <div style="background:var(--surface);border:0.5px solid var(--border-subtle);border-radius:4px;padding:14px 16px;">
+            <div style="font-size:9px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px;">L-Theanine</div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:24px;color:var(--execution-green);line-height:1;">200mg</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:3px;">2:1 ratio · zero jitters</div>
+          </div>
+          <div style="background:var(--surface);border:0.5px solid var(--border-subtle);border-radius:4px;padding:14px 16px;">
+            <div style="font-size:9px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px;">Alpha-GPC 50%</div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:24px;color:var(--execution-green);line-height:1;">300mg</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:3px;">Full clinical dose</div>
+          </div>
+          <div style="background:var(--surface);border:0.5px solid var(--border-subtle);border-radius:4px;padding:14px 16px;">
+            <div style="font-size:9px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px;">Panax Ginseng</div>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:24px;color:var(--execution-green);line-height:1;">200mg</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:3px;">Mental stamina</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Bundle builder -->
+      <div class="bundle-builder">
+        <div class="bundle-builder-header">
+          <span class="bundle-builder-title">Build Your Bundle</span>
+          <span class="bundle-builder-save" id="builderSaveLabel">Save up to $20</span>
+        </div>
+
+        <!-- Step tabs -->
+        <div class="step-progress">
+          <button class="step-tab active" id="tab-1">
+            <span class="step-num">1</span>
+            <span class="step-name">Bundle</span>
+          </button>
+          <button class="step-tab" id="tab-2">
+            <span class="step-num">2</span>
+            <span class="step-name">Flavors</span>
+          </button>
+          <button class="step-tab" id="tab-3">
+            <span class="step-num">3</span>
+            <span class="step-name">Free Gift</span>
+          </button>
+          <button class="step-tab" id="tab-4">
+            <span class="step-num">4</span>
+            <span class="step-name">Summary</span>
+          </button>
+        </div>
+
+        <!-- ── STEP 1: Choose Bundle ── -->
+        <div class="step-panel active" id="panel-1">
+          <div class="step-panel-title">Choose Your Bundle</div>
+          <p class="step-panel-sub">More tubs = more savings + a free gift</p>
+          <div class="bundle-options">
+            <div class="bundle-option" data-bundle="starter" data-tubs="1" data-price="45" data-orig="45">
+              <div class="bundle-radio"></div>
+              <div class="bundle-info">
+                <div class="bundle-name">Starter Kit</div>
+                <div class="bundle-desc">1 Tub · 30 Servings · 1 month supply</div>
+              </div>
+              <div class="bundle-price-col">
+                <div class="bundle-price">$45</div>
+              </div>
+            </div>
+            <div class="bundle-option" data-bundle="essentials" data-tubs="2" data-price="82" data-orig="90">
+              <div class="bundle-radio"></div>
+              <div class="bundle-info">
+                <div class="bundle-name">Essentials</div>
+                <div class="bundle-desc">2 Tubs · 60 Servings · 2 month supply</div>
+              </div>
+              <div class="bundle-price-col">
+                <div class="bundle-price">$82</div>
+                <span class="bundle-price-orig">$90</span>
+              </div>
+            </div>
+            <div class="bundle-option" data-bundle="peak" data-tubs="3" data-price="115" data-orig="135">
+              <div class="bundle-badge">Best Value</div>
+              <div class="bundle-radio"></div>
+              <div class="bundle-info">
+                <div class="bundle-name">Peak Performance</div>
+                <div class="bundle-desc">3 Tubs · 90 Servings · 3 month supply</div>
+              </div>
+              <div class="bundle-price-col">
+                <div class="bundle-price">$115</div>
+                <span class="bundle-price-orig">$135</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── STEP 2: Flavors ── -->
+        <div class="step-panel" id="panel-2">
+          <div class="step-panel-title">Choose Your Flavors</div>
+          <p class="step-panel-sub" id="flavorSubLabel">Pick a flavor for your tub</p>
+          <div class="flavor-slots" id="flavorSlots">
+            <!-- dynamically rendered -->
+          </div>
+        </div>
+
+        <!-- ── STEP 3: Free Gift ── -->
+        <div class="step-panel" id="panel-3">
+          <div class="step-panel-title">Choose Your Free Gift</div>
+          <p class="step-panel-sub">Included with every bundle. On us.</p>
+          <div class="gift-options">
+            <div class="gift-option" data-gift="shaker">
+              <div class="gift-radio"></div>
+              <div class="gift-icon">🧉</div>
+              <div class="gift-info">
+                <div class="gift-name">Mindor Shaker Bottle</div>
+                <div class="gift-note">32oz branded shaker · BPA-free · most popular</div>
+              </div>
+              <div class="gift-free">Free</div>
+            </div>
+            <div class="gift-option" data-gift="samples">
+              <div class="gift-radio"></div>
+              <div class="gift-icon">🧪</div>
+              <div class="gift-info">
+                <div class="gift-name">Flavor Sample Pack</div>
+                <div class="gift-note">5 trial servings · all 3 flavors included</div>
+              </div>
+              <div class="gift-free">Free</div>
+            </div>
+            <div class="gift-option" data-gift="stickers">
+              <div class="gift-radio"></div>
+              <div class="gift-icon">⚡</div>
+              <div class="gift-info">
+                <div class="gift-name">Mindor Sticker Kit</div>
+                <div class="gift-note">Die-cut vinyl · 8-piece set · operator-grade</div>
+              </div>
+              <div class="gift-free">Free</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── STEP 4: Summary ── -->
+        <div class="step-panel" id="panel-4">
+          <div class="step-panel-title">Your Order</div>
+          <p class="step-panel-sub">Confirm everything looks right</p>
+          <div class="summary-lines" id="summaryLines">
+            <!-- dynamically rendered -->
+          </div>
+          <div class="summary-total-row">
+            <span class="summary-total-label">Total</span>
+            <div>
+              <div class="summary-total-price" id="summaryTotal">—</div>
+              <div class="summary-savings-note" id="summarySavings"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step nav buttons -->
+        <div class="step-nav" id="stepNav">
+          <button class="btn-step-back" id="btnBack" style="display:none;">Back</button>
+          <button class="btn-step-next" id="btnNext" disabled>Next Step →</button>
+        </div>
+        <div style="padding: 0 24px 20px; display:none;" id="lockInWrap">
+          <button class="btn-lock-in" id="btnLockIn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <rect x="5" y="11" width="14" height="10" rx="2" stroke="#1A1F14" stroke-width="1.8"/>
+              <path d="M8 11V7a4 4 0 018 0v4" stroke="#1A1F14" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+            Lock It In
+          </button>
+        </div>
+        <p class="lock-in-note" id="lockInNote" style="display:none;">Redirecting to secure Shopify checkout · 30-day guarantee · Free returns</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════
+     REVIEWS
+═══════════════════════════════ -->
+<section class="section" id="reviews">
+  <div class="container">
+    <p class="section-label">What People Say</p>
+    <div class="section-divider"></div>
+    <h2 class="reviews-headline">Real Work.<br><em>Real Results.</em></h2>
+    <p class="reviews-subhead">847 verified buyers. Founders, students, engineers, creators. Here's what they said.</p>
+
+    <div class="reviews-agg">
+      <div class="reviews-score">4.8</div>
+      <div>
+        <div class="reviews-stars-big">★★★★★</div>
+        <div class="reviews-count-text">847 verified reviews</div>
+      </div>
+      <div class="reviews-vdiv"></div>
+      <div class="reviews-stat">
+        <div class="reviews-stat-val">94%</div>
+        <div class="reviews-stat-lbl">Felt focus within 30 min</div>
+      </div>
+      <div class="reviews-vdiv"></div>
+      <div class="reviews-stat">
+        <div class="reviews-stat-val">91%</div>
+        <div class="reviews-stat-lbl">Would subscribe again</div>
+      </div>
+      <div class="reviews-vdiv"></div>
+      <div class="reviews-stat">
+        <div class="reviews-stat-val">88%</div>
+        <div class="reviews-stat-lbl">Replaced morning coffee</div>
+      </div>
+    </div>
+
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Bought the Peak Performance bundle after trying one bag. Stacked it with my morning block — deepest focus sessions I've had in years. The Sour Grape hits different."</p>
+        <div class="review-author">
+          <div class="review-avatar">JK</div>
+          <div>
+            <div class="review-name">James K.</div>
+            <div class="review-role">SaaS Founder</div>
+          </div>
+          <div class="review-verified">Verified</div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"The Essentials bundle was the move. Two different flavors keeps the routine interesting. Zero jitter anxiety — I stack it before every design sprint."</p>
+        <div class="review-author">
+          <div class="review-avatar">SR</div>
+          <div>
+            <div class="review-name">Sofia R.</div>
+            <div class="review-role">Product Designer</div>
+          </div>
+          <div class="review-verified">Verified</div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Third finals season. Peak bundle, three different flavors, shaker bottle included. Retention is visibly up. My GPA went from 3.4 to 3.8. Not joking."</p>
+        <div class="review-author">
+          <div class="review-avatar">MT</div>
+          <div>
+            <div class="review-name">Marcus T.</div>
+            <div class="review-role">Pre-med Student</div>
+          </div>
+          <div class="review-verified">Verified</div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"The shaker bottle free gift is legitimately good — thicker than I expected, lid doesn't leak. I use it every morning. The Sour Gummy Worms flavor is my #1."</p>
+        <div class="review-author">
+          <div class="review-avatar">AL</div>
+          <div>
+            <div class="review-name">Alex L.</div>
+            <div class="review-role">Freelance Writer</div>
+          </div>
+          <div class="review-verified">Verified</div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Clean branding, clean formula. Got the Essentials bundle, both Sour Candy and Sour Grape. These sit on my desk without any explanation needed. Operator-coded."</p>
+        <div class="review-author">
+          <div class="review-avatar">NP</div>
+          <div>
+            <div class="review-name">Nina P.</div>
+            <div class="review-role">Brand Founder</div>
+          </div>
+          <div class="review-verified">Verified</div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Bought three bags for the team. Everyone switched off their afternoon coffee within a week. Output is up, nobody's jittery after standup anymore. Just works."</p>
+        <div class="review-author">
+          <div class="review-avatar">DW</div>
+          <div>
+            <div class="review-name">David W.</div>
+            <div class="review-role">Engineering Lead</div>
+          </div>
+          <div class="review-verified">Verified</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════
+     FAQ
+═══════════════════════════════ -->
+<section class="section" id="faq">
+  <div class="container">
+    <p class="section-label">Frequently Asked</p>
+    <div class="section-divider"></div>
+    <h2 class="faq-headline">Questions.<br><em>Straight Answers.</em></h2>
+    <p class="faq-sub">Everything about the bundles, flavors, and the formula.</p>
+    <div class="faq-list">
+
+      <div class="faq-item open">
+        <button class="faq-question">
+          <span class="faq-q-text">Can I mix and match flavors in a bundle?</span>
+          <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">Yes — that's the point. The Essentials bundle lets you pick 2 flavors (same or different), and the Peak Performance bundle lets you pick 3. You can go all one flavor or try all three. The flavor selector in the bundle builder handles it.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          <span class="faq-q-text">Which bundle should I start with?</span>
+          <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">If you've never tried Mindor, start with the Starter Kit to test one flavor. If you're already sold or want to try multiple flavors, the Essentials bundle saves $8 and gives you 2 months of supply. Peak Performance is for committed daily users — 3 months of supply, biggest savings, and you lock in the best per-serving price at $1.28.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          <span class="faq-q-text">When does the free gift ship?</span>
+          <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">The free gift ships with your order in the same box. No separate shipment, no waiting. If an item is temporarily out of stock (e.g. shaker bottles), we'll reach out before shipping and offer an alternative or credit.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          <span class="faq-q-text">What's the 30-day guarantee?</span>
+          <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">Try Mindor consistently for at least 14 days. If you don't notice a real improvement in your focus quality — email us and we'll refund the full purchase price, no questions asked. We ask for 14 days because Alpha-GPC and Ginseng take time to build up. One-and-done doesn't count.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          <span class="faq-q-text">Do bundles qualify for the 15% email discount?</span>
+          <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">Yes. The 15% discount code works on any order including bundles. Applied on top of the bundle savings, Peak Performance + 15% off email code is the lowest price per serving we offer anywhere.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          <span class="faq-q-text">How does the Shopify checkout work?</span>
+          <span class="faq-toggle">+</span>
+        </button>
+        <div class="faq-answer">After you confirm your bundle, flavors, and free gift — clicking "Lock It In" creates your cart and redirects you to Shopify's secure checkout. All payments are processed by Shopify with SSL encryption. We don't store card data.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════
+     FINAL CTA
+═══════════════════════════════ -->
+<section class="final-cta">
+  <div class="final-cta-inner">
+    <p class="final-cta-eyebrow">Limited Time</p>
+    <div class="final-cta-headline">LOCK IN.</div>
+    <div class="final-cta-subhead">Save up to $20 on your bundle.</div>
+    <p class="final-cta-body">Three months of calm, controlled, crash-free focus. Pick your flavors, grab your free gift, and get to work.</p>
+    <a href="#bundle" class="final-cta-btn">Build My Bundle</a>
+    <div class="final-cta-trust">
+      <span class="cta-trust-item"><span class="cdot"></span>Free shipping $75+</span>
+      <span class="cta-trust-item"><span class="cdot"></span>30-day guarantee</span>
+      <span class="cta-trust-item"><span class="cdot"></span>Free gift included</span>
+      <span class="cta-trust-item"><span class="cdot"></span>Secure checkout</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════
+     FOOTER
+═══════════════════════════════ -->
+<footer class="site-footer">
+  <div class="footer-wordmark">
+    <svg width="18" height="13" viewBox="0 0 40 28" fill="none">
+      <path d="M4 22 L10 8 L16 18 L20 10 L24 18 L30 8 L36 22" stroke="#E2FF47" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    MINDOR
+  </div>
+  <ul class="footer-links">
+    <li><a href="/">Product</a></li>
+    <li><a href="/#ingredients">Ingredients</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+  <span class="footer-note">Performance Stack · Est. 2026</span>
+</footer>
+
+<!-- ═══════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════ -->
+<script>
+// ── SHOPIFY CONFIG ──
+var SHOPIFY_CONFIG = {
+  domain: 'mindor-1950.myshopify.com',
+  storefrontToken: 'c1f8ad6a65722ad1a022b7e5f8a8660c',
+  apiVersion: '2024-01',
+};
+
+var FLAVOR_PRODUCTS = {
+  'sour-candy': {
+    handle: 'mindor-performance-stack-sour-candy',
+    label: 'Sour Candy',
+    color: '#E2FF47',
+    variantId: 'gid://shopify/ProductVariant/48144449568923',
+  },
+  'sour-grape': {
+    handle: 'mindor-performance-stack-sour-grape',
+    label: 'Sour Grape',
+    color: '#C084FC',
+    variantId: 'gid://shopify/ProductVariant/48144474931355',
+  },
+  'sour-gummy-worms': {
+    handle: 'mindor-performance-stack-sour-gummy-worms',
+    label: 'Sour Gummy Worms',
+    color: '#FF7EB3',
+    variantId: 'gid://shopify/ProductVariant/48144477651099',
+  },
+};
+
+var BUNDLES = {
+  starter:    { name: 'Starter Kit',       tubs: 1, price: 45,  orig: 45  },
+  essentials: { name: 'Essentials',        tubs: 2, price: 82,  orig: 90  },
+  peak:       { name: 'Peak Performance',  tubs: 3, price: 115, orig: 135 },
+};
+
+var GIFTS = {
+  shaker:   { name: 'Mindor Shaker Bottle', note: '32oz branded · BPA-free' },
+  samples:  { name: 'Flavor Sample Pack',   note: '5 trial servings' },
+  stickers: { name: 'Mindor Sticker Kit',   note: '8-piece die-cut vinyl' },
+};
+
+// ── STATE ──
+var state = {
+  currentStep: 1,
+  bundle: null,     // 'starter' | 'essentials' | 'peak'
+  flavors: [],      // array of flavor keys, length = tubs
+  gift: null,       // gift key
+};
+
+// ── SHOPIFY HELPERS ──
+var endpoint = 'https://' + SHOPIFY_CONFIG.domain + '/api/' + SHOPIFY_CONFIG.apiVersion + '/graphql.json';
+
+function shopifyFetch(query, variables) {
+  return fetch(endpoint, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Shopify-Storefront-Access-Token': SHOPIFY_CONFIG.storefrontToken,
+    },
+    body: JSON.stringify({ query: query, variables: variables || {} }),
+  }).then(function(r) { return r.json(); });
+}
+
+var CART_CREATE =
+  'mutation CartCreate($lines: [CartLineInput!]!) {' +
+  '  cartCreate(input: { lines: $lines }) {' +
+  '    cart { checkoutUrl }' +
+  '    userErrors { field message }' +
+  '  }' +
+  '}';
+
+function buildCartLines() {
+  // Count how many of each flavor key appears
+  var counts = {};
+  state.flavors.forEach(function(key) {
+    counts[key] = (counts[key] || 0) + 1;
+  });
+  var lines = [];
+  Object.keys(counts).forEach(function(key) {
+    var fp = FLAVOR_PRODUCTS[key];
+    if (fp && fp.variantId) {
+      lines.push({ merchandiseId: fp.variantId, quantity: counts[key] });
+    }
+  });
+  return lines;
+}
+
+function goToCheckout() {
+  var btn = document.getElementById('btnLockIn');
+  btn.textContent = 'Creating your cart…';
+  btn.disabled = true;
+
+  var lines = buildCartLines();
+  shopifyFetch(CART_CREATE, { lines: lines })
+    .then(function(res) {
+      var cart = res.data && res.data.cartCreate && res.data.cartCreate.cart;
+      if (cart && cart.checkoutUrl) {
+        window.location.href = cart.checkoutUrl;
+      } else {
+        throw new Error('No checkout URL returned');
+      }
+    })
+    .catch(function(err) {
+      console.error('[Mindor] Checkout error:', err);
+      btn.innerHTML = '⚠ Checkout failed — try again';
+      btn.disabled = false;
+    });
+}
+
+// ── STEP SYSTEM ──
+function goToStep(n) {
+  // Validate step change
+  if (n > state.currentStep) {
+    if (state.currentStep === 1 && !state.bundle) return;
+    if (state.currentStep === 2 && state.flavors.filter(Boolean).length < BUNDLES[state.bundle].tubs) return;
+    if (state.currentStep === 3 && !state.gift) return;
+  }
+
+  state.currentStep = n;
+
+  // Panels
+  document.querySelectorAll('.step-panel').forEach(function(p) { p.classList.remove('active'); });
+  document.getElementById('panel-' + n).classList.add('active');
+
+  // Tabs
+  document.querySelectorAll('.step-tab').forEach(function(t, i) {
+    t.classList.remove('active', 'done');
+    if (i + 1 < n) t.classList.add('done');
+    if (i + 1 === n) t.classList.add('active');
+  });
+
+  // Back / Next / Lock In buttons
+  var btnBack = document.getElementById('btnBack');
+  var btnNext = document.getElementById('btnNext');
+  var stepNav = document.getElementById('stepNav');
+  var lockInWrap = document.getElementById('lockInWrap');
+  var lockInNote = document.getElementById('lockInNote');
+
+  if (n === 4) {
+    stepNav.style.display = 'none';
+    lockInWrap.style.display = 'block';
+    lockInNote.style.display = 'block';
+    renderSummary();
+  } else {
+    stepNav.style.display = 'flex';
+    lockInWrap.style.display = 'none';
+    lockInNote.style.display = 'none';
+    btnBack.style.display = n === 1 ? 'none' : '';
+    updateNextBtn();
+  }
+}
+
+function updateNextBtn() {
+  var btn = document.getElementById('btnNext');
+  var s = state.currentStep;
+  var enabled = false;
+  if (s === 1) enabled = !!state.bundle;
+  if (s === 2) enabled = state.bundle && state.flavors.filter(Boolean).length >= BUNDLES[state.bundle].tubs;
+  if (s === 3) enabled = !!state.gift;
+  btn.disabled = !enabled;
+
+  var labels = { 1: 'Choose Flavors →', 2: 'Choose Your Gift →', 3: 'Review Order →' };
+  btn.textContent = labels[s] || 'Next →';
+}
+
+// ── STEP 1: Bundle selection ──
+document.querySelectorAll('.bundle-option').forEach(function(opt) {
+  opt.addEventListener('click', function() {
+    document.querySelectorAll('.bundle-option').forEach(function(o) { o.classList.remove('selected'); });
+    opt.classList.add('selected');
+    state.bundle = opt.dataset.bundle;
+    state.flavors = new Array(parseInt(opt.dataset.tubs)).fill(null);
+    document.getElementById('heroPrice').textContent = '$' + opt.dataset.price;
+    updateNextBtn();
+  });
+});
+
+// ── STEP 2: Flavor slots ──
+function renderFlavorSlots() {
+  if (!state.bundle) return;
+  var tubs = BUNDLES[state.bundle].tubs;
+  var container = document.getElementById('flavorSlots');
+  var sub = document.getElementById('flavorSubLabel');
+  sub.textContent = tubs === 1
+    ? 'Pick a flavor for your tub'
+    : 'Pick a flavor for each tub (mix or match)';
+
+  container.innerHTML = '';
+  for (var i = 0; i < tubs; i++) {
+    (function(slotIndex) {
+      var slotDiv = document.createElement('div');
+      slotDiv.className = 'flavor-slot';
+
+      var lbl = document.createElement('div');
+      lbl.className = 'flavor-slot-label';
+      lbl.textContent = tubs === 1 ? 'Your Flavor' : 'Tub ' + (slotIndex + 1);
+      slotDiv.appendChild(lbl);
+
+      var pills = document.createElement('div');
+      pills.className = 'flavor-pills';
+
+      Object.keys(FLAVOR_PRODUCTS).forEach(function(key) {
+        var fp = FLAVOR_PRODUCTS[key];
+        var pill = document.createElement('button');
+        pill.className = 'flavor-pill';
+        pill.dataset.slot = slotIndex;
+        pill.dataset.flavor = key;
+
+        var pip = document.createElement('span');
+        pip.className = 'flavor-pip';
+        pip.style.background = fp.color;
+        pill.appendChild(pip);
+        pill.appendChild(document.createTextNode(fp.label));
+
+        if (state.flavors[slotIndex] === key) pill.classList.add('selected');
+
+        pill.addEventListener('click', function() {
+          // Deselect others in same slot
+          container.querySelectorAll('.flavor-pill[data-slot="' + slotIndex + '"]').forEach(function(p) {
+            p.classList.remove('selected');
+          });
+          pill.classList.add('selected');
+          state.flavors[slotIndex] = key;
+          updateNextBtn();
+        });
+
+        pills.appendChild(pill);
+      });
+
+      slotDiv.appendChild(pills);
+      container.appendChild(slotDiv);
+    })(i);
+  }
+}
+
+// ── STEP 3: Gift selection ──
+document.querySelectorAll('.gift-option').forEach(function(opt) {
+  opt.addEventListener('click', function() {
+    document.querySelectorAll('.gift-option').forEach(function(o) { o.classList.remove('selected'); });
+    opt.classList.add('selected');
+    state.gift = opt.dataset.gift;
+    updateNextBtn();
+  });
+});
+
+// ── STEP 4: Summary ──
+function renderSummary() {
+  var b = BUNDLES[state.bundle];
+  var g = GIFTS[state.gift];
+  var savings = b.orig - b.price;
+
+  var container = document.getElementById('summaryLines');
+  container.innerHTML = '';
+
+  // Bundle line
+  var bundleLine = document.createElement('div');
+  bundleLine.className = 'summary-line';
+  bundleLine.innerHTML =
+    '<div class="summary-line-label"><strong>' + b.name + '</strong>' + b.tubs + ' tub' + (b.tubs > 1 ? 's' : '') + ' · ' + (b.tubs * 30) + ' servings</div>' +
+    '<div class="summary-line-val">$' + b.price + '</div>';
+  container.appendChild(bundleLine);
+
+  // Flavors line
+  var flavorNames = state.flavors.map(function(k) { return FLAVOR_PRODUCTS[k].label; });
+  var flavorLine = document.createElement('div');
+  flavorLine.className = 'summary-line';
+  flavorLine.innerHTML =
+    '<div class="summary-line-label"><strong>Flavors</strong>' + flavorNames.join(', ') + '</div>' +
+    '<button class="edit-link" onclick="goToStep(2)">Edit</button>';
+  container.appendChild(flavorLine);
+
+  // Gift line
+  var giftLine = document.createElement('div');
+  giftLine.className = 'summary-line';
+  giftLine.innerHTML =
+    '<div class="summary-line-label"><strong>Free Gift</strong>' + g.name + '</div>' +
+    '<div class="summary-line-val green">FREE</div>';
+  container.appendChild(giftLine);
+
+  // Savings line
+  if (savings > 0) {
+    var saveLine = document.createElement('div');
+    saveLine.className = 'summary-line';
+    saveLine.innerHTML =
+      '<div class="summary-line-label"><strong>You Save</strong>Bundle discount applied</div>' +
+      '<div class="summary-line-val green">−$' + savings + '</div>';
+    container.appendChild(saveLine);
+  }
+
+  document.getElementById('summaryTotal').textContent = '$' + b.price;
+  document.getElementById('summarySavings').textContent = savings > 0 ? 'You\'re saving $' + savings : '';
+}
+
+// ── NAV BUTTONS ──
+document.getElementById('btnNext').addEventListener('click', function() {
+  if (state.currentStep === 2) renderFlavorSlots();
+  if (state.currentStep < 4) {
+    var next = state.currentStep + 1;
+    if (next === 2) renderFlavorSlots();
+    goToStep(next);
+  }
+});
+
+document.getElementById('btnBack').addEventListener('click', function() {
+  if (state.currentStep > 1) goToStep(state.currentStep - 1);
+});
+
+document.getElementById('btnLockIn').addEventListener('click', goToCheckout);
+
+// Initialize
+updateNextBtn();
+
+// ── FAQ ACCORDION ──
+document.querySelectorAll('.faq-question').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var item = btn.parentElement;
+    var wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(function(i) { i.classList.remove('open'); });
+    if (!wasOpen) item.classList.add('open');
+  });
+});
+
+// ── ANNOUNCEMENT BAR ──
+document.getElementById('barClose').addEventListener('click', function() {
+  document.getElementById('announcementBar').style.display = 'none';
+});
+
+// ── EMAIL POPUP ──
+(function() {
+  var popup = document.getElementById('emailPopup');
+  var shown = sessionStorage.getItem('mindorPopupShown');
+
+  function showPopup() {
+    popup.classList.add('visible');
+    sessionStorage.setItem('mindorPopupShown', '1');
+  }
+
+  function hidePopup() {
+    popup.classList.remove('visible');
+  }
+
+  if (!shown) {
+    setTimeout(showPopup, 3500);
+  }
+
+  document.getElementById('popupClose').addEventListener('click', hidePopup);
+  document.getElementById('popupDismiss').addEventListener('click', hidePopup);
+
+  popup.addEventListener('click', function(e) {
+    if (e.target === popup) hidePopup();
+  });
+
+  document.getElementById('popupSubmit').addEventListener('click', function() {
+    var email = document.getElementById('popupEmail').value.trim();
+    if (!email || !email.includes('@')) {
+      document.getElementById('popupEmail').style.borderColor = 'rgba(255,80,80,0.5)';
+      return;
+    }
+    // Here you'd POST to your email platform (Klaviyo, etc.)
+    // For now, show success state
+    document.getElementById('popupFormWrap').style.display = 'none';
+    document.getElementById('popupSuccess').style.display = 'block';
+    setTimeout(hidePopup, 3500);
+  });
+})();
+</script>
+
+</body>
+</html>
