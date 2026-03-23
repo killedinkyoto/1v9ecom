@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MINDOR — How Much Is Stimulant Roulette Costing You?</title>
+<meta name="description" content="Calculate the real cost of your daily caffeine and stimulant habits — in dollars, hours, and lost output. Free calculator from Mindor Performance Stack.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--execution-green:#E2FF47;--locked-lime:#EBFF47;--deep-work-black:#0A0A0A;--sprint-green:#425743;--clean-cream:#F8ECC3;--fog-grey:#C8C9B8;--bg:#111309;--surface:#161A0E;--surface2:#1E2416;--border:rgba(235,255,71,0.12);--border-subtle:rgba(255,255,255,0.06);--border-accent:rgba(235,255,71,0.3);--border-active:var(--execution-green);--text-primary:#F0F0E8;--text-muted:#6A7A5A;--text-dim:#3A4A30;--danger:#FF6B6B;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text-primary);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh;}
+
+.site-nav{position:sticky;top:0;z-index:10;background:rgba(17,19,9,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:0.5px solid var(--border);}
+.nav-inner{max-width:960px;margin:0 auto;padding:0 40px;height:56px;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.nav-wordmark{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:22px;color:var(--execution-green);letter-spacing:0.04em;}
+
+.hero{padding:80px 40px 60px;text-align:center;background:radial-gradient(circle at 50% 20%,rgba(235,255,71,0.03) 0%,transparent 50%),var(--bg);}
+.hero-inner{max-width:640px;margin:0 auto;}
+.hero-eyebrow{font-size:10px;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-muted);margin-bottom:20px;}
+.hero-headline{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(40px,7vw,68px);line-height:0.92;text-transform:uppercase;color:var(--text-primary);margin-bottom:16px;}
+.hero-headline span{color:var(--execution-green);}
+.hero-sub{font-size:16px;color:var(--fog-grey);line-height:1.65;max-width:480px;margin:0 auto 32px;}
+.hero-trust{font-size:11px;color:var(--text-dim);letter-spacing:0.08em;}
+
+.calc-wrap{max-width:640px;margin:0 auto;padding:0 40px 80px;}
+.progress-bar{width:100%;height:3px;background:var(--surface2);border-radius:2px;margin-bottom:40px;overflow:hidden;}
+.progress-fill{height:100%;background:var(--execution-green);border-radius:2px;transition:width 0.4s ease;}
+
+.step{display:none;animation:fadeIn 0.35s ease;}
+.step.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+.step-label{font-size:9px;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-dim);margin-bottom:16px;padding-bottom:10px;border-bottom:0.5px solid var(--border-subtle);}
+.step-question{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:clamp(24px,4vw,32px);line-height:1;text-transform:uppercase;color:var(--text-primary);margin-bottom:8px;}
+.step-desc{font-size:13px;color:var(--fog-grey);margin-bottom:28px;line-height:1.6;}
+
+/* Insight nudge — appears after belief questions */
+.insight-nudge{
+  margin-top:-8px;margin-bottom:24px;padding:14px 18px;
+  background:rgba(235,255,71,0.03);border-left:2px solid var(--execution-green);
+  border-radius:0 4px 4px 0;font-size:12px;color:var(--fog-grey);line-height:1.55;
+  display:none;
+}
+.insight-nudge.visible{display:block;animation:fadeIn 0.3s ease;}
+.insight-nudge strong{color:var(--clean-cream);font-weight:600;}
+
+.options{display:flex;flex-direction:column;gap:10px;margin-bottom:32px;}
+.option{display:flex;align-items:center;gap:16px;padding:16px 20px;background:var(--surface);border:0.5px solid var(--border-subtle);border-radius:4px;cursor:pointer;transition:border-color 0.2s,background 0.15s;}
+.option:hover{border-color:var(--border-accent);background:var(--surface2);}
+.option.selected{border-color:var(--execution-green);background:rgba(235,255,71,0.04);}
+.option-radio{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--sprint-green);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:border-color 0.15s;}
+.option.selected .option-radio{border-color:var(--execution-green);}
+.option.selected .option-radio::after{content:'';width:8px;height:8px;border-radius:50%;background:var(--execution-green);}
+.option-text{font-size:14px;color:var(--fog-grey);font-weight:500;}
+.option.selected .option-text{color:var(--text-primary);}
+.option-meta{font-size:11px;color:var(--text-dim);margin-left:auto;white-space:nowrap;}
+
+/* Multi-select variant */
+.option-check{width:18px;height:18px;border-radius:3px;border:1.5px solid var(--sprint-green);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:border-color 0.15s;font-size:11px;color:transparent;}
+.option.selected .option-check{border-color:var(--execution-green);color:var(--execution-green);}
+
+.slider-group{margin-bottom:32px;}
+.slider-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px;}
+.slider-val{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:36px;color:var(--execution-green);line-height:1;}
+.slider-unit{font-size:12px;color:var(--text-muted);font-weight:500;}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:4px;background:var(--surface2);border-radius:2px;outline:none;margin:8px 0;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;background:var(--execution-green);cursor:pointer;box-shadow:0 0 12px rgba(226,255,71,0.3);border:2px solid var(--deep-work-black);}
+input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--execution-green);cursor:pointer;box-shadow:0 0 12px rgba(226,255,71,0.3);border:2px solid var(--deep-work-black);}
+
+.btn-row{display:flex;gap:12px;flex-wrap:wrap;}
+.btn-primary{display:inline-block;background:var(--execution-green);color:#1A1F14;font-family:'DM Sans',sans-serif;font-weight:600;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;padding:14px 32px;border-radius:3px;border:none;cursor:pointer;transition:opacity 0.15s,transform 0.1s,box-shadow 0.2s;text-decoration:none;}
+.btn-primary:hover{opacity:0.9;transform:translateY(-1px);box-shadow:0 0 20px rgba(226,255,71,0.15);}
+.btn-primary:disabled{opacity:0.3;cursor:not-allowed;transform:none;box-shadow:none;}
+.btn-secondary{display:inline-block;background:transparent;color:var(--execution-green);font-family:'DM Sans',sans-serif;font-weight:500;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;padding:12px 28px;border-radius:3px;border:0.5px solid var(--border-accent);cursor:pointer;transition:background 0.15s;}
+.btn-secondary:hover{background:rgba(235,255,71,0.06);}
+
+/* RESULTS */
+.results{display:none;animation:fadeIn 0.5s ease;}
+.results.active{display:block;}
+.results-header{text-align:center;margin-bottom:48px;}
+.results-eyebrow{font-size:10px;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:var(--danger);margin-bottom:16px;}
+.results-headline{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(32px,6vw,52px);line-height:0.92;text-transform:uppercase;color:var(--text-primary);margin-bottom:12px;}
+.results-headline span{color:var(--execution-green);}
+.results-sub{font-size:14px;color:var(--fog-grey);max-width:460px;margin:0 auto;}
+
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:40px;}
+.stat-card{background:var(--surface);border:0.5px solid var(--border-subtle);border-radius:4px;padding:24px 20px;text-align:center;}
+.stat-card.highlight{border-color:var(--border-accent);background:rgba(235,255,71,0.03);}
+.stat-card.danger{border-color:rgba(255,107,107,0.3);background:rgba(255,107,107,0.03);}
+.stat-number{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(32px,5vw,48px);line-height:1;margin-bottom:4px;}
+.stat-card.highlight .stat-number{color:var(--execution-green);}
+.stat-card.danger .stat-number{color:var(--danger);}
+.stat-label{font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);}
+
+.breakdown{background:var(--surface);border:0.5px solid var(--border-subtle);border-radius:4px;padding:28px 24px;margin-bottom:40px;}
+.breakdown-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:18px;text-transform:uppercase;color:var(--clean-cream);margin-bottom:20px;}
+.breakdown-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:0.5px solid rgba(255,255,255,0.03);}
+.breakdown-row:last-child{border-bottom:none;}
+.breakdown-item{font-size:13px;color:var(--fog-grey);}
+.breakdown-cost{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;color:var(--text-primary);}
+.breakdown-time{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;color:var(--danger);}
+
+/* Personalized insight blocks on results */
+.insight-block{
+  background:var(--surface);border:0.5px solid var(--border-subtle);border-radius:4px;
+  padding:24px;margin-bottom:16px;display:none;
+}
+.insight-block.visible{display:block;animation:fadeIn 0.4s ease;}
+.insight-block-label{font-size:9px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim);margin-bottom:8px;}
+.insight-block-text{font-size:14px;color:var(--fog-grey);line-height:1.6;}
+.insight-block-text strong{color:var(--clean-cream);font-weight:600;}
+.insight-block-text em{color:var(--execution-green);font-style:normal;font-weight:600;}
+
+.compare-bar{display:flex;align-items:center;justify-content:center;gap:16px;padding:16px 24px;background:var(--surface2);border-radius:4px;margin-bottom:40px;flex-wrap:wrap;}
+.compare-side{text-align:center;}
+.compare-label{font-size:9px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim);margin-bottom:4px;}
+.compare-val{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:24px;}
+.compare-old{color:var(--danger);text-decoration:line-through;}
+.compare-new{color:var(--execution-green);}
+.compare-vs{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:16px;color:var(--text-dim);}
+
+.cta-section{text-align:center;padding:40px 28px;background:var(--surface);border:0.5px solid var(--border-accent);border-radius:4px;margin-bottom:40px;position:relative;overflow:hidden;}
+.cta-section::before{content:'';position:absolute;top:0;right:0;width:200px;height:200px;background:radial-gradient(circle,rgba(235,255,71,0.04) 0%,transparent 70%);pointer-events:none;}
+.cta-badge{display:inline-block;background:var(--execution-green);color:#1A1F14;font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;padding:4px 12px;border-radius:2px;margin-bottom:16px;}
+.cta-headline{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(28px,4vw,38px);line-height:0.95;text-transform:uppercase;color:var(--text-primary);margin-bottom:8px;}
+.cta-headline span{color:var(--execution-green);}
+.cta-sub{font-size:14px;color:var(--fog-grey);margin-bottom:24px;max-width:400px;margin-left:auto;margin-right:auto;line-height:1.6;}
+.cta-price{margin-bottom:20px;}
+.cta-price-old{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:20px;color:var(--text-dim);text-decoration:line-through;margin-right:8px;}
+.cta-price-new{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:36px;color:var(--text-primary);}
+.cta-price-per{font-size:12px;color:var(--text-muted);margin-top:2px;}
+.cta-perks{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:24px;text-align:left;max-width:340px;margin-left:auto;margin-right:auto;}
+.cta-perks li{font-size:12px;color:var(--fog-grey);padding-left:4px;}
+.cta-perks li span{color:var(--execution-green);margin-right:6px;}
+.cta-guarantee{font-size:11px;color:var(--text-dim);margin-top:14px;letter-spacing:0.04em;}
+
+.site-footer{background:var(--surface);border-top:0.5px solid var(--border);padding:48px 40px 32px;}
+.footer-inner{max-width:960px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px;flex-wrap:wrap;gap:24px;}
+.footer-wordmark{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:28px;color:var(--execution-green);letter-spacing:0.04em;display:block;}
+.footer-sub{font-size:10px;color:var(--text-dim);letter-spacing:0.1em;text-transform:uppercase;}
+.footer-links{display:flex;gap:24px;}
+.footer-links a{font-size:11px;color:var(--text-muted);text-decoration:none;letter-spacing:0.06em;}
+.footer-links a:hover{color:var(--text-primary);}
+.footer-disclaimer{max-width:960px;margin:0 auto;font-size:10px;color:var(--text-dim);line-height:1.6;letter-spacing:0.02em;border-top:0.5px solid var(--border-subtle);padding-top:20px;}
+
+@media(max-width:768px){
+  .hero{padding:48px 20px 40px;}.calc-wrap{padding:0 20px 60px;}.stat-grid{grid-template-columns:1fr;}.nav-inner{padding:0 20px;}.compare-bar{flex-direction:column;gap:12px;}.site-footer{padding:32px 20px 24px;}.footer-inner{flex-direction:column;}.btn-row{flex-direction:column;}.btn-row .btn-primary,.btn-row .btn-secondary{width:100%;text-align:center;}
+}
+</style>
+</head>
+<body>
+
+<nav class="site-nav"><div class="nav-inner">
+  <a href="#" class="nav-logo"><svg width="28" height="20" viewBox="0 0 40 28" fill="none"><path d="M4 22 L10 8 L16 18 L20 10 L24 18 L30 8 L36 22" stroke="#E2FF47" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nav-wordmark">MINDOR</span></a>
+  <a href="#results-cta" class="btn-primary" style="font-size:11px;padding:10px 24px;">Get Started</a>
+</div></nav>
+
+<section class="hero"><div class="hero-inner">
+  <p class="hero-eyebrow">Free Calculator · 90 Seconds</p>
+  <h1 class="hero-headline">HOW MUCH IS <span>STIMULANT ROULETTE</span> COSTING YOU?</h1>
+  <p class="hero-sub">Your daily caffeine and stimulant habits have a hidden price tag — in dollars, hours, and output you'll never get back.</p>
+  <p class="hero-trust">No email required · Instant results · Takes 90 seconds</p>
+</div></section>
+
+<div class="calc-wrap">
+<div class="progress-bar"><div class="progress-fill" id="progress" style="width:0%"></div></div>
+
+<!-- ===== STEP 1: Identity (Belief 6 — seed early) ===== -->
+<div class="step active" data-step="1">
+  <p class="step-label">Let's start</p>
+  <h2 class="step-question">What best describes your work?</h2>
+  <p class="step-desc">This helps us make your results more relevant.</p>
+  <div class="options" data-name="identity">
+    <div class="option" data-value="founder"><div class="option-radio"></div><span class="option-text">Founder / Business Owner</span></div>
+    <div class="option" data-value="operator"><div class="option-radio"></div><span class="option-text">Operator / Agency / Freelancer</span></div>
+    <div class="option" data-value="creator"><div class="option-radio"></div><span class="option-text">Creator / Writer / Designer</span></div>
+    <div class="option" data-value="knowledge"><div class="option-radio"></div><span class="option-text">Knowledge Worker / Remote Professional</span></div>
+    <div class="option" data-value="student"><div class="option-radio"></div><span class="option-text">Student / Early-Career Builder</span></div>
+  </div>
+  <div class="btn-row"><button class="btn-primary" disabled onclick="nextStep()">Continue</button></div>
+</div>
+
+<!-- ===== STEP 2: Coffee (Data) ===== -->
+<div class="step" data-step="2">
+  <p class="step-label">Question 1 of 10</p>
+  <h2 class="step-question">How many cups of coffee per day?</h2>
+  <p class="step-desc">Include espresso, cold brew, anything coffee-based.</p>
+  <div class="options" data-name="coffee">
+    <div class="option" data-value="0" data-cost="0" data-crash="0"><div class="option-radio"></div><span class="option-text">None — I don't drink coffee</span></div>
+    <div class="option" data-value="1" data-cost="4.50" data-crash="0.25"><div class="option-radio"></div><span class="option-text">1 cup</span><span class="option-meta">~$4.50/day</span></div>
+    <div class="option" data-value="2" data-cost="7.00" data-crash="0.5"><div class="option-radio"></div><span class="option-text">2 cups</span><span class="option-meta">~$7/day</span></div>
+    <div class="option" data-value="3" data-cost="10.50" data-crash="0.75"><div class="option-radio"></div><span class="option-text">3 cups</span><span class="option-meta">~$10.50/day</span></div>
+    <div class="option" data-value="4" data-cost="14.00" data-crash="1.25"><div class="option-radio"></div><span class="option-text">4+ cups</span><span class="option-meta">~$14+/day</span></div>
+  </div>
+  <div class="btn-row"><button class="btn-secondary" onclick="prevStep()">Back</button><button class="btn-primary" disabled onclick="nextStep()">Continue</button></div>
+</div>
+
+<!-- ===== STEP 3: Energy Drinks (Data) ===== -->
+<div class="step" data-step="3">
+  <p class="step-label">Question 2 of 10</p>
+  <h2 class="step-question">Energy drinks per week?</h2>
+  <p class="step-desc">Red Bull, Monster, Celsius, Bang, Alani Nu, any functional energy drink.</p>
+  <div class="options" data-name="energy">
+    <div class="option" data-value="0" data-cost="0" data-crash="0"><div class="option-radio"></div><span class="option-text">None</span></div>
+    <div class="option" data-value="2" data-cost="1.43" data-crash="0.4"><div class="option-radio"></div><span class="option-text">1–2 per week</span><span class="option-meta">~$5–7/wk</span></div>
+    <div class="option" data-value="4" data-cost="2.86" data-crash="0.75"><div class="option-radio"></div><span class="option-text">3–5 per week</span><span class="option-meta">~$12–20/wk</span></div>
+    <div class="option" data-value="7" data-cost="5.00" data-crash="1.25"><div class="option-radio"></div><span class="option-text">Daily or more</span><span class="option-meta">~$25–35/wk</span></div>
+  </div>
+  <div class="btn-row"><button class="btn-secondary" onclick="prevStep()">Back</button><button class="btn-primary" disabled onclick="nextStep()">Continue</button></div>
+</div>
+
+<!-- ===== STEP 4: BELIEF — Wired ≠ Productive (Belief 2) ===== -->
+<div class="step" data-step="4">
+  <p class="step-label">Quick Check-In</p>
+  <h2 class="step-question">Be honest — when you're caffeinated, do you actually produce more? Or does it just feel like you're working harder?</h2>
+  <p class="step-desc">No wrong answer. This is about what your experience actually looks like.</p>
+  <div class="options" data-name="belief_wired">
+    <div class="option" data-value="productive"><div class="option-radio"></div><span class="option-text">I genuinely get more done</span></div>
+    <div class="option" data-value="mixed"><div class="option-radio"></div><span class="option-text">Honestly, it's mixed — some days yes, some days I just feel busy</span></div>
+    <div class="option" data-value="illusion"><div class="option-radio"></div><span class="option-text">Mostly the feeling of productivity without the output to match</span></div>
+    <div class="option" data-value="dependent"><div class="option-radio"></div><span class="option-text">I need it just to feel normal — it doesn't even boost me anymore</span></div>
+  </div>
+  <div class="insight-nudge" id="nudge-wired"></div>
+  <div class="btn-row"><button class="btn-secondary" onclick="prevStep()">Back</button><button class="btn-primary" disabled onclick="nextStep()">Continue</button></div>
+</div>
+
+<!-- ===== STEP 5: Nicotine (Data) ===== -->
+<div class="step" data-step="5">
+  <p class="step-label">Question 4 of 10</p>
+  <h2 class="step-question">Do you use nicotine for focus?</h2>
+  <p class="step-desc">Gum, pouches, patches, vaping — anything you use to sharpen up for work.</p>
+  <div class="options" data-name="nicotine">
+    <div class="option" data-value="0" data-cost="0" data-crash="0"><div class="option-radio"></div><span class="option-text">Nope, never</span></div>
+    <div class="option" data-value="1" data-cost="1.50" data-crash="0.25"><div class="option-radio"></div><span class="option-text">Occasionally (a few times a week)</span><span class="option-meta">~$10/wk</span></div>
+    <div class="option" data-value="2" data-cost="3.50" data-crash="0.5"><div class="option-radio"></div><span class="option-text">Daily habit</span><span class="option-meta">~$25/wk</span></div>
+    <div class="option" data-value="3" data-cost="6.00" data-crash="0.75"><div class="option-radio"></div><span class="option-text">Heavy daily use</span><span class="option-meta">~$40+/wk</span></div>
+  </div>
+  <div class="btn-row"><button class="btn-secondary" onclick="prevStep()">Back</button><button class="btn-primary" disabled onclick="nextStep()">Continue</button></div>
+</div>
+
+<!-- ===== STEP 6: Other Supplements (Data) ===== -->
+<div class="step" data-step="6">
+  <p class="step-label">Question 5 of 10</p>
+  <h2 class="step-question">Any other focus supplements or nootropics?</h2>
+  <p class="step-desc">Alpha Brain, Thesis, mushroom coffees, L-theanine, pre-workout for work, etc.</p>
+  <div class="options" data-name="supps">
+    <div class="option" data-value="0" data-cost="0" data-crash="0"><div class="option-radio"></div><span class="option-text">No, just caffeine and willpower</span></div>
+    <div class="option" data-value="1" data-cost="1.50" data-crash="0"><div class="option-radio"></div><span class="option-text">One product ($30–50/mo)</span></div>
+    <div class="option" data-value="2" data-cost="3.00" data-crash="0"><div class="option-radio"></div><span class="option-text">Multiple products ($60–100+/mo)</span></div>
+  </div>
+  <div class="btn-row"><button class="btn-secondary" onclick="prevStep()">Back</button><button class="btn-primary" disabled onclick="nextStep()">Continue</button></div>
+</div>
+
+<!-- ===== STEP 7: BELIEF — Fragmentation (Belief 1) ===== -->
+<div class="step" data-step="7">
+  <p class="step-label">Almost There — One More Context Question</p>
+  <h2 class="step-question">What's the biggest thing standing between you and consistent deep work?</h2>
+  <p class="step-desc">Pick the one that hits closest to home.</p>
+  <div class="options" data-name="belief_blocker">
+    <div class="option" data-value="distraction"><div class="option-radio"></div><span class="option-text">Constant distractions — notifications, tabs, context switching</span></div>
+    <div class="option" data-value="energy"><div class="option-radio"></div><span class="option-text">Inconsistent energy — sharp in the morning, useless by 2pm</span></div>
+    <div class="option" data-value="starting"><div class="option-radio"></div><span class="option-text">Trouble starting — I know what to do but can't lock in</span></div>
+    <div class="option" data-value="anxiety"><div class="option-radio"></div><span class="option-text">Stimulant side effects — jitters, anxiety, or restlessness that breaks focus</span></div>
+  </div>
+  <div class="insight-nudge" id="nudge-blocker"></div>
+  <div class="btn-row"><button class="btn-secondary" onclick="prevStep()">Back</button><button class="btn-primary" disabled onclick="nextStep()">Continue</button></div>
+</div>
+
+<!-- ===== STEP 8: Crash Hours (Data) ===== -->
+<div class="step" data-step="8">
+  <p class="step-label">Question 7 of 10</p>
+  <h2 class="step-question">How many hours per day do you feel "off"?</h2>
+  <p class="step-desc">The foggy, scattered, low-output state — after the crash, before the next hit, during the afternoon slump.</p>
+  <div class="slider-group">
+    <div class="slider-header"><span class="slider-val" id="crash-val">2</span><span class="slider-unit">hours per workday</span></div>
+    <input type="range" min="0" max="6" step="0.5" value="2" id="crash-slider" oninput="updateCrashSlider()">
+    <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-dim);margin-top:4px;"><span>0h</span><span>3h</span><span>6h</span></div>
+  </div>
+  <div class="btn-row"><button class="btn-secondary" onclick="prevStep()">Back</button><button class="btn-primary" onclick="nextStep()">Continue</button></div>
+</div>
+
+<!-- ===== STEP 9: BELIEF — Calm > Intensity (Belief 3 + 5) ===== -->
+<div class="step" data-step="9">
+  <p class="step-label">One More — This One Matters</p>
+  <h2 class="step-question">If you could choose your ideal work-state, which sounds closer to what you actually want?</h2>
+  <p class="step-desc">Not what you think you should want. What would actually help you ship more.</p>
+  <div class="options" data-name="belief_state">
+    <div class="option" data-value="intensity"><div class="option-radio"></div><span class="option-text">Intense, wired, maximum energy — I want to feel like I'm on fire</span></div>
+    <div class="option" data-value="calm"><div class="option-radio"></div><span class="option-text">Calm, steady, locked in — I want to forget I'm focusing because it just flows</span></div>
+    <div class="option" data-value="balance"><div class="option-radio"></div><span class="option-text">Somewhere in between — alert but not overstimulated</span></div>
+  </div>
+  <div class="insight-nudge" id="nudge-state"></div>
+  <div class="btn-row"><button class="btn-secondary" onclick="prevStep()">Back</button><button class="btn-primary" disabled onclick="nextStep()">Continue</button></div>
+</div>
+
+<!-- ===== STEP 10: BELIEF — Tried before & disappointed (Belief 4 seed) ===== -->
+<div class="step" data-step="10">
+  <p class="step-label">Last Context Question</p>
+  <h2 class="step-question">Have you tried to fix this before?</h2>
+  <p class="step-desc">Routines, supplements, cutting caffeine, productivity systems — any attempt to build a more reliable work-state.</p>
+  <div class="options" data-name="belief_tried">
+    <div class="option" data-value="no"><div class="option-radio"></div><span class="option-text">Not really — I've just been muscling through</span></div>
+    <div class="option" data-value="some"><div class="option-radio"></div><span class="option-text">A few things here and there, nothing stuck</span></div>
+    <div class="option" data-value="many"><div class="option-radio"></div><span class="option-text">I've tried a lot — supplements, routines, apps, cutting caffeine</span></div>
+    <div class="option" data-value="exhausted"><div class="option-radio"></div><span class="option-text">I'm honestly tired of trying things that don't work</span></div>
+  </div>
+  <div class="insight-nudge" id="nudge-tried"></div>
+  <div class="btn-row"><button class="btn-secondary" onclick="prevStep()">Back</button><button class="btn-primary" disabled onclick="nextStep()">Continue</button></div>
+</div>
+
+<!-- ===== STEP 11: Hourly Rate (Data — final) ===== -->
+<div class="step" data-step="11">
+  <p class="step-label">Final Question — Let's Do The Math</p>
+  <h2 class="step-question">What's your time worth per hour?</h2>
+  <p class="step-desc">Your effective hourly rate — salary / work hours, freelance rate, or what you bill. This calculates the real cost of lost output.</p>
+  <div class="options" data-name="hourly">
+    <div class="option" data-value="25"><div class="option-radio"></div><span class="option-text">~$25/hour</span></div>
+    <div class="option" data-value="50"><div class="option-radio"></div><span class="option-text">~$50/hour</span></div>
+    <div class="option" data-value="75"><div class="option-radio"></div><span class="option-text">~$75/hour</span></div>
+    <div class="option" data-value="100"><div class="option-radio"></div><span class="option-text">~$100/hour</span></div>
+    <div class="option" data-value="150"><div class="option-radio"></div><span class="option-text">$150+/hour</span></div>
+  </div>
+  <div class="btn-row"><button class="btn-secondary" onclick="prevStep()">Back</button><button class="btn-primary" disabled onclick="showResults()">See My Results</button></div>
+</div>
+
+<!-- ===== RESULTS ===== -->
+<div class="results" id="results">
+  <div class="results-header">
+    <p class="results-eyebrow">Your Stimulant Roulette Report</p>
+    <h2 class="results-headline">YOU'RE LOSING <span id="r-headline-money">$0</span> EVERY MONTH</h2>
+    <p class="results-sub">Between what you're spending and the output you're losing to crash states — here's the full picture.</p>
+  </div>
+
+  <div class="stat-grid">
+    <div class="stat-card highlight"><div class="stat-number" id="r-monthly-cost">$0</div><div class="stat-label">Monthly Stimulant Spend</div></div>
+    <div class="stat-card danger"><div class="stat-number" id="r-monthly-hours">0h</div><div class="stat-label">Hours Lost to Crashes / Month</div></div>
+    <div class="stat-card danger"><div class="stat-number" id="r-monthly-output">$0</div><div class="stat-label">Lost Output Value / Month</div></div>
+    <div class="stat-card highlight"><div class="stat-number" id="r-annual-total">$0</div><div class="stat-label">Total Annual Cost</div></div>
+  </div>
+
+  <div class="breakdown">
+    <div class="breakdown-title">Your Daily Breakdown</div>
+    <div id="breakdown-rows"></div>
+    <div class="breakdown-row" style="border-top:0.5px solid var(--border);padding-top:14px;margin-top:8px;">
+      <span class="breakdown-item" style="color:var(--text-primary);font-weight:600;">Daily Total</span>
+      <span class="breakdown-cost" style="color:var(--execution-green);font-size:18px;" id="r-daily-total">$0</span>
+    </div>
+  </div>
+
+  <!-- Personalized insight blocks (shown conditionally based on belief answers) -->
+  <div class="insight-block" id="insight-identity"><div class="insight-block-label">Based on your profile</div><div class="insight-block-text" id="insight-identity-text"></div></div>
+  <div class="insight-block" id="insight-wired"><div class="insight-block-label">Your caffeine reality</div><div class="insight-block-text" id="insight-wired-text"></div></div>
+  <div class="insight-block" id="insight-blocker"><div class="insight-block-label">Your #1 focus blocker</div><div class="insight-block-text" id="insight-blocker-text"></div></div>
+  <div class="insight-block" id="insight-state"><div class="insight-block-label">What you actually want</div><div class="insight-block-text" id="insight-state-text"></div></div>
+  <div class="insight-block" id="insight-tried"><div class="insight-block-label">Why past solutions didn't stick</div><div class="insight-block-text" id="insight-tried-text"></div></div>
+
+  <div style="height:24px"></div>
+
+  <div class="compare-bar">
+    <div class="compare-side"><div class="compare-label">Your Current System</div><div class="compare-val compare-old" id="r-compare-old">$0/mo</div></div>
+    <div class="compare-vs">→</div>
+    <div class="compare-side"><div class="compare-label">Mindor Performance Stack</div><div class="compare-val compare-new">$34/mo</div></div>
+  </div>
+
+  <div class="cta-section" id="results-cta">
+    <span class="cta-badge">Replace the Chaos</span>
+    <h3 class="cta-headline">ONE DAILY DRIVER.<br><span>$34/MONTH.</span></h3>
+    <p class="cta-sub">Mindor replaces the scattered stimulant stack with one controlled focus system — clean on-ramp, stable plateau, soft landing.</p>
+    <div class="cta-price"><span class="cta-price-old">$44</span><span class="cta-price-new">$34/mo</span><div class="cta-price-per">~$1.13/serving · 30 servings · Free shipping</div></div>
+    <ul class="cta-perks">
+      <li><span>✓</span> 100mg Green Tea Caffeine + 200mg L-Theanine</li>
+      <li><span>✓</span> Alpha-GPC + Ginseng + B-Vitamins</li>
+      <li><span>✓</span> The Focus Arc: on-ramp → plateau → soft landing</li>
+      <li><span>✓</span> 60-day money-back guarantee</li>
+      <li><span>✓</span> Skip, pause, or cancel anytime</li>
+    </ul>
+    <a href="#" class="btn-primary" style="padding:16px 48px;font-size:14px;">Build Your Baseline — $34/mo →</a>
+    <p class="cta-guarantee">60-day guarantee. No returns required. If it doesn't change your workday, you get every cent back.</p>
+  </div>
+
+  <div style="text-align:center;margin-top:8px;"><button class="btn-secondary" onclick="resetCalc()">Recalculate</button></div>
+</div>
+</div>
+
+<footer class="site-footer"><div class="footer-inner"><div><span class="footer-wordmark">MINDOR</span><span class="footer-sub">Performance Stack · Est. 2026</span></div><div class="footer-links"><a href="#">Terms</a><a href="#">Privacy</a><a href="#">Contact</a></div></div><p class="footer-disclaimer">*These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease. Calculator estimates are for illustrative purposes based on user-reported averages and are not guaranteed to reflect individual circumstances.</p></footer>
+
+<script>
+let currentStep = 1;
+const totalSteps = 11;
+const answers = {};
+
+// Option selection
+document.querySelectorAll('.options').forEach(group => {
+  group.querySelectorAll('.option').forEach(opt => {
+    opt.addEventListener('click', () => {
+      group.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+      const step = opt.closest('.step');
+      const btn = step.querySelector('.btn-primary');
+      if(btn) btn.disabled = false;
+      const name = group.dataset.name;
+      answers[name] = {
+        value: opt.dataset.value,
+        cost: parseFloat(opt.dataset.cost || 0),
+        crash: parseFloat(opt.dataset.crash || 0)
+      };
+      // Show insight nudges for belief questions
+      showNudge(name, opt.dataset.value);
+    });
+  });
+});
+
+function showNudge(name, value) {
+  // Belief 2: Wired ≠ productive
+  if(name === 'belief_wired') {
+    const el = document.getElementById('nudge-wired');
+    const msgs = {
+      productive: "<strong>That's great.</strong> You're in the minority. Most people we talk to describe caffeine as inconsistent at best — a short spike followed by noise. The question is whether you could get the same output with less chaos.",
+      mixed: "<strong>That's the most common answer we get.</strong> Stimulation creates the <em>feeling</em> of productivity. But the best work sessions aren't intense — they're steady. That gap between feeling busy and actually shipping is where most output gets lost.",
+      illusion: "<strong>You already know this.</strong> That feeling of stimulation — the urgency, the restlessness — it tricks you into thinking you're working. But when you look at what you actually shipped? Often less than you'd expect. You're not broken. Your system is.",
+      dependent: "<strong>That's not a discipline problem — that's a tolerance trap.</strong> When caffeine stops boosting and just prevents withdrawal, every cup is maintenance, not performance. You're running to stand still."
+    };
+    el.innerHTML = msgs[value] || '';
+    el.classList.add('visible');
+  }
+  // Belief 1: Fragmentation
+  if(name === 'belief_blocker') {
+    const el = document.getElementById('nudge-blocker');
+    const msgs = {
+      distraction: "<strong>You're not undisciplined.</strong> Research shows knowledge workers get interrupted roughly every 2 minutes. Your environment is engineered to fragment your attention. The solution isn't more willpower — it's a system that helps you enter a controllable work-state despite the chaos.",
+      energy: "<strong>That pattern has a name: spike and crash.</strong> Your morning caffeine creates a peak, but the trough that follows steals the second half of your day. A better-designed stack would give you a longer plateau instead of a cliff.",
+      starting: "<strong>That's the most frustrating one.</strong> You know exactly what you need to do. The intention is there. But the transition from 'I should start' to 'I'm locked in' feels like pushing through cement. That starting friction is a state problem, not a motivation problem.",
+      anxiety: "<strong>This is the stimulant trap.</strong> The same tool that's supposed to sharpen you is also making you restless, jittery, and unable to sit in calm, deep work. You're medicating focus with something that undermines it."
+    };
+    el.innerHTML = msgs[value] || '';
+    el.classList.add('visible');
+  }
+  // Belief 3+5: Calm > intensity
+  if(name === 'belief_state') {
+    const el = document.getElementById('nudge-state');
+    const msgs = {
+      intensity: "<strong>Interesting.</strong> Most people start there — wanting maximum intensity. But operators who've been at it a while almost always shift toward controllability. Intensity burns bright and burns out. The question is: do you want to feel like you're on fire, or do you want to still be sharp at 4pm?",
+      calm: "<strong>You're describing exactly what high performers actually want</strong> when they stop chasing stimulation and start thinking about sustainable output. Not a spike. A steady runway. That 'forgot I was focusing' state is the signal that your system is working, not failing.",
+      balance: "<strong>That's the sweet spot.</strong> Alert enough to be sharp. Calm enough to be steady. Not so wired that your mind races past the work. Most stimulants can't give you that — they give you intensity or nothing. A smarter stack is designed for exactly this middle ground."
+    };
+    el.innerHTML = msgs[value] || '';
+    el.classList.add('visible');
+  }
+  // Belief 4: Past solutions
+  if(name === 'belief_tried') {
+    const el = document.getElementById('nudge-tried');
+    const msgs = {
+      no: "<strong>Fair enough.</strong> Sometimes brute force works — until it doesn't. The fact that you're here means something is starting to feel unsustainable. That's not weakness. That's pattern recognition.",
+      some: "<strong>Nothing sticking is the most common story we hear.</strong> It's not because you didn't try hard enough. Most focus solutions are either too complex (28 ingredient stacks with cycling protocols) or too shallow (just more caffeine in a different package). What works is something simple enough to actually use every day.",
+      many: "<strong>You've put in the work.</strong> The problem wasn't your effort — it was that most solutions either spike you and crash, or they're so subtle you wonder if they're doing anything. What's missing is a stack designed around a specific shape of experience: on-ramp, plateau, soft landing.",
+      exhausted: "<strong>We hear you.</strong> Skepticism at this point isn't negativity — it's intelligence. You've been burned. The only thing that should change your mind is a product that does what it says, backed by a guarantee that means you risk nothing by testing it."
+    };
+    el.innerHTML = msgs[value] || '';
+    el.classList.add('visible');
+  }
+}
+
+function updateProgress() {
+  document.getElementById('progress').style.width = ((currentStep - 1) / totalSteps * 100) + '%';
+}
+function showStep(n) {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  const target = document.querySelector(`.step[data-step="${n}"]`);
+  if(target){target.classList.add('active');target.style.animation='none';target.offsetHeight;target.style.animation='';}
+  updateProgress();
+}
+function nextStep(){if(currentStep<totalSteps){currentStep++;showStep(currentStep);}}
+function prevStep(){if(currentStep>1){currentStep--;showStep(currentStep);}}
+function updateCrashSlider(){const v=document.getElementById('crash-slider').value;document.getElementById('crash-val').textContent=v;answers.crashHours=parseFloat(v);}
+
+function showResults() {
+  const coffee = answers.coffee || {cost:0,crash:0};
+  const energy = answers.energy || {cost:0,crash:0};
+  const nicotine = answers.nicotine || {cost:0,crash:0};
+  const supps = answers.supps || {cost:0};
+  const crashHours = answers.crashHours || 2;
+  const hourly = answers.hourly ? parseFloat(answers.hourly.value) : 50;
+
+  const dailyCost = coffee.cost + energy.cost + nicotine.cost + supps.cost;
+  const monthlyCost = dailyCost * 30;
+  const monthlyHours = crashHours * 22;
+  const monthlyOutputLost = monthlyHours * hourly;
+  const totalMonthly = monthlyCost + monthlyOutputLost;
+  const totalAnnual = totalMonthly * 12;
+
+  document.getElementById('r-monthly-cost').textContent = '$' + Math.round(monthlyCost);
+  document.getElementById('r-monthly-hours').textContent = Math.round(monthlyHours) + 'h';
+  document.getElementById('r-monthly-output').textContent = '$' + Math.round(monthlyOutputLost).toLocaleString();
+  document.getElementById('r-annual-total').textContent = '$' + Math.round(totalAnnual).toLocaleString();
+  document.getElementById('r-headline-money').textContent = '$' + Math.round(totalMonthly).toLocaleString();
+  document.getElementById('r-daily-total').textContent = '$' + dailyCost.toFixed(2);
+  document.getElementById('r-compare-old').textContent = '$' + Math.round(monthlyCost) + '/mo';
+
+  // Build breakdown
+  const rows = document.getElementById('breakdown-rows');
+  rows.innerHTML = '';
+  [{name:'Coffee',cost:coffee.cost},{name:'Energy Drinks',cost:energy.cost},{name:'Nicotine',cost:nicotine.cost},{name:'Other Supplements',cost:supps.cost}].forEach(item => {
+    if(item.cost > 0){
+      const row = document.createElement('div');row.className='breakdown-row';
+      row.innerHTML=`<span class="breakdown-item">${item.name}</span><span class="breakdown-cost">$${item.cost.toFixed(2)}/day</span>`;
+      rows.appendChild(row);
+    }
+  });
+  const crashRow = document.createElement('div');crashRow.className='breakdown-row';
+  crashRow.innerHTML=`<span class="breakdown-item">Crash-state hours</span><span class="breakdown-time">${crashHours}h/day × $${hourly}/hr = $${(crashHours*hourly).toFixed(0)}/day lost</span>`;
+  rows.appendChild(crashRow);
+
+  // ===== PERSONALIZED INSIGHT BLOCKS =====
+  // Identity
+  const identity = answers.identity ? answers.identity.value : '';
+  const identityMap = {
+    founder: "As a <em>founder</em>, your output isn't just productivity — it's revenue, decisions, and momentum for your entire business. Every hour lost to crash states isn't just time gone. It's opportunities, deals, and progress that didn't happen.",
+    operator: "As an <em>operator</em>, you're the engine behind execution. When your focus drops, the whole machine slows down. The people counting on your output don't see your caffeine crash — they just see missed deadlines and half-finished work.",
+    creator: "As a <em>creator</em>, your best work requires sustained, uninterrupted attention — the kind that stimulant spikes actively sabotage. Creative output doesn't come from intensity. It comes from hours of calm, locked-in flow.",
+    knowledge: "As a <em>knowledge worker</em>, focus is literally your job. Every scattered hour is billable time wasted, deep work left unfinished, and cognitive tasks that take twice as long because you can't stay locked in.",
+    student: "As a <em>student building something bigger</em>, this is the time when your habits compound. The focus system you build now shapes every year that follows. Stimulant roulette doesn't scale — a controllable system does."
+  };
+  if(identityMap[identity]){
+    document.getElementById('insight-identity-text').innerHTML = identityMap[identity];
+    document.getElementById('insight-identity').classList.add('visible');
+  }
+
+  // Wired belief
+  const wired = answers.belief_wired ? answers.belief_wired.value : '';
+  const wiredMap = {
+    mixed: "You said caffeine gives you <strong>mixed results</strong> — sometimes productive, sometimes just busy. That inconsistency is the core problem. You can't build reliable output on a tool that works randomly. What you need isn't more stimulation. It's a <em>controllable, repeatable focus arc</em> — on-ramp, plateau, soft landing — every time.",
+    illusion: "You already identified the trap: <strong>stimulation that feels like productivity but doesn't produce it.</strong> That self-awareness puts you ahead of most people. The next step is replacing the illusion with something that creates actual output — steady focus you can feel in the work, not just in your nervous system.",
+    dependent: "You said caffeine doesn't even boost you anymore — you need it just to <strong>feel normal.</strong> That's the tolerance trap, and it means every dollar you spend on caffeine is maintenance cost, not performance. A smarter stack is designed to support focus without escalating dependence.",
+    productive: "You said caffeine genuinely works for you. That's worth preserving. The question is whether you're paying a hidden cost in crashes, anxiety, or sleep disruption that's eating into the gains. Even a system that works can be <em>optimized</em>."
+  };
+  if(wiredMap[wired]){
+    document.getElementById('insight-wired-text').innerHTML = wiredMap[wired];
+    document.getElementById('insight-wired').classList.add('visible');
+  }
+
+  // Blocker belief
+  const blocker = answers.belief_blocker ? answers.belief_blocker.value : '';
+  const blockerMap = {
+    distraction: "Your biggest barrier is <strong>environmental fragmentation</strong> — not lack of willpower. When your attention gets pulled every 2 minutes, no amount of caffeine fixes it. What helps is a stack that supports your ability to enter and <em>hold</em> a focused state, even when the chaos doesn't stop.",
+    energy: "Your pattern — <strong>sharp in the morning, useless by afternoon</strong> — is the textbook caffeine arc: spike, crash, redose, repeat. A focus stack designed around a longer plateau and softer landing directly solves this by extending your usable work window instead of creating a cliff.",
+    starting: "The <strong>starting friction</strong> you described is one of the most common pain points. It's not laziness — it's a state-transition problem. A ritual-based focus system (mix, drink, begin) creates a physical trigger that bridges the gap between intention and execution.",
+    anxiety: "You identified the paradox: <strong>the tool that's supposed to help you focus is also making you anxious.</strong> That's what happens when stimulation is unbalanced — all gas, no steering. A stack that pairs alertness with a calming agent (like L-theanine smoothing caffeine) gives you the focus without the agitation."
+  };
+  if(blockerMap[blocker]){
+    document.getElementById('insight-blocker-text').innerHTML = blockerMap[blocker];
+    document.getElementById('insight-blocker').classList.add('visible');
+  }
+
+  // State belief
+  const state = answers.belief_state ? answers.belief_state.value : '';
+  const stateMap = {
+    calm: "You want <strong>calm, steady, locked-in focus</strong> — the kind where you forget you're focusing because your brain just cooperates. That's exactly the state Mindor's <em>Focus Arc</em> is designed to create: a smooth on-ramp into deep work, a stable 2–4 hour plateau, and a gradual off-ramp with no crash.",
+    balance: "You want to be <strong>alert but not overstimulated</strong> — the middle ground most stimulants can't hit. Too much = jitters and anxiety. Too little = nothing happens. Mindor is specifically formulated for this: caffeine for alertness, L-theanine to remove the edge, Alpha-GPC for cognitive support. Balanced, not blunt.",
+    intensity: "You said you want <strong>maximum intensity</strong>. We respect that — but consider this: the operators who sustain high output over months and years almost always shift from chasing intensity to building consistency. Mindor isn't designed for a lightning bolt. It's designed for <em>four reliable hours</em> of locked-in work. Every day."
+  };
+  if(stateMap[state]){
+    document.getElementById('insight-state-text').innerHTML = stateMap[state];
+    document.getElementById('insight-state').classList.add('visible');
+  }
+
+  // Tried belief
+  const tried = answers.belief_tried ? answers.belief_tried.value : '';
+  const triedMap = {
+    some: "You've tried a few things and <strong>nothing stuck.</strong> That's usually because most solutions are either too complex to maintain daily or too similar to what you're already doing (just more caffeine in a fancier package). What's different about a Focus Arc system is its simplicity: one scoop, one ritual, one controllable experience. Every day.",
+    many: "You've tried <strong>a lot.</strong> The fact that you're still searching means the problem is real — not imagined. The issue with most things you've tried is they either spike and crash (same problem, new label) or they're so complex you can't sustain them. Simplicity + a predictable experience arc is what actually sticks.",
+    exhausted: "You're <strong>tired of trying things that don't work.</strong> That's exactly why Mindor comes with a 60-day guarantee — no returns required, full refund if it doesn't change your workday. We'd rather you test it risk-free and judge by results than trust another sales page.",
+    no: "You've been <strong>muscling through.</strong> That works — until the cost of inconsistency catches up. The fact that you're doing this calculator suggests you're starting to feel it. The good news: you don't need a complicated system. You need one reliable daily driver."
+  };
+  if(triedMap[tried]){
+    document.getElementById('insight-tried-text').innerHTML = triedMap[tried];
+    document.getElementById('insight-tried').classList.add('visible');
+  }
+
+  // Show results
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.querySelector('.progress-bar').style.display = 'none';
+  document.getElementById('results').classList.add('active');
+  document.getElementById('progress').style.width = '100%';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function resetCalc() {
+  currentStep = 1;
+  document.getElementById('results').classList.remove('active');
+  document.querySelector('.progress-bar').style.display = 'block';
+  document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+  document.querySelectorAll('.step .btn-primary').forEach(b => b.disabled = true);
+  document.querySelectorAll('.insight-nudge').forEach(n => {n.classList.remove('visible');n.innerHTML='';});
+  document.querySelectorAll('.insight-block').forEach(b => b.classList.remove('visible'));
+  document.getElementById('crash-slider').value = 2;
+  document.getElementById('crash-val').textContent = '2';
+  Object.keys(answers).forEach(k => delete answers[k]);
+  answers.crashHours = 2;
+  showStep(1);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+updateCrashSlider();
+updateProgress();
+</script>
+</body>
+</html>
