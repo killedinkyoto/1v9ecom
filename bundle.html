@@ -1357,9 +1357,9 @@ var FLAVOR_PRODUCTS = {
 };
 
 var BUNDLES = {
-  starter:    { name: 'Starter Kit',       tubs: 1, price: 45,  orig: 45  },
-  essentials: { name: 'Essentials',        tubs: 2, price: 82,  orig: 90  },
-  peak:       { name: 'Peak Performance',  tubs: 3, price: 115, orig: 135 },
+  starter:    { name: 'Starter Kit',       tubs: 1, price: 45,  orig: 45,  discountCode: null            },
+  essentials: { name: 'Essentials',        tubs: 2, price: 82,  orig: 90,  discountCode: 'BUNDLE-ESSENTIALS' },
+  peak:       { name: 'Peak Performance',  tubs: 3, price: 115, orig: 135, discountCode: 'BUNDLE-PEAK'       },
 };
 
 var GIFTS = {
@@ -1424,7 +1424,10 @@ function goToCheckout() {
     .then(function(res) {
       var cart = res.data && res.data.cartCreate && res.data.cartCreate.cart;
       if (cart && cart.checkoutUrl) {
-        window.location.href = cart.checkoutUrl;
+        var url = cart.checkoutUrl;
+        var code = BUNDLES[state.bundle] && BUNDLES[state.bundle].discountCode;
+        if (code) url += (url.indexOf('?') === -1 ? '?' : '&') + 'discount=' + code;
+        window.location.href = url;
       } else {
         throw new Error('No checkout URL returned');
       }
