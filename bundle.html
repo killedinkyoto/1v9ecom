@@ -1688,11 +1688,37 @@ document.getElementById('barClose').addEventListener('click', function() {
       document.getElementById('popupEmail').style.borderColor = 'rgba(255,80,80,0.5)';
       return;
     }
-    // Here you'd POST to your email platform (Klaviyo, etc.)
-    // For now, show success state
-    document.getElementById('popupFormWrap').style.display = 'none';
-    document.getElementById('popupSuccess').style.display = 'block';
-    setTimeout(hidePopup, 3500);
+
+    var btn = document.getElementById('popupSubmit');
+    btn.textContent = 'Sending…';
+    btn.disabled = true;
+
+    // Subscribe to Klaviyo "Email List" (TGP8PE) — triggers welcome flow with WELCOME15
+    fetch('https://a.klaviyo.com/client/subscriptions/?company_id=YsuuG8', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'revision': '2023-12-15' },
+      body: JSON.stringify({
+        data: {
+          type: 'subscription',
+          attributes: {
+            custom_source: 'Mindor Bundle Page — 15% Popup',
+            list_id: 'TGP8PE',
+            email: email
+          }
+        }
+      })
+    })
+    .then(function() {
+      document.getElementById('popupFormWrap').style.display = 'none';
+      document.getElementById('popupSuccess').style.display = 'block';
+      setTimeout(hidePopup, 4000);
+    })
+    .catch(function() {
+      // Show success anyway — don't block on network errors
+      document.getElementById('popupFormWrap').style.display = 'none';
+      document.getElementById('popupSuccess').style.display = 'block';
+      setTimeout(hidePopup, 4000);
+    });
   });
 })();
 </script>
