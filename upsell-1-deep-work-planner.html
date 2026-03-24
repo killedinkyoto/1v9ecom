@@ -904,13 +904,13 @@ async function handleAccept() {
     await subscribeToKlaviyo(email, name, { hvco_digital: true });
   } catch (e) { console.warn('[Mindor Klaviyo]', e); }
 
-  window.location.href = '/1v9ecom/upsell-2-mindor-tub.html';
+  window.location.href = '/upsell-2-mindor-tub.html';
 }
 
 function handleDecline() {
   // No purchase — they only have the free resource
   // Klaviyo segment 1 (hvco_free: true, hvco_digital: false) is already set from squeeze page
-  window.location.href = '/1v9ecom/funnel-thankyou.html';
+  window.location.href = '/funnel-thankyou.html';
 }
 
 // Guard: if no email in session, redirect back to squeeze page
