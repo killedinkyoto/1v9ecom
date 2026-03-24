@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wait — One More Thing | Mindor Performance Stack</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --green: #E2FF47;
+  --green-dim: rgba(226,255,71,0.08);
+  --green-border: rgba(226,255,71,0.14);
+  --green-glow: rgba(226,255,71,0.18);
+  --bg: #0D1009;
+  --surface: #141810;
+  --surface2: #1A1F13;
+  --surface3: #202618;
+  --text: #F0F0E8;
+  --muted: #C8C9B8;
+  --dim: #6A7A5A;
+  --dimmer: #3A4A30;
+  --cream: #F8ECC3;
+  --red-strike: rgba(255,80,80,0.7);
+  --border-subtle: rgba(255,255,255,0.05);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ── NOISE TEXTURE ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.6;
+}
+
+/* ── TOP GLOW ── */
+.radial-glow {
+  position: fixed;
+  top: -200px; left: 50%;
+  transform: translateX(-50%);
+  width: 800px; height: 500px;
+  background: radial-gradient(ellipse at center top, rgba(226,255,71,0.05) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── PROGRESS BAR ── */
+.funnel-progress {
+  position: relative;
+  z-index: 10;
+  background: var(--surface);
+  border-bottom: 0.5px solid var(--green-border);
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+
+.progress-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.progress-step .dot {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 700;
+  flex-shrink: 0;
+}
+
+.progress-step.done .dot {
+  background: var(--green);
+  color: #0D1009;
+}
+.progress-step.done .label { color: var(--dim); }
+
+.progress-step.active .dot {
+  background: var(--green-dim);
+  border: 1.5px solid var(--green);
+  color: var(--green);
+}
+.progress-step.active .label { color: var(--green); }
+
+.progress-step.upcoming .dot {
+  background: var(--surface2);
+  border: 1px solid var(--border-subtle);
+  color: var(--dimmer);
+}
+.progress-step.upcoming .label { color: var(--dimmer); }
+
+.progress-connector {
+  width: 40px; height: 1px;
+  background: var(--border-subtle);
+  flex-shrink: 0;
+  margin: 0 4px;
+}
+.progress-connector.done { background: var(--green); opacity: 0.3; }
+
+/* ── NAV ── */
+.topbar {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 40px;
+  border-bottom: 0.5px solid var(--green-border);
+}
+
+.logo {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: 26px;
+  color: var(--green);
+  letter-spacing: -0.01em;
+  line-height: 1;
+  text-decoration: none;
+}
+.logo-sub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 8.5px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  color: var(--dim);
+  text-transform: uppercase;
+  display: block;
+  margin-top: 2px;
+}
+
+.topbar-secure {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: var(--dim);
+  text-transform: uppercase;
+}
+
+/* ── MAIN LAYOUT ── */
+.wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+/* ── ATTENTION STRIP ── */
+.attention-strip {
+  margin: 40px 0 0;
+  background: linear-gradient(135deg, #1A1F13 0%, #0F1409 100%);
+  border: 0.5px solid var(--green-border);
+  border-radius: 6px;
+  padding: 18px 28px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+}
+.attention-strip::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, var(--green), transparent);
+  opacity: 0.6;
+}
+.attention-strip-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+}
+.attention-strip-text {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+.attention-strip-text strong {
+  color: var(--green);
+  font-weight: 600;
+}
+
+/* ── HERO ── */
+.hero {
+  padding: 56px 0 0;
+  text-align: left;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  color: var(--green);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  background: var(--green-dim);
+  border: 0.5px solid var(--green-border);
+  padding: 6px 14px;
+  border-radius: 2px;
+}
+
+.hero-h1 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: clamp(52px, 8vw, 80px);
+  line-height: 0.92;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin-bottom: 20px;
+}
+.hero-h1 .accent { color: var(--green); }
+.hero-h1 .line2 {
+  display: block;
+  font-size: clamp(28px, 4.5vw, 44px);
+  color: var(--muted);
+  font-weight: 700;
+  margin-top: 8px;
+}
+
+.hero-body {
+  font-size: 16px;
+  color: var(--muted);
+  line-height: 1.75;
+  max-width: 580px;
+  margin-bottom: 16px;
+}
+.hero-body strong { color: var(--text); font-weight: 500; }
+
+/* ── DIVIDER ── */
+.divider {
+  width: 100%;
+  height: 0.5px;
+  background: var(--border-subtle);
+  margin: 48px 0;
+}
+
+/* ── OFFER GRID ── */
+.offer-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+@media (max-width: 640px) {
+  .offer-grid { grid-template-columns: 1fr; }
+}
+
+/* ── PRODUCT MOCK ── */
+.product-visual {
+  position: sticky;
+  top: 24px;
+}
+
+.planner-mock {
+  background: linear-gradient(145deg, #1A2010 0%, #0F1409 100%);
+  border: 1px solid var(--green-border);
+  border-radius: 8px;
+  padding: 32px 28px;
+  position: relative;
+  overflow: hidden;
+}
+.planner-mock::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--green);
+}
+.planner-mock-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+.planner-mock-logo {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: 13px;
+  color: var(--green);
+  letter-spacing: 0.08em;
+}
+.planner-mock-logo-sub {
+  font-size: 7px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  color: var(--dim);
+  text-transform: uppercase;
+  display: block;
+}
+.planner-mock-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: 26px;
+  color: var(--text);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.planner-mock-sub {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--green);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.planner-week-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 4px;
+  margin-bottom: 16px;
+}
+.planner-day {
+  background: var(--surface);
+  border: 0.5px solid var(--border-subtle);
+  border-radius: 3px;
+  padding: 8px 5px;
+  text-align: center;
+}
+.planner-day-label {
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--dim);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.planner-day-time {
+  width: 100%;
+  height: 2px;
+  background: var(--green);
+  border-radius: 1px;
+  margin-bottom: 3px;
+  opacity: 0.6;
+}
+.planner-day-block {
+  width: 100%;
+  height: 12px;
+  background: var(--green-dim);
+  border: 0.5px solid var(--green-border);
+  border-radius: 2px;
+}
+.planner-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--green-dim);
+  border: 0.5px solid var(--green-border);
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--green);
+  text-transform: uppercase;
+  width: 100%;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+/* ── BENEFITS ── */
+.offer-details { }
+
+.benefits-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  color: var(--dimmer);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 0.5px solid var(--border-subtle);
+}
+
+.benefit-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 0.5px solid var(--border-subtle);
+}
+.benefit-item:first-of-type { border-top: none; }
+
+.benefit-num {
+  flex-shrink: 0;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--green-dim);
+  border: 1px solid var(--green-border);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  color: var(--green);
+}
+
+.benefit-content { flex: 1; }
+.benefit-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text);
+  letter-spacing: 0.02em;
+  margin-bottom: 2px;
+}
+.benefit-desc {
+  font-size: 12.5px;
+  color: var(--dim);
+  line-height: 1.5;
+}
+
+/* ── PRICE BLOCK ── */
+.price-block {
+  margin-top: 40px;
+  padding: 32px;
+  background: var(--surface);
+  border: 0.5px solid var(--green-border);
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+}
+.price-block::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--green), transparent);
+  opacity: 0.4;
+}
+
+.price-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: var(--dim);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 6px;
+}
+
+.price-old {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--dimmer);
+  text-decoration: line-through;
+  text-decoration-color: rgba(255,80,80,0.5);
+}
+
+.price-new {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 52px;
+  font-weight: 900;
+  color: var(--green);
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+
+.price-context {
+  font-size: 12px;
+  color: var(--dim);
+  margin-bottom: 28px;
+  line-height: 1.5;
+}
+.price-context em {
+  font-style: normal;
+  color: var(--green);
+  font-weight: 600;
+}
+
+.btn-accept {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  background: var(--green);
+  color: #0A0F07;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: 20px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 18px 32px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: opacity 0.15s, box-shadow 0.15s, transform 0.1s;
+  position: relative;
+  overflow: hidden;
+}
+.btn-accept::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.12) 0%, transparent 60%);
+  pointer-events: none;
+}
+.btn-accept:hover {
+  opacity: 0.92;
+  box-shadow: 0 8px 40px rgba(226,255,71,0.3);
+  transform: translateY(-1px);
+}
+.btn-accept:active { transform: translateY(0); }
+.btn-accept.loading { opacity: 0.6; cursor: not-allowed; }
+
+.btn-accept-sub {
+  font-size: 11px;
+  color: var(--dim);
+  text-align: center;
+  margin-top: 10px;
+  line-height: 1.4;
+}
+
+.btn-decline {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin-top: 20px;
+  font-size: 12px;
+  color: var(--dimmer);
+  text-decoration: none;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-family: 'DM Sans', sans-serif;
+  padding: 8px;
+  transition: color 0.15s;
+  line-height: 1.5;
+}
+.btn-decline:hover { color: var(--dim); }
+
+/* ── TRUST BAR ── */
+.trust-bar {
+  margin-top: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 16px 0;
+  border-top: 0.5px solid var(--border-subtle);
+}
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--dim);
+  letter-spacing: 0.08em;
+}
+.trust-dot {
+  width: 3px; height: 3px;
+  border-radius: 50%;
+  background: var(--dimmer);
+  flex-shrink: 0;
+}
+
+/* ── MINDOR BRIDGE ── */
+.bridge-section {
+  background: var(--surface);
+  border: 0.5px solid var(--green-border);
+  border-radius: 6px;
+  padding: 28px 32px;
+  margin-top: 48px;
+  position: relative;
+  overflow: hidden;
+}
+.bridge-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--green), transparent);
+  opacity: 0.3;
+}
+.bridge-eyebrow {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: var(--green);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.bridge-text {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+.bridge-text strong { color: var(--text); }
+
+/* ── FOOTER ── */
+.page-footer {
+  position: relative;
+  z-index: 1;
+  border-top: 0.5px solid var(--border-subtle);
+  padding: 24px 40px;
+  text-align: center;
+}
+.footer-text {
+  font-size: 11px;
+  color: var(--dimmer);
+  line-height: 1.6;
+}
+
+@media (max-width: 600px) {
+  .topbar { padding: 16px 20px; }
+  .hero { padding: 40px 0 0; }
+  .offer-grid { gap: 32px; }
+  .price-block { padding: 24px 20px; }
+  .attention-strip { padding: 16px 20px; }
+}
+</style>
+</head>
+<body>
+
+<div class="radial-glow"></div>
+
+<!-- PROGRESS BAR -->
+<div class="funnel-progress">
+  <div class="progress-step done">
+    <div class="dot">
+      <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+        <path d="M2 5l2.5 2.5L8 3" stroke="#0D1009" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <span class="label">Free Resource</span>
+  </div>
+  <div class="progress-connector done"></div>
+  <div class="progress-step active">
+    <div class="dot">2</div>
+    <span class="label">Upgrade Your Toolkit</span>
+  </div>
+  <div class="progress-connector"></div>
+  <div class="progress-step upcoming">
+    <div class="dot">3</div>
+    <span class="label">Complete the Stack</span>
+  </div>
+</div>
+
+<!-- TOP BAR -->
+<header class="topbar">
+  <a href="#" class="logo">
+    MINDOR
+    <span class="logo-sub">Performance Stack</span>
+  </a>
+  <div class="topbar-secure">
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+      <rect x="2" y="5" width="8" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>
+      <path d="M4 5V3.5a2 2 0 014 0V5" stroke="currentColor" stroke-width="1.2"/>
+    </svg>
+    Secure Page
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ATTENTION STRIP -->
+  <div class="attention-strip">
+    <div class="attention-strip-icon">⚡</div>
+    <div class="attention-strip-text">
+      <strong>Your Brain Noise Cheat Sheet is being sent now.</strong> Before it arrives — this offer is only available on this page. It disappears when you leave.
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="eyebrow">Exclusive Reader Upgrade</div>
+    <h1 class="hero-h1">
+      Most people stop<br>
+      <span class="accent">at the cheat sheet.</span>
+      <span class="line2">High performers build a system.</span>
+    </h1>
+    <p class="hero-body">
+      The Brain Noise Cheat Sheet gives you <strong>in-the-moment fixes</strong> — reactive tools for when focus breaks down. But what about preventing brain noise from happening in the first place?
+    </p>
+    <p class="hero-body">
+      The <strong>Deep Work Window Planner</strong> is the other half of the equation. It's how you architect your week around your peak hours so you need fewer fixes. Identify when you're sharpest, protect those blocks ruthlessly, and build the structure that makes deep work the default — not the exception.
+    </p>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- OFFER GRID -->
+  <div class="offer-grid">
+
+    <!-- LEFT: PRODUCT VISUAL -->
+    <div class="product-visual">
+      <div class="planner-mock">
+        <div class="planner-mock-header">
+          <div>
+            <div class="planner-mock-logo">MINDOR
+              <span class="planner-mock-logo-sub">Performance Stack</span>
+            </div>
+          </div>
+        </div>
+        <div class="planner-mock-title">THE DEEP WORK<br>WINDOW PLANNER</div>
+        <div class="planner-mock-sub">Protect Your Peak Hours</div>
+        <div class="planner-week-grid">
+          <div class="planner-day"><div class="planner-day-label">MON</div><div class="planner-day-time"></div><div class="planner-day-block"></div></div>
+          <div class="planner-day"><div class="planner-day-label">TUE</div><div class="planner-day-time"></div><div class="planner-day-block"></div></div>
+          <div class="planner-day"><div class="planner-day-label">WED</div><div class="planner-day-time"></div><div class="planner-day-block"></div></div>
+          <div class="planner-day"><div class="planner-day-label">THU</div><div class="planner-day-time"></div><div class="planner-day-block"></div></div>
+          <div class="planner-day"><div class="planner-day-label">FRI</div><div class="planner-day-time"></div><div class="planner-day-block"></div></div>
+        </div>
+        <div class="planner-badge">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M6 1l1.3 2.6 2.9.4-2.1 2 .5 2.9L6 7.6 3.4 9l.5-2.9L1.8 4 4.7 3.6 6 1z" fill="currentColor"/>
+          </svg>
+          Instant PDF Download
+        </div>
+      </div>
+
+      <div class="bridge-section">
+        <div class="bridge-eyebrow">Why these two work together</div>
+        <p class="bridge-text">
+          The Cheat Sheet is your <strong>break-glass-in-emergency</strong> tool. The Planner is the architecture that means you break the glass less often. Together they cover both sides of the focus equation: <strong>reactive recovery + proactive structure.</strong>
+        </p>
+      </div>
+    </div>
+
+    <!-- RIGHT: BENEFITS + CTA -->
+    <div class="offer-details">
+      <div class="benefits-label">What's inside the planner</div>
+
+      <div class="benefit-item">
+        <div class="benefit-num">1</div>
+        <div class="benefit-content">
+          <div class="benefit-title">Peak Window Identifier</div>
+          <div class="benefit-desc">Find your 2–3 sharpest hours and mark them protected. No meetings, no Slack, no calls.</div>
+        </div>
+      </div>
+
+      <div class="benefit-item">
+        <div class="benefit-num">2</div>
+        <div class="benefit-content">
+          <div class="benefit-title">Weekly Deep Work Grid</div>
+          <div class="benefit-desc">Mon–Fri block planner with time, priority, stack timing, and status tracking built in.</div>
+        </div>
+      </div>
+
+      <div class="benefit-item">
+        <div class="benefit-num">3</div>
+        <div class="benefit-content">
+          <div class="benefit-title">Single-Priority System</div>
+          <div class="benefit-desc">Each block gets one outcome — not a task list. One deliverable. The anti-overwhelm architecture.</div>
+        </div>
+      </div>
+
+      <div class="benefit-item">
+        <div class="benefit-num">4</div>
+        <div class="benefit-content">
+          <div class="benefit-title">Pre-Block Ritual Slot</div>
+          <div class="benefit-desc">Pairs directly with the Work-State Activation Routine for entering each block sharp, not foggy.</div>
+        </div>
+      </div>
+
+      <div class="benefit-item">
+        <div class="benefit-num">5</div>
+        <div class="benefit-content">
+          <div class="benefit-title">Weekly Reflection Framework</div>
+          <div class="benefit-desc">Track blocks protected, identify your biggest focus threats, and calibrate week over week.</div>
+        </div>
+      </div>
+
+      <!-- PRICE BLOCK -->
+      <div class="price-block">
+        <div class="price-label">Today Only — One-Time Offer</div>
+        <div class="price-row">
+          <span class="price-old">$19.99</span>
+          <span class="price-new">$7.99</span>
+        </div>
+        <div class="price-context">
+          Add it to your order right now for <em>$7.99</em>. This offer is only available on this page and won't be shown again.
+        </div>
+
+        <button class="btn-accept" id="btn-accept" onclick="handleAccept()">
+          Yes — Add the Planner to My Order
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <p class="btn-accept-sub">Instant PDF delivery · One-time charge · 30-day refund guarantee</p>
+
+        <button class="btn-decline" id="btn-decline" onclick="handleDecline()">
+          No thanks — just send my free cheat sheet
+        </button>
+      </div>
+
+      <div class="trust-bar">
+        <div class="trust-item"><div class="trust-dot"></div>Instant PDF delivery</div>
+        <div class="trust-item"><div class="trust-dot"></div>30-day guarantee</div>
+        <div class="trust-item"><div class="trust-dot"></div>One-time charge</div>
+        <div class="trust-item"><div class="trust-dot"></div>No subscription</div>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<footer class="page-footer">
+  <p class="footer-text">
+    MINDOR PERFORMANCE STACK · drinkmindor.com · Stop Chasing Focus.<br>
+    These statements have not been evaluated by the FDA. This product is not intended to diagnose, treat, cure, or prevent any disease.
+  </p>
+</footer>
+
+<script>
+// ─────────────────────────────────────────
+// CONFIGURE THESE WITH YOUR KLAVIYO VALUES:
+// ─────────────────────────────────────────
+const KLAVIYO_PUBLIC_KEY = 'S3D76Q';  // e.g. 'AbCdEf'
+const KLAVIYO_LIST_ID    = 'TUAJJE';     // e.g. 'XyZ123'
+// ─────────────────────────────────────────
+
+// ── CONFIGURE: Shopify Digital Product ──
+// After creating the $7.99 digital product in Shopify, paste its variant ID here:
+const DIGITAL_VARIANT_ID = 'gid://shopify/ProductVariant/8954983907483';
+// ─────────────────────────────────────────
+
+async function subscribeToKlaviyo(email, firstName, extraProps) {
+  const payload = {
+    data: {
+      type: 'subscription',
+      attributes: {
+        list_id: KLAVIYO_LIST_ID,
+        email: email,
+        custom_source: 'Brain Noise Cheat Sheet Funnel',
+        properties: Object.assign(
+          firstName ? { first_name: firstName } : {},
+          { hvco_free: true },
+          extraProps || {}
+        )
+      },
+      relationships: { list: { data: { type: 'list', id: KLAVIYO_LIST_ID } } }
+    }
+  };
+  await fetch(
+    `https://a.klaviyo.com/client/subscriptions/?company_id=${KLAVIYO_PUBLIC_KEY}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'revision': '2024-10-15' },
+      body: JSON.stringify(payload)
+    }
+  );
+  // Klaviyo returns 202 — don't throw on failure, just log
+}
+
+async function handleAccept() {
+  const btn = document.getElementById('btn-accept');
+  btn.classList.add('loading');
+  btn.textContent = 'Adding to order…';
+  btn.disabled = true;
+
+  const email = sessionStorage.getItem('funnel_email') || '';
+  const name  = sessionStorage.getItem('funnel_name') || '';
+
+  // Store cart item for checkout on upsell-2
+  const cart = [{ variantId: DIGITAL_VARIANT_ID, quantity: 1, price: 7.99, label: 'Deep Work Window Planner (Digital)' }];
+  sessionStorage.setItem('funnel_cart', JSON.stringify(cart));
+  sessionStorage.setItem('funnel_upsell1', 'true');
+
+  // Update Klaviyo segment — adds hvco_digital: true to profile
+  try {
+    await subscribeToKlaviyo(email, name, { hvco_digital: true });
+  } catch (e) { console.warn('[Mindor Klaviyo]', e); }
+
+  window.location.href = '/1v9ecom/upsell-2-mindor-tub.html';
+}
+
+function handleDecline() {
+  // No purchase — they only have the free resource
+  // Klaviyo segment 1 (hvco_free: true, hvco_digital: false) is already set from squeeze page
+  window.location.href = '/1v9ecom/funnel-thankyou.html';
+}
+
+// Guard: if no email in session, redirect back to squeeze page
+window.addEventListener('DOMContentLoaded', () => {
+  const email = sessionStorage.getItem('funnel_email');
+  if (!email) {
+    // Dev mode: allow direct access; in prod you may want to redirect
+    console.log('[Mindor Funnel] No session email — likely direct access.');
+  }
+});
+</script>
+
+</body>
+</html>

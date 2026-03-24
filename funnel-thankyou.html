@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>You're In — Mindor Performance Stack</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --green: #E2FF47;
+  --green-dim: rgba(226,255,71,0.08);
+  --green-border: rgba(226,255,71,0.14);
+  --bg: #0D1009;
+  --surface: #141810;
+  --surface2: #1A1F13;
+  --text: #F0F0E8;
+  --muted: #C8C9B8;
+  --dim: #6A7A5A;
+  --dimmer: #3A4A30;
+  --cream: #F8ECC3;
+  --border-subtle: rgba(255,255,255,0.05);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0; opacity: 0.6;
+}
+
+.radial-glow {
+  position: fixed; top: -200px; left: 50%;
+  transform: translateX(-50%);
+  width: 800px; height: 500px;
+  background: radial-gradient(ellipse at center top, rgba(226,255,71,0.06) 0%, transparent 65%);
+  pointer-events: none; z-index: 0;
+}
+
+/* ── PROGRESS BAR ── */
+.funnel-progress {
+  position: relative; z-index: 10;
+  background: var(--surface);
+  border-bottom: 0.5px solid var(--green-border);
+  padding: 12px 24px;
+  display: flex; align-items: center; justify-content: center; gap: 0;
+}
+.progress-step {
+  display: flex; align-items: center; gap: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase;
+}
+.progress-step .dot {
+  width: 22px; height: 22px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 700; flex-shrink: 0;
+}
+.progress-step.done .dot { background: var(--green); color: #0D1009; }
+.progress-step.done .label { color: var(--dim); }
+.progress-connector {
+  width: 40px; height: 1px;
+  background: var(--green); opacity: 0.3;
+  flex-shrink: 0; margin: 0 4px;
+}
+
+/* ── NAV ── */
+.topbar {
+  position: relative; z-index: 10;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px 40px;
+  border-bottom: 0.5px solid var(--green-border);
+}
+.logo {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900; font-size: 26px;
+  color: var(--green); letter-spacing: -0.01em;
+  line-height: 1; text-decoration: none; text-align: center;
+}
+.logo-sub {
+  font-size: 8.5px; font-weight: 500;
+  letter-spacing: 0.2em; color: var(--dim);
+  text-transform: uppercase; display: block; margin-top: 2px;
+}
+
+/* ── MAIN ── */
+main {
+  flex: 1;
+  position: relative; z-index: 1;
+  display: flex; align-items: center; justify-content: center;
+  padding: 60px 24px;
+}
+
+.center-card {
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+}
+
+/* ── CHECK ICON ── */
+.success-icon {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: var(--green-dim);
+  border: 1.5px solid var(--green-border);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 32px;
+  position: relative;
+}
+.success-icon::before {
+  content: '';
+  position: absolute; inset: -6px;
+  border-radius: 50%;
+  border: 1px solid var(--green-border);
+  opacity: 0.4;
+}
+
+.success-h1 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: clamp(48px, 8vw, 72px);
+  line-height: 0.92; letter-spacing: -0.01em;
+  color: var(--green);
+  margin-bottom: 8px;
+}
+
+.success-subhead {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: clamp(18px, 3vw, 26px);
+  color: var(--cream);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.success-body {
+  font-size: 15px; color: var(--muted);
+  line-height: 1.7; margin-bottom: 40px;
+  max-width: 480px; margin-left: auto; margin-right: auto;
+}
+.success-body strong { color: var(--text); font-weight: 500; }
+
+.email-confirm {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--surface);
+  border: 0.5px solid var(--green-border);
+  padding: 12px 20px; border-radius: 5px;
+  font-size: 13px; color: var(--muted);
+  margin-bottom: 40px;
+}
+.email-confirm strong { color: var(--green); font-weight: 600; }
+
+/* ── DOWNLOAD BUTTON ── */
+.btn-download {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  background: var(--green); color: #0A0F07;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900; font-size: 18px;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  padding: 16px 32px; border: none; border-radius: 5px;
+  text-decoration: none; cursor: pointer;
+  transition: opacity 0.15s, box-shadow 0.15s, transform 0.1s;
+  margin-bottom: 12px;
+}
+.btn-download:hover {
+  opacity: 0.92;
+  box-shadow: 0 8px 40px rgba(226,255,71,0.25);
+  transform: translateY(-1px);
+}
+.btn-download-note {
+  font-size: 11px; color: var(--dim); margin-bottom: 40px;
+}
+
+/* ── WHAT'S NEXT ── */
+.whats-next {
+  background: var(--surface);
+  border: 0.5px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 28px 32px;
+  text-align: left;
+  margin-bottom: 40px;
+}
+.whats-next-label {
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.22em; color: var(--dim);
+  text-transform: uppercase; margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 0.5px solid var(--border-subtle);
+}
+.next-item {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 12px 0;
+  border-bottom: 0.5px solid var(--border-subtle);
+}
+.next-item:last-child { border-bottom: none; }
+.next-num {
+  flex-shrink: 0;
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--green-dim); border: 1px solid var(--green-border);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800; font-size: 12px; color: var(--green);
+}
+.next-content { flex: 1; }
+.next-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 15px;
+  color: var(--text); margin-bottom: 2px;
+}
+.next-desc { font-size: 12.5px; color: var(--dim); line-height: 1.5; }
+
+/* ── SOFT PRODUCT CTA ── */
+.soft-cta {
+  background: linear-gradient(135deg, #1A2010 0%, #0F1409 100%);
+  border: 0.5px solid var(--green-border);
+  border-radius: 6px;
+  padding: 24px 28px;
+  display: flex; align-items: center; gap: 20px;
+  text-align: left;
+  position: relative; overflow: hidden;
+}
+.soft-cta::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--green), transparent);
+  opacity: 0.3;
+}
+.soft-cta-content { flex: 1; }
+.soft-cta-label {
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.2em; color: var(--green);
+  text-transform: uppercase; margin-bottom: 6px;
+}
+.soft-cta-text {
+  font-size: 13.5px; color: var(--muted); line-height: 1.55;
+  margin-bottom: 14px;
+}
+.soft-cta-text strong { color: var(--text); }
+.soft-cta-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 0.1em; color: var(--green);
+  text-decoration: none; text-transform: uppercase;
+  transition: gap 0.15s;
+}
+.soft-cta-link:hover { gap: 9px; }
+
+/* ── FOOTER ── */
+footer {
+  position: relative; z-index: 1;
+  border-top: 0.5px solid var(--border-subtle);
+  padding: 20px 40px; text-align: center;
+}
+.footer-text { font-size: 11px; color: var(--dimmer); line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<div class="radial-glow"></div>
+
+<!-- PROGRESS BAR -->
+<div class="funnel-progress">
+  <div class="progress-step done">
+    <div class="dot">
+      <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+        <path d="M2 5l2.5 2.5L8 3" stroke="#0D1009" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <span class="label">Free Resource</span>
+  </div>
+  <div class="progress-connector"></div>
+  <div class="progress-step done">
+    <div class="dot">
+      <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+        <path d="M2 5l2.5 2.5L8 3" stroke="#0D1009" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <span class="label">Access Granted</span>
+  </div>
+</div>
+
+<!-- NAV -->
+<header class="topbar">
+  <a href="/" class="logo">
+    MINDOR
+    <span class="logo-sub">Performance Stack</span>
+  </a>
+</header>
+
+<main>
+  <div class="center-card">
+
+    <!-- CHECK ICON -->
+    <div class="success-icon">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <path d="M6 14l5.5 5.5L22 8.5" stroke="#E2FF47" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <h1 class="success-h1">You're In.</h1>
+    <p class="success-subhead">Your Cheat Sheet is on its way.</p>
+
+    <p class="success-body">
+      <strong>Check your inbox in the next few minutes.</strong> Your Brain Noise Cheat Sheet — 7 fast fixes to use the moment you can't lock in — is being sent to your email right now.
+    </p>
+
+    <div class="email-confirm" id="emailConfirm">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <rect x="1" y="3" width="12" height="8" rx="1.5" stroke="#E2FF47" stroke-width="1.2"/>
+        <path d="M1 4.5l6 4 6-4" stroke="#E2FF47" stroke-width="1.2"/>
+      </svg>
+      Sending to: <strong id="confirm-email">your email</strong>
+    </div>
+
+    <!-- DOWNLOAD -->
+    <div>
+      <a href="/1v9ecom/assets/brain-noise-cheat-sheet.pdf" download class="btn-download">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8 2v8M5 7l3 3 3-3M2 12v1a1 1 0 001 1h10a1 1 0 001-1v-1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Download Now (PDF)
+      </a>
+      <p class="btn-download-note">Or use the link in your email to access anytime.</p>
+    </div>
+
+    <!-- WHAT'S NEXT -->
+    <div class="whats-next">
+      <div class="whats-next-label">How to use your cheat sheet</div>
+      <div class="next-item">
+        <div class="next-num">1</div>
+        <div class="next-content">
+          <div class="next-title">Save It Where You Can See It</div>
+          <div class="next-desc">Print it or keep it on your phone. These are in-the-moment tools — they only work if they're accessible.</div>
+        </div>
+      </div>
+      <div class="next-item">
+        <div class="next-num">2</div>
+        <div class="next-content">
+          <div class="next-title">Use at the First Sign of Brain Fog</div>
+          <div class="next-desc">Don't wait until you're 45 minutes deep in distraction. Use it at the first moment of friction.</div>
+        </div>
+      </div>
+      <div class="next-item">
+        <div class="next-num">3</div>
+        <div class="next-content">
+          <div class="next-title">Track What Works</div>
+          <div class="next-desc">Different fixes work for different root causes. Pay attention — you'll find your 2–3 go-to patterns fast.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SOFT PRODUCT CTA -->
+    <div class="soft-cta">
+      <div class="soft-cta-content">
+        <div class="soft-cta-label">Ready to go deeper?</div>
+        <p class="soft-cta-text">
+          The Cheat Sheet is reactive. <strong>Mindor is proactive.</strong> The Focus Arc formula builds the neurochemical baseline so your brain needs fewer fixes over time.
+        </p>
+        <a href="https://drinkmindor.com" class="soft-cta-link">
+          Try Mindor Performance Stack
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M2.5 6h7M6.5 3l3 3-3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <p class="footer-text">
+    MINDOR PERFORMANCE STACK · drinkmindor.com · Stop Chasing Focus.<br>
+    These statements have not been evaluated by the FDA. This product is not intended to diagnose, treat, cure, or prevent any disease.
+  </p>
+</footer>
+
+<script>
+// Populate email from session
+window.addEventListener('DOMContentLoaded', function() {
+  var email = sessionStorage.getItem('funnel_email');
+  if (email) {
+    document.getElementById('confirm-email').textContent = email;
+  } else {
+    document.getElementById('emailConfirm').style.display = 'none';
+  }
+});
+</script>
+
+</body>
+</html>
