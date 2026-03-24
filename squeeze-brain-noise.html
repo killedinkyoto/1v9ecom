@@ -1068,18 +1068,22 @@ const KLAVIYO_LIST_ID    = 'TGP8PE';
 // ─────────────────────────────────────────
 
 async function subscribeToKlaviyo(email, firstName, extraProps) {
+  const profileAttrs = Object.assign(
+    { email: email },
+    firstName ? { first_name: firstName } : {},
+    { properties: Object.assign({ hvco_free: true, custom_source: 'Brain Noise Cheat Sheet Funnel' }, extraProps || {}) }
+  );
+
   const payload = {
     data: {
       type: 'subscription',
       attributes: {
-        list_id: KLAVIYO_LIST_ID,
-        email: email,
-        custom_source: 'Brain Noise Cheat Sheet Funnel',
-        properties: Object.assign(
-          firstName ? { first_name: firstName } : {},
-          { hvco_free: true },
-          extraProps || {}
-        )
+        profile: {
+          data: {
+            type: 'profile',
+            attributes: profileAttrs
+          }
+        }
       },
       relationships: {
         list: {
@@ -1101,7 +1105,6 @@ async function subscribeToKlaviyo(email, firstName, extraProps) {
     }
   );
 
-  // Klaviyo returns 202 Accepted on success (or 200)
   if (!res.ok && res.status !== 202) {
     const body = await res.text();
     throw new Error(`Klaviyo error ${res.status}: ${body}`);
