@@ -38,7 +38,8 @@ body {
   font-size: 15px;
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  overflow-x: clip;
+  overflow-y: auto;
 }
 
 /* ── NOISE TEXTURE ── */
@@ -954,7 +955,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 // ── COUNTDOWN TIMER ──
 (function() {
-  var DURATION = 10 * 60; // 10 minutes in seconds
+  var DURATION = 5 * 60; // 5 minutes in seconds
   var KEY = 'mindor_upsell1_timer_end';
   var display = document.getElementById('countdown');
   if (!display) return;
