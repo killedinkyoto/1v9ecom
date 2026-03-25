@@ -895,7 +895,7 @@ body::before {
           </svg>
         </button>
         <div class="flavor-required" id="flavorRequired">Please select a flavor above to continue.</div>
-        <p class="btn-accept-sub">Secure Shopify checkout · 30-day money-back guarantee · Free shipping $75+</p>
+        <p class="btn-accept-sub">30-day money-back guarantee · Free shipping $75+</p>
 
         <button class="btn-decline" id="btn-decline" onclick="handleDecline()">
           No thanks — just checkout with my digital bundle ($7.99)
@@ -1124,7 +1124,7 @@ async function handleDecline() {
 
 // ── COUNTDOWN TIMER ──
 (function() {
-  var DURATION = 5 * 60; // 5 minutes in seconds
+  var DURATION = 3 * 60; // 3 minutes in seconds
   var KEY = 'mindor_upsell2_timer_end';
   var display = document.getElementById('countdown');
   if (!display) return;
