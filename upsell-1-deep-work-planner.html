@@ -270,13 +270,9 @@ body::before {
 
 /* ── OFFER GRID ── */
 .offer-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 40px;
-  align-items: start;
-}
-@media (max-width: 640px) {
-  .offer-grid { grid-template-columns: 1fr; }
 }
 
 /* ── PRODUCT MOCK ── */
