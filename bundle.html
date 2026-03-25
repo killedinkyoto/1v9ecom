@@ -1706,7 +1706,14 @@ document.getElementById('barClose').addEventListener('click', function() {
               data: {
                 type: 'profile',
                 attributes: {
-                  email: email
+                  email: email,
+                  subscriptions: {
+                    email: {
+                      marketing: {
+                        consent: 'SUBSCRIBED'
+                      }
+                    }
+                  }
                 }
               }
             }
