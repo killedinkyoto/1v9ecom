@@ -253,10 +253,6 @@ body::before {
 @media (max-width: 660px) { .offer-grid { grid-template-columns: 1fr; gap: 32px; } }
 
 /* ── TUB VISUAL ── */
-.tub-visual {
-  position: sticky;
-  top: 24px;
-}
 
 .tub-card {
   background: linear-gradient(145deg, #1A2010 0%, #0F1409 100%);
@@ -857,14 +853,14 @@ body::before {
           <span class="timer-label">This offer expires in</span>
           <span class="timer-display" id="countdown">10:00</span>
         </div>
-        <div class="price-label">Funnel-Exclusive Pricing</div>
+        <div class="price-label">Funnel-Exclusive Pricing — 15% Off</div>
         <div class="price-row">
-          <span class="price-old">$45.00</span>
-          <span class="price-new">$42.99</span>
+          <span class="price-old">$42.99</span>
+          <span class="price-new">$36.54</span>
         </div>
-        <p class="price-per-serving">$1.43 per serving · 30 servings per tub</p>
+        <p class="price-per-serving">$1.22 per serving · 30 servings per tub</p>
         <p class="price-context">
-          Add the full tub to your order now at <em>$42.99</em>. This pricing is exclusive to this page. Free shipping on orders over $75 — you're almost there.
+          Add the full tub to your order now at <em>$36.54</em>. 15% off applied automatically at checkout — exclusive to this page.
         </p>
 
         <!-- ORDER SUMMARY -->
@@ -880,11 +876,11 @@ body::before {
           </div>
           <div class="order-line">
             <span class="order-line-name">Mindor Performance Tub (30 srv)</span>
-            <span class="order-line-price">$42.99</span>
+            <span class="order-line-price">$36.54</span>
           </div>
           <div class="order-line total">
             <span class="order-line-name">Total at Checkout</span>
-            <span class="order-line-price">$50.98</span>
+            <span class="order-line-price">$44.53</span>
           </div>
         </div>
 
@@ -1103,7 +1099,7 @@ async function handleDecline() {
  *
  *   hvco_free:    true  → submitted the squeeze page
  *   hvco_digital: true  → accepted upsell 1 ($7.99 digital)
- *   hvco_tub:     true  → accepted upsell 2 ($42.99 tub)
+ *   hvco_tub:     true  → accepted upsell 2 ($36.54 tub, 15% off via HVCO-STACK discount code)
  *
  * Create these 3 segments in Klaviyo → Segments → Create:
  *
@@ -1123,13 +1119,14 @@ async function handleDecline() {
  */
 
 // ── COUNTDOWN TIMER ──
+// Reads the same key upsell-1 wrote so the timer continues where it left off.
 (function() {
-  var DURATION = 3 * 60; // 3 minutes in seconds
-  var KEY = 'mindor_upsell2_timer_end';
+  var DURATION = 5 * 60; // fallback if arriving direct (not via funnel)
+  var KEY = 'mindor_upsell1_timer_end'; // shared key with upsell-1
   var display = document.getElementById('countdown');
   if (!display) return;
 
-  // Set expiry timestamp once per session
+  // Inherit remaining time from upsell-1; only start fresh if arriving direct
   var end = parseInt(sessionStorage.getItem(KEY), 10);
   if (!end || isNaN(end)) {
     end = Date.now() + DURATION * 1000;
