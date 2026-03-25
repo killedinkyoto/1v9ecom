@@ -565,6 +565,31 @@ body::before {
 }
 .btn-decline:hover { color: var(--dim); }
 
+/* ── COUNTDOWN TIMER ── */
+.timer-bar {
+  display: flex; align-items: center; gap: 12px;
+  background: rgba(226,255,71,0.06);
+  border: 0.5px solid rgba(226,255,71,0.2);
+  border-radius: 4px; padding: 12px 16px; margin-bottom: 20px;
+}
+.timer-label {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--dim); flex: 1;
+}
+.timer-display {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900; font-size: 28px; color: var(--green);
+  line-height: 1; letter-spacing: 0.04em; min-width: 72px; text-align: right;
+}
+.timer-display.urgent { color: #FF6B6B; animation: pulse 1s ease-in-out infinite; }
+@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.55; } }
+.timer-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green); flex-shrink: 0;
+  animation: blink 1s step-end infinite;
+}
+@keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0; } }
+
 /* ── TRUST ── */
 .trust-bar {
   margin-top: 24px;
@@ -826,6 +851,11 @@ body::before {
 
       <!-- PRICE BLOCK -->
       <div class="price-block">
+        <div class="timer-bar">
+          <span class="timer-dot"></span>
+          <span class="timer-label">This offer expires in</span>
+          <span class="timer-display" id="countdown">10:00</span>
+        </div>
         <div class="price-label">Funnel-Exclusive Pricing</div>
         <div class="price-row">
           <span class="price-old">$45.00</span>
@@ -1090,6 +1120,38 @@ async function handleDecline() {
  * Each segment gets its own email flow with relevant upgrade messaging.
  * ─────────────────────────────────────────────────────────────
  */
+
+// ── COUNTDOWN TIMER ──
+(function() {
+  var DURATION = 10 * 60; // 10 minutes in seconds
+  var KEY = 'mindor_upsell2_timer_end';
+  var display = document.getElementById('countdown');
+  if (!display) return;
+
+  // Set expiry timestamp once per session
+  var end = parseInt(sessionStorage.getItem(KEY), 10);
+  if (!end || isNaN(end)) {
+    end = Date.now() + DURATION * 1000;
+    sessionStorage.setItem(KEY, end);
+  }
+
+  function tick() {
+    var remaining = Math.max(0, Math.floor((end - Date.now()) / 1000));
+    var m = Math.floor(remaining / 60);
+    var s = remaining % 60;
+    display.textContent = m + ':' + (s < 10 ? '0' : '') + s;
+    if (remaining <= 60) {
+      display.classList.add('urgent');
+    }
+    if (remaining <= 0) {
+      clearInterval(timer);
+      display.textContent = '0:00';
+    }
+  }
+
+  tick();
+  var timer = setInterval(tick, 1000);
+})();
 </script>
 
 </body>
