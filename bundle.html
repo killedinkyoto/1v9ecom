@@ -1696,14 +1696,21 @@ document.getElementById('barClose').addEventListener('click', function() {
     // Subscribe to Klaviyo "Email List" (TGP8PE) — triggers welcome flow with WELCOME15
     fetch('https://a.klaviyo.com/client/subscriptions/?company_id=S3D76Q', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'revision': '2023-12-15' },
+      headers: { 'Content-Type': 'application/json', 'revision': '2024-10-15' },
       body: JSON.stringify({
         data: {
           type: 'subscription',
           attributes: {
-            custom_source: 'Mindor Bundle Page — 15% Popup',
             list_id: 'TGP8PE',
-            email: email
+            custom_source: 'Mindor Bundle Page — 15% Popup',
+            profile: {
+              data: {
+                type: 'profile',
+                attributes: {
+                  email: email
+                }
+              }
+            }
           }
         }
       })
