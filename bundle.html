@@ -1701,7 +1701,6 @@ document.getElementById('barClose').addEventListener('click', function() {
         data: {
           type: 'subscription',
           attributes: {
-            list_id: 'Rcw3z7',
             custom_source: 'Mindor Bundle Page — 15% Popup',
             profile: {
               data: {
@@ -1709,6 +1708,14 @@ document.getElementById('barClose').addEventListener('click', function() {
                 attributes: {
                   email: email
                 }
+              }
+            }
+          },
+          relationships: {
+            list: {
+              data: {
+                type: 'list',
+                id: 'Rcw3z7'
               }
             }
           }
