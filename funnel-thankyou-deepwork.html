@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Planner Is On Its Way — Mindor</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --green: #E2FF47;
+  --green-dim: rgba(226,255,71,0.08);
+  --green-border: rgba(226,255,71,0.14);
+  --green-glow: rgba(226,255,71,0.18);
+  --bg: #0D1009;
+  --surface: #141810;
+  --surface2: #1A1F13;
+  --surface3: #202618;
+  --text: #F0F0E8;
+  --muted: #C8C9B8;
+  --dim: #6A7A5A;
+  --dimmer: #3A4A30;
+  --black: #0A0A0A;
+  --cream: #F8ECC3;
+  --border-subtle: rgba(255,255,255,0.05);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── NOISE TEXTURE ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0; opacity: 0.6;
+}
+
+/* ── RADIAL GLOW ── */
+.radial-glow {
+  position: fixed; top: -200px; left: 50%;
+  transform: translateX(-50%);
+  width: 800px; height: 500px;
+  background: radial-gradient(ellipse at center top, rgba(226,255,71,0.06) 0%, transparent 65%);
+  pointer-events: none; z-index: 0;
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  position: relative; z-index: 10;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px 40px;
+  border-bottom: 0.5px solid var(--green-border);
+}
+
+.logo {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900; font-size: 26px;
+  color: var(--green); letter-spacing: -0.01em;
+  line-height: 1; text-decoration: none; text-align: center;
+}
+
+.logo-sub {
+  font-size: 8.5px; font-weight: 500;
+  letter-spacing: 0.2em; color: var(--dim);
+  text-transform: uppercase; display: block; margin-top: 2px;
+}
+
+/* ── MAIN ── */
+main {
+  flex: 1;
+  position: relative; z-index: 1;
+  padding: 64px 24px 80px;
+  display: flex; flex-direction: column; align-items: center;
+}
+
+/* ── CENTER CARD (confirmation section) ── */
+.center-card {
+  max-width: 580px;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+/* ── CHECK ICON ── */
+.success-icon {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: var(--green-dim);
+  border: 1.5px solid var(--green-border);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 32px;
+  position: relative;
+}
+
+.success-icon::before {
+  content: '';
+  position: absolute; inset: -6px;
+  border-radius: 50%;
+  border: 1px solid var(--green-border);
+  opacity: 0.4;
+}
+
+/* ── CONFIRMATION HEADING ── */
+.confirm-h1 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: clamp(44px, 8vw, 68px);
+  line-height: 0.92; letter-spacing: -0.01em;
+  color: var(--green);
+  margin-bottom: 16px;
+}
+
+/* ── INBOX CONFIRMATION CHIP ── */
+.inbox-chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--surface);
+  border: 0.5px solid var(--green-border);
+  padding: 11px 18px; border-radius: 5px;
+  font-size: 13px; color: var(--muted);
+  margin-bottom: 32px;
+}
+
+.inbox-chip strong {
+  color: var(--green); font-weight: 600;
+}
+
+/* ── FIRST ACTION BLOCK ── */
+.first-action {
+  background: var(--surface);
+  border: 0.5px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 24px 28px;
+  text-align: left;
+  margin-bottom: 0;
+}
+
+.first-action-label {
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.22em; color: var(--dim);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 0.5px solid var(--border-subtle);
+}
+
+.first-action-body {
+  font-size: 14px; color: var(--muted); line-height: 1.7;
+}
+
+.first-action-body strong { color: var(--text); font-weight: 500; }
+
+/* ── SOFT PITCH SECTION ── */
+.soft-pitch-section {
+  max-width: 580px;
+  width: 100%;
+  margin-bottom: 48px;
+}
+
+.soft-pitch-card {
+  background: linear-gradient(145deg, var(--surface2) 0%, var(--surface) 100%);
+  border: 0.5px solid var(--green-border);
+  border-radius: 6px;
+  padding: 32px 32px 28px;
+  position: relative; overflow: hidden;
+}
+
+/* subtle top line accent */
+.soft-pitch-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(226,255,71,0.25), transparent);
+}
+
+.soft-pitch-eyebrow {
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.22em; color: var(--dim);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.soft-pitch-heading {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: clamp(22px, 3.5vw, 28px);
+  color: var(--cream);
+  letter-spacing: 0.01em;
+  margin-bottom: 16px;
+  line-height: 1.1;
+}
+
+.soft-pitch-body {
+  font-size: 14px; color: var(--muted); line-height: 1.7;
+  margin-bottom: 24px;
+}
+
+.soft-pitch-body strong { color: var(--text); font-weight: 500; }
+
+/* ── SECONDARY (OUTLINED) CTA ── */
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: transparent;
+  color: var(--green);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800; font-size: 16px;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 13px 24px;
+  border: 1.5px solid var(--green-border);
+  border-radius: 5px;
+  text-decoration: none; cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+
+.btn-secondary:hover {
+  border-color: rgba(226,255,71,0.4);
+  background: var(--green-dim);
+}
+
+.btn-secondary:active {
+  transform: translateY(1px);
+}
+
+.btn-secondary svg {
+  flex-shrink: 0;
+  transition: transform 0.15s;
+}
+
+.btn-secondary:hover svg {
+  transform: translateX(3px);
+}
+
+/* ── BRAND TEASER SECTION ── */
+.brand-teaser-section {
+  max-width: 580px;
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.brand-teaser-card {
+  border-top: 0.5px solid var(--border-subtle);
+  padding-top: 36px;
+  text-align: center;
+}
+
+.brand-teaser-eyebrow {
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.22em; color: var(--dimmer);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.brand-teaser-heading {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: clamp(20px, 3vw, 26px);
+  color: var(--text);
+  letter-spacing: 0.01em;
+  margin-bottom: 14px;
+}
+
+.brand-teaser-body {
+  font-size: 13.5px; color: var(--dim); line-height: 1.7;
+  max-width: 460px; margin: 0 auto 20px;
+}
+
+.brand-teaser-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 600;
+  letter-spacing: 0.1em; color: var(--dim);
+  text-decoration: none; text-transform: uppercase;
+  transition: color 0.15s, gap 0.15s;
+}
+
+.brand-teaser-link:hover {
+  color: var(--muted);
+  gap: 9px;
+}
+
+/* ── FOOTER ── */
+footer {
+  position: relative; z-index: 1;
+  border-top: 0.5px solid var(--border-subtle);
+  padding: 20px 40px; text-align: center;
+}
+
+.footer-logo {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900; font-size: 18px;
+  color: var(--dimmer); letter-spacing: -0.01em;
+  margin-bottom: 8px;
+}
+
+.footer-text {
+  font-size: 10.5px; color: var(--dimmer); line-height: 1.7;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 600px) {
+  main { padding: 48px 16px 64px; }
+  .soft-pitch-card { padding: 24px 20px 20px; }
+  .first-action { padding: 20px 20px; }
+  .topbar { padding: 16px 20px; }
+  footer { padding: 20px 20px; }
+}
+</style>
+</head>
+<body>
+
+<div class="radial-glow"></div>
+
+<!-- TOPBAR: logo only, no nav, no badge -->
+<header class="topbar">
+  <a href="#" class="logo">
+    MINDOR
+    <span class="logo-sub">Performance Stack</span>
+  </a>
+</header>
+
+<main>
+
+  <!-- ── CONFIRMATION SECTION ── -->
+  <div class="center-card">
+
+    <!-- Green checkmark icon -->
+    <div class="success-icon">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+        <path d="M6 14l5.5 5.5L22 8.5" stroke="#E2FF47" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <h1 class="confirm-h1">YOUR PLANNER<br>IS ON ITS WAY</h1>
+
+    <!-- Inbox confirmation — email populated via JS, hides gracefully if no session -->
+    <div class="inbox-chip" id="inbox-chip">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <rect x="1" y="3" width="12" height="8" rx="1.5" stroke="#E2FF47" stroke-width="1.2"/>
+        <path d="M1 4.5l6 4 6-4" stroke="#E2FF47" stroke-width="1.2"/>
+      </svg>
+      Check your inbox<span id="email-at-text"> at </span><strong id="confirmed-email"></strong><span id="email-tail"> — it should arrive in the next few minutes.</span>
+    </div>
+
+    <!-- First action prompt -->
+    <div class="first-action">
+      <div class="first-action-label">While you wait</div>
+      <p class="first-action-body">
+        Open your calendar. Find your first available <strong>two-hour morning block</strong> — before the meetings, before the messages, before anything that can pull you sideways.
+      </p>
+      <br>
+      <p class="first-action-body">
+        Write it in now. Protect it. That's where this planner starts working. Most people wait until they have a "better" week to do this. There is no better week.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- ── SOFT PITCH SECTION ── -->
+  <section class="soft-pitch-section" aria-label="Optional next step">
+    <div class="soft-pitch-card">
+
+      <div class="soft-pitch-eyebrow">When you're ready to go deeper</div>
+
+      <h2 class="soft-pitch-heading">The Pre-Block Ritual</h2>
+
+      <p class="soft-pitch-body">
+        The planner tells you <em>when</em> to work. The Activation Protocol handles what happens in the five minutes before you start.
+      </p>
+
+      <p class="soft-pitch-body">
+        It's a short pre-work ritual built around the Mindor stack — designed to bring your body into the same focused state your brain is trying to reach. One scoop, a breathing sequence, a single written intention. Takes about five minutes. Most people notice the difference in the first session.
+      </p>
+
+      <p class="soft-pitch-body">
+        There's no timeline on this. The planner works on its own. When you're ready for the next layer, it's here.
+      </p>
+
+      <!-- Secondary / outlined CTA — NOT filled green -->
+      <a href="#" id="soft-pitch-cta" class="btn-secondary">
+        Add the Activation Protocol
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <path d="M3 7h8M8 4.5l2.5 2.5L8 9.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ── BRAND TEASER SECTION ── -->
+  <section class="brand-teaser-section" aria-label="About Mindor">
+    <div class="brand-teaser-card">
+
+      <div class="brand-teaser-eyebrow">Built on Mindor</div>
+
+      <h2 class="brand-teaser-heading">The performance stack behind the system.</h2>
+
+      <p class="brand-teaser-body">
+        Mindor is a clean focus stack designed for the kind of work that actually requires your full brain. Calm on-ramp, steady plateau, soft landing. No spike. No crash. No redose loop. It's what the Activation Protocol is built around — and what a lot of people end up running every morning, planner or not.
+      </p>
+
+      <a href="https://drinkmindor.com" class="brand-teaser-link" target="_blank" rel="noopener">
+        Learn more at drinkmindor.com
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+          <path d="M2 6h8M6.5 3.5l2.5 2.5-2.5 2.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">MINDOR</div>
+  <p class="footer-text">
+    drinkmindor.com · Stop Chasing Focus.<br>
+    These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease.
+  </p>
+</footer>
+
+<script>
+// ── CONFIG ──
+const SHOPIFY_DOMAIN = 'mindor-1950.myshopify.com';
+const ACTIVATION_VARIANT_ID = 'YOUR_ACTIVATION_VARIANT_ID_HERE';
+
+// ── SESSION GUARD (graceful — NO redirect) ──
+document.addEventListener('DOMContentLoaded', () => {
+  const email = sessionStorage.getItem('funnel_email');
+  const emailEl = document.getElementById('confirmed-email');
+  const emailAtText = document.getElementById('email-at-text');
+  const emailTail = document.getElementById('email-tail');
+
+  if (email && emailEl) {
+    // Email found — populate and show full chip
+    emailEl.textContent = email;
+  } else {
+    // No email in session — hide the "at [email]" parts, show plain chip
+    if (emailAtText) emailAtText.style.display = 'none';
+    if (emailEl) emailEl.style.display = 'none';
+    // email-tail already reads " — it should arrive in the next few minutes."
+    // chip renders as: "Check your inbox — it should arrive in the next few minutes."
+  }
+
+  // ── SOFT PITCH CTA LINK CONSTRUCTION ──
+  // Builds direct Shopify cart URL — bypasses upsell-1, no timer
+  const softPitchCta = document.getElementById('soft-pitch-cta');
+  if (softPitchCta) {
+    if (ACTIVATION_VARIANT_ID && !ACTIVATION_VARIANT_ID.includes('YOUR_')) {
+      // Extract numeric ID from GID: "gid://shopify/ProductVariant/12345" → "12345"
+      const numericId = ACTIVATION_VARIANT_ID.split('/').pop();
+      softPitchCta.href = `https://${SHOPIFY_DOMAIN}/cart/${numericId}:1`;
+    } else {
+      // Placeholder not replaced — disable link visually and functionally
+      softPitchCta.href = '#';
+      softPitchCta.style.opacity = '0.5';
+      softPitchCta.style.pointerEvents = 'none';
+    }
+  }
+});
+</script>
+
+</body>
+</html>
