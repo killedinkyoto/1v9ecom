@@ -227,7 +227,6 @@ body::before {
   letter-spacing: 0.24em;
   color: var(--dim);
   text-transform: uppercase;
-  small-caps: all-small-caps;
   margin-bottom: 18px;
   display: block;
 }
@@ -559,9 +558,8 @@ body::before {
   margin-bottom: 12px;
 }
 .price-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+  display: block;
+  width: fit-content;
   background: rgba(255,80,80,0.1);
   border: 0.5px solid rgba(255,80,80,0.2);
   border-radius: 3px;
@@ -572,8 +570,6 @@ body::before {
   color: #FF8080;
   text-transform: uppercase;
   margin-bottom: 16px;
-  display: block;
-  width: fit-content;
 }
 
 .price-row {
@@ -661,6 +657,7 @@ body::before {
 @keyframes spin { to { transform: rotate(360deg); } }
 .btn-accept.loading .btn-spinner { display: block; }
 .btn-accept.loading .btn-arrow { display: none; }
+.btn-accept.loading .btn-text { display: none; }
 
 .btn-accept-sub {
   font-size: 11px;
@@ -1028,19 +1025,18 @@ async function handleAccept() {
   const btn = document.getElementById('btn-accept');
   btn.disabled = true;
   btn.classList.add('loading');
-
-  const email = sessionStorage.getItem('funnel_email') || '';
-  const name  = sessionStorage.getItem('funnel_name') || '';
-
-  // Write activation variant to sessionStorage (object shape — not an array)
-  sessionStorage.setItem('funnel_cart', JSON.stringify({
-    activationVariantId: ACTIVATION_VARIANT_ID
-  }));
-
-  // Klaviyo: mark as activation buyer
-  await subscribeToKlaviyo(email, name, { hvco_activation: true });
-
-  window.location.href = 'upsell-2-tub-deepwork.html';
+  try {
+    const email = sessionStorage.getItem('funnel_email') || '';
+    const name  = sessionStorage.getItem('funnel_name') || '';
+    sessionStorage.setItem('funnel_cart', JSON.stringify({ activationVariantId: ACTIVATION_VARIANT_ID }));
+    await subscribeToKlaviyo(email, name, { hvco_activation: true });
+    window.location.href = 'upsell-2-tub-deepwork.html';
+  } catch(err) {
+    console.error('[Mindor] Accept error:', err);
+    btn.disabled = false;
+    btn.classList.remove('loading');
+    btn.querySelector('.btn-text').textContent = '⚠ Something went wrong — try again';
+  }
 }
 
 // ─────────────────────────────────────────
