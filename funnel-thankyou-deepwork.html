@@ -26,6 +26,9 @@
   --black: #0A0A0A;
   --cream: #F8ECC3;
   --border-subtle: rgba(255,255,255,0.05);
+  --border: rgba(226,255,71,0.14);
+  --red: #FF4747;
+  --radius: 8px;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -438,6 +441,12 @@ footer {
 // ── CONFIG ──
 const SHOPIFY_DOMAIN = 'mindor-1950.myshopify.com';
 const ACTIVATION_VARIANT_ID = 'YOUR_ACTIVATION_VARIANT_ID_HERE';
+const KLAVIYO_PUBLIC_KEY = 'S3D76Q';
+const KLAVIYO_LIST_ID    = 'TUAJJE';
+const CUSTOM_SOURCE      = 'Deep Work Window Planner Funnel';
+const STOREFRONT_TOKEN   = 'c1f8ad6a65722ad1a022b7e5f8a8660c';
+const TUB_DISCOUNT_CODE  = 'HVCO-STACK';
+const TIMER_KEY          = 'mindor_upsell1_timer_end';
 
 // ── SESSION GUARD (graceful — NO redirect) ──
 document.addEventListener('DOMContentLoaded', () => {
