@@ -990,20 +990,26 @@ var CART_CREATE =
   '}';
 
 async function subscribeToKlaviyo(email, firstName, extraProps) {
+  const profileAttrs = Object.assign(
+    { email: email },
+    firstName ? { first_name: firstName } : {},
+    { properties: Object.assign({ hvco_free: true, custom_source: 'Brain Noise Cheat Sheet Funnel' }, extraProps || {}) }
+  );
+
   const payload = {
     data: {
       type: 'subscription',
       attributes: {
-        list_id: KLAVIYO_LIST_ID,
-        email: email,
-        custom_source: 'Brain Noise Cheat Sheet Funnel',
-        properties: Object.assign(
-          firstName ? { first_name: firstName } : {},
-          { hvco_free: true, hvco_digital: true },
-          extraProps || {}
-        )
+        profile: {
+          data: {
+            type: 'profile',
+            attributes: profileAttrs
+          }
+        }
       },
-      relationships: { list: { data: { type: 'list', id: KLAVIYO_LIST_ID } } }
+      relationships: {
+        list: { data: { type: 'list', id: KLAVIYO_LIST_ID } }
+      }
     }
   };
   try {

@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add Mindor To Your Order | Deep Work Stack</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --green: #E2FF47;
+  --green-dim: rgba(226,255,71,0.08);
+  --green-border: rgba(226,255,71,0.14);
+  --green-glow: rgba(226,255,71,0.18);
+  --bg: #0D1009;
+  --surface: #141810;
+  --surface2: #1A1F13;
+  --surface3: #202618;
+  --text: #F0F0E8;
+  --muted: #C8C9B8;
+  --dim: #6A7A5A;
+  --dimmer: #3A4A30;
+  --black: #0A0A0A;
+  --cream: #F8ECC3;
+  --border-subtle: rgba(255,255,255,0.05);
+  --red-strike: rgba(255,80,80,0.7);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+  overflow-y: auto;
+}
+
+/* ── NOISE TEXTURE ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.6;
+}
+
+.radial-glow {
+  position: fixed;
+  top: -200px; left: 50%;
+  transform: translateX(-50%);
+  width: 900px; height: 600px;
+  background: radial-gradient(ellipse at center top, rgba(226,255,71,0.045) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── PROGRESS BAR ── */
+.funnel-progress {
+  position: relative;
+  z-index: 10;
+  background: var(--surface);
+  border-bottom: 0.5px solid var(--green-border);
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+.progress-step {
+  display: flex; align-items: center; gap: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase;
+}
+.progress-step .dot {
+  width: 22px; height: 22px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 700; flex-shrink: 0;
+}
+.progress-step.done .dot { background: var(--green); color: #0D1009; }
+.progress-step.done .label { color: var(--dim); }
+.progress-step.active .dot {
+  background: var(--green-dim);
+  border: 1.5px solid var(--green);
+  color: var(--green);
+}
+.progress-step.active .label { color: var(--green); }
+.progress-connector {
+  width: 40px; height: 1px;
+  background: var(--border-subtle);
+  flex-shrink: 0; margin: 0 4px;
+}
+.progress-connector.done { background: var(--green); opacity: 0.3; }
+
+/* ── NAV / TOP BAR ── */
+.topbar {
+  position: relative; z-index: 10;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 40px;
+  border-bottom: 0.5px solid var(--green-border);
+}
+.logo {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900; font-size: 26px;
+  color: var(--green); letter-spacing: -0.01em;
+  line-height: 1; text-decoration: none;
+}
+.logo-sub {
+  font-size: 8.5px; font-weight: 500;
+  letter-spacing: 0.2em; color: var(--dim);
+  text-transform: uppercase; display: block; margin-top: 2px;
+}
+.topbar-timer {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--green-dim);
+  border: 0.5px solid var(--green-border);
+  padding: 8px 14px; border-radius: 3px;
+}
+.topbar-timer-label {
+  font-size: 11px; font-weight: 500;
+  letter-spacing: 0.08em; color: var(--muted);
+}
+.topbar-timer-label strong {
+  font-weight: 600; color: var(--green);
+  letter-spacing: 0.12em; text-transform: uppercase;
+  font-size: 10px;
+}
+#countdown {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 18px;
+  color: var(--green); letter-spacing: 0.04em;
+  min-width: 42px; text-align: right;
+  transition: color 0.3s;
+}
+#countdown.urgent { color: rgba(255, 120, 80, 0.9); }
+
+/* ── LAYOUT ── */
+.wrap {
+  position: relative; z-index: 1;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+/* ── HERO ── */
+.hero { padding: 56px 0 0; }
+
+.pre-headline {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.28em; color: var(--dim);
+  text-transform: uppercase; margin-bottom: 22px;
+  display: block;
+}
+
+.hero-h1 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: clamp(44px, 7vw, 72px);
+  line-height: 0.93;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin-bottom: 28px;
+}
+.hero-h1 .accent { color: var(--green); }
+
+.hero-body {
+  font-size: 16px; color: var(--muted);
+  line-height: 1.75; max-width: 640px;
+  margin-bottom: 14px;
+}
+.hero-body strong { color: var(--text); font-weight: 500; }
+
+/* ── DIVIDER ── */
+.divider {
+  width: 100%; height: 0.5px;
+  background: var(--border-subtle);
+  margin: 48px 0;
+}
+
+/* ── FLAVOR SELECTOR ── */
+.flavor-section {
+  margin: 40px 0 32px;
+}
+.flavor-heading {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800; font-size: 20px;
+  color: var(--text); letter-spacing: 0.02em;
+  margin-bottom: 6px;
+}
+.flavor-subheading {
+  font-size: 13px; color: var(--dim);
+  margin-bottom: 20px;
+}
+.flavor-options {
+  display: flex; flex-direction: column; gap: 10px;
+}
+.flavor-btn {
+  display: flex; align-items: center; gap: 14px;
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 14px 18px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  text-align: left;
+  width: 100%;
+}
+.flavor-btn:hover {
+  border-color: var(--green-border);
+  background: var(--surface2);
+}
+.flavor-btn.active {
+  border-color: var(--green);
+  background: var(--green-dim);
+}
+.flavor-dot {
+  width: 14px; height: 14px;
+  border-radius: 50%; flex-shrink: 0;
+}
+.flavor-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; font-size: 16px;
+  color: var(--text); letter-spacing: 0.04em;
+  flex: 1;
+}
+.flavor-radio {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid var(--dimmer);
+  margin-left: auto; flex-shrink: 0;
+  position: relative; transition: border-color 0.15s;
+}
+.flavor-btn.active .flavor-radio {
+  border-color: var(--green);
+  background: var(--green);
+}
+.flavor-btn.active .flavor-radio::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #0D1009;
+}
+
+.flavor-required {
+  font-size: 12px; color: rgba(255,100,100,0.85);
+  text-align: left; margin-top: 10px;
+  display: none;
+  font-weight: 500;
+}
+.flavor-required.visible { display: block; }
+
+/* ── INGREDIENT CALLOUTS ── */
+.ingredients-section {
+  margin: 40px 0;
+}
+.ingredients-label {
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.24em; color: var(--dim);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 0.5px solid var(--border-subtle);
+}
+.ingredient-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+}
+@media (max-width: 600px) {
+  .ingredient-cards { grid-template-columns: 1fr; }
+}
+.ingredient-card {
+  background: var(--surface);
+  border: 0.5px solid var(--green-border);
+  border-radius: 8px;
+  padding: 22px 18px 20px;
+  position: relative; overflow: hidden;
+}
+.ingredient-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--green), transparent);
+  opacity: 0.35;
+}
+.ingredient-icon {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--green-dim);
+  border: 0.5px solid var(--green-border);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 14px;
+  font-size: 15px;
+}
+.ingredient-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800; font-size: 16px;
+  color: var(--green); letter-spacing: 0.03em;
+  margin-bottom: 8px;
+  line-height: 1.1;
+}
+.ingredient-dose {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.14em; color: var(--dim);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.ingredient-copy {
+  font-size: 13px; color: var(--muted);
+  line-height: 1.6;
+}
+
+/* ── PRICE BLOCK ── */
+.price-block {
+  background: var(--surface);
+  border: 1px solid var(--green-border);
+  border-radius: 10px;
+  padding: 32px 28px 28px;
+  margin: 40px 0 0;
+  position: relative; overflow: hidden;
+}
+.price-block::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 3px; background: var(--green);
+}
+.price-block-label {
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.24em; color: var(--dim);
+  text-transform: uppercase; margin-bottom: 18px;
+}
+.price-row {
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+.price-old {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 28px; font-weight: 700;
+  color: var(--red-strike);
+  text-decoration: line-through;
+  text-decoration-color: var(--red-strike);
+  opacity: 0.75;
+}
+.price-new {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 48px; font-weight: 900;
+  color: var(--green); line-height: 1;
+  letter-spacing: -0.01em;
+}
+.price-badge {
+  display: inline-flex; align-items: center;
+  background: var(--green);
+  color: #0D1009;
+  font-size: 9px; font-weight: 800;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  padding: 4px 10px; border-radius: 2px;
+}
+.price-context {
+  font-size: 13px; color: var(--dim);
+  margin-top: 8px; margin-bottom: 24px;
+  line-height: 1.6;
+}
+.price-context em { color: var(--muted); font-style: normal; }
+
+/* ── CTA BUTTON ── */
+.btn-accept {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  width: 100%;
+  background: var(--green);
+  color: #0D1009;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900; font-size: 19px;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  border: none; border-radius: 5px;
+  padding: 18px 28px;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+  position: relative;
+  overflow: hidden;
+}
+.btn-accept:hover:not(:disabled) { opacity: 0.92; transform: translateY(-1px); }
+.btn-accept:active:not(:disabled) { transform: translateY(0); }
+.btn-accept:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+.btn-accept .btn-text { flex: 1; }
+.btn-accept .btn-arrow {
+  flex-shrink: 0;
+  display: flex; align-items: center;
+}
+
+/* Loading spinner */
+.btn-accept.loading .btn-text::after {
+  content: ' …';
+}
+.btn-accept-sub {
+  font-size: 11px; color: var(--dim);
+  text-align: center; margin-top: 12px;
+  letter-spacing: 0.06em;
+}
+
+/* ── DECLINE ── */
+.btn-decline {
+  display: block;
+  width: 100%;
+  background: none;
+  border: none;
+  color: var(--dim);
+  font-size: 13px;
+  text-align: center;
+  padding: 14px 8px;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--dimmer);
+  transition: color 0.15s;
+  letter-spacing: 0.02em;
+}
+.btn-decline:hover:not(:disabled) { color: var(--muted); }
+.btn-decline:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ── TRUST BAR ── */
+.trust-bar {
+  display: flex; flex-wrap: wrap; gap: 16px;
+  justify-content: center;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 0.5px solid var(--border-subtle);
+}
+.trust-item {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; color: var(--dim); letter-spacing: 0.06em;
+}
+.trust-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--dimmer); flex-shrink: 0; }
+
+/* ── FOOTER ── */
+.page-footer {
+  position: relative; z-index: 1;
+  border-top: 0.5px solid var(--border-subtle);
+  padding: 24px 40px; text-align: center;
+}
+.footer-logo {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900; font-size: 20px;
+  color: var(--dimmer); letter-spacing: -0.01em;
+  margin-bottom: 10px;
+}
+.footer-text {
+  font-size: 11px; color: var(--dimmer); line-height: 1.65;
+  max-width: 640px; margin: 0 auto;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 600px) {
+  .topbar { padding: 14px 18px; }
+  .hero { padding: 36px 0 0; }
+  .topbar-timer-label { display: none; }
+  .price-block { padding: 24px 18px 22px; }
+  .ingredient-cards { grid-template-columns: 1fr; }
+  .price-new { font-size: 40px; }
+}
+</style>
+</head>
+<body>
+
+<div class="radial-glow"></div>
+
+<!-- PROGRESS BAR: Step 1 DONE, Step 2 ACTIVE -->
+<div class="funnel-progress">
+  <div class="progress-step done">
+    <div class="dot">
+      <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+        <path d="M2 5l2.5 2.5L8 3" stroke="#0D1009" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <span class="label">Activation Protocol</span>
+  </div>
+  <div class="progress-connector done"></div>
+  <div class="progress-step active">
+    <div class="dot">2</div>
+    <span class="label">Mindor Stack</span>
+  </div>
+</div>
+
+<!-- TOP BAR -->
+<header class="topbar">
+  <a href="#" class="logo">
+    MINDOR
+    <span class="logo-sub">Performance Stack</span>
+  </a>
+  <div class="topbar-timer">
+    <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+      <circle cx="6.5" cy="7" r="4.5" stroke="#E2FF47" stroke-width="1.2"/>
+      <path d="M6.5 4.5V7l1.5 1.5" stroke="#E2FF47" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M5 1.5h3" stroke="#E2FF47" stroke-width="1.2" stroke-linecap="round"/>
+    </svg>
+    <span class="topbar-timer-label">Offer expires in:</span>
+    <span id="countdown">5:00</span>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- HERO -->
+  <section class="hero">
+    <span class="pre-headline">One more thing — this is what makes it stick</span>
+
+    <h1 class="hero-h1">
+      The Protocol Works.<br>
+      <span class="accent">Mindor Is What Makes It Consistent.</span>
+    </h1>
+
+    <p class="hero-body">
+      You now have the window. You have the ritual. The missing variable is the stack — the one thing that takes your brain from "trying to focus" to actually locked in.
+    </p>
+    <p class="hero-body">
+      That's what Mindor was built for. <strong>Calm control. Stable output. No spike-crash-redose loop.</strong>
+    </p>
+    <p class="hero-body">
+      The Activation Protocol protects your deep work time. Mindor handles the neurochemical side. Both working together is the difference between showing up to a protected block and actually using it.
+    </p>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- INGREDIENT CALLOUTS -->
+  <div class="ingredients-section">
+    <div class="ingredients-label">What's inside — and why it matters</div>
+    <div class="ingredient-cards">
+
+      <div class="ingredient-card">
+        <div class="ingredient-icon">🍄</div>
+        <div class="ingredient-name">Lion's Mane</div>
+        <div class="ingredient-dose">500 mg</div>
+        <p class="ingredient-copy">The sharpness you're looking for. A signal that supports neural clarity over time — not a stimulant, not a spike.</p>
+      </div>
+
+      <div class="ingredient-card">
+        <div class="ingredient-icon">⚡</div>
+        <div class="ingredient-name">Alpha-GPC</div>
+        <div class="ingredient-dose">300 mg</div>
+        <p class="ingredient-copy">Your brain's fuel for focus. Fires up acetylcholine — the neurotransmitter of attention. The one your brain actually uses when you're locked in.</p>
+      </div>
+
+      <div class="ingredient-card">
+        <div class="ingredient-icon">〰</div>
+        <div class="ingredient-name">L-Theanine</div>
+        <div class="ingredient-dose">200 mg</div>
+        <p class="ingredient-copy">Calm without sedation. Steady without jitter. The compound that takes "wired" off the table so you can actually execute.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FLAVOR SELECTOR -->
+  <div class="flavor-section">
+    <div class="flavor-heading">Choose Your Flavor</div>
+    <p class="flavor-subheading">30 servings per tub · Zero sugar · Sucralose sweetened</p>
+    <div class="flavor-options" id="flavorOptions">
+      <button
+        class="flavor-btn"
+        data-variant-id="gid://shopify/ProductVariant/48144449568923"
+        type="button"
+      >
+        <div class="flavor-dot" style="background: #E2FF47;"></div>
+        <span class="flavor-name">Sour Candy</span>
+        <div class="flavor-radio"></div>
+      </button>
+      <button
+        class="flavor-btn"
+        data-variant-id="gid://shopify/ProductVariant/48144474931355"
+        type="button"
+      >
+        <div class="flavor-dot" style="background: #C084FC;"></div>
+        <span class="flavor-name">Sour Grape</span>
+        <div class="flavor-radio"></div>
+      </button>
+      <button
+        class="flavor-btn"
+        data-variant-id="gid://shopify/ProductVariant/48144477651099"
+        type="button"
+      >
+        <div class="flavor-dot" style="background: #FF7EB3;"></div>
+        <span class="flavor-name">Sour Gummy Worms</span>
+        <div class="flavor-radio"></div>
+      </button>
+    </div>
+    <p class="flavor-required" id="flavorRequired">Please select a flavor to continue</p>
+  </div>
+
+  <!-- PRICE BLOCK + CTA -->
+  <div class="price-block">
+    <div class="price-block-label">One-time exclusive — not available after this page</div>
+
+    <div class="price-row">
+      <span class="price-old">$42.99</span>
+      <span class="price-new">$36.54</span>
+      <span class="price-badge">HVCO-STACK</span>
+    </div>
+    <p class="price-context">
+      <em>$1.22 per serving · 30 servings per tub.</em> Discount applied automatically at checkout. This price is only available right now, on this page.
+    </p>
+
+    <button class="btn-accept" id="btn-accept" type="button">
+      <span class="btn-text">ADD MINDOR TO MY ORDER — $36.54</span>
+      <span class="btn-arrow">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+    </button>
+    <p class="btn-accept-sub">30-day money-back guarantee · Secure Shopify checkout</p>
+
+    <button class="btn-decline" id="btn-decline" type="button">
+      I'll pass — just the protocol for now
+    </button>
+
+    <div class="trust-bar">
+      <div class="trust-item"><div class="trust-dot"></div>30-day guarantee</div>
+      <div class="trust-item"><div class="trust-dot"></div>Secure checkout</div>
+      <div class="trust-item"><div class="trust-dot"></div>No subscription</div>
+      <div class="trust-item"><div class="trust-dot"></div>Free shipping $75+</div>
+    </div>
+  </div>
+
+</main>
+
+<footer class="page-footer">
+  <div class="footer-logo">MINDOR</div>
+  <p class="footer-text">
+    MINDOR PERFORMANCE STACK · drinkmindor.com · Stop Chasing Focus.<br>
+    These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease.
+  </p>
+</footer>
+
+<script>
+// ─────────────────────────────────────────
+// CONSTANTS
+// ─────────────────────────────────────────
+const KLAVIYO_PUBLIC_KEY = 'S3D76Q';
+const KLAVIYO_LIST_ID    = 'TUAJJE';
+const CUSTOM_SOURCE      = 'Deep Work Window Planner Funnel';
+const SHOPIFY_DOMAIN     = 'mindor-1950.myshopify.com';
+const STOREFRONT_TOKEN   = 'c1f8ad6a65722ad1a022b7e5f8a8660c';
+const API_VERSION        = '2024-01';
+const ACTIVATION_VARIANT_ID = 'YOUR_ACTIVATION_VARIANT_ID_HERE';
+const TUB_DISCOUNT_CODE  = 'HVCO-STACK';
+const TIMER_KEY          = 'mindor_upsell1_timer_end';
+
+const FLAVOR_VARIANTS = {
+  'Sour Candy':       'gid://shopify/ProductVariant/48144449568923',
+  'Sour Grape':       'gid://shopify/ProductVariant/48144474931355',
+  'Sour Gummy Worms': 'gid://shopify/ProductVariant/48144477651099',
+};
+
+// ─────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────
+let selectedFlavor = null;
+
+// ─────────────────────────────────────────
+// TIMER — reads existing key, does NOT reset
+// ─────────────────────────────────────────
+(function() {
+  const KEY = 'mindor_upsell1_timer_end';
+  const FALLBACK = 5 * 60 * 1000;
+  const display = document.getElementById('countdown');
+  if (!display) return;
+  let end = parseInt(sessionStorage.getItem(KEY), 10);
+  if (!end || isNaN(end)) {
+    end = Date.now() + FALLBACK;
+    sessionStorage.setItem(KEY, end);
+  }
+  const timer = setInterval(() => {
+    const remaining = Math.max(0, Math.floor((end - Date.now()) / 1000));
+    const m = Math.floor(remaining / 60);
+    const s = remaining % 60;
+    display.textContent = m + ':' + (s < 10 ? '0' : '') + s;
+    if (remaining <= 60) display.classList.add('urgent');
+    if (remaining <= 0) { clearInterval(timer); display.textContent = '0:00'; /* CTA stays active */ }
+  }, 1000);
+})();
+
+// ─────────────────────────────────────────
+// FLAVOR SELECTOR
+// ─────────────────────────────────────────
+document.querySelectorAll('.flavor-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.flavor-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedFlavor = btn.dataset.variantId;
+    document.getElementById('flavorRequired').classList.remove('visible');
+  });
+});
+
+// ─────────────────────────────────────────
+// KLAVIYO
+// ─────────────────────────────────────────
+async function subscribeToKlaviyo(email, name, extraProps) {
+  const payload = {
+    data: {
+      type: 'subscription',
+      attributes: {
+        custom_source: CUSTOM_SOURCE,
+        profile: { data: { type: 'profile', attributes: Object.assign({ email }, name ? { first_name: name } : {}, extraProps || {}) } }
+      },
+      relationships: { list: { data: { type: 'list', id: KLAVIYO_LIST_ID } } }
+    }
+  };
+  try {
+    await fetch(`https://a.klaviyo.com/client/subscriptions/?company_id=${KLAVIYO_PUBLIC_KEY}`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json', 'revision': '2024-10-15' }, body: JSON.stringify(payload)
+    });
+  } catch(e) { console.warn('[Mindor Klaviyo]', e); }
+}
+
+// ─────────────────────────────────────────
+// SHOPIFY
+// ─────────────────────────────────────────
+const CART_CREATE = `
+  mutation cartCreate($lines: [CartLineInput!]!) {
+    cartCreate(input: { lines: $lines }) {
+      cart { checkoutUrl }
+      userErrors { field message }
+    }
+  }
+`;
+
+async function shopifyFetch(query, variables) {
+  const res = await fetch(`https://${SHOPIFY_DOMAIN}/api/${API_VERSION}/graphql.json`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-Shopify-Storefront-Access-Token': STOREFRONT_TOKEN },
+    body: JSON.stringify({ query, variables })
+  });
+  return res.json();
+}
+
+async function goToCheckout(cartLines, useDiscount) {
+  const res = await shopifyFetch(CART_CREATE, { lines: cartLines });
+  const cart = res.data?.cartCreate?.cart;
+  if (cart?.checkoutUrl) {
+    let url = cart.checkoutUrl;
+    if (useDiscount) url += (url.includes('?') ? '&' : '?') + 'discount=' + TUB_DISCOUNT_CODE;
+    window.location.href = url;
+  } else {
+    throw new Error('No checkout URL returned');
+  }
+}
+
+// ─────────────────────────────────────────
+// ACCEPT HANDLER
+// ─────────────────────────────────────────
+async function handleAccept() {
+  if (!selectedFlavor) {
+    document.getElementById('flavorRequired').classList.add('visible');
+    document.getElementById('flavorOptions').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+  const btn = document.getElementById('btn-accept');
+  const declineBtn = document.getElementById('btn-decline');
+  btn.disabled = true;
+  btn.classList.add('loading');
+  declineBtn.disabled = true;
+  try {
+    const email = sessionStorage.getItem('funnel_email') || '';
+    const name  = sessionStorage.getItem('funnel_name') || '';
+    await subscribeToKlaviyo(email, name, { hvco_tub_dw: true });
+    const lines = [];
+    // Activation Protocol — skip if placeholder not replaced
+    if (ACTIVATION_VARIANT_ID && !ACTIVATION_VARIANT_ID.includes('YOUR_')) {
+      lines.push({ merchandiseId: ACTIVATION_VARIANT_ID, quantity: 1 });
+    }
+    lines.push({ merchandiseId: selectedFlavor, quantity: 1 });
+    await goToCheckout(lines, true); // true = apply HVCO-STACK discount
+  } catch(err) {
+    console.error('[Mindor] Checkout error:', err);
+    btn.disabled = false;
+    btn.classList.remove('loading');
+    declineBtn.disabled = false;
+    btn.querySelector('.btn-text').textContent = '⚠ Checkout failed — try again';
+  }
+}
+
+// ─────────────────────────────────────────
+// DECLINE HANDLER — activation-only cart
+// ─────────────────────────────────────────
+async function handleDecline() {
+  const btn = document.getElementById('btn-decline');
+  btn.textContent = 'Taking you to checkout…';
+  btn.disabled = true;
+  try {
+    const lines = [];
+    if (ACTIVATION_VARIANT_ID && !ACTIVATION_VARIANT_ID.includes('YOUR_')) {
+      lines.push({ merchandiseId: ACTIVATION_VARIANT_ID, quantity: 1 });
+    } else {
+      // Placeholder not replaced yet — redirect to Shopify domain as fallback
+      window.location.href = 'https://' + SHOPIFY_DOMAIN;
+      return;
+    }
+    await goToCheckout(lines, false);
+  } catch(err) {
+    console.error('[Mindor] Decline checkout error:', err);
+    btn.disabled = false;
+    btn.textContent = "I'll pass — just the protocol for now";
+  }
+}
+
+// ─────────────────────────────────────────
+// WIRE UP BUTTONS
+// ─────────────────────────────────────────
+document.getElementById('btn-accept').addEventListener('click', handleAccept);
+document.getElementById('btn-decline').addEventListener('click', handleDecline);
+</script>
+
+</body>
+</html>
