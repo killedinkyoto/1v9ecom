@@ -745,11 +745,16 @@ async function shopifyFetch(query, variables) {
     headers: { 'Content-Type': 'application/json', 'X-Shopify-Storefront-Access-Token': STOREFRONT_TOKEN },
     body: JSON.stringify({ query, variables })
   });
+  if (!res.ok) throw new Error(`Shopify API error: ${res.status}`);
   return res.json();
 }
 
 async function goToCheckout(cartLines, useDiscount) {
   const res = await shopifyFetch(CART_CREATE, { lines: cartLines });
+  const userErrors = res.data?.cartCreate?.userErrors;
+  if (userErrors?.length) {
+    throw new Error(`Shopify cart error: ${userErrors[0].message}`);
+  }
   const cart = res.data?.cartCreate?.cart;
   if (cart?.checkoutUrl) {
     let url = cart.checkoutUrl;
@@ -777,11 +782,15 @@ async function handleAccept() {
   try {
     const email = sessionStorage.getItem('funnel_email') || '';
     const name  = sessionStorage.getItem('funnel_name') || '';
-    await subscribeToKlaviyo(email, name, { hvco_tub_dw: true });
+    // Fire and forget — errors suppressed inside subscribeToKlaviyo
+    subscribeToKlaviyo(email, name, { hvco_tub_dw: true });
+    // No await — immediately proceed to checkout
     const lines = [];
     // Activation Protocol — skip if placeholder not replaced
     if (ACTIVATION_VARIANT_ID && !ACTIVATION_VARIANT_ID.includes('YOUR_')) {
       lines.push({ merchandiseId: ACTIVATION_VARIANT_ID, quantity: 1 });
+    } else {
+      console.warn('[Mindor] ACTIVATION_VARIANT_ID is placeholder — skipping digital item from cart');
     }
     lines.push({ merchandiseId: selectedFlavor, quantity: 1 });
     await goToCheckout(lines, true); // true = apply HVCO-STACK discount
@@ -806,6 +815,7 @@ async function handleDecline() {
     if (ACTIVATION_VARIANT_ID && !ACTIVATION_VARIANT_ID.includes('YOUR_')) {
       lines.push({ merchandiseId: ACTIVATION_VARIANT_ID, quantity: 1 });
     } else {
+      console.warn('[Mindor] ACTIVATION_VARIANT_ID is placeholder — skipping digital item from cart');
       // Placeholder not replaced yet — redirect to Shopify domain as fallback
       window.location.href = 'https://' + SHOPIFY_DOMAIN;
       return;
