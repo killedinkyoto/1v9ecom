@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wait — Activate Your Deep Work Window | Mindor Performance Stack</title>
+<meta name="robots" content="noindex, nofollow">
+
+<!-- DIRECT-ACCESS GUARD — must run before CSS loads -->
+<script>
+  (function() {
+    if (!sessionStorage.getItem('funnel_email')) {
+      window.location.replace('squeeze-deep-work-planner.html');
+    }
+  })();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --green: #E2FF47;
+  --green-dim: rgba(226,255,71,0.08);
+  --green-border: rgba(226,255,71,0.14);
+  --green-glow: rgba(226,255,71,0.18);
+  --bg: #0D1009;
+  --surface: #141810;
+  --surface2: #1A1F13;
+  --surface3: #202618;
+  --text: #F0F0E8;
+  --muted: #C8C9B8;
+  --dim: #6A7A5A;
+  --dimmer: #3A4A30;
+  --black: #0A0A0A;
+  --cream: #F8ECC3;
+  --border-subtle: rgba(255,255,255,0.05);
+  --red-strike: rgba(255,80,80,0.7);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+  overflow-y: auto;
+}
+
+/* ── NOISE TEXTURE ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.6;
+}
+
+/* ── TOP GLOW ── */
+.radial-glow {
+  position: fixed;
+  top: -200px; left: 50%;
+  transform: translateX(-50%);
+  width: 800px; height: 500px;
+  background: radial-gradient(ellipse at center top, rgba(226,255,71,0.05) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── PROGRESS BAR ── */
+.funnel-progress {
+  position: relative;
+  z-index: 10;
+  background: var(--surface);
+  border-bottom: 0.5px solid var(--green-border);
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+
+.progress-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.progress-step .dot {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 700;
+  flex-shrink: 0;
+}
+
+.progress-step.active .dot {
+  background: var(--green-dim);
+  border: 1.5px solid var(--green);
+  color: var(--green);
+}
+.progress-step.active .label { color: var(--green); }
+
+.progress-step.upcoming .dot {
+  background: var(--surface2);
+  border: 1px solid var(--border-subtle);
+  color: var(--dimmer);
+}
+.progress-step.upcoming .label { color: var(--dimmer); }
+
+.progress-connector {
+  width: 40px; height: 1px;
+  background: var(--border-subtle);
+  flex-shrink: 0;
+  margin: 0 4px;
+}
+
+/* ── TOP BAR ── */
+.topbar {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 40px;
+  border-bottom: 0.5px solid var(--green-border);
+}
+
+.logo {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: 26px;
+  color: var(--green);
+  letter-spacing: -0.01em;
+  line-height: 1;
+  text-decoration: none;
+}
+.logo-sub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 8.5px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  color: var(--dim);
+  text-transform: uppercase;
+  display: block;
+  margin-top: 2px;
+}
+
+.topbar-secure {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: var(--dim);
+  text-transform: uppercase;
+}
+
+/* ── MAIN LAYOUT ── */
+.wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+/* ── ATTENTION STRIP ── */
+.attention-strip {
+  margin: 40px 0 0;
+  background: linear-gradient(135deg, #1A1F13 0%, #0F1409 100%);
+  border: 0.5px solid var(--green-border);
+  border-radius: 6px;
+  padding: 18px 28px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+}
+.attention-strip::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, var(--green), transparent);
+  opacity: 0.6;
+}
+.attention-strip-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+}
+.attention-strip-text {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+.attention-strip-text strong {
+  color: var(--green);
+  font-weight: 600;
+}
+
+/* ── HERO ── */
+.hero {
+  padding: 56px 0 0;
+  text-align: left;
+}
+
+.pre-headline {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  color: var(--dim);
+  text-transform: uppercase;
+  small-caps: all-small-caps;
+  margin-bottom: 18px;
+  display: block;
+}
+
+.hero-h1 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: clamp(52px, 8vw, 80px);
+  line-height: 0.92;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin-bottom: 28px;
+}
+.hero-h1 .accent { color: var(--green); }
+
+.hero-body {
+  font-size: 16px;
+  color: var(--muted);
+  line-height: 1.75;
+  max-width: 600px;
+  margin-bottom: 14px;
+}
+.hero-body strong { color: var(--text); font-weight: 500; }
+
+/* ── DIVIDER ── */
+.divider {
+  width: 100%;
+  height: 0.5px;
+  background: var(--border-subtle);
+  margin: 48px 0;
+}
+
+/* ── PROTOCOL VISUAL MOCK ── */
+.protocol-mock {
+  background: linear-gradient(145deg, #1A2010 0%, #0F1409 100%);
+  border: 1px solid var(--green-border);
+  border-radius: 8px;
+  padding: 28px 28px 24px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 40px;
+}
+.protocol-mock::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--green);
+}
+.protocol-mock-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.protocol-mock-logo {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: 13px;
+  color: var(--green);
+  letter-spacing: 0.08em;
+}
+.protocol-mock-logo-sub {
+  font-size: 7px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  color: var(--dim);
+  text-transform: uppercase;
+  display: block;
+}
+.protocol-mock-badge {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--black);
+  background: var(--green);
+  padding: 3px 9px;
+  border-radius: 2px;
+  text-transform: uppercase;
+}
+.protocol-mock-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: 24px;
+  color: var(--text);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.protocol-mock-sub {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--green);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.protocol-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+.protocol-step-row {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  gap: 8px;
+  align-items: center;
+}
+.protocol-step-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 10px;
+  color: var(--green);
+  opacity: 0.7;
+}
+.protocol-step-bar {
+  height: 6px;
+  border-radius: 2px;
+  background: var(--green-dim);
+  border: 0.5px solid var(--green-border);
+  position: relative;
+  overflow: hidden;
+}
+.protocol-step-bar::after {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  background: var(--green);
+  opacity: 0.5;
+  border-radius: 2px;
+}
+.w-40 { width: 40%; }
+.w-60 { width: 60%; }
+.w-75 { width: 75%; }
+.w-85 { width: 85%; }
+.protocol-mock-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: var(--green-dim);
+  border: 0.5px solid var(--green-border);
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--green);
+  text-transform: uppercase;
+  margin-top: 8px;
+}
+
+/* ── SECTION LABEL ── */
+.section-eyebrow {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  color: var(--dimmer);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 0.5px solid var(--border-subtle);
+}
+
+/* ── WHAT'S INSIDE CARDS ── */
+.inside-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 48px;
+}
+
+.inside-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 0.5px solid var(--border-subtle);
+}
+.inside-item:last-child { border-bottom: none; }
+
+.inside-num {
+  flex-shrink: 0;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: var(--green-dim);
+  border: 1px solid var(--green-border);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 14px;
+  color: var(--green);
+}
+
+.inside-content { flex: 1; }
+.inside-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--text);
+  letter-spacing: 0.02em;
+  margin-bottom: 3px;
+}
+.inside-desc {
+  font-size: 13px;
+  color: var(--dim);
+  line-height: 1.55;
+}
+
+/* ── TESTIMONIALS ── */
+.testimonials {
+  margin-bottom: 48px;
+}
+
+.testimonials-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  color: var(--dimmer);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 0.5px solid var(--border-subtle);
+}
+
+.testimonial-card {
+  background: var(--surface);
+  border: 0.5px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 24px 28px;
+  margin-bottom: 12px;
+  position: relative;
+}
+.testimonial-card::before {
+  content: '"';
+  position: absolute;
+  top: 12px; left: 20px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: 52px;
+  color: var(--green);
+  opacity: 0.15;
+  line-height: 1;
+}
+
+.testimonial-text {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.7;
+  padding-left: 8px;
+}
+
+.testimonial-attribution {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 0.5px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.testimonial-avatar {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--surface2);
+  border: 1px solid var(--green-border);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 12px;
+  color: var(--green);
+  flex-shrink: 0;
+}
+.testimonial-meta {
+  font-size: 11px;
+  color: var(--dim);
+  letter-spacing: 0.06em;
+}
+
+/* ── PRICE BLOCK ── */
+.price-block {
+  margin-top: 40px;
+  padding: 32px;
+  background: var(--surface);
+  border: 0.5px solid var(--green-border);
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+}
+.price-block::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--green), transparent);
+  opacity: 0.4;
+}
+
+/* ── COUNTDOWN TIMER ── */
+.timer-bar {
+  display: flex; align-items: center; gap: 12px;
+  background: rgba(226,255,71,0.06);
+  border: 0.5px solid rgba(226,255,71,0.2);
+  border-radius: 4px; padding: 12px 16px; margin-bottom: 20px;
+}
+.timer-label {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--dim); flex: 1;
+}
+.timer-display {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900; font-size: 28px; color: var(--green);
+  line-height: 1; letter-spacing: 0.04em; min-width: 72px; text-align: right;
+}
+.timer-display.urgent { color: #FF6B6B; animation: pulse 1s ease-in-out infinite; }
+@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.55; } }
+.timer-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green); flex-shrink: 0;
+  animation: blink 1s step-end infinite;
+}
+@keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0; } }
+
+.price-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: var(--dim);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.price-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,80,80,0.1);
+  border: 0.5px solid rgba(255,80,80,0.2);
+  border-radius: 3px;
+  padding: 3px 10px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #FF8080;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  display: block;
+  width: fit-content;
+}
+
+.price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 6px;
+}
+
+.price-old {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--dimmer);
+  text-decoration: line-through;
+  text-decoration-color: rgba(255,80,80,0.5);
+}
+
+.price-new {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 56px;
+  font-weight: 900;
+  color: var(--green);
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+
+.price-context {
+  font-size: 12px;
+  color: var(--dim);
+  margin-bottom: 28px;
+  line-height: 1.5;
+}
+.price-context em {
+  font-style: normal;
+  color: var(--green);
+  font-weight: 600;
+}
+
+/* ── CTA BUTTON ── */
+.btn-accept {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  background: var(--green);
+  color: #0A0F07;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: 20px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 18px 32px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: opacity 0.15s, box-shadow 0.15s, transform 0.1s;
+  position: relative;
+  overflow: hidden;
+}
+.btn-accept::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.12) 0%, transparent 60%);
+  pointer-events: none;
+}
+.btn-accept:hover {
+  opacity: 0.92;
+  box-shadow: 0 8px 40px rgba(226,255,71,0.3);
+  transform: translateY(-1px);
+}
+.btn-accept:active { transform: translateY(0); }
+.btn-accept.loading { opacity: 0.6; cursor: not-allowed; }
+
+.btn-spinner {
+  display: none;
+  width: 16px; height: 16px;
+  border: 2px solid rgba(10,15,7,0.3);
+  border-top-color: #0A0F07;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.btn-accept.loading .btn-spinner { display: block; }
+.btn-accept.loading .btn-arrow { display: none; }
+
+.btn-accept-sub {
+  font-size: 11px;
+  color: var(--dim);
+  text-align: center;
+  margin-top: 10px;
+  line-height: 1.4;
+}
+
+.btn-decline {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin-top: 20px;
+  font-size: 12px;
+  color: var(--dimmer);
+  text-decoration: none;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-family: 'DM Sans', sans-serif;
+  padding: 8px;
+  transition: color 0.15s;
+  line-height: 1.5;
+}
+.btn-decline:hover { color: var(--dim); }
+
+/* ── TRUST BAR ── */
+.trust-bar {
+  margin-top: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 16px 0 0;
+  border-top: 0.5px solid var(--border-subtle);
+}
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--dim);
+  letter-spacing: 0.08em;
+}
+.trust-dot {
+  width: 3px; height: 3px;
+  border-radius: 50%;
+  background: var(--dimmer);
+  flex-shrink: 0;
+}
+
+/* ── FOOTER ── */
+.page-footer {
+  position: relative;
+  z-index: 1;
+  border-top: 0.5px solid var(--border-subtle);
+  padding: 24px 40px;
+  text-align: center;
+}
+.footer-text {
+  font-size: 11px;
+  color: var(--dimmer);
+  line-height: 1.6;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 600px) {
+  .topbar { padding: 16px 20px; }
+  .hero { padding: 40px 0 0; }
+  .price-block { padding: 24px 20px; }
+  .attention-strip { padding: 16px 20px; }
+  .hero-h1 { font-size: 48px; }
+  .testimonial-card { padding: 20px 20px; }
+}
+</style>
+</head>
+<body>
+
+<div class="radial-glow"></div>
+
+<!-- PROGRESS BAR -->
+<div class="funnel-progress">
+  <div class="progress-step active">
+    <div class="dot">1</div>
+    <span class="label">Activation Protocol</span>
+  </div>
+  <div class="progress-connector"></div>
+  <div class="progress-step upcoming">
+    <div class="dot">2</div>
+    <span class="label">Mindor Stack</span>
+  </div>
+</div>
+
+<!-- TOP BAR -->
+<header class="topbar">
+  <a href="#" class="logo">
+    MINDOR
+    <span class="logo-sub">Performance Stack</span>
+  </a>
+  <div class="topbar-secure">
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+      <rect x="2" y="5" width="8" height="6" rx="1" stroke="currentColor" stroke-width="1.2"/>
+      <path d="M4 5V3.5a2 2 0 014 0V5" stroke="currentColor" stroke-width="1.2"/>
+    </svg>
+    Secure Checkout
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ATTENTION STRIP -->
+  <div class="attention-strip">
+    <div class="attention-strip-icon">📋</div>
+    <div class="attention-strip-text">
+      <strong>Your planner is on its way.</strong> Before it arrives — this offer is only available on this page. It disappears when you leave.
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <span class="pre-headline">Wait — Your Planner Is On Its Way</span>
+    <h1 class="hero-h1">
+      The Window Is Blocked.<br>
+      <span class="accent">Now What?</span>
+    </h1>
+    <p class="hero-body">
+      The planner shows you <strong>WHEN</strong>. This shows you <strong>HOW</strong>.
+    </p>
+    <p class="hero-body">
+      Most people schedule a deep work block and show up to it foggy. They open the doc, stare at it for ten minutes, then reach for their phone. That's not a time problem. It's a state problem.
+    </p>
+    <p class="hero-body">
+      The <strong>Work-State Activation Protocol</strong> is the pre-block ritual that turns a scheduled window into actual execution. Five minutes before the block starts — you run the sequence. By the time you open the file, your brain is already there.
+    </p>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- PROTOCOL VISUAL MOCK -->
+  <div class="protocol-mock">
+    <div class="protocol-mock-header">
+      <div>
+        <div class="protocol-mock-logo">MINDOR
+          <span class="protocol-mock-logo-sub">Performance Stack</span>
+        </div>
+      </div>
+      <div class="protocol-mock-badge">Digital PDF</div>
+    </div>
+    <div class="protocol-mock-title">WORK-STATE ACTIVATION<br>PROTOCOL</div>
+    <div class="protocol-mock-sub">5-Min Pre-Block Ritual</div>
+    <div class="protocol-steps">
+      <div class="protocol-step-row">
+        <div class="protocol-step-num">01</div>
+        <div class="protocol-step-bar"><div class="w-75"></div></div>
+      </div>
+      <div class="protocol-step-row">
+        <div class="protocol-step-num">02</div>
+        <div class="protocol-step-bar"><div class="w-85"></div></div>
+      </div>
+      <div class="protocol-step-row">
+        <div class="protocol-step-num">03</div>
+        <div class="protocol-step-bar"><div class="w-60"></div></div>
+      </div>
+      <div class="protocol-step-row">
+        <div class="protocol-step-num">04</div>
+        <div class="protocol-step-bar"><div class="w-40"></div></div>
+      </div>
+    </div>
+    <div class="protocol-mock-footer">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+        <path d="M6 1l1.3 2.6 2.9.4-2.1 2 .5 2.9L6 7.6 3.4 9l.5-2.9L1.8 4 4.7 3.6 6 1z" fill="currentColor"/>
+      </svg>
+      Instant PDF Download
+    </div>
+  </div>
+
+  <!-- WHAT'S INSIDE -->
+  <div class="section-eyebrow">What's inside the protocol</div>
+  <div class="inside-grid">
+
+    <div class="inside-item">
+      <div class="inside-num">1</div>
+      <div class="inside-content">
+        <div class="inside-title">The 5-Minute Pre-Block Sequence</div>
+        <div class="inside-desc">Environment, breath, body — done in order, every time. The physical routine that shifts your nervous system from reactive to focused before the clock starts.</div>
+      </div>
+    </div>
+
+    <div class="inside-item">
+      <div class="inside-num">2</div>
+      <div class="inside-content">
+        <div class="inside-title">The Mindor Stack Timing</div>
+        <div class="inside-desc">Exactly when to take it before a block, and why the timing changes your results. Most people take it whenever they remember. This shows you when it actually works.</div>
+      </div>
+    </div>
+
+    <div class="inside-item">
+      <div class="inside-num">3</div>
+      <div class="inside-content">
+        <div class="inside-title">The Kill Switch Checklist</div>
+        <div class="inside-desc">Every focus threat removed before the window opens. Notifications, tabs, context residue — cleared before you sit down. No willpower required during the block.</div>
+      </div>
+    </div>
+
+    <div class="inside-item">
+      <div class="inside-num">4</div>
+      <div class="inside-content">
+        <div class="inside-title">The Single-Sentence Focus Declaration</div>
+        <div class="inside-desc">One sentence that locks your brain onto one outcome. Written before the block starts, read once, non-negotiable. The simplest thing that makes the biggest difference.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- TESTIMONIALS -->
+  <div class="testimonials">
+    <div class="testimonials-label">What people are saying</div>
+
+    <div class="testimonial-card">
+      <p class="testimonial-text">
+        I'd been scheduling 9am deep work blocks for months and still showing up scattered. I thought I needed better discipline. The protocol made me realize I was walking into the block with a brain that wasn't set up for it. First week running the sequence — the blocks actually worked. I stopped losing the first 20 minutes to mental noise.
+      </p>
+      <div class="testimonial-attribution">
+        <div class="testimonial-avatar">J</div>
+        <div class="testimonial-meta">Founder · SaaS · Using Mindor for 3 months</div>
+      </div>
+    </div>
+
+    <div class="testimonial-card">
+      <p class="testimonial-text">
+        The Mindor stack timing alone was worth it. I was taking it whenever I remembered, which meant some blocks were sharp and some weren't. Now I know exactly when to mix it relative to the block, and the consistency changed everything. I stopped blaming myself for the variable results.
+      </p>
+      <div class="testimonial-attribution">
+        <div class="testimonial-avatar">M</div>
+        <div class="testimonial-meta">Media buyer · Agency owner · Using Mindor daily</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PRICE BLOCK -->
+  <div class="price-block">
+    <div class="timer-bar">
+      <span class="timer-dot"></span>
+      <span class="timer-label">This offer expires in</span>
+      <span class="timer-display" id="countdown">5:00</span>
+    </div>
+
+    <div class="price-label">Today Only — One-Time Offer</div>
+    <div class="price-badge">Limited-time pricing</div>
+
+    <div class="price-row">
+      <span class="price-old">$17</span>
+      <span class="price-new">$9</span>
+    </div>
+    <div class="price-context">
+      Add the Activation Protocol to your order right now for <em>$9</em>. This offer is only available on this page and won't be shown again.
+    </div>
+
+    <button class="btn-accept" id="btn-accept" onclick="handleAccept()">
+      <span class="btn-text">Add the Activation Protocol — $9</span>
+      <svg class="btn-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="btn-spinner"></div>
+    </button>
+    <p class="btn-accept-sub">Instant PDF delivery · One-time charge · 30-day refund guarantee</p>
+
+    <button class="btn-decline" id="btn-decline" onclick="handleDecline()">
+      No thanks, just send me the planner
+    </button>
+
+    <div class="trust-bar">
+      <div class="trust-item"><div class="trust-dot"></div>Instant PDF delivery</div>
+      <div class="trust-item"><div class="trust-dot"></div>30-day guarantee</div>
+      <div class="trust-item"><div class="trust-dot"></div>One-time charge</div>
+      <div class="trust-item"><div class="trust-dot"></div>No subscription</div>
+    </div>
+
+  </div>
+
+</main>
+
+<footer class="page-footer">
+  <p class="footer-text">
+    MINDOR PERFORMANCE STACK · drinkmindor.com · Stop Chasing Focus.<br>
+    These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease.
+  </p>
+</footer>
+
+<script>
+// ─────────────────────────────────────────
+// SHARED CONSTANTS
+// ─────────────────────────────────────────
+const KLAVIYO_PUBLIC_KEY     = 'S3D76Q';
+const KLAVIYO_LIST_ID        = 'TUAJJE';
+const CUSTOM_SOURCE          = 'Deep Work Window Planner Funnel';
+const ACTIVATION_VARIANT_ID  = 'YOUR_ACTIVATION_VARIANT_ID_HERE';
+const TIMER_KEY              = 'mindor_upsell1_timer_end';
+
+// ─────────────────────────────────────────
+// KLAVIYO HELPER
+// ─────────────────────────────────────────
+async function subscribeToKlaviyo(email, name, extraProps) {
+  const payload = {
+    data: {
+      type: 'subscription',
+      attributes: {
+        custom_source: CUSTOM_SOURCE,
+        profile: {
+          data: {
+            type: 'profile',
+            attributes: Object.assign(
+              { email },
+              name ? { first_name: name } : {},
+              extraProps || {}
+            )
+          }
+        }
+      },
+      relationships: { list: { data: { type: 'list', id: KLAVIYO_LIST_ID } } }
+    }
+  };
+  try {
+    await fetch(
+      `https://a.klaviyo.com/client/subscriptions/?company_id=${KLAVIYO_PUBLIC_KEY}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'revision': '2024-10-15' },
+        body: JSON.stringify(payload)
+      }
+    );
+  } catch(e) { console.warn('[Mindor Klaviyo]', e); }
+}
+
+// ─────────────────────────────────────────
+// TIMER — always starts fresh on upsell-1
+// ─────────────────────────────────────────
+(function() {
+  const DURATION = 5 * 60;
+  const display = document.getElementById('countdown');
+  if (!display) return;
+  const end = Date.now() + DURATION * 1000;
+  sessionStorage.setItem(TIMER_KEY, end);
+  const timer = setInterval(() => {
+    const remaining = Math.max(0, Math.floor((end - Date.now()) / 1000));
+    const m = Math.floor(remaining / 60);
+    const s = remaining % 60;
+    display.textContent = m + ':' + (s < 10 ? '0' : '') + s;
+    if (remaining <= 60) display.classList.add('urgent');
+    if (remaining <= 0) {
+      clearInterval(timer);
+      display.textContent = '0:00';
+      // CTA stays active — soft urgency only, no lockout
+    }
+  }, 1000);
+})();
+
+// ─────────────────────────────────────────
+// ACCEPT HANDLER
+// ─────────────────────────────────────────
+async function handleAccept() {
+  const btn = document.getElementById('btn-accept');
+  btn.disabled = true;
+  btn.classList.add('loading');
+
+  const email = sessionStorage.getItem('funnel_email') || '';
+  const name  = sessionStorage.getItem('funnel_name') || '';
+
+  // Write activation variant to sessionStorage (object shape — not an array)
+  sessionStorage.setItem('funnel_cart', JSON.stringify({
+    activationVariantId: ACTIVATION_VARIANT_ID
+  }));
+
+  // Klaviyo: mark as activation buyer
+  await subscribeToKlaviyo(email, name, { hvco_activation: true });
+
+  window.location.href = 'upsell-2-tub-deepwork.html';
+}
+
+// ─────────────────────────────────────────
+// DECLINE HANDLER
+// ─────────────────────────────────────────
+function handleDecline() {
+  window.location.href = 'funnel-thankyou-deepwork.html';
+}
+</script>
+
+</body>
+</html>
