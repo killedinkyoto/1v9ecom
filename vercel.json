@@ -1,7 +1,12 @@
 {
   "rewrites": [
     { "source": "/checkout", "destination": "/mindor-checkout.html" },
-    { "source": "/bundle", "destination": "/bundle.html" }
+    { "source": "/bundle", "destination": "/bundle.html" },
+    { "source": "/planner", "destination": "/upsell-1-deep-work-planner.html" },
+    { "source": "/tub", "destination": "/upsell-2-mindor-tub.html" },
+    { "source": "/squeeze", "destination": "/squeeze-brain-noise.html" },
+    { "source": "/thankyou", "destination": "/funnel-thankyou.html" },
+    { "source": "/protocol", "destination": "/protocolcard.html" }
   ],
   "headers": [
     {
