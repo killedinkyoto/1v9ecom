@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>One-Time Offer | Mindor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --execution-green: #E2FF47;
+      --bg:              #111309;
+      --bg-alt:          #0D1009;
+      --surface:         #161A0E;
+      --surface2:        #1E2416;
+      --text-primary:    #F0F0E8;
+      --fog-grey:        #C8C9B8;
+      --text-muted:      #6A7A5A;
+      --border:          rgba(235,255,71,0.12);
+      --accent:          #E2FF47;
+      --accent-dim:      rgba(226,255,71,0.12);
+      --accent-border:   rgba(226,255,71,0.25);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: 'DM Sans', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .progress-track {
+      height: 2px;
+      background: var(--surface2);
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 96%;
+      background: var(--accent);
+      box-shadow: 0 0 8px rgba(226,255,71,0.4);
+      transition: background 0.4s;
+    }
+
+    .logo {
+      position: fixed;
+      top: 16px; left: 20px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 20px;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      z-index: 100;
+      transition: color 0.4s;
+    }
+
+    .page {
+      max-width: 560px;
+      margin: 0 auto;
+      padding: 88px 20px 72px;
+    }
+
+    .step-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      text-align: center;
+    }
+
+    .headline {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: clamp(42px, 10vw, 62px);
+      line-height: 0.92;
+      color: var(--text-primary);
+      text-align: center;
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+    }
+
+    .headline em {
+      color: var(--accent);
+      font-style: normal;
+      transition: color 0.4s;
+    }
+
+    .subhead {
+      font-size: 13px;
+      color: var(--fog-grey);
+      text-align: center;
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+
+    /* ── FLAVOR SELECTOR ── */
+    .flavor-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .flavor-buttons {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .flavor-btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--fog-grey);
+      text-align: left;
+      user-select: none;
+    }
+
+    .flavor-btn.active {
+      border-color: var(--accent);
+      background: var(--accent-dim);
+      color: var(--text-primary);
+    }
+
+    .flavor-swatch {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ── ORDER CARD ── */
+    .order-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .main-product {
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .product-icon {
+      width: 44px; height: 44px;
+      background: var(--bg-alt);
+      border-radius: 6px;
+      border: 1px solid var(--accent-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: border-color 0.4s;
+    }
+
+    .product-info { flex: 1; }
+
+    .product-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 16px;
+      color: var(--text-primary);
+      letter-spacing: 0.04em;
+      line-height: 1.2;
+    }
+
+    .product-meta {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .product-prices {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .price-original {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-decoration: line-through;
+      display: block;
+    }
+
+    .price-discounted {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 20px;
+      color: var(--accent);
+      letter-spacing: 0.02em;
+      display: block;
+      transition: color 0.4s;
+    }
+
+    .discount-badge {
+      display: inline-block;
+      background: var(--accent-dim);
+      border: 1px solid var(--accent-border);
+      color: var(--accent);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 20px;
+      margin-top: 3px;
+      transition: background 0.4s, border-color 0.4s, color 0.4s;
+    }
+
+    /* Bump rows */
+    .bump-row {
+      padding: 14px 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      transition: background 0.15s;
+      user-select: none;
+    }
+    .bump-row:last-child { border-bottom: none; }
+    .bump-row:hover { background: rgba(226,255,71,0.03); }
+
+    .bump-check {
+      width: 20px; height: 20px;
+      border-radius: 4px;
+      border: 1.5px solid rgba(226,255,71,0.35);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1px;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .bump-row.checked .bump-check {
+      background: var(--accent);
+      border-color: var(--accent);
+      transition: background 0.4s, border-color 0.4s;
+    }
+    .bump-check::after {
+      content: '';
+      display: none;
+      width: 5px; height: 9px;
+      border-right: 2px solid #111309;
+      border-bottom: 2px solid #111309;
+      transform: rotate(45deg) translate(-1px, -1px);
+    }
+    .bump-row.checked .bump-check::after { display: block; }
+
+    .bump-content { flex: 1; }
+    .bump-tag {
+      display: inline-block;
+      background: var(--accent-dim);
+      border: 1px solid var(--accent-border);
+      color: var(--accent);
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin-bottom: 5px;
+      transition: background 0.4s, border-color 0.4s, color 0.4s;
+    }
+    .bump-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.3;
+      margin-bottom: 3px;
+    }
+    .bump-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+    .bump-price {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 17px;
+      color: var(--accent);
+      flex-shrink: 0;
+      margin-top: 2px;
+      transition: color 0.4s;
+    }
+
+    /* ── TIMER ── */
+    .timer-wrap {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .timer-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+    }
+    .timer-val {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 22px;
+      color: var(--text-primary);
+      letter-spacing: 0.04em;
+    }
+    .timer-val.urgent { color: #FF6464; }
+
+    /* ── TOTAL ── */
+    .total-row {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .total-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .total-val {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 28px;
+      color: var(--text-primary);
+      letter-spacing: 0.02em;
+    }
+
+    /* ── CTA ── */
+    .btn-cta {
+      width: 100%;
+      padding: 18px;
+      background: var(--accent);
+      color: #111309;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 21px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.12s, background 0.4s;
+      margin-bottom: 10px;
+    }
+    .btn-cta:hover { opacity: 0.9; }
+    .btn-cta:active { transform: scale(0.99); }
+    .btn-cta:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .btn-decline {
+      width: 100%;
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 8px;
+      text-decoration: underline;
+      background: none;
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+      transition: color 0.15s;
+    }
+    .btn-decline:hover { color: var(--fog-grey); }
+
+    .trust-strip {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+      margin-bottom: 8px;
+    }
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .trust-dot {
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: var(--text-muted);
+      opacity: 0.5;
+    }
+  </style>
+</head>
+<body>
+
+<div class="progress-track"><div class="progress-fill"></div></div>
+<div class="logo">MINDOR</div>
+
+<div class="page">
+
+  <p class="step-label">One-Time Offer · Claim Your Protocol</p>
+
+  <h1 class="headline"><em>15% OFF</em><br>YOUR FIRST TUB.</h1>
+  <p class="subhead">Your audit result unlocks this. One-time offer — pick your flavor to start.</p>
+
+  <!-- FLAVOR SELECTOR -->
+  <p class="flavor-label">Choose your flavor</p>
+  <div class="flavor-buttons">
+    <button class="flavor-btn active" id="flavor-candy" onclick="selectFlavor('candy')">
+      <span class="flavor-swatch" style="background:#E2FF47;"></span>
+      Sour Candy
+    </button>
+    <button class="flavor-btn" id="flavor-grape" onclick="selectFlavor('grape')">
+      <span class="flavor-swatch" style="background:#C084FC;"></span>
+      Sour Grape
+    </button>
+    <button class="flavor-btn" id="flavor-gummy" onclick="selectFlavor('gummy')">
+      <span class="flavor-swatch" style="background:linear-gradient(135deg,#FF6B8A,#7B9FF9); width:14px; height:14px; border-radius:50%; display:inline-block; flex-shrink:0;"></span>
+      Gummy Worm
+    </button>
+  </div>
+
+  <!-- ORDER CARD -->
+  <div class="order-card">
+    <div class="main-product">
+      <div class="product-icon">
+        <svg width="24" height="17" viewBox="0 0 40 28" fill="none">
+          <path d="M4 22 L10 8 L16 18 L20 10 L24 18 L30 8 L36 22" stroke="#E2FF47" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" id="product-svg-path"/>
+        </svg>
+      </div>
+      <div class="product-info">
+        <div class="product-name">MINDOR Performance Stack</div>
+        <div class="product-meta" id="product-meta">Sour Candy · 30 Servings · Focus + Energy</div>
+      </div>
+      <div class="product-prices">
+        <span class="price-original">$42.99</span>
+        <span class="price-discounted">$36.54</span>
+        <span class="discount-badge">15% OFF</span>
+      </div>
+    </div>
+
+    <div class="bump-row checked" id="bump1-row" onclick="toggleBump(1)">
+      <div class="bump-check"></div>
+      <div class="bump-content">
+        <div class="bump-tag">Add-On</div>
+        <div class="bump-name">Mindor Productivity Tracker</div>
+        <div class="bump-desc">Web app access — track deep work sessions, focus streaks, and output over time.</div>
+      </div>
+      <div class="bump-price">$7</div>
+    </div>
+
+    <div class="bump-row checked" id="bump2-row" onclick="toggleBump(2)">
+      <div class="bump-check"></div>
+      <div class="bump-content">
+        <div class="bump-tag">Add-On</div>
+        <div class="bump-name">Package Protection</div>
+        <div class="bump-desc">Covers lost or damaged shipments — one-time $7 charge.</div>
+      </div>
+      <div class="bump-price">$7</div>
+    </div>
+  </div>
+
+  <!-- TIMER -->
+  <div class="timer-wrap">
+    <span class="timer-label">Offer expires in</span>
+    <span class="timer-val" id="timer-val">5:00</span>
+  </div>
+
+  <!-- TOTAL -->
+  <div class="total-row">
+    <span class="total-label">Order Total</span>
+    <span class="total-val" id="order-total">$50.54</span>
+  </div>
+
+  <!-- CTA -->
+  <button class="btn-cta" id="btn-cta" onclick="claimOffer()">Claim My Discount →</button>
+  <button class="btn-decline" onclick="goToDownsell()">Skip this offer</button>
+
+  <div class="trust-strip">
+    <span class="trust-item">🔒 Secure checkout</span>
+    <div class="trust-dot"></div>
+    <span class="trust-item">One-time payment</span>
+    <div class="trust-dot"></div>
+    <span class="trust-item">No subscription</span>
+  </div>
+
+</div>
+
+<script>
+  // ── Config ──────────────────────────────────────────────────────
+  const SHOPIFY_DOMAIN           = 'mindor-1950.myshopify.com';
+  const SHOPIFY_STOREFRONT_TOKEN = 'c1f8ad6a65722ad1a022b7e5f8a8660c';
+  const SHOPIFY_API_VERSION      = '2024-01';
+
+  const VARIANTS = {
+    candy: 'gid://shopify/ProductVariant/48144449568923',
+    grape: 'gid://shopify/ProductVariant/48144474931355',
+    gummy: 'gid://shopify/ProductVariant/48144477651099'
+  };
+  const BUMP1_VARIANT = 'gid://shopify/ProductVariant/9026072871067';
+  const BUMP2_VARIANT = 'gid://shopify/ProductVariant/9026075099291';
+
+  const FLAVOR_THEMES = {
+    candy: { accent: '#E2FF47', dim: 'rgba(226,255,71,0.12)', border: 'rgba(226,255,71,0.25)', label: 'Sour Candy' },
+    grape: { accent: '#C084FC', dim: 'rgba(192,132,252,0.12)', border: 'rgba(192,132,252,0.25)', label: 'Sour Grape' },
+    gummy: { accent: '#FF6B8A', dim: 'rgba(255,107,138,0.12)', border: 'rgba(255,107,138,0.25)', label: 'Sour Gummy Worm' }
+  };
+
+  const DISCOUNTED_PRICE = 36.54;
+  const BUMP_PRICE       = 7;
+
+  // ── URL params ────────────────────────────────────────────────────
+  const params  = new URLSearchParams(window.location.search);
+  const email   = params.get('email') || '';
+  const name    = params.get('name')  || '';
+
+  // ── State ─────────────────────────────────────────────────────────
+  let selectedFlavor = 'candy';
+  const bumps = { 1: true, 2: true };
+
+  // ── Flavor selection ──────────────────────────────────────────────
+  function selectFlavor(flavor) {
+    selectedFlavor = flavor;
+    const theme = FLAVOR_THEMES[flavor];
+
+    document.documentElement.style.setProperty('--accent',        theme.accent);
+    document.documentElement.style.setProperty('--accent-dim',    theme.dim);
+    document.documentElement.style.setProperty('--accent-border', theme.border);
+
+    document.querySelectorAll('.flavor-btn').forEach(btn => btn.classList.remove('active'));
+    document.getElementById('flavor-' + flavor).classList.add('active');
+
+    document.getElementById('product-meta').textContent =
+      theme.label + ' · 30 Servings · Focus + Energy';
+  }
+
+  // ── Bump toggle ───────────────────────────────────────────────────
+  function toggleBump(n) {
+    bumps[n] = !bumps[n];
+    document.getElementById('bump' + n + '-row').classList.toggle('checked', bumps[n]);
+    updateTotal();
+  }
+
+  function updateTotal() {
+    const bumpTotal = (bumps[1] ? BUMP_PRICE : 0) + (bumps[2] ? BUMP_PRICE : 0);
+    document.getElementById('order-total').textContent = '$' + (DISCOUNTED_PRICE + bumpTotal).toFixed(2);
+  }
+
+  // ── Timer ─────────────────────────────────────────────────────────
+  const TIMER_KEY      = 'mindor_quiz_offer_timer_end';
+  const TIMER_DURATION = 5 * 60 * 1000;
+
+  function getTimerEnd() {
+    const stored = sessionStorage.getItem(TIMER_KEY);
+    if (stored) return parseInt(stored, 10);
+    const end = Date.now() + TIMER_DURATION;
+    sessionStorage.setItem(TIMER_KEY, String(end));
+    return end;
+  }
+
+  function formatTime(ms) {
+    const totalSec = Math.max(0, Math.ceil(ms / 1000));
+    const m = Math.floor(totalSec / 60);
+    const s = totalSec % 60;
+    return m + ':' + String(s).padStart(2, '0');
+  }
+
+  function tickTimer() {
+    const remaining = getTimerEnd() - Date.now();
+    const el = document.getElementById('timer-val');
+    el.textContent = formatTime(remaining);
+    el.classList.toggle('urgent', remaining < 60000);
+
+    if (remaining <= 0) {
+      goToDownsell();
+    } else {
+      setTimeout(tickTimer, 500);
+    }
+  }
+
+  tickTimer();
+
+  // ── Downsell navigation ───────────────────────────────────────────
+  function goToDownsell() {
+    const out = new URLSearchParams({ email, name, flavor: VARIANTS[selectedFlavor] });
+    window.location.href = 'quiz-focus-downsell.html?' + out.toString();
+  }
+
+  // ── Checkout ──────────────────────────────────────────────────────
+  async function claimOffer() {
+    const btn = document.getElementById('btn-cta');
+    btn.textContent = 'One moment...';
+    btn.disabled    = true;
+
+    const lines = [{ merchandiseId: VARIANTS[selectedFlavor], quantity: 1 }];
+    if (bumps[1]) lines.push({ merchandiseId: BUMP1_VARIANT, quantity: 1 });
+    if (bumps[2]) lines.push({ merchandiseId: BUMP2_VARIANT, quantity: 1 });
+
+    try {
+      const res = await fetch(
+        `https://${SHOPIFY_DOMAIN}/api/${SHOPIFY_API_VERSION}/graphql.json`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Shopify-Storefront-Access-Token': SHOPIFY_STOREFRONT_TOKEN
+          },
+          body: JSON.stringify({
+            query: `mutation cartCreate($input: CartInput!) {
+              cartCreate(input: $input) {
+                cart { checkoutUrl }
+                userErrors { field message }
+              }
+            }`,
+            variables: {
+              input: {
+                lines,
+                discountCodes: ['HVCO-STACK']
+              }
+            }
+          })
+        }
+      );
+      const data = await res.json();
+      const checkoutUrl = data?.data?.cartCreate?.cart?.checkoutUrl;
+      if (checkoutUrl) {
+        window.location.href = checkoutUrl;
+      } else {
+        throw new Error(JSON.stringify(data?.data?.cartCreate?.userErrors));
+      }
+    } catch(e) {
+      console.error('[Mindor checkout]', e);
+      btn.textContent = 'Claim My Discount →';
+      btn.disabled    = false;
+      alert('Something went wrong. Please try again.');
+    }
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Focus Audit | Mindor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --execution-green: #E2FF47;
+      --bg:              #111309;
+      --bg-alt:          #0D1009;
+      --surface:         #161A0E;
+      --surface2:        #1E2416;
+      --text-primary:    #F0F0E8;
+      --fog-grey:        #C8C9B8;
+      --text-muted:      #6A7A5A;
+      --border:          rgba(235,255,71,0.12);
+      --red-dim:         rgba(255,100,80,0.15);
+      --red-border:      rgba(255,100,80,0.25);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: 'DM Sans', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ── PROGRESS BAR ── */
+    #progress-bar {
+      position: fixed;
+      top: 0; left: 0;
+      height: 2px;
+      background: var(--execution-green);
+      width: 0%;
+      transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+      z-index: 200;
+      box-shadow: 0 0 8px rgba(226,255,71,0.4);
+    }
+
+    /* ── LOGO ── */
+    .quiz-logo {
+      position: fixed;
+      top: 18px; left: 20px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 20px;
+      color: var(--execution-green);
+      letter-spacing: 0.08em;
+      z-index: 100;
+      opacity: 0.9;
+    }
+
+    /* ── SCREENS ── */
+    .screen {
+      display: none;
+      min-height: 100vh;
+      padding: 100px 24px 60px;
+      max-width: 600px;
+      margin: 0 auto;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .screen.active { display: flex; }
+
+    .screen.fade-in {
+      animation: fadeUp 0.38s cubic-bezier(0.22,0.61,0.36,1) forwards;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── STEP LABEL ── */
+    .q-step {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    .q-step em {
+      color: var(--execution-green);
+      font-style: normal;
+    }
+
+    /* ── QUESTION HEADLINE ── */
+    .q-headline {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: clamp(36px, 8vw, 56px);
+      line-height: 0.96;
+      color: var(--text-primary);
+      margin-bottom: 14px;
+      letter-spacing: -0.01em;
+    }
+
+    .q-sub {
+      font-size: 15px;
+      color: var(--fog-grey);
+      line-height: 1.65;
+      margin-bottom: 32px;
+      max-width: 460px;
+    }
+
+    /* ── OPTIONS ── */
+    .options {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .option {
+      padding: 15px 18px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--surface);
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transition: border-color 0.15s, background 0.15s, transform 0.1s;
+      user-select: none;
+    }
+
+    .option:hover {
+      border-color: rgba(226,255,71,0.35);
+      background: var(--surface2);
+    }
+
+    .option:active { transform: scale(0.992); }
+
+    .option.selected {
+      border-color: var(--execution-green);
+      background: rgba(226,255,71,0.05);
+    }
+
+    .option-icon {
+      font-size: 18px;
+      flex-shrink: 0;
+      width: 26px;
+      text-align: center;
+    }
+
+    .option-body { flex: 1; }
+
+    .option-text {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+      line-height: 1.3;
+    }
+
+    .option-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+      line-height: 1.4;
+    }
+
+    /* multi-select check */
+    .option-check {
+      width: 18px;
+      height: 18px;
+      border: 1.5px solid rgba(235,255,71,0.2);
+      border-radius: 3px;
+      margin-left: auto;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, border-color 0.15s;
+      position: relative;
+    }
+
+    .option.selected .option-check {
+      background: var(--execution-green);
+      border-color: var(--execution-green);
+    }
+
+    .option.selected .option-check::after {
+      content: '';
+      display: block;
+      width: 4px;
+      height: 8px;
+      border-right: 2px solid #111309;
+      border-bottom: 2px solid #111309;
+      transform: rotate(45deg) translate(-1px, -1px);
+    }
+
+    /* ── BUTTONS ── */
+    .btn-next, .btn-start {
+      padding: 16px 40px;
+      background: var(--execution-green);
+      color: #111309;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 18px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.12s;
+      margin-top: 20px;
+    }
+
+    .btn-start {
+      font-size: 20px;
+      padding: 18px 52px;
+    }
+
+    .btn-next:hover, .btn-start:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn-next:active, .btn-start:active { transform: scale(0.98); }
+    .btn-next:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+
+    /* ── INTRO ── */
+    .intro-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(226,255,71,0.07);
+      border: 1px solid rgba(226,255,71,0.2);
+      border-radius: 20px;
+      padding: 7px 16px;
+      margin-bottom: 28px;
+    }
+
+    .badge-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--execution-green);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.4; }
+    }
+
+    .badge-text {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--execution-green);
+    }
+
+    .intro-meta {
+      margin-top: 14px;
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+    }
+
+    /* ── CALC LOADING ── */
+    #screen-calc-loading {
+      gap: 16px;
+    }
+
+    .calc-loading-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      transition: opacity 0.3s;
+    }
+
+    .calc-bar-track {
+      width: 220px;
+      height: 2px;
+      background: var(--surface2);
+      border-radius: 1px;
+      overflow: hidden;
+    }
+
+    .calc-bar-fill {
+      height: 100%;
+      background: var(--execution-green);
+      width: 0%;
+      transition: width 0.4s ease;
+      box-shadow: 0 0 6px rgba(226,255,71,0.5);
+    }
+
+    /* ── CALC REVEAL ── */
+    .calc-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    .calc-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 18px 14px;
+      text-align: center;
+    }
+
+    .calc-card.danger {
+      border-color: var(--red-border);
+      background: var(--red-dim);
+    }
+
+    .calc-val {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 38px;
+      line-height: 1;
+      color: var(--execution-green);
+      margin-bottom: 5px;
+    }
+
+    .calc-card.danger .calc-val { color: #FF7A6A; }
+
+    .calc-lbl {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      line-height: 1.3;
+    }
+
+    .calc-summary {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 16px 18px;
+      font-size: 14px;
+      color: var(--fog-grey);
+      line-height: 1.7;
+      text-align: left;
+      margin-bottom: 24px;
+    }
+
+    .calc-summary strong { color: var(--text-primary); font-weight: 600; }
+
+    /* ── RESULT SCREEN ── */
+    .result-tag {
+      display: inline-block;
+      background: rgba(226,255,71,0.08);
+      border: 1px solid rgba(226,255,71,0.28);
+      color: var(--execution-green);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 20px;
+      margin-bottom: 18px;
+    }
+
+    .result-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px 20px 18px;
+      text-align: left;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    .result-block.peak  { border-color: rgba(226,255,71,0.22); }
+    .result-block.valley { border-color: var(--red-border); background: rgba(255,100,80,0.03); }
+    .result-block.bridge { border-color: rgba(226,255,71,0.4); background: rgba(226,255,71,0.04); }
+
+    .block-label {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .block-label.green  { color: var(--execution-green); }
+    .block-label.red    { color: #FF7A6A; }
+    .block-label.neutral { color: var(--text-muted); }
+
+    .block-text {
+      font-size: 13px;
+      color: var(--fog-grey);
+      line-height: 1.75;
+    }
+
+    .block-text strong { color: var(--text-primary); font-weight: 600; }
+
+    /* product strip */
+    .product-strip {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid rgba(226,255,71,0.28);
+      border-radius: 8px;
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin: 14px 0 18px;
+    }
+
+    .product-icon-wrap {
+      width: 48px; height: 48px;
+      background: var(--bg-alt);
+      border-radius: 6px;
+      border: 1px solid rgba(226,255,71,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .product-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 18px;
+      color: var(--execution-green);
+      letter-spacing: 0.08em;
+    }
+
+    .product-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-top: 2px;
+    }
+
+    .btn-next-full {
+      width: 100%;
+      padding: 18px;
+      background: var(--execution-green);
+      color: #111309;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 20px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.12s;
+    }
+
+    .btn-next-full:hover { opacity: 0.9; }
+    .btn-next-full:active { transform: scale(0.99); }
+
+    /* ── OPT-IN ── */
+    .form-wrap {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 26px 22px;
+      text-align: left;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 13px 15px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text-primary);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      margin-bottom: 14px;
+      transition: border-color 0.15s;
+      -webkit-appearance: none;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: rgba(226,255,71,0.5);
+    }
+
+    .form-input::placeholder { color: var(--text-muted); }
+
+    .btn-submit {
+      width: 100%;
+      padding: 17px;
+      background: var(--execution-green);
+      color: #111309;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 20px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.12s;
+    }
+
+    .btn-submit:hover { opacity: 0.9; }
+    .btn-submit:active { transform: scale(0.99); }
+    .btn-submit:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .form-privacy {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 12px;
+      line-height: 1.5;
+    }
+
+    /* ── RESULT SCREEN LAYOUT ── */
+    #screen-result { text-align: left; padding-top: 80px; padding-bottom: 60px; }
+    #screen-result .q-headline { text-align: left; }
+
+    /* ── INTERVAL SCREEN ── */
+    .interval-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+      margin: 24px 0 28px;
+      text-align: left;
+    }
+
+    .interval-row {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 13px;
+      color: var(--fog-grey);
+      line-height: 1.55;
+    }
+
+    .interval-row.hot {
+      background: var(--red-dim);
+      border-color: var(--red-border);
+    }
+
+    .interval-row-icon {
+      font-size: 18px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .interval-bridge {
+      font-size: 13px;
+      color: var(--text-muted);
+      letter-spacing: 0.03em;
+      margin-bottom: 24px;
+      font-style: italic;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 480px) {
+      .calc-val { font-size: 30px; }
+      .calc-grid { gap: 8px; }
+      .screen { padding: 90px 18px 50px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+<div class="quiz-logo">MINDOR</div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN: INTRO
+══════════════════════════════════════════ -->
+<div class="screen active" id="screen-intro">
+  <div class="intro-badge">
+    <div class="badge-dot"></div>
+    <span class="badge-text">2-Minute Focus Audit</span>
+  </div>
+  <h1 class="q-headline">WHAT IS YOUR FOCUS<br>ROUTINE ACTUALLY<br>COSTING YOU?</h1>
+  <p class="q-sub">10 questions. We run the numbers on your current habits — the annual cost, the daily caffeine load, what it's doing to your afternoons — then show you where the problem actually lives.</p>
+  <button class="btn-start" onclick="showScreen('screen-q1')">Take The Audit →</button>
+  <p class="intro-meta">Takes 2 minutes · Personalized result · Free</p>
+</div>
+
+<!-- ══════════════════════════════════════════
+     Q1: Primary fuel
+══════════════════════════════════════════ -->
+<div class="screen" id="screen-q1">
+  <p class="q-step">Section 1 — <em>Habit Audit</em> · 1 of 4</p>
+  <h2 class="q-headline">WHAT DO YOU<br>REACH FOR WHEN<br>YOU NEED TO LOCK IN?</h2>
+  <p class="q-sub">Your primary focus fuel. The thing that's supposed to get you there.</p>
+  <div class="options">
+    <div class="option" onclick="selectSingle('q1','coffee',this)">
+      <span class="option-icon">☕</span>
+      <div class="option-body">
+        <div class="option-text">Coffee</div>
+        <div class="option-sub">Drip, espresso, or cold brew</div>
+      </div>
+    </div>
+    <div class="option" onclick="selectSingle('q1','energy-drink',this)">
+      <span class="option-icon">⚡</span>
+      <div class="option-body">
+        <div class="option-text">Energy drinks</div>
+        <div class="option-sub">Red Bull, Monster, Celsius, Reign, etc.</div>
+      </div>
+    </div>
+    <div class="option" onclick="selectSingle('q1','preworkout',this)">
+      <span class="option-icon">💪</span>
+      <div class="option-body">
+        <div class="option-text">Pre-workout</div>
+        <div class="option-sub">Repurposed for mental work</div>
+      </div>
+    </div>
+    <div class="option" onclick="selectSingle('q1','nootropic',this)">
+      <span class="option-icon">🧠</span>
+      <div class="option-body">
+        <div class="option-text">Nootropics or focus supplements</div>
+        <div class="option-sub">Alpha Brain, Mind Lab Pro, AG1, etc.</div>
+      </div>
+    </div>
+    <div class="option" onclick="selectSingle('q1','nothing',this)">
+      <span class="option-icon">⚪</span>
+      <div class="option-body">
+        <div class="option-text">Nothing — I just push through</div>
+        <div class="option-sub">Pure willpower</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     Q2: Daily consumption
+══════════════════════════════════════════ -->
+<div class="screen" id="screen-q2">
+  <p class="q-step">Section 1 — <em>Habit Audit</em> · 2 of 4</p>
+  <h2 class="q-headline">HOW MANY SERVINGS<br>ON A TYPICAL<br>WORK DAY?</h2>
+  <p class="q-sub">The more accurate this is, the more specific the result.</p>
+  <div class="options">
+    <div class="option" onclick="selectSingle('q2','1',this)">
+      <span class="option-icon" style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:20px;color:var(--execution-green);">1</span>
+      <div class="option-body">
+        <div class="option-text">Just one</div>
+        <div class="option-sub">One serving, that's it</div>
+      </div>
+    </div>
+    <div class="option" onclick="selectSingle('q2','2-3',this)">
+      <span class="option-icon" style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:18px;color:var(--execution-green);">2–3</span>
+      <div class="option-body">
+        <div class="option-text">Two to three</div>
+        <div class="option-sub">My standard daily habit</div>
+      </div>
+    </div>
+    <div class="option" onclick="selectSingle('q2','4+',this)">
+      <span class="option-icon" style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:18px;color:var(--fog-grey);">4+</span>
+      <div class="option-body">
+        <div class="option-text">Four or more</div>
+        <div class="option-sub">Feels like the minimum to stay functional</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     Q3: Monthly spend
+══════════════════════════════════════════ -->
+<div class="screen" id="screen-q3">
+  <p class="q-step">Section 1 — <em>Habit Audit</em> · 3 of 4</p>
+  <h2 class="q-headline">WHAT DO YOU SPEND<br>ON FOCUS PRODUCTS<br>PER MONTH?</h2>
+  <p class="q-sub">Coffee, drinks, supplements — rough combined total.</p>
+  <div class="options">
+    <div class="option" onclick="selectSingle('q3','15',this)">
+      <span class="option-icon">💵</span>
+      <div class="option-body">
+        <div class="option-text">Under $20</div>
+        <div class="option-sub">Minimal habit</div>
+      </div>
+    </div>
+    <div class="option" onclick="selectSingle('q3','35',this)">
+      <span class="option-icon">💵</span>
+      <div class="option-body">
+        <div class="option-text">$20 – $50</div>
+        <div class="option-sub">Moderate habit</div>
+      </div>
+    </div>
+    <div class="option" onclick="selectSingle('q3','75',this)">
+      <span class="option-icon">💵</span>
+      <div class="option-body">
+        <div class="option-text">$50 – $100</div>
+        <div class="option-sub">Regular, daily habit</div>
+      </div>
+    </div>
+    <div class="option" onclick="selectSingle('q3','125',this)">
+      <span class="option-icon">💵</span>
+      <div class="option-body">
+        <div class="option-text">$100 or more</div>
+        <div class="option-sub">Deep in the stack</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     Q4: Side effects (multi-select)
+══════════════════════════════════════════ -->
+<div class="screen" id="screen-q4">
+  <p class="q-step">Section 1 — <em>Habit Audit</em> · 4 of 4</p>
+  <h2 class="q-headline">WHICH OF THESE<br>DO YOU DEAL WITH?</h2>
+  <p class="q-sub">Select all that apply — more than one is fine.</p>
+  <div class="options" id="options-q4">
+    <div class="option" onclick="selectMulti('q4','crash',this)">
+      <span class="option-icon">📉</span>
+      <div class="option-body"><div class="option-text">Afternoon energy crash</div></div>
+      <div class="option-check"></div>
+    </div>
+    <div class="option" onclick="selectMulti('q4','jitters',this)">
+      <span class="option-icon">😬</span>
+      <div class="option-body"><div class="option-text">Jitters or anxiety</div></div>
+      <div class="option-check"></div>
+    </div>
+    <div class="option" onclick="selectMulti('q4','sleep',this)">
+      <span class="option-icon">🌙</span>
+      <div class="option-body"><div class="option-text">Poor sleep or wired at night</div></div>
+      <div class="option-check"></div>
+    </div>
+    <div class="option" onclick="selectMulti('q4','dependence',this)">
+      <span class="option-icon">🔄</span>
+      <div class="option-body"><div class="option-text">Feel like I can't function without it</div></div>
+      <div class="option-check"></div>
+    </div>
+    <div class="option" onclick="selectMulti('q4','racing',this)">
+      <span class="option-icon">💓</span>
+      <div class="option-body"><div class="option-text">Heart racing or palpitations</div></div>
+      <div class="option-check"></div>
+    </div>
+    <div class="option" onclick="selectMulti('q4','none',this)">
+      <span class="option-icon">✓</span>
+      <div class="option-body"><div class="option-text">None of these</div></div>
+      <div class="option-check"></div>
+    </div>
+  </div>
+  <button class="btn-next" id="btn-q4-next">Continue →</button>
+</div>
+
+<!-- ══════════════════════════════════════════
+     CALC LOADING
+══════════════════════════════════════════ -->
+<div class="screen" id="screen-calc-loading">
+  <span class="calc-loading-label" id="calc-loading-msg">Analyzing your habits...</span>
+  <div class="calc-bar-track">
+    <div class="calc-bar-fill" id="calc-bar-fill"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     CALC REVEAL
+══════════════════════════════════════════ -->
+<div class="screen" id="screen-calc">
+  <p class="q-step"><em>Your Focus Audit</em> — Real Numbers</p>
+  <h2 class="q-headline">THIS IS WHAT<br>THE LAST YEAR<br>COST YOU</h2>
+  <p class="q-sub">Per year. Based on what you just told us.</p>
+  <div class="calc-grid">
+    <div class="calc-card">
+      <div class="calc-val" id="calc-annual">$0</div>
+      <div class="calc-lbl">Annual Spend</div>
+    </div>
+    <div class="calc-card danger">
+      <div class="calc-val" id="calc-caffeine">0mg</div>
+      <div class="calc-lbl">Daily Caffeine</div>
+    </div>
+    <div class="calc-card danger">
+      <div class="calc-val" id="calc-crashes">0</div>
+      <div class="calc-lbl">Crashes / Week</div>
+    </div>
+    <div class="calc-card danger">
+      <div class="calc-val" id="calc-lost">0 hrs</div>
+      <div class="calc-lbl">Lost Hours / Week</div>
+    </div>
+  </div>
+  <p class="calc-summary" id="calc-summary"></p>
+  <button class="btn-next" onclick="showScreen('screen-q5')">Show Me The Full Picture →</button>
+</div>
+
+<!-- ══════════════════════════════════════════
+     Q5: Worst focus struggle
+══════════════════════════════════════════ -->
+<div class="screen" id="screen-q5">
+  <p class="q-step">Section 2 — <em>Focus Reality</em> · 1 of 3</p>
+  <h2 class="q-headline">WHEN FOCUS BREAKS DOWN,<br>WHICH PATTERN<br>SHOWS UP MOST?</h2>
+  <p class="q-sub">Pick the one that's most consistent — not the worst single instance.</p>
+  <div class="options">
+    <div class="option" onclick="selectSingle('q5','cantstart',this)">
+      <span class="option-icon">🔒</span>
+      <div class="option-body">
+        <div class="option-text">Can't get started on what actually matters</div>
+        <div class="option-sub">Busy with everything except the right work</div>
+      </div>
+    </div>
+    <div class="option" onclick="selectSingle('q5','crash',this)">
+      <span class="option-icon">📉</span>
+      <div class="option-body">
+        <div class="option-text">Start strong, crash hard by 2pm</div>
+        <div class="option-sub">The window closes before the work does</div>
+      </div>
+    </div>
+    <div class="option" onclick="selectSingle('q5','scattered',this)">
+      <span class="option-icon">🌀</span>
+      <div class="option-body">
+        <div class="option-text">Always "on" but never actually locked in</div>
+        <div class="option-sub">Energy without direction</div>
+      </div>
+    </div>
+    <div class="option" onclick="selectSingle('q5','brainnoise',this)">
+      <span class="option-icon">📡</span>
+      <div class="option-body">
+        <div class="option-text">Brain noise — six things at once, zero depth</div>
+        <div class="option-sub">Can't slow down enough to go deep</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     Q6: Transformation vision
+══════════════════════════════════════════ -->
+<div class="screen" id="screen-q6">
+  <p class="q-step">Section 2 — <em>Focus Reality</em> · 2 of 3</p>
+  <h2 class="q-headline">ON YOUR BEST<br>FOCUS DAYS,<br>WHAT'S DIFFERENT?</h2>
+  <p class="q-sub">Think of the last time you were genuinely locked in — what was true then that usually isn't?</p>
+  <div class="options">
+    <div class="option" onclick="selectSingle('q6','projects',this)">
+      <span class="option-icon">🚀</span>
+      <div class="option-body">
+        <div class="option-text">I'd actually finish the projects I keep starting</div>
+        <div class="option-sub">The backlog finally clears</div>
+      </div>
+    </div>
+    <div class="option" onclick="selectSingle('q6','income',this)">
+      <span class="option-icon">📈</span>
+      <div class="option-body">
+        <div class="option-text">My income would grow significantly</div>
+        <div class="option-sub">Output is the bottleneck right now</div>
+      </div>
+    </div>
+    <div class="option" onclick="selectSingle('q6','control',this)">
+      <span class="option-icon">🎯</span>
+      <div class="option-body">
+        <div class="option-text">I'd feel in control of my output for the first time</div>
+        <div class="option-sub">Not reactive — intentional</div>
+      </div>
+    </div>
+    <div class="option" onclick="selectSingle('q6','all',this)">
+      <span class="option-icon">✦</span>
+      <div class="option-body">
+        <div class="option-text">All of the above — and more</div>
+        <div class="option-sub">The compound effect of consistent execution</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     Q7: What's held you back
+══════════════════════════════════════════ -->
+<div class="screen" id="screen-q7">
+  <p class="q-step">Section 2 — <em>Focus Reality</em> · 3 of 3</p>
+  <h2 class="q-headline">WHAT HAVE YOU<br>ALREADY TRIED<br>TO FIX IT?</h2>
+  <p class="q-sub">Pick the closest one — honest answer makes the result more specific.</p>
+  <div class="options">
+    <div class="option" onclick="selectSingle('q7','jitters',this)">
+      <span class="option-icon">⚡</span>
+      <div class="option-body">
+        <div class="option-text">Everything I try gives me jitters or a crash</div>
+        <div class="option-sub">Trading one problem for another</div>
+      </div>
+    </div>
+    <div class="option" onclick="selectSingle('q7','morecaffeine',this)">
+      <span class="option-icon">🚫</span>
+      <div class="option-body">
+        <div class="option-text">I don't want to add more caffeine</div>
+        <div class="option-sub">Already at the limit</div>
+      </div>
+    </div>
+    <div class="option" onclick="selectSingle('q7','wasted',this)">
+      <span class="option-icon">💸</span>
+      <div class="option-body">
+        <div class="option-text">I've wasted money on things that didn't work</div>
+        <div class="option-sub">Trust is shot</div>
+      </div>
+    </div>
+    <div class="option" onclick="selectSingle('q7','dontknow',this)">
+      <span class="option-icon">❓</span>
+      <div class="option-body">
+        <div class="option-text">I didn't know what to look for</div>
+        <div class="option-sub">No real roadmap until now</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     INTERVAL (after Q7 — before result)
+══════════════════════════════════════════ -->
+<div class="screen" id="screen-interval">
+  <p class="q-step"><em>Your Audit</em> — Taking Stock</p>
+  <h2 class="q-headline">YOU'VE TRIED THIS<br>BEFORE.</h2>
+
+  <div class="interval-rows">
+    <div class="interval-row hot">
+      <span class="interval-row-icon">💸</span>
+      <span id="interval-spend"></span>
+    </div>
+    <div class="interval-row hot">
+      <span class="interval-row-icon">📉</span>
+      <span id="interval-crashes"></span>
+    </div>
+    <div class="interval-row">
+      <span class="interval-row-icon">🔒</span>
+      <span id="interval-window"></span>
+    </div>
+    <div class="interval-row">
+      <span class="interval-row-icon">🔁</span>
+      <span id="interval-tried"></span>
+    </div>
+  </div>
+
+  <p class="interval-bridge">The ceiling you keep hitting isn't yours.</p>
+
+  <button class="btn-next" onclick="buildResult(); showScreen('screen-result')">Show Me My Result →</button>
+</div>
+
+<!-- ══════════════════════════════════════════
+     RESULT (Emotional arc)
+══════════════════════════════════════════ -->
+<div class="screen" id="screen-result">
+  <div class="result-tag" id="result-tag">Your Focus Profile</div>
+  <h2 class="q-headline" id="result-headline">YOUR RESULT</h2>
+
+  <div class="result-block peak">
+    <div class="block-label green">↑ Where You Could Be Operating</div>
+    <p class="block-text" id="result-peak"></p>
+  </div>
+
+  <div class="result-block valley">
+    <div class="block-label red">↓ Where You're Actually Running</div>
+    <p class="block-text" id="result-valley"></p>
+  </div>
+
+  <div class="result-block bridge">
+    <div class="block-label green">→ What Closes The Gap</div>
+    <p class="block-text" id="result-bridge"></p>
+  </div>
+
+  <div class="product-strip">
+    <div class="product-icon-wrap">
+      <svg width="26" height="18" viewBox="0 0 40 28" fill="none">
+        <path d="M4 22 L10 8 L16 18 L20 10 L24 18 L30 8 L36 22" stroke="#E2FF47" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div>
+      <div class="product-name">MINDOR</div>
+      <div class="product-desc">Performance Focus Stack · Electric Lime · 30 Servings<br>100mg Green Tea Caffeine · 200mg L-Theanine · 300mg Alpha-GPC</div>
+    </div>
+  </div>
+
+  <button class="btn-next-full" onclick="showScreen('screen-optin')">Get My Personalized Protocol →</button>
+</div>
+
+<!-- ══════════════════════════════════════════
+     OPT-IN
+══════════════════════════════════════════ -->
+<div class="screen" id="screen-optin">
+  <p class="q-step"><em>Final Step</em> — Claim Your Protocol</p>
+  <h2 class="q-headline">YOUR FOCUS<br>PROTOCOL IS READY</h2>
+  <p class="q-sub">Enter your details to get the full breakdown — plus a first-order offer on Mindor.</p>
+  <div class="form-wrap">
+    <label class="form-label">First Name</label>
+    <input type="text" class="form-input" id="optin-name" placeholder="Your first name" autocomplete="given-name">
+    <label class="form-label">Email Address</label>
+    <input type="email" class="form-input" id="optin-email" placeholder="your@email.com" autocomplete="email">
+    <button class="btn-submit" id="btn-submit" onclick="handleSubmit()">Claim My Protocol →</button>
+    <p class="form-privacy">No spam. Unsubscribe anytime. Your result stays private.</p>
+  </div>
+</div>
+
+<script>
+  // ── Config ──────────────────────────────────────────────────────
+  const KLAVIYO_PUBLIC_KEY = 'S3D76Q';
+  const KLAVIYO_LIST_ID    = 'TUAJJE';
+  const FUNNEL_SLUG        = 'quiz_focus';
+
+  // ── Progress map ─────────────────────────────────────────────────
+  const PROGRESS = {
+    'screen-intro':        0,
+    'screen-q1':          10,
+    'screen-q2':          20,
+    'screen-q3':          30,
+    'screen-q4':          40,
+    'screen-calc-loading':46,
+    'screen-calc':        52,
+    'screen-q5':          62,
+    'screen-q6':          75,
+    'screen-q7':          87,
+    'screen-interval':    90,
+    'screen-result':      94,
+    'screen-optin':      100
+  };
+
+  // ── State ─────────────────────────────────────────────────────────
+  const state = { q1:null, q2:null, q3:null, q4:[], q5:null, q6:null, q7:null };
+
+  // ── Screen management ─────────────────────────────────────────────
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => {
+      s.classList.remove('active','fade-in');
+    });
+    const el = document.getElementById(id);
+    el.classList.add('active');
+    requestAnimationFrame(() => el.classList.add('fade-in'));
+    document.getElementById('progress-bar').style.width = (PROGRESS[id] || 0) + '%';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ── Single-select ─────────────────────────────────────────────────
+  const NEXT_SCREEN = {
+    q1: 'screen-q2',
+    q2: 'screen-q3',
+    q3: 'screen-q4',
+    q5: 'screen-q6',
+    q6: 'screen-q7'
+  };
+
+  function selectSingle(key, val, el) {
+    el.closest('.options').querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    state[key] = val;
+
+    setTimeout(() => {
+      if (key === 'q7') {
+        buildInterval();
+        showScreen('screen-interval');
+      } else {
+        showScreen(NEXT_SCREEN[key]);
+      }
+    }, 280);
+  }
+
+  // ── Multi-select ──────────────────────────────────────────────────
+  function selectMulti(key, val, el) {
+    const arr = state[key];
+    if (val === 'none') {
+      state[key] = arr.includes('none') ? [] : ['none'];
+      document.querySelectorAll('#options-q4 .option').forEach(o => o.classList.remove('selected'));
+      if (state[key].length) el.classList.add('selected');
+      return;
+    }
+    // deselect "none" if picking something real
+    const noneIdx = arr.indexOf('none');
+    if (noneIdx > -1) {
+      arr.splice(noneIdx, 1);
+      document.querySelectorAll('#options-q4 .option').forEach(o => {
+        if (o.onclick?.toString().includes("'none'")) o.classList.remove('selected');
+      });
+    }
+    const idx = arr.indexOf(val);
+    if (idx > -1) { arr.splice(idx, 1); el.classList.remove('selected'); }
+    else          { arr.push(val);       el.classList.add('selected'); }
+  }
+
+  // Q4 continue → loading animation
+  document.getElementById('btn-q4-next').addEventListener('click', startCalcLoading);
+
+  // ── Calculator loading sequence ───────────────────────────────────
+  function startCalcLoading() {
+    showScreen('screen-calc-loading');
+    const msgs = [
+      'Analyzing your habits...',
+      'Calculating annual cost...',
+      'Estimating cognitive impact...',
+      'Building your profile...'
+    ];
+    const fill = document.getElementById('calc-bar-fill');
+    const msgEl = document.getElementById('calc-loading-msg');
+    let step = 0;
+    const totalSteps = msgs.length;
+
+    const tick = () => {
+      msgEl.style.opacity = '0';
+      setTimeout(() => {
+        msgEl.textContent = msgs[step];
+        msgEl.style.opacity = '1';
+        fill.style.width = ((step + 1) / totalSteps * 100) + '%';
+        step++;
+        if (step < totalSteps) {
+          setTimeout(tick, 380);
+        } else {
+          setTimeout(() => {
+            showScreen('screen-calc');
+            setTimeout(runCalcAnimations, 80);
+          }, 420);
+        }
+      }, 150);
+    };
+    tick();
+  }
+
+  // ── Calculator logic ──────────────────────────────────────────────
+  function runCalcAnimations() {
+    const monthly  = parseInt(state.q3) || 35;
+    const annual   = monthly * 12;
+    const q1       = state.q1 || 'coffee';
+    const q2       = state.q2 || '2-3';
+    const q4       = state.q4.filter(v => v !== 'none');
+
+    const caffeineTable = {
+      coffee:       { '1': 95,  '2-3': 237, '4+': 475 },
+      'energy-drink':{ '1': 80, '2-3': 200, '4+': 400 },
+      preworkout:   { '1': 180, '2-3': 450, '4+': 720 },
+      nootropic:    { '1': 60,  '2-3': 120, '4+': 200 },
+      nothing:      { '1': 0,   '2-3': 0,   '4+': 0   }
+    };
+
+    const caffeine   = caffeineTable[q1]?.[q2] ?? 100;
+    const hasCrash   = q4.includes('crash');
+    const crashes    = hasCrash ? (q2 === '4+' ? 7 : q2 === '2-3' ? 5 : 3) : 1;
+    const lostHours  = Math.max(1, Math.round(crashes * 0.75));
+
+    animateCount('calc-annual',  0, annual,    1200, v => '$' + v.toLocaleString());
+    animateCount('calc-caffeine',0, caffeine,  1000, v => v + 'mg');
+    animateCount('calc-crashes', 0, crashes,    800, v => String(v));
+    animateCount('calc-lost',    0, lostHours,  800, v => v + ' hrs');
+
+    const severity  = { '1': 'moderate', '2-3': 'significant', '4+': 'heavy' }[q2] || 'moderate';
+    const prodLabel = { coffee:'coffee','energy-drink':'energy drinks',preworkout:'pre-workout',nootropic:'supplements',nothing:'raw willpower' }[q1] || 'focus products';
+    const sideList  = q4.map(s => ({ crash:'afternoon crashes',jitters:'jitters',sleep:'disrupted sleep',dependence:'chemical dependence',racing:'cardiovascular stress' }[s])).filter(Boolean);
+    const sideStr   = sideList.length ? ` Adding to that: ${sideList.slice(0,3).join(', ')}.` : '';
+
+    document.getElementById('calc-summary').innerHTML =
+      `You're running a <strong>${severity} ${prodLabel} habit</strong> — <strong>$${annual.toLocaleString()}/year</strong> on something that works for 90 minutes, then drops you.${sideStr} The product isn't failing you. It's doing exactly what it was built to do — and that's the problem.`;
+  }
+
+  function animateCount(id, from, to, duration, fmt) {
+    const el  = document.getElementById(id);
+    const t0  = performance.now();
+    const run = (now) => {
+      const p  = Math.min((now - t0) / duration, 1);
+      const e  = 1 - Math.pow(1 - p, 3);
+      el.textContent = fmt(Math.round(from + (to - from) * e));
+      if (p < 1) requestAnimationFrame(run);
+    };
+    requestAnimationFrame(run);
+  }
+
+  // ── Interval screen builder ───────────────────────────────────────
+  function buildInterval() {
+    const q3     = parseInt(state.q3) || 35;
+    const q4     = state.q4.filter(v => v !== 'none');
+    const q2     = state.q2 || '2-3';
+    const q7     = state.q7 || 'jitters';
+    const annual = q3 * 12;
+
+    const hasCrash = q4.includes('crash');
+    const crashes  = hasCrash ? (q2 === '4+' ? 7 : q2 === '2-3' ? 5 : 3) : 1;
+
+    document.getElementById('interval-spend').innerHTML =
+      `<strong>$${annual.toLocaleString()} this year on focus</strong>, and you're still here trying to figure it out.`;
+
+    document.getElementById('interval-crashes').innerHTML =
+      `You crash <strong>${crashes} times a week</strong>, and each one takes the better part of an hour to recover from — so by the time you're back, the afternoon's already half gone.`;
+
+    document.getElementById('interval-window').textContent =
+      `The work that matters keeps waiting, because the window to do it in keeps closing before you get there.`;
+
+    const triedCopy = (q7 === 'wasted' || q7 === 'jitters')
+      ? `You've tried things that should have worked — some of them did, for a bit — but they didn't hold, and at some point you stopped expecting them to.`
+      : `You didn't know what you were actually looking for, which means everything you tried was a guess.`;
+    document.getElementById('interval-tried').textContent = triedCopy;
+  }
+
+  // ── Result copy builder ───────────────────────────────────────────
+  function buildResult() {
+    const q1  = state.q1  || 'coffee';
+    const q2  = state.q2  || '2-3';
+    const q3  = parseInt(state.q3) || 35;
+    const q4  = state.q4.filter(v => v !== 'none');
+    const q5  = state.q5  || 'cantstart';
+    const q6  = state.q6  || 'all';
+    const q7  = state.q7  || 'jitters';
+    const annual = q3 * 12;
+
+    // Result type
+    const types = {
+      cantstart:  { tag: 'The Locked-Out Builder',    headline: 'THE WORK THAT MATTERS\nKEEPS GETTING PUSHED.' },
+      crash:      { tag: 'The 2PM Wall',              headline: 'THE WINDOW CLOSES\nAROUND 2PM.' },
+      scattered:  { tag: 'The Scattered Operator',    headline: 'SIX THINGS AT ONCE.\nNONE OF THEM DEEP.' },
+      brainnoise: { tag: 'The Overwhelmed Processor', headline: 'SIX TABS OPEN IN YOUR HEAD.\nNONE OF THEM CLOSING.' }
+    };
+    const type = types[q5] || types.cantstart;
+    document.getElementById('result-tag').textContent       = type.tag;
+    document.getElementById('result-headline').textContent  = type.headline;
+
+    // Peak copy — tied to Q6 answer
+    const peakCopy = {
+      projects: `Imagine sitting down at 9am, opening the work that actually matters, and just — staying there. No internal negotiation about whether to check something else first. No fighting your own brain for permission to start. The project you've been circling for weeks gets done by noon, and you look up and it's only 11:30. <strong>That version of you isn't a different person. It's you, with a different starting point.</strong>`,
+      income:   `Imagine knowing — before the day starts — that the next four hours are actually going to produce something. Not because you're trying harder, but because the 90-minute window that's been your ceiling isn't there anymore. <strong>When the window doesn't close at 11am, what you can do in a day changes significantly.</strong>`,
+      control:  `Imagine waking up and just — knowing. Not hoping today's a good focus day. Not waiting to see how the morning goes before you commit to the hard work. You sit down, you start, and it's there. <strong>The version of you that's in control of the output isn't a personality type. It's a physiological state — and it's reproducible.</strong>`,
+      all:      `Imagine this: 9am, you're already in it — the actual work, not the preamble to the actual work. By 1pm you've done what used to take a full day. By 3pm you still have something left in the tank. The backlog clears. The income follows. <strong>That version of you? You just described them — those were your words, not mine.</strong>`
+    };
+    document.getElementById('result-peak').innerHTML = peakCopy[q6] || peakCopy.all;
+
+    // Valley copy — real numbers + side effects
+    const prodLabel  = { coffee:'coffee','energy-drink':'energy drinks',preworkout:'pre-workout',nootropic:'supplements',nothing:'raw willpower' }[q1] || 'focus products';
+    const servings   = { '1':'a single-serving', '2-3':'a 2–3x daily', '4+':'a heavy 4+ serving' }[q2] || '';
+    const sideList   = q4.map(s => ({ crash:'afternoon crashes',jitters:'jitters and anxiety',sleep:'disrupted sleep',dependence:'dependency',racing:'elevated heart rate' }[s])).filter(Boolean);
+    const sideStr    = sideList.length ? ` compounding into ${sideList.slice(0,3).join(', ')}` : '';
+    document.getElementById('result-valley').innerHTML =
+      `You're running a <strong>${servings} ${prodLabel} habit — $${annual.toLocaleString()}/year${sideStr}</strong>. The distance between what you just described and where you're actually operating isn't about effort. Your current stack gives you a peak, holds it for less time than you think, then leaves you slower than you started. <strong>You've been rebuilding the same deficit every afternoon, and you've been paying for the privilege.</strong>`;
+
+    // Bridge copy — tied to Q7 blocker
+    const bridgeCopy = {
+      jitters:     `Mindor uses <strong>100mg of green tea caffeine</strong> — about one cup of coffee — paired with 200mg L-Theanine. The L-Theanine isn't a bonus ingredient. It's there specifically to take the edge off the caffeine: the jitter, the spike, the anxiety that follows you into the afternoon. <strong>What's left is the activation without the aftermath — and it holds for 4–5 hours before exiting quietly.</strong>`,
+      morecaffeine:`Mindor's caffeine dose is intentionally low — 100mg from green tea, about one cup of coffee. The focus comes from <strong>300mg Alpha-GPC and 200mg L-Theanine</strong>, not from stacking more stimulants on top of what you're already running. Adding caffeine past a certain point doesn't extend the window — it just makes the crash harder. <strong>The ratio is doing work that the dose alone never could.</strong>`,
+      wasted:      `The pattern with focus products is big dose, big label, 45-minute window. Mindor is built on a different premise — <strong>Alpha-GPC, L-Theanine, and green tea caffeine</strong> isn't optimized for the spike, it's optimized for what happens after the spike, when most stacks have already dropped you. <strong>The mechanism is different, which is why the experience is different.</strong>`,
+      dontknow:    `There's a specific combination that produces 4–5 hours of controlled output without a crash at the end: <strong>100mg green tea caffeine, 200mg L-Theanine, 300mg Alpha-GPC, B6, B12, and Ginseng</strong>. Each one has a job. The caffeine activates. The L-Theanine smooths the edge. The Alpha-GPC puts the clarity behind it. <strong>When you know what each ingredient is actually for, the formula stops being a guess.</strong>`
+    };
+    document.getElementById('result-bridge').innerHTML = bridgeCopy[q7] || bridgeCopy.jitters;
+  }
+
+  // ── Klaviyo subscribe ─────────────────────────────────────────────
+  async function subscribeToKlaviyo(email, firstName, extraProps = {}) {
+    try {
+      const res = await fetch(
+        `https://a.klaviyo.com/client/subscriptions/?company_id=${KLAVIYO_PUBLIC_KEY}`,
+        {
+          method: 'POST',
+          headers: { 'content-type': 'application/json', revision: '2023-02-22' },
+          body: JSON.stringify({
+            data: {
+              type: 'subscription',
+              attributes: {
+                profile: {
+                  data: {
+                    type: 'profile',
+                    attributes: { email, first_name: firstName, properties: extraProps }
+                  }
+                }
+              },
+              relationships: {
+                list: { data: { type: 'list', id: KLAVIYO_LIST_ID } }
+              }
+            }
+          })
+        }
+      );
+      if (!res.ok) {
+        const body = await res.text();
+        throw new Error(`Klaviyo ${res.status}: ${body}`);
+      }
+    } catch(e) { console.warn('[Mindor Klaviyo]', e); }
+  }
+
+  // ── Form submit ───────────────────────────────────────────────────
+  async function handleSubmit() {
+    const name  = document.getElementById('optin-name').value.trim();
+    const email = document.getElementById('optin-email').value.trim();
+
+    if (!name || !email || !email.includes('@')) {
+      alert('Please enter your name and a valid email address.');
+      return;
+    }
+
+    const btn = document.getElementById('btn-submit');
+    btn.textContent = 'Locking you in...';
+    btn.disabled    = true;
+
+    await subscribeToKlaviyo(email, name, {
+      [`${FUNNEL_SLUG}_free`]: true,
+      quiz_q1: state.q1,
+      quiz_q2: state.q2,
+      quiz_q3: state.q3,
+      quiz_q4: state.q4.join(','),
+      quiz_q5: state.q5,
+      quiz_q6: state.q6,
+      quiz_q7: state.q7
+    });
+
+    const params = new URLSearchParams({ email, name });
+    window.location.href = `quiz-focus-confirm.html?${params.toString()}`;
+  }
+</script>
+</body>
+</html>
