@@ -6,7 +6,12 @@
     { "source": "/tub", "destination": "/upsell-2-mindor-tub.html" },
     { "source": "/squeeze", "destination": "/squeeze-brain-noise.html" },
     { "source": "/thankyou", "destination": "/funnel-thankyou.html" },
-    { "source": "/protocol", "destination": "/protocolcard.html" }
+    { "source": "/protocol", "destination": "/protocolcard.html" },
+    { "source": "/quiz", "destination": "/quiz-focus-quiz.html" },
+    { "source": "/quiz-confirm", "destination": "/quiz-focus-confirm.html" },
+    { "source": "/quiz-upsell", "destination": "/quiz-focus-upsell-1.html" },
+    { "source": "/quiz-downsell", "destination": "/quiz-focus-downsell.html" },
+    { "source": "/quiz-thankyou", "destination": "/quiz-focus-thankyou.html" }
   ],
   "headers": [
     {
