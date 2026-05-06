@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>One-Time Add-On | Mindor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --execution-green: #E2FF47;
+      --bg:              #111309;
+      --bg-alt:          #0D1009;
+      --surface:         #161A0E;
+      --surface2:        #1E2416;
+      --text-primary:    #F0F0E8;
+      --fog-grey:        #C8C9B8;
+      --text-muted:      #6A7A5A;
+      --border:          rgba(235,255,71,0.12);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: 'DM Sans', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .progress-track { height: 2px; background: var(--surface2); position: fixed; top: 0; left: 0; right: 0; z-index: 100; }
+    .progress-fill  { height: 100%; width: 88%; background: var(--execution-green); box-shadow: 0 0 8px rgba(226,255,71,0.4); }
+
+    .logo {
+      position: fixed;
+      top: 16px; left: 20px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 20px;
+      color: var(--execution-green);
+      letter-spacing: 0.08em;
+      z-index: 100;
+    }
+
+    .page {
+      max-width: 560px;
+      margin: 0 auto;
+      padding: 88px 20px 72px;
+    }
+
+    .step-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      text-align: center;
+    }
+
+    .step-label em { color: var(--execution-green); font-style: normal; }
+
+    /* ── ONE-TIME BADGE ── */
+    .ot-badge {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .ot-badge-inner {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(226,255,71,0.08);
+      border: 1px solid rgba(226,255,71,0.25);
+      border-radius: 20px;
+      padding: 7px 18px;
+    }
+
+    .ot-badge-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--execution-green);
+    }
+
+    .ot-badge-text {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--execution-green);
+    }
+
+    /* ── HEADLINE ── */
+    .headline {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: clamp(36px, 8vw, 52px);
+      line-height: 0.96;
+      color: var(--text-primary);
+      text-align: center;
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+
+    .subhead {
+      font-size: 14px;
+      color: var(--fog-grey);
+      text-align: center;
+      line-height: 1.65;
+      margin-bottom: 28px;
+      max-width: 440px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ── PRODUCT CARD ── */
+    .product-card {
+      background: var(--surface);
+      border: 1px solid rgba(226,255,71,0.25);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+
+    .product-header {
+      padding: 20px 20px 18px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .product-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .shaker-icon {
+      width: 56px; height: 56px;
+      background: var(--surface2);
+      border-radius: 8px;
+      border: 1px solid rgba(226,255,71,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 26px;
+    }
+
+    .product-info { flex: 1; }
+
+    .product-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 20px;
+      color: var(--text-primary);
+      letter-spacing: 0.04em;
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+
+    .product-meta {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .price-wrap {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .price-main {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 28px;
+      color: var(--execution-green);
+      line-height: 1;
+    }
+
+    .price-original {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-decoration: line-through;
+      margin-top: 2px;
+    }
+
+    /* Bullet benefits */
+    .benefits {
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .benefit {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--fog-grey);
+      line-height: 1.45;
+    }
+
+    .benefit-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--execution-green);
+      margin-top: 6px;
+      flex-shrink: 0;
+    }
+
+    /* ── ORDER SUMMARY MINI ── */
+    .order-summary {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin-bottom: 16px;
+    }
+
+    .summary-label {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: var(--fog-grey);
+      margin-bottom: 6px;
+    }
+
+    .summary-row:last-child { margin-bottom: 0; }
+
+    .summary-row.total {
+      border-top: 1px solid var(--border);
+      padding-top: 10px;
+      margin-top: 6px;
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .summary-row .price {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 15px;
+      color: var(--text-primary);
+    }
+
+    .summary-row.total .price {
+      font-size: 18px;
+      color: var(--execution-green);
+    }
+
+    /* ── BUTTONS ── */
+    .btn-accept {
+      width: 100%;
+      padding: 18px;
+      background: var(--execution-green);
+      color: #111309;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 21px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.12s;
+      margin-bottom: 12px;
+    }
+
+    .btn-accept:hover  { opacity: 0.9; }
+    .btn-accept:active { transform: scale(0.99); }
+    .btn-accept:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .btn-decline {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 12px;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: underline;
+      text-decoration-color: rgba(106,122,90,0.3);
+      text-underline-offset: 3px;
+      transition: color 0.15s;
+    }
+
+    .btn-decline:hover { color: var(--fog-grey); }
+
+    /* ── LOADING OVERLAY ── */
+    .loading-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(17,19,9,0.85);
+      z-index: 500;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .loading-overlay.active { display: flex; }
+
+    .loading-spinner {
+      width: 32px; height: 32px;
+      border: 2px solid var(--surface2);
+      border-top-color: var(--execution-green);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loading-text {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* price shimmer */
+    .price-loading {
+      display: inline-block;
+      width: 50px; height: 12px;
+      background: var(--surface2);
+      border-radius: 3px;
+      animation: shimmer 1.2s ease-in-out infinite;
+    }
+
+    @keyframes shimmer { 0%,100%{opacity:.4} 50%{opacity:.9} }
+  </style>
+</head>
+<body>
+
+<div class="progress-track"><div class="progress-fill"></div></div>
+<div class="logo">MINDOR</div>
+<div class="loading-overlay" id="loading-overlay">
+  <div class="loading-spinner"></div>
+  <span class="loading-text">Securing your order...</span>
+</div>
+
+<div class="page">
+
+  <p class="step-label">Step 3 of 3 — <em>One-Time Add-On</em></p>
+
+  <div class="ot-badge">
+    <div class="ot-badge-inner">
+      <div class="ot-badge-dot"></div>
+      <span class="ot-badge-text">This offer appears once</span>
+    </div>
+  </div>
+
+  <h1 class="headline">ADD THE SHAKER.<br>ONE-TIME OFFER.</h1>
+  <p class="subhead">Built for the protocol. BPA-free, 20oz, leak-proof lid with mix-ball. Normally sold separately — add it now at a discount or it disappears.</p>
+
+  <!-- PRODUCT CARD -->
+  <div class="product-card">
+    <div class="product-header">
+      <div class="product-row">
+        <div class="shaker-icon">🥤</div>
+        <div class="product-info">
+          <div class="product-name">MINDOR Shaker Bottle</div>
+          <div class="product-meta">20oz · BPA-free · Leak-proof · Mix-ball included<br>Matte black with execution-green logo</div>
+        </div>
+        <div class="price-wrap">
+          <div class="price-main" id="shaker-price"><span class="price-loading"></span></div>
+          <div class="price-original" id="shaker-compare"></div>
+        </div>
+      </div>
+    </div>
+    <div class="benefits">
+      <div class="benefit"><div class="benefit-dot"></div><span>Designed to mix Mindor cleanly — no clumps, full dissolution</span></div>
+      <div class="benefit"><div class="benefit-dot"></div><span>Protocol-coded: you mix your serving before the work starts</span></div>
+      <div class="benefit"><div class="benefit-dot"></div><span>Ships with your order — no extra delivery</span></div>
+    </div>
+  </div>
+
+  <!-- ORDER SUMMARY -->
+  <div class="order-summary">
+    <div class="summary-label">Your Full Order</div>
+    <div class="summary-row">
+      <span>Mindor Performance Stack</span>
+      <span class="price" id="summary-main">—</span>
+    </div>
+    <div class="summary-row" id="summary-bump1-row">
+      <span>Productivity Tracker</span>
+      <span class="price">$7.00</span>
+    </div>
+    <div class="summary-row" id="summary-bump2-row">
+      <span>Package Protection</span>
+      <span class="price">$7.00</span>
+    </div>
+    <div class="summary-row">
+      <span>Mindor Shaker Bottle</span>
+      <span class="price" id="summary-shaker">—</span>
+    </div>
+    <div class="summary-row total">
+      <span>Order Total</span>
+      <span class="price" id="summary-total">—</span>
+    </div>
+  </div>
+
+  <button class="btn-accept" id="btn-accept" onclick="acceptUpsell()">Yes — Add The Shaker →</button>
+  <button class="btn-decline" onclick="declineUpsell()">No thanks, complete my order without the shaker</button>
+
+</div>
+
+<script>
+  // ── Config ──────────────────────────────────────────────────────
+  const SHOPIFY_DOMAIN           = 'mindor-1950.myshopify.com';
+  const SHOPIFY_STOREFRONT_TOKEN = 'c1f8ad6a65722ad1a022b7e5f8a8660c';
+  const SHOPIFY_API_VERSION      = '2024-01';
+
+  const MINDOR_VARIANT  = 'gid://shopify/ProductVariant/48144477651099'; // Sour Gummy Worms
+  const BUMP1_VARIANT   = 'gid://shopify/ProductVariant/9026072871067';  // Productivity Tracker
+  const BUMP2_VARIANT   = 'gid://shopify/ProductVariant/9026075099291';  // Package Protection
+  const SHAKER_VARIANT  = 'gid://shopify/ProductVariant/9026075361435';  // Shaker Bottle
+
+  const KLAVIYO_PUBLIC_KEY = 'S3D76Q';
+  const KLAVIYO_LIST_ID    = 'TUAJJE';
+
+  // ── URL params ────────────────────────────────────────────────────
+  const params = new URLSearchParams(window.location.search);
+  const email  = params.get('email') || '';
+  const name   = params.get('name')  || '';
+  const bump1  = params.get('bump1') === '1';
+  const bump2  = params.get('bump2') === '1';
+
+  // Hide unchecked bumps from summary
+  if (!bump1) document.getElementById('summary-bump1-row').style.display = 'none';
+  if (!bump2) document.getElementById('summary-bump2-row').style.display = 'none';
+
+  // ── Prices ────────────────────────────────────────────────────────
+  let shakerPrice = null;
+  let mainPrice   = null;
+
+  async function fetchPrices() {
+    try {
+      const res = await fetch(
+        `https://${SHOPIFY_DOMAIN}/api/${SHOPIFY_API_VERSION}/graphql.json`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Shopify-Storefront-Access-Token': SHOPIFY_STOREFRONT_TOKEN
+          },
+          body: JSON.stringify({
+            query: `{
+              mindor: node(id: "${MINDOR_VARIANT}") {
+                ... on ProductVariant { priceV2 { amount } compareAtPriceV2 { amount } }
+              }
+              shaker: node(id: "${SHAKER_VARIANT}") {
+                ... on ProductVariant { priceV2 { amount } compareAtPriceV2 { amount } }
+              }
+            }`
+          })
+        }
+      );
+      const data = await res.json();
+
+      mainPrice   = parseFloat(data?.data?.mindor?.priceV2?.amount);
+      shakerPrice = parseFloat(data?.data?.shaker?.priceV2?.amount);
+      const shakerCompare = parseFloat(data?.data?.shaker?.compareAtPriceV2?.amount);
+
+      if (!isNaN(shakerPrice)) {
+        document.getElementById('shaker-price').textContent = '$' + shakerPrice.toFixed(2);
+        document.getElementById('summary-shaker').textContent = '$' + shakerPrice.toFixed(2);
+        if (!isNaN(shakerCompare) && shakerCompare > shakerPrice) {
+          document.getElementById('shaker-compare').textContent = '$' + shakerCompare.toFixed(2);
+        }
+      }
+      if (!isNaN(mainPrice)) {
+        document.getElementById('summary-main').textContent = '$' + mainPrice.toFixed(2);
+      }
+
+      updateTotal();
+    } catch(e) {
+      console.warn('[Mindor price fetch]', e);
+    }
+  }
+
+  function updateTotal() {
+    const bumpTotal  = (bump1 ? 7 : 0) + (bump2 ? 7 : 0);
+    const shakerAmt  = isNaN(shakerPrice) ? 0 : shakerPrice;
+    const mainAmt    = isNaN(mainPrice)   ? 0 : mainPrice;
+    const total      = mainAmt + bumpTotal + shakerAmt;
+    if (mainAmt > 0) {
+      document.getElementById('summary-total').textContent = '$' + total.toFixed(2);
+    }
+  }
+
+  fetchPrices();
+
+  // ── Klaviyo update (fire-and-forget) ─────────────────────────────
+  async function klaviyoFlag(prop) {
+    if (!email) return;
+    try {
+      await fetch(
+        `https://a.klaviyo.com/client/subscriptions/?company_id=${KLAVIYO_PUBLIC_KEY}`,
+        {
+          method: 'POST',
+          headers: { 'content-type': 'application/json', revision: '2023-02-22' },
+          body: JSON.stringify({
+            data: {
+              type: 'subscription',
+              attributes: {
+                profile: {
+                  data: {
+                    type: 'profile',
+                    attributes: { email, first_name: name, properties: prop }
+                  }
+                }
+              },
+              relationships: {
+                list: { data: { type: 'list', id: KLAVIYO_LIST_ID } }
+              }
+            }
+          })
+        }
+      );
+    } catch(e) { console.warn('[Klaviyo]', e); }
+  }
+
+  // ── Shopify checkout ──────────────────────────────────────────────
+  async function goToShopifyCheckoutMulti(items) {
+    try {
+      const lines = items
+        .map(i => `{ quantity: ${i.quantity}, merchandiseId: "${i.variantId}" }`)
+        .join(', ');
+      const res = await fetch(
+        `https://${SHOPIFY_DOMAIN}/api/${SHOPIFY_API_VERSION}/graphql.json`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Shopify-Storefront-Access-Token': SHOPIFY_STOREFRONT_TOKEN
+          },
+          body: JSON.stringify({
+            query: `mutation { cartCreate(input: { lines: [${lines}] }) { cart { checkoutUrl } } }`
+          })
+        }
+      );
+      const data = await res.json();
+      window.location.href = data.data.cartCreate.cart.checkoutUrl;
+    } catch(e) {
+      console.error('[Mindor Shopify]', e);
+      document.getElementById('loading-overlay').classList.remove('active');
+      document.getElementById('btn-accept').disabled  = false;
+      alert('Something went wrong. Please try again.');
+    }
+  }
+
+  function buildCartItems(includeShaker) {
+    const items = [{ variantId: MINDOR_VARIANT, quantity: 1 }];
+    if (bump1) items.push({ variantId: BUMP1_VARIANT,  quantity: 1 });
+    if (bump2) items.push({ variantId: BUMP2_VARIANT,  quantity: 1 });
+    if (includeShaker) items.push({ variantId: SHAKER_VARIANT, quantity: 1 });
+    return items;
+  }
+
+  async function acceptUpsell() {
+    document.getElementById('btn-accept').disabled = true;
+    document.getElementById('loading-overlay').classList.add('active');
+    klaviyoFlag({ quiz_focus_upsell1: true });
+    await goToShopifyCheckoutMulti(buildCartItems(true));
+  }
+
+  async function declineUpsell() {
+    document.getElementById('loading-overlay').classList.add('active');
+    await goToShopifyCheckoutMulti(buildCartItems(false));
+  }
+</script>
+</body>
+</html>

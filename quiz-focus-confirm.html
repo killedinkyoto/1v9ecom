@@ -578,7 +578,10 @@
 
   function getTimerEnd() {
     const stored = sessionStorage.getItem(TIMER_KEY);
-    if (stored) return parseInt(stored, 10);
+    if (stored) {
+      const end = parseInt(stored, 10);
+      if (end > Date.now()) return end;
+    }
     const end = Date.now() + TIMER_DURATION;
     sessionStorage.setItem(TIMER_KEY, String(end));
     return end;
