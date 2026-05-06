@@ -11,7 +11,8 @@
     { "source": "/quiz-confirm", "destination": "/quiz-focus-confirm.html" },
     { "source": "/quiz-upsell", "destination": "/quiz-focus-upsell-1.html" },
     { "source": "/quiz-downsell", "destination": "/quiz-focus-downsell.html" },
-    { "source": "/quiz-thankyou", "destination": "/quiz-focus-thankyou.html" }
+    { "source": "/quiz-thankyou", "destination": "/quiz-focus-thankyou.html" },
+    { "source": "/tracker", "destination": "/productivity-tracker.html" }
   ],
   "headers": [
     {
