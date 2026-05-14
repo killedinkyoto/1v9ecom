@@ -6,7 +6,8 @@
     { "source": "/tub", "destination": "/upsell-2-mindor-tub.html" },
     { "source": "/squeeze", "destination": "/squeeze-brain-noise.html" },
     { "source": "/thankyou", "destination": "/funnel-thankyou.html" },
-    { "source": "/protocol", "destination": "/protocolcard.html" }
+    { "source": "/protocol", "destination": "/protocolcard.html" },
+    { "source": "/fbquiz1", "destination": "/quiz-focus-quiz.html" }
   ],
   "headers": [
     {
