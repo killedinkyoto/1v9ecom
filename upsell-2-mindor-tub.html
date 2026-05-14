@@ -624,6 +624,7 @@ body::before {
   .formula-items { grid-template-columns: 1fr 1fr; }
 }
 </style>
+<script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 
@@ -1142,17 +1143,35 @@ async function handleDecline() {
     sessionStorage.setItem(KEY, end);
   }
 
+  function expireOffer() {
+    var btn = document.getElementById('btn-accept');
+    var timerBar = display.closest('.timer-bar');
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = 'Offer Expired';
+      btn.style.opacity = '0.35';
+      btn.style.cursor = 'not-allowed';
+    }
+    if (timerBar) {
+      timerBar.style.borderColor = 'rgba(255,107,107,0.3)';
+      timerBar.style.background = 'rgba(255,107,107,0.06)';
+    }
+    display.textContent = 'Expired';
+    display.style.fontSize = '16px';
+    display.style.letterSpacing = '0.1em';
+    var dot = timerBar && timerBar.querySelector('.timer-dot');
+    if (dot) dot.style.background = '#FF6B6B';
+  }
+
   function tick() {
     var remaining = Math.max(0, Math.floor((end - Date.now()) / 1000));
     var m = Math.floor(remaining / 60);
     var s = remaining % 60;
     display.textContent = m + ':' + (s < 10 ? '0' : '') + s;
-    if (remaining <= 60) {
-      display.classList.add('urgent');
-    }
+    if (remaining <= 60) display.classList.add('urgent');
     if (remaining <= 0) {
       clearInterval(timer);
-      display.textContent = '0:00';
+      expireOffer();
     }
   }
 
