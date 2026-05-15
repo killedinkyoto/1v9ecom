@@ -763,6 +763,17 @@
   }
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','1460636158529685');
+fbq('track','PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1460636158529685&ev=PageView&noscript=1"/></noscript>
 </head>
 <body>
 
@@ -1143,6 +1154,7 @@ heroForm.addEventListener('submit', async (e) => {
     // Store for funnel pages
     sessionStorage.setItem('funnel_email', email);
     sessionStorage.setItem('funnel_name', firstName || '');
+    fbq('track','Lead');
     // Redirect to upsell 1
     window.location.href = '/upsell-1-deep-work-planner.html';
   } catch (err) {
@@ -1180,6 +1192,7 @@ bottomForm.addEventListener('submit', async (e) => {
     await subscribeToKlaviyo(email, firstName);
     sessionStorage.setItem('funnel_email', email);
     sessionStorage.setItem('funnel_name', firstName || '');
+    fbq('track','Lead');
     window.location.href = '/upsell-1-deep-work-planner.html';
   } catch (err) {
     console.error(err);
