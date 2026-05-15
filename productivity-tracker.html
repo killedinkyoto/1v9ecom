@@ -93,9 +93,6 @@ body {
   grid-template-areas: "player tasks" "stats tasks" "timer tasks";
   gap: 14px; align-items: start;
 }
-@media (max-width: 740px) {
-  .main { grid-template-columns: 1fr; grid-template-areas: "player" "stats" "timer" "tasks"; }
-}
 
 /* ── CARDS ── */
 .card {
@@ -363,6 +360,169 @@ body {
   animation: xp-float 1.2s ease forwards;
   text-shadow: 0 0 10px rgba(226,255,71,0.5);
 }
+
+/* ── ACCESS GATE ── */
+.gate-overlay {
+  position: fixed; inset: 0; z-index: 200;
+  background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px; overflow: auto;
+}
+.gate-overlay.hidden { display: none; }
+.gate-glow {
+  position: fixed; top: -120px; left: 50%; transform: translateX(-50%);
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(226,255,71,0.05) 0%, transparent 65%);
+  pointer-events: none;
+}
+.gate-card { max-width: 380px; width: 100%; text-align: center; position: relative; z-index: 1; }
+.gate-logo {
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 20px;
+  color: var(--execution-green); letter-spacing: 0.14em; margin-bottom: 36px;
+}
+.gate-headline {
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+  font-size: clamp(44px, 10vw, 62px); line-height: 0.92;
+  color: var(--text-primary); text-transform: uppercase; letter-spacing: -0.01em; margin-bottom: 10px;
+}
+.gate-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 32px; line-height: 1.65; }
+.gate-input {
+  width: 100%; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px 16px; margin-bottom: 10px;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700;
+  color: var(--text-primary); outline: none;
+  text-align: center; letter-spacing: 0.14em; text-transform: uppercase;
+  transition: border-color 0.15s;
+}
+.gate-input:focus { border-color: rgba(226,255,71,0.4); }
+.gate-input::placeholder { font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 400; text-transform: none; letter-spacing: 0.04em; color: var(--text-dim); }
+.gate-btn {
+  width: 100%; padding: 15px;
+  background: var(--execution-green); color: #111309;
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 18px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  border: none; border-radius: 8px; cursor: pointer; margin-bottom: 10px;
+  transition: opacity 0.15s, transform 0.12s;
+}
+.gate-btn:hover { opacity: 0.88; }
+.gate-btn:active { transform: scale(0.99); }
+.gate-error { font-size: 12px; color: #FF7070; min-height: 16px; }
+.gate-footer { margin-top: 28px; font-size: 11px; color: var(--text-dim); line-height: 1.7; }
+
+/* ── DAILY CHECKLIST ── */
+.checklist-overlay {
+  position: fixed; inset: 0; z-index: 80;
+  background: rgba(9,10,6,0.92); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  display: none; align-items: center; justify-content: center; padding: 20px;
+}
+.checklist-overlay.on { display: flex; }
+.checklist-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 20px;
+  padding: 28px 24px; max-width: 480px; width: 100%;
+  max-height: 92vh; overflow-y: auto;
+  animation: modal-in 0.28s ease;
+  box-shadow: 0 0 60px rgba(226,255,71,0.05), 0 40px 80px rgba(0,0,0,0.55);
+}
+.checklist-card::-webkit-scrollbar { width: 3px; }
+.checklist-card::-webkit-scrollbar-thumb { background: var(--text-dim); border-radius: 3px; }
+.cl-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.cl-eyebrow { font-size: 10px; font-weight: 600; letter-spacing: 0.22em; color: var(--text-muted); text-transform: uppercase; }
+.cl-date-txt { font-size: 11px; color: var(--text-dim); }
+.cl-headline {
+  font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+  font-size: clamp(28px, 6vw, 38px); line-height: 0.93;
+  color: var(--text-primary); text-transform: uppercase; margin-bottom: 18px;
+}
+.cl-progress-row { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+.cl-progress-bar { flex: 1; height: 3px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
+.cl-progress-fill { height: 100%; background: var(--execution-green); border-radius: 2px; transition: width 0.3s ease; box-shadow: 0 0 6px rgba(226,255,71,0.35); }
+.cl-progress-text { font-size: 11px; color: var(--text-muted); white-space: nowrap; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; }
+.cl-phase { margin-bottom: 14px; }
+.cl-phase-label { font-size: 9px; font-weight: 600; letter-spacing: 0.2em; color: var(--execution-green); text-transform: uppercase; opacity: 0.65; margin-bottom: 5px; padding-left: 2px; }
+.cl-item { display: flex; align-items: flex-start; gap: 10px; padding: 7px 8px; border-radius: 8px; cursor: pointer; transition: background 0.12s; margin-bottom: 1px; }
+.cl-item:hover { background: var(--surface2); }
+.cl-item.checked .cl-text { color: var(--text-dim); text-decoration: line-through; }
+.cl-checkbox { width: 17px; height: 17px; border-radius: 4px; border: 1.5px solid var(--text-dim); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.15s; margin-top: 1px; }
+.cl-item.checked .cl-checkbox { background: var(--execution-green); border-color: var(--execution-green); }
+.cl-check-icon { display: none; font-size: 10px; color: #111309; line-height: 1; font-weight: 900; }
+.cl-item.checked .cl-check-icon { display: block; }
+.cl-text { font-size: 13px; color: var(--fog-grey); line-height: 1.4; }
+.cl-actions { display: flex; gap: 8px; margin-top: 22px; }
+.cl-btn-primary { flex: 1; padding: 12px; background: var(--execution-green); color: #111309; font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 16px; letter-spacing: 0.08em; text-transform: uppercase; border: none; border-radius: 8px; cursor: pointer; transition: opacity 0.15s; }
+.cl-btn-primary:hover { opacity: 0.88; }
+.cl-btn-secondary { padding: 12px 14px; background: transparent; color: var(--text-muted); font-family: 'DM Sans', sans-serif; font-size: 12px; border: 1px solid var(--border-subtle); border-radius: 8px; cursor: pointer; transition: color 0.15s, border-color 0.15s; white-space: nowrap; }
+.cl-btn-secondary:hover { color: var(--fog-grey); border-color: var(--border); }
+
+/* ── PROTOCOL DRAWER ── */
+.protocol-bd { position: fixed; inset: 0; z-index: 46; background: rgba(9,10,6,0.6); display: none; }
+.protocol-bd.on { display: block; }
+.protocol-drawer {
+  position: fixed; top: 0; right: 0; height: 100%;
+  width: min(560px, 100vw); z-index: 47;
+  background: var(--surface); border-left: 1px solid var(--border);
+  transform: translateX(100%); transition: transform 0.26s cubic-bezier(0.4,0,0.2,1);
+  display: flex; flex-direction: column;
+}
+.protocol-drawer.on { transform: translateX(0); }
+.protocol-hdr { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--border-subtle); flex-shrink: 0; }
+.protocol-hdr-left { display: flex; align-items: center; gap: 9px; }
+.protocol-hdr-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 17px; text-transform: uppercase; letter-spacing: 0.06em; }
+.protocol-badge { font-size: 11px; color: var(--execution-green); background: rgba(226,255,71,0.1); padding: 2px 8px; border-radius: 10px; border: 1px solid rgba(226,255,71,0.2); }
+.protocol-body { flex: 1; overflow-y: auto; padding: 14px 16px; }
+.protocol-body::-webkit-scrollbar { width: 3px; }
+.protocol-body::-webkit-scrollbar-thumb { background: var(--text-dim); border-radius: 3px; }
+.protocol-intro { font-size: 12px; color: var(--text-muted); line-height: 1.7; margin-bottom: 14px; padding: 12px 14px; background: var(--surface2); border-radius: 10px; border: 1px solid var(--border-subtle); }
+.protocol-phase { margin-bottom: 6px; }
+.pp-hdr { display: flex; align-items: center; justify-content: space-between; padding: 13px 15px; cursor: pointer; background: var(--surface2); border: 1px solid var(--border-subtle); border-radius: 11px; transition: border-color 0.15s; user-select: none; gap: 12px; }
+.pp-hdr:hover { border-color: var(--border); }
+.pp-hdr.open { border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-color: rgba(226,255,71,0.2); }
+.pp-left { display: flex; flex-direction: column; gap: 1px; }
+.pp-num { font-size: 9px; font-weight: 600; letter-spacing: 0.2em; color: var(--execution-green); text-transform: uppercase; opacity: 0.7; }
+.pp-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 15px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-primary); }
+.pp-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.pp-count { font-size: 11px; color: var(--text-dim); }
+.pp-chevron { color: var(--text-muted); font-size: 12px; transition: transform 0.2s; }
+.pp-hdr.open .pp-chevron { transform: rotate(180deg); }
+.pp-hacks { display: none; background: var(--surface2); border: 1px solid rgba(226,255,71,0.2); border-top: none; border-bottom-left-radius: 11px; border-bottom-right-radius: 11px; overflow: hidden; }
+.pp-hacks.on { display: block; }
+.pp-hack { padding: 13px 15px; border-bottom: 1px solid var(--border-subtle); cursor: pointer; transition: background 0.12s; }
+.pp-hack:last-child { border-bottom: none; }
+.pp-hack:hover { background: rgba(255,255,255,0.02); }
+.pp-hack-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.pp-hack-title { font-size: 13px; font-weight: 600; color: var(--fog-grey); line-height: 1.3; }
+.pp-hack-chev { font-size: 10px; color: var(--text-dim); flex-shrink: 0; transition: transform 0.2s; }
+.pp-hack.open .pp-hack-chev { transform: rotate(180deg); }
+.pp-hack-body { display: none; font-size: 12px; color: var(--text-muted); line-height: 1.75; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border-subtle); }
+.pp-hack.open .pp-hack-body { display: block; }
+.protocol-footer { padding: 14px 16px; border-top: 1px solid var(--border-subtle); flex-shrink: 0; }
+.protocol-run-cl { width: 100%; padding: 11px; background: rgba(226,255,71,0.07); color: var(--execution-green); font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid rgba(226,255,71,0.18); border-radius: 8px; cursor: pointer; transition: background 0.15s; }
+.protocol-run-cl:hover { background: rgba(226,255,71,0.11); }
+
+/* ── NAV BADGE ── */
+.btn-nav-wrap { position: relative; display: inline-flex; }
+.nav-badge { position: absolute; top: -2px; right: -2px; width: 7px; height: 7px; border-radius: 50%; background: var(--execution-green); box-shadow: 0 0 5px rgba(226,255,71,0.6); pointer-events: none; }
+
+/* ── MOBILE ── */
+@media (max-width: 740px) {
+  .main { grid-template-columns: 1fr; grid-template-areas: "tasks" "player" "stats" "timer"; }
+}
+@media (max-width: 480px) {
+  .navbar { padding: 0 12px; height: 52px; }
+  .nav-logo span { display: none; }
+  .btn-nav { padding: 5px 9px; font-size: 11px; }
+  .streak-pill { padding: 3px 8px; }
+  .streak-pill .num { font-size: 15px; }
+  .main { padding: 14px 12px 72px; gap: 10px; }
+  .focus-card { padding: 28px 18px; }
+  .focus-clock { font-size: 66px; }
+  .levelup-card { padding: 32px 22px; }
+  .checklist-card { padding: 22px 16px; border-radius: 16px; }
+  .task-row { padding: 10px 11px; }
+  .row-btns { gap: 4px; }
+  .btn { padding: 6px 9px; font-size: 11px; }
+  .btn-add { padding: 6px 13px; font-size: 12px; }
+  .gate-card { max-width: 100%; }
+}
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 <script>
@@ -379,6 +539,66 @@ fbq('track','PageView');
 </head>
 <body>
 
+<!-- ACCESS GATE -->
+<div id="gate-overlay" class="gate-overlay">
+  <div class="gate-glow"></div>
+  <div class="gate-card">
+    <div class="gate-logo">MINDOR</div>
+    <div class="gate-headline">FOCUS<br>TRACKER</div>
+    <p class="gate-sub">Enter your access code from your order confirmation to unlock.</p>
+    <input id="gate-input" class="gate-input" type="text" placeholder="Enter access code..." autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" onkeydown="if(event.key==='Enter')_unlock()">
+    <button class="gate-btn" onclick="_unlock()">Unlock →</button>
+    <div id="gate-error" class="gate-error"></div>
+    <div class="gate-footer">Purchased the Productivity Tracker? Check your order confirmation email for the access code.</div>
+  </div>
+</div>
+<script>
+(function(){
+  var ua=new URLSearchParams(location.search).get('access');
+  if(ua&&ua.toUpperCase()==='MINDORTRACKS') localStorage.setItem('mindor_access','1');
+  if(localStorage.getItem('mindor_access')==='1') document.getElementById('gate-overlay').classList.add('hidden');
+})();
+</script>
+
+<!-- DAILY CHECKLIST -->
+<div id="checklist-overlay" class="checklist-overlay">
+  <div class="checklist-card">
+    <div class="cl-top">
+      <div class="cl-eyebrow">Pre-Work Protocol</div>
+      <div class="cl-date-txt" id="cl-date"></div>
+    </div>
+    <div class="cl-headline">READY TO<br>LOCK IN?</div>
+    <div class="cl-progress-row">
+      <div class="cl-progress-bar"><div class="cl-progress-fill" id="cl-prog-fill" style="width:0%"></div></div>
+      <div class="cl-progress-text" id="cl-prog-text">0 / 13</div>
+    </div>
+    <div id="cl-phases"></div>
+    <div class="cl-actions">
+      <button class="cl-btn-primary" onclick="_startSession()">Start Session →</button>
+      <button class="cl-btn-secondary" onclick="_openProtocolFromCl()">View Protocol</button>
+    </div>
+  </div>
+</div>
+
+<!-- PROTOCOL DRAWER -->
+<div id="protocol-bd" class="protocol-bd" onclick="_closeProtocol()"></div>
+<div id="protocol-drawer" class="protocol-drawer">
+  <div class="protocol-hdr">
+    <div class="protocol-hdr-left">
+      <span class="protocol-hdr-title">Focus Protocol</span>
+      <span class="protocol-badge">15 Techniques</span>
+    </div>
+    <div style="display:flex;gap:7px;">
+      <button class="btn btn-ghost btn-sm" onclick="_closeProtocol();_openChecklist()">Daily Checklist</button>
+      <button class="btn btn-ghost btn-sm" onclick="_closeProtocol()">Close</button>
+    </div>
+  </div>
+  <div class="protocol-body" id="protocol-body"></div>
+  <div class="protocol-footer">
+    <button class="protocol-run-cl" onclick="_closeProtocol();_openChecklist()">→ Run Pre-Work Checklist</button>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <!-- NAVBAR -->
@@ -386,6 +606,11 @@ fbq('track','PageView');
   <div class="nav-logo">MINDOR <span>Focus Tracker</span></div>
   <div class="nav-right">
     <div class="streak-pill" id="streak-pill">🔥 <span class="num" id="streak-num">0</span></div>
+    <div class="btn-nav-wrap" id="cl-wrap">
+      <button class="btn-nav" onclick="_openChecklist()">Checklist</button>
+      <div class="nav-badge" id="cl-badge" style="display:none;"></div>
+    </div>
+    <button class="btn-nav" onclick="_openProtocol()">Protocol</button>
     <button class="btn-nav" onclick="_openNotes()">Notes</button>
   </div>
 </nav>
@@ -510,6 +735,63 @@ const PHASE_MIN   = 40 * 60;
 const SK_TASKS    = 'mindor_tracker_tasks';
 const SK_PLAYER   = 'mindor_tracker_player';
 const SK_NOTES    = 'mindor_tracker_notes';
+const SK_ACCESS   = 'mindor_access';
+const SK_CL_DATE  = 'mindor_checklist_date';
+const ACCESS_CODE = 'MINDORTRACKS';
+
+const CHECKLIST = [
+  { phase: 'Phase 1 — Before You Sit Down', items: [
+    'Write 3 specific tasks on paper, in order of priority',
+    'Set a hard stop time for your session',
+    'No email or Slack for the first 90 minutes',
+  ]},
+  { phase: 'Phase 2 — Physical Environment', items: [
+    'Phone in another room (not silent — another room)',
+    'One window open, one tab',
+    'Temperature 68–70°F if possible',
+    'Bright light on — natural if available',
+  ]},
+  { phase: 'Phase 3 — Getting In & Staying In', items: [
+    'Start with the most mechanical task first',
+    'Commit to just 10 minutes before you allow a stop',
+    'Work in 90-minute blocks, not 25',
+    'Small decisions → write down, handle after session',
+    'Urge to check phone → write what you were just thinking',
+    'Boredom mid-session = you\'re close — sit in it 5 more min',
+  ]},
+  { phase: 'Phase 4 — Ending the Session', items: [
+    'Stop mid-sentence, not at a natural conclusion',
+    'Write tomorrow\'s 3 tasks before closing the laptop',
+  ]}
+];
+
+const PROTOCOL_PHASES = [
+  { phase: 'Phase 1', title: 'Before You Sit Down', hacks: [
+    { title: 'Write 3 tasks on paper the night before', body: 'Your brain resists starting because starting requires a decision — what am I doing first, where do I begin, what does done look like. Make those decisions the night before. Write three specific tasks, in order, on a piece of paper. Not a Notion board. Paper. It stays in your peripheral vision without demanding interaction.' },
+    { title: 'Set a hard close time', body: 'Counterintuitive but important. Open-ended work sessions are harder to lock into than bounded ones. "I\'m working until 2pm" creates urgency. "I\'m working until I\'m done" creates drift.' },
+    { title: "Don't start with email or Slack", body: "You're making a deposit into someone else's agenda before you've touched your own. First 90 minutes belong to your hardest task. Communication can wait." },
+  ]},
+  { phase: 'Phase 2', title: 'Your Physical Environment', hacks: [
+    { title: 'Phone in another room', body: 'Not face down. Not on silent. Another room. The mere presence of your phone on your desk — even face down, even off — reduces available cognitive capacity. This is documented. Out of sight is not enough if you know it\'s within reach.' },
+    { title: 'One window open. One tab.', body: "Every open tab is a decision you haven't made yet sitting in your peripheral vision. Close everything that isn't the thing you're working on. Browser extensions like one-tab or full-screen mode help enforce this." },
+    { title: 'Temperature slightly cool', body: 'Around 68–70°F. Warm rooms sedate. Slightly cool rooms keep your alertness baseline higher without you noticing.' },
+    { title: 'Natural light if you have it', body: "Dim environments signal your brain that it's wind-down time. Bright light, ideally from the side, keeps your circadian rhythm in daytime mode." },
+  ]},
+  { phase: 'Phase 3', title: 'Getting Into the State', hacks: [
+    { title: 'The 10-minute rule', body: "Commit to just 10 minutes of work before you allow yourself to stop. Every time. The resistance to starting is always bigger than the actual experience of working. Once you're in motion, staying in motion is easy. It's Newton's first law applied to your prefrontal cortex." },
+    { title: 'Start with the boring part', body: "Not the hardest part — the most mechanical part. The part that requires zero creativity. Formatting something, organizing files, reading back what you wrote yesterday. This is a warm-up lap. It gets your brain into the cadence of the work without demanding peak output from a cold start." },
+    { title: "Don't break for small decisions", body: "A small decision mid-session — what should I name this function, what color should this be, should I send that email now — pulls you out. Write it down and keep moving. The decision list gets handled after the session, not during." },
+  ]},
+  { phase: 'Phase 4', title: 'Staying There', hacks: [
+    { title: 'Work in 90-minute blocks, not pomodoros', body: "25 minutes is too short for deep work. By the time you're actually in flow, the timer goes off. 90 minutes maps to your brain's natural ultradian rhythm — the cycle it uses to move between higher and lower alertness. Work with it, not against it." },
+    { title: 'Urge to check phone → write it down instead', body: "The urge to check is usually your brain hitting a hard problem and looking for an escape. Writing down where you are in the problem keeps the thread alive and gives you something to return to. Nine times out of ten you won't check the phone once you've written it down." },
+    { title: "Boredom is the signal you're close", body: "The moment a work session feels boring or slow is usually right before a breakthrough. Most people escape at exactly that moment. Sit in it for five more minutes before you do anything else." },
+  ]},
+  { phase: 'Phase 5', title: 'Ending the Session', hacks: [
+    { title: 'Stop mid-sentence, not at a natural conclusion', body: "A natural stopping point feels complete — which means cold-starting tomorrow. Stop mid-sentence so your brain retains the thread. When you pick up again, you know exactly where you left off. The resistance to starting drops to near zero." },
+    { title: "Write tomorrow's 3 tasks before closing", body: "You already did the hard thinking today. Write the next session's tasks before closing so tomorrow's you doesn't need to decide what to do first. This eliminates on-ramp friction and makes the next session 10× easier to start." },
+  ]},
+];
 
 // ─── UTILS ───────────────────────────────────────────────
 function esc(s) {
@@ -994,6 +1276,147 @@ window._deleteNote = function(id) {
   saveNotes(getNotes().filter(n=>n.id!==id)); renderNotes();
 };
 
+// ─── ACCESS GATE ─────────────────────────────────────────
+function _checkAccess() {
+  if (localStorage.getItem(SK_ACCESS) === '1') {
+    document.getElementById('gate-overlay').classList.add('hidden');
+    _checkDailyChecklist();
+  }
+}
+window._unlock = function() {
+  const input = document.getElementById('gate-input');
+  const err   = document.getElementById('gate-error');
+  const code  = (input.value || '').trim().toUpperCase().replace(/[\s\-]/g,'');
+  if (code === ACCESS_CODE) {
+    localStorage.setItem(SK_ACCESS, '1');
+    document.getElementById('gate-overlay').classList.add('hidden');
+    err.textContent = '';
+    _checkDailyChecklist();
+  } else {
+    err.textContent = 'Incorrect code. Check your order confirmation email.';
+    input.select();
+  }
+};
+
+// ─── DAILY CHECKLIST ─────────────────────────────────────
+let _clState = [];
+
+function _checkDailyChecklist() {
+  const today = todayStr();
+  const last  = localStorage.getItem(SK_CL_DATE);
+  const badge = document.getElementById('cl-badge');
+  if (last !== today) {
+    if (badge) badge.style.display = 'block';
+    setTimeout(_openChecklist, 400);
+  } else {
+    if (badge) badge.style.display = 'none';
+  }
+}
+window._openChecklist = function() {
+  _clState = CHECKLIST.flatMap(ph => ph.items.map(() => false));
+  _renderChecklist();
+  const d = new Date();
+  const days   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  document.getElementById('cl-date').textContent = days[d.getDay()]+', '+months[d.getMonth()]+' '+d.getDate();
+  document.getElementById('checklist-overlay').classList.add('on');
+  document.body.style.overflow = 'hidden';
+};
+function _renderChecklist() {
+  let idx = 0;
+  const html = CHECKLIST.map(phase => {
+    const items = phase.items.map(item => {
+      const i = idx++;
+      return '<div class="cl-item" data-cl="'+i+'" onclick="_toggleClItem('+i+')">'+
+        '<div class="cl-checkbox"><span class="cl-check-icon">✓</span></div>'+
+        '<span class="cl-text">'+esc(item)+'</span>'+
+      '</div>';
+    }).join('');
+    return '<div class="cl-phase"><div class="cl-phase-label">'+esc(phase.phase)+'</div>'+items+'</div>';
+  }).join('');
+  document.getElementById('cl-phases').innerHTML = html;
+  _updateClProgress();
+}
+window._toggleClItem = function(idx) {
+  _clState[idx] = !_clState[idx];
+  const item = document.querySelector('[data-cl="'+idx+'"]');
+  if (item) item.classList.toggle('checked', _clState[idx]);
+  _updateClProgress();
+};
+function _updateClProgress() {
+  const total = _clState.length, done = _clState.filter(Boolean).length;
+  const pct = total ? (done/total*100).toFixed(0) : 0;
+  const fill = document.getElementById('cl-prog-fill');
+  const text = document.getElementById('cl-prog-text');
+  if (fill) fill.style.width = pct + '%';
+  if (text) text.textContent = done + ' / ' + total;
+}
+window._startSession = function() {
+  localStorage.setItem(SK_CL_DATE, todayStr());
+  document.getElementById('checklist-overlay').classList.remove('on');
+  document.body.style.overflow = '';
+  const badge = document.getElementById('cl-badge');
+  if (badge) badge.style.display = 'none';
+};
+window._openProtocolFromCl = function() {
+  window._startSession();
+  window._openProtocol();
+};
+
+// ─── PROTOCOL ────────────────────────────────────────────
+function _renderProtocol() {
+  const html = PROTOCOL_PHASES.map((phase, pi) => {
+    const hacks = phase.hacks.map((hack, hi) => {
+      const id = 'ph-'+pi+'-'+hi;
+      return '<div class="pp-hack" id="'+id+'" onclick="_toggleHack(\''+id+'\')">'+
+        '<div class="pp-hack-row">'+
+          '<span class="pp-hack-title">'+esc(hack.title)+'</span>'+
+          '<span class="pp-hack-chev">▾</span>'+
+        '</div>'+
+        '<div class="pp-hack-body">'+esc(hack.body)+'</div>'+
+      '</div>';
+    }).join('');
+    const pid = 'pp-'+pi;
+    return '<div class="protocol-phase">'+
+      '<div class="pp-hdr" id="'+pid+'-hdr" onclick="_togglePhase(\''+pid+'\')">'+
+        '<div class="pp-left">'+
+          '<div class="pp-num">'+esc(phase.phase)+'</div>'+
+          '<div class="pp-title">'+esc(phase.title)+'</div>'+
+        '</div>'+
+        '<div class="pp-right">'+
+          '<span class="pp-count">'+phase.hacks.length+' techniques</span>'+
+          '<span class="pp-chevron">▾</span>'+
+        '</div>'+
+      '</div>'+
+      '<div class="pp-hacks" id="'+pid+'-hacks">'+hacks+'</div>'+
+    '</div>';
+  }).join('');
+  document.getElementById('protocol-body').innerHTML =
+    '<div class="protocol-intro">Evidence-based techniques for entering and maintaining deep focus. Work through the phases in order for best results.</div>'+html;
+}
+window._togglePhase = function(pid) {
+  const hdr   = document.getElementById(pid+'-hdr');
+  const hacks = document.getElementById(pid+'-hacks');
+  if (!hdr || !hacks) return;
+  const open = hdr.classList.contains('open');
+  hdr.classList.toggle('open', !open);
+  hacks.classList.toggle('on', !open);
+};
+window._toggleHack = function(id) {
+  document.getElementById(id)?.classList.toggle('open');
+};
+window._openProtocol = function() {
+  if (!document.getElementById('protocol-body').innerHTML) _renderProtocol();
+  document.getElementById('protocol-drawer').classList.add('on');
+  document.getElementById('protocol-bd').classList.add('on');
+  document.body.style.overflow = 'hidden';
+};
+window._closeProtocol = function() {
+  document.getElementById('protocol-drawer').classList.remove('on');
+  document.getElementById('protocol-bd').classList.remove('on');
+  document.body.style.overflow = '';
+};
+
 // ─── EFFECTS ─────────────────────────────────────────────
 function confettiBlast() {
   if (typeof confetti!=='function') return;
@@ -1029,11 +1452,14 @@ document.addEventListener('keydown', e=>{
   if (e.key==='Escape') {
     if (document.getElementById('focus-overlay').classList.contains('on')) _closeFocus();
     else if (document.getElementById('lu-overlay').classList.contains('on')) window._closeLU();
+    else if (document.getElementById('checklist-overlay').classList.contains('on')) window._startSession();
+    else if (document.getElementById('protocol-drawer').classList.contains('on')) window._closeProtocol();
     else if (document.getElementById('notes-drawer').classList.contains('on')) window._closeNotes();
   }
 });
 
 // ─── INIT ─────────────────────────────────────────────────
+_checkAccess();
 checkStreak();
 renderAll();
 (function resumeTimer() {
