@@ -1441,7 +1441,7 @@ fbq('track','PageView');
     btn.textContent = 'Locking you in...';
     btn.disabled    = true;
 
-    await subscribeToKlaviyo(email, name, {
+    subscribeToKlaviyo(email, name, {
       [`${FUNNEL_SLUG}_free`]: true,
       quiz_q1: state.q1,
       quiz_q2: state.q2,
