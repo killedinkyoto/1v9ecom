@@ -548,10 +548,39 @@ fbq('track','ViewContent',{content_name:'Mindor Performance Stack',value:50.00,c
   const DISCOUNTED_PRICE = 36.54;
   const BUMP_PRICE       = 7;
 
+  // ── Klaviyo ───────────────────────────────────────────────────────
+  const KLAVIYO_PUBLIC_KEY = 'S3D76Q';
+  const KLAVIYO_LIST_ID    = 'TUAJJE';
+
+  function klaviyoFlag(props) {
+    if (!email) return;
+    fetch(`https://a.klaviyo.com/client/subscriptions/?company_id=${KLAVIYO_PUBLIC_KEY}`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', revision: '2023-02-22' },
+      body: JSON.stringify({
+        data: {
+          type: 'subscription',
+          attributes: {
+            profile: {
+              data: {
+                type: 'profile',
+                attributes: { email, first_name: name, properties: props }
+              }
+            }
+          },
+          relationships: { list: { data: { type: 'list', id: KLAVIYO_LIST_ID } } }
+        }
+      })
+    }).catch(e => console.warn('[Mindor Klaviyo]', e));
+  }
+
   // ── URL params ────────────────────────────────────────────────────
   const params  = new URLSearchParams(window.location.search);
   const email   = params.get('email') || '';
   const name    = params.get('name')  || '';
+
+  // Flag offer page view
+  klaviyoFlag({ quiz_focus_offer_seen: true });
 
   // ── State ─────────────────────────────────────────────────────────
   let selectedFlavor = 'candy';
@@ -633,6 +662,8 @@ fbq('track','ViewContent',{content_name:'Mindor Performance Stack',value:50.00,c
     const btn = document.getElementById('btn-cta');
     btn.textContent = 'One moment...';
     btn.disabled    = true;
+
+    klaviyoFlag({ quiz_focus_checkout_started: true });
 
     const lines = [{ merchandiseId: VARIANTS[selectedFlavor], quantity: 1 }];
     if (bumps[1]) lines.push({ merchandiseId: BUMP1_VARIANT, quantity: 1 });
