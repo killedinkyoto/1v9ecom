@@ -593,6 +593,7 @@ fbq('track','ViewContent',{content_name:'Mindor Bundle Downsell',value:36.54,cur
 
   // ── Decline ───────────────────────────────────────────────────────
   function declineBundle() {
+    fbq('trackCustom', 'QuizDownsellDecline');
     window.location.href = 'quiz-focus-thankyou.html';
   }
 </script>

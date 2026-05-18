@@ -1170,6 +1170,20 @@ fbq('track','PageView');
   const state = { q1:null, q2:null, q3:null, q4:[], q5:null, q6:null, q7:null };
 
   // ── Screen management ─────────────────────────────────────────────
+  const SCREEN_EVENTS = {
+    'screen-q1':        'QuizStep_Q1',
+    'screen-q2':        'QuizStep_Q2',
+    'screen-q3':        'QuizStep_Q3',
+    'screen-q4':        'QuizStep_Q4',
+    'screen-q4-cost':   'QuizStep_CostResult',
+    'screen-q5':        'QuizStep_Q5',
+    'screen-q6':        'QuizStep_Q6',
+    'screen-q7':        'QuizStep_Q7',
+    'screen-interval':  'QuizStep_Interval',
+    'screen-result-1':  'QuizStep_Result',
+    'screen-result-2':  'QuizStep_Optin',
+  };
+
   function showScreen(id) {
     document.querySelectorAll('.screen').forEach(s => {
       s.classList.remove('active','fade-in');
@@ -1179,6 +1193,9 @@ fbq('track','PageView');
     requestAnimationFrame(() => el.classList.add('fade-in'));
     document.getElementById('progress-bar').style.width = (PROGRESS[id] || 0) + '%';
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (SCREEN_EVENTS[id] && typeof fbq !== 'undefined') {
+      fbq('trackCustom', SCREEN_EVENTS[id]);
+    }
   }
 
   // ── Single-select ─────────────────────────────────────────────────

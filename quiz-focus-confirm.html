@@ -770,6 +770,7 @@ fbq('track','ViewContent',{content_name:'Mindor Performance Stack',value:50.00,c
 
   // ── Downsell navigation ───────────────────────────────────────────
   async function goToDownsell() {
+    fbq('trackCustom', 'QuizOfferDecline');
     await variantsReady;
     const theme = FLAVOR_THEMES[selectedFlavor];
     const out = new URLSearchParams({ email, name, flavor: VARIANTS[selectedFlavor], flavorLabel: theme.label });
