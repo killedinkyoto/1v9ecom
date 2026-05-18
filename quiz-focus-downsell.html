@@ -312,6 +312,18 @@
     }
   </style>
 <script defer src="/_vercel/insights/script.js"></script>
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','1460636158529685');
+fbq('track','PageView');
+fbq('track','ViewContent',{content_name:'Mindor Bundle Downsell',value:36.54,currency:'USD'});
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1460636158529685&ev=PageView&noscript=1"/></noscript>
 </head>
 <body>
 
@@ -320,10 +332,10 @@
 
 <div class="page">
 
-  <p class="step-label">Wait — One More Thing</p>
+  <p class="step-label">Wait! One More Thing</p>
 
   <h1 class="headline">SAME PRICE.<br>WE THREW SOME<br>THINGS IN.</h1>
-  <p class="subhead">The tub's still 15% off. But we added the tracker, protection, and shaker — no extra charge.</p>
+  <p class="subhead">The tub's still 15% off. But we added the tracker, protection, and shaker. No extra charge.</p>
 
   <!-- PRODUCT GALLERY -->
   <div class="product-gallery" id="product-gallery" aria-label="Product photos">
@@ -529,6 +541,7 @@
     btn.disabled    = true;
 
     await flavorReady;
+    fbq('track','InitiateCheckout',{value:36.54,currency:'USD',num_items:4});
     klaviyoFlag({ quiz_downsell_accepted: true });
 
     const lines = [

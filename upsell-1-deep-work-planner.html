@@ -667,6 +667,18 @@ body::before {
 }
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','1460636158529685');
+fbq('track','PageView');
+fbq('track','ViewContent',{content_name:'Deep Work Planner',value:7.99,currency:'USD'});
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1460636158529685&ev=PageView&noscript=1"/></noscript>
 </head>
 <body>
 
@@ -877,7 +889,7 @@ const KLAVIYO_LIST_ID    = 'TbjR5D';     // e.g. 'XyZ123'
 
 // ── CONFIGURE: Shopify Digital Product ──
 // After creating the $7.99 digital product in Shopify, paste its variant ID here:
-const DIGITAL_VARIANT_ID = 'gid://shopify/ProductVariant/8954983907483';
+const DIGITAL_VARIANT_ID = 'gid://shopify/ProductVariant/48170454909083';
 // ─────────────────────────────────────────
 
 async function subscribeToKlaviyo(email, firstName, extraProps) {
@@ -932,6 +944,7 @@ async function handleAccept() {
     await subscribeToKlaviyo(email, name, { hvco_digital: true });
   } catch (e) { console.warn('[Mindor Klaviyo]', e); }
 
+  fbq('track','InitiateCheckout',{value:7.99,currency:'USD',num_items:1});
   window.location.href = '/upsell-2-mindor-tub.html';
 }
 

@@ -736,6 +736,18 @@ body::before {
 }
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','1460636158529685');
+fbq('track','PageView');
+fbq('track','ViewContent',{content_name:'Activation Protocol',value:7.99,currency:'USD'});
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1460636158529685&ev=PageView&noscript=1"/></noscript>
 </head>
 <body>
 
@@ -1031,6 +1043,7 @@ async function handleAccept() {
     const name  = sessionStorage.getItem('funnel_name') || '';
     sessionStorage.setItem('funnel_cart', JSON.stringify({ activationVariantId: ACTIVATION_VARIANT_ID }));
     await subscribeToKlaviyo(email, name, { hvco_activation: true });
+    fbq('track','InitiateCheckout',{value:7.99,currency:'USD',num_items:1});
     window.location.href = 'upsell-2-tub-deepwork.html';
   } catch(err) {
     console.error('[Mindor] Accept error:', err);

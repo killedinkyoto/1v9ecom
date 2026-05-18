@@ -500,6 +500,18 @@
     }
   </style>
 <script defer src="/_vercel/insights/script.js"></script>
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','1460636158529685');
+fbq('track','PageView');
+fbq('track','ViewContent',{content_name:'Mindor Performance Stack',value:50.00,currency:'USD'});
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1460636158529685&ev=PageView&noscript=1"/></noscript>
 </head>
 <body>
 
@@ -651,10 +663,39 @@
   const DISCOUNTED_PRICE = 36.54;
   const BUMP_PRICE       = 7;
 
+  // ── Klaviyo ───────────────────────────────────────────────────────
+  const KLAVIYO_PUBLIC_KEY = 'S3D76Q';
+  const KLAVIYO_LIST_ID    = 'TUAJJE';
+
+  function klaviyoFlag(props) {
+    if (!email) return;
+    fetch(`https://a.klaviyo.com/client/subscriptions/?company_id=${KLAVIYO_PUBLIC_KEY}`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', revision: '2023-02-22' },
+      body: JSON.stringify({
+        data: {
+          type: 'subscription',
+          attributes: {
+            profile: {
+              data: {
+                type: 'profile',
+                attributes: { email, first_name: name, properties: props }
+              }
+            }
+          },
+          relationships: { list: { data: { type: 'list', id: KLAVIYO_LIST_ID } } }
+        }
+      })
+    }).catch(e => console.warn('[Mindor Klaviyo]', e));
+  }
+
   // ── URL params ────────────────────────────────────────────────────
   const params  = new URLSearchParams(window.location.search);
   const email   = params.get('email') || '';
   const name    = params.get('name')  || '';
+
+  // Flag offer page view
+  klaviyoFlag({ quiz_focus_offer_seen: true });
 
   // ── State ─────────────────────────────────────────────────────────
   let selectedFlavor = 'candy';
@@ -735,7 +776,6 @@
     window.location.href = 'quiz-focus-downsell.html?' + out.toString();
   }
 
-  // ── Checkout ──────────────────────────────────────────────────────
   // ── Product gallery ───────────────────────────────────────────────
   const GALLERY_IMAGES = {
     candy: ['tub-candy','tub-candy-2','tub-candy-3','tub-candy-4','powder-candy'],
@@ -791,7 +831,8 @@
     btn.textContent = 'One moment...';
     btn.disabled    = true;
 
-    await variantsReady;
+    klaviyoFlag({ quiz_focus_checkout_started: true });
+
     const lines = [{ merchandiseId: VARIANTS[selectedFlavor], quantity: 1 }];
     if (bumps[1]) lines.push({ merchandiseId: BUMP1_VARIANT, quantity: 1 });
     if (bumps[2]) lines.push({ merchandiseId: BUMP2_VARIANT, quantity: 1 });
@@ -824,6 +865,7 @@
       const data = await res.json();
       const checkoutUrl = data?.data?.cartCreate?.cart?.checkoutUrl;
       if (checkoutUrl) {
+        fbq('track','InitiateCheckout',{value:50.00,currency:'USD',num_items:3});
         window.location.href = checkoutUrl;
       } else {
         throw new Error(JSON.stringify(data?.data?.cartCreate?.userErrors));

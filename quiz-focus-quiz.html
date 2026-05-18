@@ -690,6 +690,17 @@
     }
   </style>
 <script defer src="/_vercel/insights/script.js"></script>
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','1460636158529685');
+fbq('track','PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1460636158529685&ev=PageView&noscript=1"/></noscript>
 </head>
 <body>
 
@@ -1501,7 +1512,7 @@
     btn.textContent = 'Locking you in...';
     btn.disabled    = true;
 
-    await subscribeToKlaviyo(email, name, {
+    subscribeToKlaviyo(email, name, {
       [`${FUNNEL_SLUG}_free`]: true,
       quiz_q1: state.q1,
       quiz_q2: state.q2,
@@ -1512,6 +1523,7 @@
       quiz_q7: state.q7
     });
 
+    fbq('track','Lead');
     const params = new URLSearchParams({ email, name });
     window.location.href = `quiz-focus-confirm.html?${params.toString()}`;
   }
