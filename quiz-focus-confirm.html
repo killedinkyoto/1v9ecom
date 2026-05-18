@@ -626,33 +626,13 @@ fbq('track','ViewContent',{content_name:'Mindor Performance Stack',value:50.00,c
   const SHOPIFY_STOREFRONT_TOKEN = 'c1f8ad6a65722ad1a022b7e5f8a8660c';
   const SHOPIFY_API_VERSION      = '2025-01';
 
-  const PRODUCTS = {
-    candy: 'gid://shopify/Product/9049594593435',
-    grape: 'gid://shopify/Product/9049594626203',
-    gummy: 'gid://shopify/Product/9049594495131'
+  const VARIANTS = {
+    candy: 'gid://shopify/ProductVariant/48144449568923',
+    grape: 'gid://shopify/ProductVariant/48144474931355',
+    gummy: 'gid://shopify/ProductVariant/48144477651099'
   };
-  let VARIANTS = {};
   const BUMP1_VARIANT = 'gid://shopify/ProductVariant/48489510797467';
   const BUMP2_VARIANT = 'gid://shopify/ProductVariant/48489513320603';
-
-  async function resolveFirstVariant(productGid) {
-    const res = await fetch(
-      `https://${SHOPIFY_DOMAIN}/api/${SHOPIFY_API_VERSION}/graphql.json`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-Shopify-Storefront-Access-Token': SHOPIFY_STOREFRONT_TOKEN },
-        body: JSON.stringify({ query: `{ product(id: "${productGid}") { variants(first: 1) { edges { node { id } } } } }` })
-      }
-    );
-    const data = await res.json();
-    return data?.data?.product?.variants?.edges?.[0]?.node?.id;
-  }
-
-  const variantsReady = Promise.all([
-    resolveFirstVariant(PRODUCTS.candy),
-    resolveFirstVariant(PRODUCTS.grape),
-    resolveFirstVariant(PRODUCTS.gummy)
-  ]).then(([candy, grape, gummy]) => { VARIANTS = { candy, grape, gummy }; });
 
   const FLAVOR_THEMES = {
     candy: { accent: '#E2FF47', dim: 'rgba(226,255,71,0.12)', border: 'rgba(226,255,71,0.25)', label: 'Sour Candy' },
@@ -769,9 +749,8 @@ fbq('track','ViewContent',{content_name:'Mindor Performance Stack',value:50.00,c
   tickTimer();
 
   // ── Downsell navigation ───────────────────────────────────────────
-  async function goToDownsell() {
+  function goToDownsell() {
     fbq('trackCustom', 'QuizOfferDecline');
-    await variantsReady;
     const theme = FLAVOR_THEMES[selectedFlavor];
     const out = new URLSearchParams({ email, name, flavor: VARIANTS[selectedFlavor], flavorLabel: theme.label });
     window.location.href = 'quiz-focus-downsell.html?' + out.toString();
@@ -831,8 +810,6 @@ fbq('track','ViewContent',{content_name:'Mindor Performance Stack',value:50.00,c
     const btn = document.getElementById('btn-cta');
     btn.textContent = 'One moment...';
     btn.disabled    = true;
-
-    await variantsReady;
 
     klaviyoFlag({ quiz_focus_checkout_started: true });
 
