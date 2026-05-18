@@ -228,6 +228,88 @@
       background: var(--text-muted);
       opacity: 0.5;
     }
+
+    /* ── PRODUCT GALLERY ── */
+    .product-gallery {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--surface);
+      margin-bottom: 16px;
+      touch-action: pan-y;
+      cursor: grab;
+    }
+    .product-gallery:active { cursor: grabbing; }
+
+    .gallery-track {
+      display: flex;
+      height: 100%;
+      transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      will-change: transform;
+    }
+
+    .gallery-slide {
+      flex: 0 0 100%;
+      height: 100%;
+    }
+    .gallery-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      user-select: none;
+      -webkit-user-drag: none;
+      pointer-events: none;
+    }
+
+    .gallery-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 34px;
+      height: 34px;
+      background: rgba(255,255,255,0.18);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      transition: background 0.15s;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .gallery-arrow:hover  { background: rgba(255,255,255,0.28); }
+    .gallery-arrow:active { background: rgba(255,255,255,0.38); }
+    .gallery-arrow.prev { left: 10px; }
+    .gallery-arrow.next { right: 10px; }
+
+    .gallery-dots {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 6px;
+      z-index: 10;
+      pointer-events: none;
+    }
+    .gallery-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.38);
+      transition: background 0.2s, transform 0.2s;
+    }
+    .gallery-dot.active {
+      background: rgba(255,255,255,0.92);
+      transform: scale(1.3);
+    }
   </style>
 <script defer src="/_vercel/insights/script.js"></script>
 </head>
@@ -242,6 +324,18 @@
 
   <h1 class="headline">SAME PRICE.<br>WE THREW SOME<br>THINGS IN.</h1>
   <p class="subhead">The tub's still 15% off. But we added the tracker, protection, and shaker — no extra charge.</p>
+
+  <!-- PRODUCT GALLERY -->
+  <div class="product-gallery" id="product-gallery" aria-label="Product photos">
+    <div class="gallery-track" id="gallery-track"></div>
+    <button class="gallery-arrow prev" onclick="galleryStep(-1)" aria-label="Previous photo">
+      <svg width="9" height="15" viewBox="0 0 9 15" fill="none"><path d="M7.5 1.5L2 7.5L7.5 13.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button class="gallery-arrow next" onclick="galleryStep(1)" aria-label="Next photo">
+      <svg width="9" height="15" viewBox="0 0 9 15" fill="none"><path d="M1.5 1.5L7 7.5L1.5 13.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="gallery-dots" id="gallery-dots"></div>
+  </div>
 
   <!-- BUNDLE CARD -->
   <div class="bundle-card">
@@ -281,7 +375,7 @@
 
     <div class="bundle-row">
       <div>
-        <div class="bundle-item-name">MINDOR Shaker Bottle</div>
+        <div class="bundle-item-name">🎁 MINDOR Shaker Bottle</div>
         <div class="bundle-item-meta">600ml · No leak · Ships with your order</div>
       </div>
       <div class="bundle-item-price">
@@ -324,25 +418,83 @@
   const BUMP1_VARIANT  = 'gid://shopify/ProductVariant/48489510797467';
   const BUMP2_VARIANT  = 'gid://shopify/ProductVariant/48489513320603';
   const SHAKER_VARIANT = 'gid://shopify/ProductVariant/48489513582747';
-
-  const FLAVOR_LABELS = {
-    'gid://shopify/ProductVariant/48144449568923': 'Sour Candy',
-    'gid://shopify/ProductVariant/48144474931355': 'Sour Grape',
-    'gid://shopify/ProductVariant/48144477651099': 'Sour Gummy Worm'
-  };
+  const CANDY_PRODUCT  = 'gid://shopify/Product/9049594593435';
 
   const KLAVIYO_PUBLIC_KEY = 'S3D76Q';
   const KLAVIYO_LIST_ID    = 'TUAJJE';
 
   // ── URL params ────────────────────────────────────────────────────
-  const urlParams = new URLSearchParams(window.location.search);
-  const email     = urlParams.get('email')  || '';
-  const name      = urlParams.get('name')   || '';
-  const flavorId  = urlParams.get('flavor') || 'gid://shopify/ProductVariant/48144449568923';
+  const urlParams   = new URLSearchParams(window.location.search);
+  const email       = urlParams.get('email')       || '';
+  const name        = urlParams.get('name')        || '';
+  let   flavorId    = urlParams.get('flavor')      || '';
+  const flavorLabel = urlParams.get('flavorLabel') || 'Performance Stack';
 
   // Show flavor in meta
-  const flavorLabel = FLAVOR_LABELS[flavorId] || 'Performance Stack';
   document.getElementById('flavor-meta').textContent = flavorLabel + ' · 30 Servings · Focus + Energy';
+
+  // ── Product gallery ───────────────────────────────────────────────
+  const GALLERY_IMAGES = {
+    candy: ['tub-candy','tub-candy-2','tub-candy-3','tub-candy-4','powder-candy'],
+    grape: ['tub-grape','tub-grape-2','tub-grape-3','tub-grape-4','powder-grape'],
+    gummy: ['tub-gummy','tub-gummy-2','tub-gummy-3','powder-gummy'],
+  };
+
+  function flavorKey(label) {
+    if (label.includes('Grape')) return 'grape';
+    if (label.includes('Gumm') || label.includes('gumm')) return 'gummy';
+    return 'candy';
+  }
+
+  let gIdx = 0;
+  const gFlavor = flavorKey(flavorLabel);
+
+  (function buildGallery() {
+    const imgs = GALLERY_IMAGES[gFlavor];
+    const track = document.getElementById('gallery-track');
+    const dots  = document.getElementById('gallery-dots');
+    track.innerHTML = imgs.map((name, i) =>
+      `<div class="gallery-slide"><img src="assets/product-photos/${name}.webp" alt="Mindor view ${i+1}"${i > 0 ? ' loading="lazy"' : ''} draggable="false"></div>`
+    ).join('');
+    dots.innerHTML = imgs.map((_, i) =>
+      `<span class="gallery-dot${i === 0 ? ' active' : ''}"></span>`
+    ).join('');
+  })();
+
+  function galleryStep(dir) {
+    const count = GALLERY_IMAGES[gFlavor].length;
+    gIdx = (gIdx + dir + count) % count;
+    document.getElementById('gallery-track').style.transform = `translateX(-${gIdx * 100}%)`;
+    document.querySelectorAll('#gallery-dots .gallery-dot').forEach((d, i) =>
+      d.classList.toggle('active', i === gIdx)
+    );
+  }
+
+  (function() {
+    const el = document.getElementById('product-gallery');
+    let sx = 0, active = false;
+    el.addEventListener('pointerdown', e => { if (e.target.closest('.gallery-arrow')) return; sx = e.clientX; active = true; el.setPointerCapture(e.pointerId); });
+    el.addEventListener('pointerup', e => {
+      if (!active) return; active = false;
+      const dx = e.clientX - sx;
+      if (Math.abs(dx) > 36) galleryStep(dx < 0 ? 1 : -1);
+    });
+    el.addEventListener('pointercancel', () => { active = false; });
+  })();
+
+  // Resolve default variant if arriving without a flavor param (direct access)
+  const flavorReady = flavorId ? Promise.resolve() : (async () => {
+    const res = await fetch(
+      `https://${SHOPIFY_DOMAIN}/api/${SHOPIFY_API_VERSION}/graphql.json`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Shopify-Storefront-Access-Token': SHOPIFY_STOREFRONT_TOKEN },
+        body: JSON.stringify({ query: `{ product(id: "${CANDY_PRODUCT}") { variants(first: 1) { edges { node { id } } } } }` })
+      }
+    );
+    const data = await res.json();
+    flavorId = data?.data?.product?.variants?.edges?.[0]?.node?.id || '';
+  })();
 
   // ── Klaviyo flag ──────────────────────────────────────────────────
   function klaviyoFlag(props) {
@@ -376,6 +528,7 @@
     btn.textContent = 'One moment...';
     btn.disabled    = true;
 
+    await flavorReady;
     klaviyoFlag({ quiz_downsell_accepted: true });
 
     const lines = [

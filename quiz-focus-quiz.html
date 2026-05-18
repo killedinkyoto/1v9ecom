@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Focus Audit | Mindor</title>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="assets/product-photos/powder-candy.webp" type="image/webp">
+  <link rel="preload" as="image" href="assets/product-photos/powder-grape.webp" type="image/webp">
+  <link rel="preload" as="image" href="assets/product-photos/powder-gummy.webp" type="image/webp">
   <style>
     :root {
       --execution-green: #E2FF47;
@@ -617,11 +620,73 @@
       font-style: italic;
     }
 
+    /* ── FLAVOR PHOTO CAROUSEL ── */
+    .flavor-carousel {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      border-radius: 10px;
+      background: var(--surface);
+      flex-shrink: 0;
+    }
+
+    .flavor-carousel.intro-size {
+      height: 200px;
+      margin: 20px 0 24px;
+    }
+
+    .flavor-carousel.product-size {
+      height: 260px;
+      border-radius: 10px 10px 0 0;
+    }
+
+    .carousel-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      opacity: 0;
+      transition: opacity 0.7s ease;
+      will-change: opacity;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .carousel-img.visible { opacity: 1; }
+
+    /* ── PRODUCT REVEAL (result-3) ── */
+    .product-reveal {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid rgba(226,255,71,0.28);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 14px 0 18px;
+    }
+
+    .product-reveal-info {
+      padding: 14px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .product-flavors-hint {
+      font-size: 10px;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      margin-top: 2px;
+    }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 480px) {
       .calc-val { font-size: 30px; }
       .calc-grid { gap: 8px; }
       .screen { padding: 90px 18px 50px; }
+      .flavor-carousel.intro-size { height: 170px; }
+      .flavor-carousel.product-size { height: 210px; }
     }
   </style>
 <script defer src="/_vercel/insights/script.js"></script>
@@ -641,6 +706,11 @@
   </div>
   <h1 class="q-headline">WHAT IS YOUR FOCUS<br>ROUTINE ACTUALLY<br>COSTING YOU?</h1>
   <p class="q-sub">10 questions. We run the numbers on your current habits; the annual cost, the daily caffeine load, what it's doing to your afternoons. Then, show you where the problem actually lives.</p>
+  <div class="flavor-carousel intro-size" id="intro-carousel" aria-hidden="true">
+    <img class="carousel-img visible" src="assets/product-photos/powder-candy.webp" alt="Mindor Sour Candy powder" draggable="false">
+    <img class="carousel-img" src="assets/product-photos/powder-grape.webp" alt="Mindor Sour Grape powder" draggable="false">
+    <img class="carousel-img" src="assets/product-photos/powder-gummy.webp" alt="Mindor Sour Gummi Worm powder" draggable="false">
+  </div>
   <button class="btn-start" onclick="showScreen('screen-q1')">Take The Audit →</button>
   <p class="intro-meta">Takes 2 minutes · Personalized result · Free</p>
 </div>
@@ -1027,15 +1097,16 @@
     <div class="block-text" id="result-bridge"></div>
   </div>
 
-  <div class="product-strip">
-    <div class="product-icon-wrap">
-      <svg width="26" height="18" viewBox="0 0 40 28" fill="none">
-        <path d="M4 22 L10 8 L16 18 L20 10 L24 18 L30 8 L36 22" stroke="#E2FF47" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
+  <div class="product-reveal">
+    <div class="flavor-carousel product-size" id="result-carousel" aria-hidden="true">
+      <img class="carousel-img visible" src="assets/product-photos/powder-candy.webp" alt="Mindor Sour Candy powder" loading="lazy" draggable="false">
+      <img class="carousel-img" src="assets/product-photos/powder-grape.webp" alt="Mindor Sour Grape powder" loading="lazy" draggable="false">
+      <img class="carousel-img" src="assets/product-photos/powder-gummy.webp" alt="Mindor Sour Gummi Worm powder" loading="lazy" draggable="false">
     </div>
-    <div>
+    <div class="product-reveal-info">
       <div class="product-name">MINDOR</div>
-      <div class="product-desc">Performance Focus Stack · Electric Lime · 30 Servings<br>100mg Green Tea Caffeine · 200mg L-Theanine · 300mg Alpha-GPC</div>
+      <div class="product-desc">Performance Focus Stack · 30 Servings<br>100mg Green Tea Caffeine · 200mg L-Theanine · 300mg Alpha-GPC</div>
+      <div class="product-flavors-hint">Sour Candy · Sour Grape · Sour Gummi Worm</div>
     </div>
   </div>
 
@@ -1444,6 +1515,22 @@
     const params = new URLSearchParams({ email, name });
     window.location.href = `quiz-focus-confirm.html?${params.toString()}`;
   }
+
+  // ── Photo carousel ─────────────────────────────────────────────────
+  function initCarousel(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const imgs = el.querySelectorAll('.carousel-img');
+    if (imgs.length < 2) return;
+    let i = 0;
+    setInterval(() => {
+      imgs[i].classList.remove('visible');
+      i = (i + 1) % imgs.length;
+      imgs[i].classList.add('visible');
+    }, 3000);
+  }
+  initCarousel('intro-carousel');
+  initCarousel('result-carousel');
 </script>
 </body>
 </html>

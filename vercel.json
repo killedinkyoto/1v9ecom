@@ -7,16 +7,12 @@
     { "source": "/squeeze", "destination": "/squeeze-brain-noise.html" },
     { "source": "/thankyou", "destination": "/funnel-thankyou.html" },
     { "source": "/protocol", "destination": "/protocolcard.html" },
-<<<<<<< HEAD
-    { "source": "/fbquiz1", "destination": "/quiz-focus-quiz.html" }
-=======
     { "source": "/quiz", "destination": "/quiz-focus-quiz.html" },
     { "source": "/quiz-confirm", "destination": "/quiz-focus-confirm.html" },
     { "source": "/quiz-upsell", "destination": "/quiz-focus-upsell-1.html" },
     { "source": "/quiz-downsell", "destination": "/quiz-focus-downsell.html" },
     { "source": "/quiz-thankyou", "destination": "/quiz-focus-thankyou.html" },
     { "source": "/tracker", "destination": "/productivity-tracker.html" }
->>>>>>> 8899c8bad8254c9d6cd013e607049ede6ed929c1
   ],
   "headers": [
     {

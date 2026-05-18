@@ -425,7 +425,8 @@
   const SHOPIFY_STOREFRONT_TOKEN = 'c1f8ad6a65722ad1a022b7e5f8a8660c';
   const SHOPIFY_API_VERSION      = '2024-01';
 
-  const MINDOR_VARIANT  = 'gid://shopify/ProductVariant/48144477651099'; // Sour Gummy Worms
+  const MINDOR_PRODUCT  = 'gid://shopify/Product/9049594495131'; // Sour Gummy Worms
+  let   MINDOR_VARIANT  = '';
   const BUMP1_VARIANT   = 'gid://shopify/ProductVariant/48489510797467';  // Productivity Tracker
   const BUMP2_VARIANT   = 'gid://shopify/ProductVariant/48489513320603';  // Package Protection
   const SHAKER_VARIANT  = 'gid://shopify/ProductVariant/48489513582747';  // Shaker Bottle
@@ -503,7 +504,20 @@
     }
   }
 
-  fetchPrices();
+  const mindorReady = (async () => {
+    const res = await fetch(
+      `https://${SHOPIFY_DOMAIN}/api/${SHOPIFY_API_VERSION}/graphql.json`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Shopify-Storefront-Access-Token': SHOPIFY_STOREFRONT_TOKEN },
+        body: JSON.stringify({ query: `{ product(id: "${MINDOR_PRODUCT}") { variants(first: 1) { edges { node { id } } } } }` })
+      }
+    );
+    const data = await res.json();
+    MINDOR_VARIANT = data?.data?.product?.variants?.edges?.[0]?.node?.id || '';
+  })();
+
+  mindorReady.then(fetchPrices);
 
   // ── Klaviyo update (fire-and-forget) ─────────────────────────────
   async function klaviyoFlag(prop) {
@@ -576,11 +590,13 @@
     document.getElementById('btn-accept').disabled = true;
     document.getElementById('loading-overlay').classList.add('active');
     klaviyoFlag({ quiz_focus_upsell1: true });
+    await mindorReady;
     await goToShopifyCheckoutMulti(buildCartItems(true));
   }
 
   async function declineUpsell() {
     document.getElementById('loading-overlay').classList.add('active');
+    await mindorReady;
     await goToShopifyCheckoutMulti(buildCartItems(false));
   }
 </script>

@@ -76,10 +76,10 @@ SHOPIFY_DOMAIN       = 'mindor-1950.myshopify.com'
 STOREFRONT_TOKEN     = 'c1f8ad6a65722ad1a022b7e5f8a8660c'
 API_VERSION          = '2024-01'
 
-// Tub variants
-Sour Candy           gid://shopify/ProductVariant/48144449568923
-Sour Grape           gid://shopify/ProductVariant/48144474931355
-Sour Gummy Worms     gid://shopify/ProductVariant/48144477651099
+// Tub products (variant IDs resolved at runtime via Storefront API)
+Sour Candy           gid://shopify/Product/9049594593435
+Sour Grape           gid://shopify/Product/9049594626203
+Sour Gummy Worms     gid://shopify/Product/9049594495131
 
 // Digital product
 Deep Work Planner    gid://shopify/ProductVariant/8954983907483
