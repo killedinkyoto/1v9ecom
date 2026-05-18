@@ -624,7 +624,7 @@ fbq('track','ViewContent',{content_name:'Mindor Performance Stack',value:50.00,c
   // ── Config ──────────────────────────────────────────────────────
   const SHOPIFY_DOMAIN           = 'mindor-1950.myshopify.com';
   const SHOPIFY_STOREFRONT_TOKEN = 'c1f8ad6a65722ad1a022b7e5f8a8660c';
-  const SHOPIFY_API_VERSION      = '2024-01';
+  const SHOPIFY_API_VERSION      = '2025-01';
 
   const PRODUCTS = {
     candy: 'gid://shopify/Product/9049594593435',
@@ -830,6 +830,8 @@ fbq('track','ViewContent',{content_name:'Mindor Performance Stack',value:50.00,c
     const btn = document.getElementById('btn-cta');
     btn.textContent = 'One moment...';
     btn.disabled    = true;
+
+    await variantsReady;
 
     klaviyoFlag({ quiz_focus_checkout_started: true });
 
