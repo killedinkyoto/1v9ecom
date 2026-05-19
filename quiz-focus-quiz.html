@@ -1492,11 +1492,16 @@ fbq('track','PageView');
   // ── Klaviyo subscribe ─────────────────────────────────────────────
   async function subscribeToKlaviyo(email, firstName, extraProps = {}) {
     try {
+      const profileAttrs = Object.assign(
+        { email },
+        firstName ? { first_name: firstName } : {},
+        { properties: extraProps }
+      );
       const res = await fetch(
         `https://a.klaviyo.com/client/subscriptions/?company_id=${KLAVIYO_PUBLIC_KEY}`,
         {
           method: 'POST',
-          headers: { 'content-type': 'application/json', revision: '2023-02-22' },
+          headers: { 'Content-Type': 'application/json', 'revision': '2024-10-15' },
           body: JSON.stringify({
             data: {
               type: 'subscription',
@@ -1504,7 +1509,7 @@ fbq('track','PageView');
                 profile: {
                   data: {
                     type: 'profile',
-                    attributes: { email, first_name: firstName, properties: extraProps }
+                    attributes: profileAttrs
                   }
                 }
               },
@@ -1515,7 +1520,7 @@ fbq('track','PageView');
           })
         }
       );
-      if (!res.ok) {
+      if (!res.ok && res.status !== 202) {
         const body = await res.text();
         throw new Error(`Klaviyo ${res.status}: ${body}`);
       }
