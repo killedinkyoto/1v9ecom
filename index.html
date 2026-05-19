@@ -3175,6 +3175,7 @@ fbq('track','PageView');
         cart.items.push({ id: 'mindor-' + flavor, name: 'Mindor Performance Stack', flavor: flavor, flavorName: cfg.name, price: itemPrice, quantity: 1, accent: cfg.accent, accentRgb: cfg.accentRgb, secondary: cfg.secondary, bg: cfg.bg });
       }
       saveCart(cart);
+      if (typeof fbq !== 'undefined') fbq('track', 'AddToCart', { content_name: 'Mindor Performance Stack', content_type: 'product', value: 49.00, currency: 'USD' });
       renderCart();
       openCart();
     }

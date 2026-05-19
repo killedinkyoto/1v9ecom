@@ -818,6 +818,7 @@ fbq('track','ViewContent',{content_name:'Mindor Performance Stack',value:50.00,c
     btn.textContent = 'One moment...';
     btn.disabled    = true;
 
+    fbq('track', 'AddToCart', { content_name: 'Mindor Focus Stack', content_type: 'product', value: 50.00, currency: 'USD' });
     klaviyoFlag({ quiz_focus_checkout_started: true });
 
     const lines = [{ merchandiseId: VARIANTS[selectedFlavor], quantity: 1 }];
