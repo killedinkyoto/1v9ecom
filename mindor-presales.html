@@ -643,7 +643,7 @@
   </h1>
   <p class="hero-sub">You drink the coffee. You feel the buzz. You still can't get the work done.</p>
   <p class="hero-copy">This is the page for people who are sick of feeling busy all day and shipping nothing.</p>
-  <a class="btn" href="/">Build My Focus</a>
+  <button class="btn" onclick="handleBundleCheckout()">Build My Focus</button>
   <p class="hero-trust"><em>Trusted by builders who can't afford a low-focus day.</em></p>
 </section>
 
@@ -1041,7 +1041,7 @@
     </div>
     <p class="bundle-total-row">Total: <strong id="bundleTotalDisplay">$77.38</strong> — <span id="bundleSaveDisplay">save $8.60</span></p>
 
-    <a class="btn" href="/" id="bundleCta">Get 2 Bags — Save 10% →</a>
+    <button class="btn" id="bundleCta" onclick="handleBundleCheckout()">Get 2 Bags — Save 10% →</button>
     <div class="trust-row">
       <span class="trust-item"><span class="trust-check">✓</span> Ships in 24 hours</span>
       <span class="trust-item"><span class="trust-check">✓</span> Third-party tested</span>
@@ -1133,7 +1133,7 @@
       <p>Coffee gives you a spike.</p>
       <p>Mindor gives you a window.</p>
     </div>
-    <a class="btn" href="/">Start Your First Month — $36</a>
+    <button class="btn" onclick="handleBundleCheckout()">Start Your First Month — $36</button>
     <p class="final-trust"><em>30-day money-back guarantee. Ships in 24 hours.</em></p>
   </div>
 </section>
@@ -1160,7 +1160,7 @@
 
 <!-- STICKY MOBILE CTA -->
 <div id="sticky" role="complementary" aria-label="Quick checkout">
-  <a href="/">Get Mindor — $36</a>
+  <button onclick="handleBundleCheckout()" style="background:var(--execution-green);color:var(--bg);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;border:none;border-radius:3px;width:100%;min-height:48px;cursor:pointer;">Get Mindor — $36</button>
 </div>
 
 <script>
@@ -1245,17 +1245,18 @@
 
   // ── Bundle selector ────────────────────────────────────
   var bundleData = {
-    '1': { price: '$42.99', total: '$42.99', save: '',         cta: 'Get 1 Bag — $42.99 →' },
-    '2': { price: '$77.38', total: '$77.38', save: 'save $8.60', cta: 'Get 2 Bags — Save 10% →' },
-    '3': { price: '$109.62',total: '$109.62',save: 'save $19.35',cta: 'Get 3 Bags — Save 15% →' }
+    '1': { total: '$42.99', save: '',           cta: 'Get 1 Bag — $42.99 →' },
+    '2': { total: '$77.38', save: 'save $8.60', cta: 'Get 2 Bags — Save 10% →' },
+    '3': { total: '$109.62',save: 'save $19.35',cta: 'Get 3 Bags — Save 15% →' }
   };
+  var selectedQty = '2';
 
   document.querySelectorAll('.bundle-opt').forEach(function(opt) {
     opt.addEventListener('click', function() {
       document.querySelectorAll('.bundle-opt').forEach(function(o) { o.classList.remove('active'); });
       this.classList.add('active');
-      var qty = this.dataset.qty;
-      var d = bundleData[qty];
+      selectedQty = this.dataset.qty;
+      var d = bundleData[selectedQty];
       document.getElementById('bundleTotalDisplay').textContent = d.total;
       var saveEl = document.getElementById('bundleSaveDisplay');
       saveEl.textContent = d.save || '';
@@ -1264,6 +1265,53 @@
     });
   });
   document.getElementById('bundleSaveDisplay').style.display = 'inline';
+
+  // ── Shopify checkout ───────────────────────────────────
+  var SHOPIFY_DOMAIN  = 'mindor-1950.myshopify.com';
+  var STOREFRONT_TOKEN = 'c1f8ad6a65722ad1a022b7e5f8a8660c';
+  var PRODUCT_ID      = 'gid://shopify/Product/9049594593435'; // Sour Candy
+  // Discount codes — must be active in Shopify Admin:
+  //   BUNDLE2    = 10% off (create this in Shopify Admin)
+  //   HVCO-STACK = 15% off (already exists)
+  var DISCOUNT_CODES  = { '1': null, '2': 'BUNDLE2', '3': 'HVCO-STACK' };
+  var _variantId = null;
+
+  async function _getVariantId() {
+    if (_variantId) return _variantId;
+    var res = await fetch('https://' + SHOPIFY_DOMAIN + '/api/2024-01/graphql.json', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Shopify-Storefront-Access-Token': STOREFRONT_TOKEN },
+      body: JSON.stringify({ query: '{ product(id:"' + PRODUCT_ID + '") { variants(first:1) { nodes { id } } } }' })
+    });
+    var d = await res.json();
+    _variantId = d.data.product.variants.nodes[0].id;
+    return _variantId;
+  }
+
+  async function handleBundleCheckout() {
+    var btn = document.getElementById('bundleCta');
+    var origText = btn ? btn.textContent : '';
+    if (btn) { btn.textContent = 'Loading…'; btn.disabled = true; }
+
+    try {
+      var qty = parseInt(selectedQty) || 1;
+      var code = DISCOUNT_CODES[String(qty)];
+      var variantId = await _getVariantId();
+      var discountPart = code ? 'discountCodes: ["' + code + '"],' : '';
+      var mutation = 'mutation { cartCreate(input: { ' + discountPart + ' lines: [{ quantity: ' + qty + ', merchandiseId: "' + variantId + '" }] }) { cart { checkoutUrl } userErrors { message } } }';
+      var res = await fetch('https://' + SHOPIFY_DOMAIN + '/api/2024-01/graphql.json', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Shopify-Storefront-Access-Token': STOREFRONT_TOKEN },
+        body: JSON.stringify({ query: mutation })
+      });
+      var data = await res.json();
+      var checkoutUrl = data.data.cartCreate.cart.checkoutUrl;
+      window.location.href = checkoutUrl;
+    } catch(e) {
+      console.error('[Mindor checkout]', e);
+      if (btn) { btn.textContent = origText; btn.disabled = false; }
+    }
+  }
 </script>
 
 </body>
