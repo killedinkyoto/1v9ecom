@@ -166,9 +166,9 @@
       pointer-events: none;
     }
     .hero-img {
-      width: 320px; max-width: 85vw;
-      margin: 0 auto 52px; display: block;
-      filter: drop-shadow(0 0 40px rgba(226,255,71,0.08));
+      width: 400px; max-width: 90vw;
+      margin: 0 auto 20px; display: block;
+      filter: drop-shadow(0 0 48px rgba(226,255,71,0.11));
     }
     .hero-h1 {
       font-family: 'Barlow Condensed', sans-serif;
@@ -242,29 +242,31 @@
     }
     .compare-col {
       padding: 32px 28px;
-      background: var(--surface3);
+      background: rgba(255,60,60,0.05);
     }
-    .compare-col.right { background: rgba(226,255,71,0.04); }
+    .compare-col.right { background: rgba(226,255,71,0.06); }
     .compare-col-tag {
       font-size: 9px; font-weight: 600; letter-spacing: 0.2em;
-      text-transform: uppercase; color: var(--text-dim); margin-bottom: 12px;
+      text-transform: uppercase; color: rgba(255,120,120,0.5); margin-bottom: 12px;
     }
-    .compare-col.right .compare-col-tag { color: rgba(226,255,71,0.4); }
+    .compare-col.right .compare-col-tag { color: rgba(226,255,71,0.5); }
     .compare-big {
       font-family: 'Barlow Condensed', sans-serif;
       font-weight: 900; font-size: clamp(32px, 5vw, 48px);
       line-height: 0.95; text-transform: uppercase; letter-spacing: -0.01em;
       margin-bottom: 20px;
     }
-    .compare-col .compare-big { color: rgba(240,240,232,0.4); }
+    .compare-col .compare-big { color: rgba(240,240,232,0.35); }
     .compare-col.right .compare-big { color: var(--text-primary); }
     .compare-items { list-style: none; }
     .compare-items li {
-      font-size: 13px; color: var(--text-muted);
-      padding: 6px 0; border-bottom: 0.5px solid var(--border-subtle);
-      line-height: 1.4;
+      font-size: 13px; color: rgba(200,201,184,0.45);
+      padding: 7px 0; border-bottom: 0.5px solid rgba(255,255,255,0.05);
+      line-height: 1.4; display: flex; align-items: baseline; gap: 8px;
     }
+    .compare-items li::before { content: '✕'; font-size: 10px; color: rgba(255,100,100,0.45); flex-shrink: 0; }
     .compare-col.right .compare-items li { color: var(--fog-grey); }
+    .compare-col.right .compare-items li::before { content: '✓'; color: rgba(226,255,71,0.6); }
     .compare-items li:last-child { border-bottom: none; }
     .compare-ne {
       font-family: 'Barlow Condensed', sans-serif;
@@ -358,27 +360,46 @@
       font-size: 15px; color: var(--fog-grey);
       max-width: 480px; margin-bottom: 40px; line-height: 1.7;
     }
-    .ing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .ing-card {
-      background: var(--surface); border: 0.5px solid var(--border);
-      border-radius: 4px; padding: 26px 28px;
-      transition: border-color 0.2s;
+    .ing-accordion { border: 0.5px solid var(--border); border-radius: 6px; overflow: hidden; max-width: 640px; }
+    .ing-row { border-bottom: 0.5px solid var(--border-subtle); }
+    .ing-row:last-child { border-bottom: none; }
+    .ing-row-hd {
+      width: 100%; display: flex; align-items: center; gap: 16px;
+      padding: 18px 24px; background: none; border: none; cursor: pointer;
+      text-align: left; -webkit-tap-highlight-color: transparent;
+      transition: background 0.15s;
     }
-    .ing-card:hover { border-color: rgba(226,255,71,0.2); }
-    .ing-name {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 800; font-size: 18px;
-      color: var(--text-primary); text-transform: uppercase;
-      letter-spacing: 0.02em; margin-bottom: 5px;
+    .ing-row-hd:hover { background: rgba(255,255,255,0.025); }
+    .ing-row.open .ing-row-hd { background: rgba(226,255,71,0.03); }
+    .ing-icon {
+      width: 38px; height: 38px; flex-shrink: 0;
+      background: rgba(226,255,71,0.07); border: 0.5px solid rgba(226,255,71,0.14);
+      border-radius: 8px; display: flex; align-items: center; justify-content: center;
+      font-size: 17px; line-height: 1;
     }
-    .ing-dose {
-      font-size: 11px; font-weight: 600;
-      color: var(--execution-green); letter-spacing: 0.12em;
-      text-transform: uppercase; margin-bottom: 12px;
+    .ing-row-meta { flex: 1; min-width: 0; }
+    .ing-row-hd .ing-name {
+      display: block; font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800; font-size: 17px; color: var(--text-primary);
+      text-transform: uppercase; letter-spacing: 0.02em; margin-bottom: 2px;
     }
-    .ing-desc { font-size: 13px; color: var(--fog-grey); line-height: 1.6; }
+    .ing-row-hd .ing-dose {
+      display: block; font-size: 10px; font-weight: 700;
+      color: var(--execution-green); letter-spacing: 0.14em; text-transform: uppercase;
+    }
+    .ing-toggle {
+      font-size: 20px; line-height: 1; color: var(--text-muted);
+      flex-shrink: 0; transition: transform 0.25s, color 0.25s;
+      width: 22px; text-align: center;
+    }
+    .ing-row.open .ing-toggle { transform: rotate(45deg); color: var(--execution-green); }
+    .ing-row-body { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+    .ing-row-body-inner {
+      padding: 0 24px 20px 78px;
+      font-size: 14px; color: var(--fog-grey); line-height: 1.75;
+    }
     .ing-note {
-      margin-top: 28px; font-size: 12px;
+      margin-top: 24px; font-size: 12px;
       font-style: italic; color: var(--fog-grey); opacity: 0.55;
     }
 
@@ -404,9 +425,54 @@
       pointer-events: none;
     }
     .offer-img {
-      width: 300px; max-width: 85vw;
-      margin: 0 auto 52px; display: block;
-      filter: drop-shadow(0 0 48px rgba(226,255,71,0.10));
+      width: 380px; max-width: 90vw;
+      margin: 0 auto 24px; display: block;
+      filter: drop-shadow(0 0 56px rgba(226,255,71,0.13));
+    }
+    /* bundle selector */
+    .bundle-opts {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 10px; max-width: 440px; margin: 0 auto 28px;
+    }
+    .bundle-opt {
+      border: 1.5px solid var(--border-subtle); border-radius: 6px;
+      padding: 18px 10px; cursor: pointer; text-align: center;
+      background: var(--surface); transition: border-color 0.2s, background 0.2s;
+      position: relative;
+    }
+    .bundle-opt:hover { border-color: rgba(226,255,71,0.3); }
+    .bundle-opt.active { border-color: var(--execution-green); background: rgba(226,255,71,0.05); }
+    .bundle-opt-badge {
+      position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+      background: var(--execution-green); color: var(--bg);
+      font-size: 8px; font-weight: 800; letter-spacing: 0.1em;
+      text-transform: uppercase; padding: 2px 8px; border-radius: 20px; white-space: nowrap;
+    }
+    .bundle-opt-qty {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900; font-size: 30px; color: var(--text-primary); line-height: 1;
+    }
+    .bundle-opt-label {
+      font-size: 10px; color: var(--fog-grey); opacity: 0.5;
+      letter-spacing: 0.06em; margin-bottom: 10px; display: block;
+    }
+    .bundle-opt-price {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800; font-size: 19px;
+      color: var(--execution-green); line-height: 1;
+    }
+    .bundle-opt-each {
+      font-size: 9px; color: var(--fog-grey); opacity: 0.45;
+      letter-spacing: 0.06em; margin-top: 3px;
+    }
+    .bundle-total-row {
+      text-align: center; margin-bottom: 28px;
+      font-size: 13px; color: var(--fog-grey); opacity: 0.6;
+    }
+    @media (max-width: 480px) {
+      .bundle-opt { padding: 14px 6px; }
+      .bundle-opt-qty { font-size: 24px; }
+      .bundle-opt-price { font-size: 16px; }
     }
     .offer-intro {
       font-size: 16px; color: var(--fog-grey);
@@ -544,7 +610,7 @@
       .s4-img { width: 100%; max-width: 100%; }
       .s4-img img { height: 220px; }
       .arc-cards { grid-template-columns: 1fr; }
-      .ing-grid { grid-template-columns: 1fr; }
+      .ing-row-body-inner { padding-left: 24px; }
       .offer-block { padding: 28px 24px; }
       .trust-row { gap: 16px; }
       #sticky { display: block; }
@@ -619,35 +685,35 @@
         <!-- Broken day energy line -->
         <polyline
           points="40,108 85,108 95,104 140,38 165,120 185,110 225,92 265,90 285,86 340,32 365,120 385,110 420,112 470,116 520,119"
-          stroke="rgba(255,255,255,0.18)" stroke-width="1.5" fill="none"
+          stroke="rgba(255,255,255,0.4)" stroke-width="2" fill="none"
           stroke-linejoin="round" stroke-linecap="round"/>
 
         <!-- Coffee spike dots -->
-        <circle cx="140" cy="38"  r="3" fill="rgba(255,255,255,0.25)"/>
-        <circle cx="340" cy="32"  r="3" fill="rgba(255,255,255,0.25)"/>
+        <circle cx="140" cy="38"  r="3.5" fill="rgba(255,255,255,0.55)"/>
+        <circle cx="340" cy="32"  r="3.5" fill="rgba(255,255,255,0.55)"/>
 
         <!-- Coffee labels -->
-        <text x="140" y="28"  font-family="DM Sans,sans-serif" font-size="7.5" fill="rgba(255,255,255,0.22)" text-anchor="middle" letter-spacing="0.5">1st coffee</text>
-        <text x="340" y="22"  font-family="DM Sans,sans-serif" font-size="7.5" fill="rgba(255,255,255,0.22)" text-anchor="middle" letter-spacing="0.5">2nd coffee</text>
+        <text x="140" y="27" font-family="DM Sans,sans-serif" font-size="8.5" fill="rgba(255,255,255,0.6)" text-anchor="middle" letter-spacing="0.5">1st coffee</text>
+        <text x="340" y="21" font-family="DM Sans,sans-serif" font-size="8.5" fill="rgba(255,255,255,0.6)" text-anchor="middle" letter-spacing="0.5">2nd coffee</text>
 
         <!-- Crash labels -->
-        <text x="192" y="116" font-family="DM Sans,sans-serif" font-size="7" fill="rgba(255,100,100,0.32)" text-anchor="middle">crash</text>
-        <text x="372" y="116" font-family="DM Sans,sans-serif" font-size="7" fill="rgba(255,100,100,0.32)" text-anchor="middle">crash</text>
+        <text x="192" y="115" font-family="DM Sans,sans-serif" font-size="8.5" fill="rgba(255,100,100,0.7)" text-anchor="middle">crash</text>
+        <text x="372" y="115" font-family="DM Sans,sans-serif" font-size="8.5" fill="rgba(255,100,100,0.7)" text-anchor="middle">crash</text>
 
         <!-- Baseline -->
-        <line x1="40" y1="120" x2="540" y2="120" stroke="rgba(255,255,255,0.07)" stroke-width="0.5"/>
+        <line x1="40" y1="120" x2="540" y2="120" stroke="rgba(255,255,255,0.12)" stroke-width="0.5"/>
 
         <!-- Time axis labels -->
-        <text x="40"  y="135" font-family="DM Sans,sans-serif" font-size="8" fill="#3A4A30" text-anchor="middle">7am</text>
-        <text x="120" y="135" font-family="DM Sans,sans-serif" font-size="8" fill="#3A4A30" text-anchor="middle">9am</text>
-        <text x="200" y="135" font-family="DM Sans,sans-serif" font-size="8" fill="#3A4A30" text-anchor="middle">11am</text>
-        <text x="280" y="135" font-family="DM Sans,sans-serif" font-size="8" fill="#3A4A30" text-anchor="middle">1pm</text>
-        <text x="360" y="135" font-family="DM Sans,sans-serif" font-size="8" fill="#3A4A30" text-anchor="middle">3pm</text>
-        <text x="440" y="135" font-family="DM Sans,sans-serif" font-size="8" fill="#3A4A30" text-anchor="middle">5pm</text>
-        <text x="520" y="135" font-family="DM Sans,sans-serif" font-size="8" fill="#3A4A30" text-anchor="middle">7pm</text>
+        <text x="40"  y="135" font-family="DM Sans,sans-serif" font-size="8.5" fill="rgba(200,201,184,0.5)" text-anchor="middle">7am</text>
+        <text x="120" y="135" font-family="DM Sans,sans-serif" font-size="8.5" fill="rgba(200,201,184,0.5)" text-anchor="middle">9am</text>
+        <text x="200" y="135" font-family="DM Sans,sans-serif" font-size="8.5" fill="rgba(200,201,184,0.5)" text-anchor="middle">11am</text>
+        <text x="280" y="135" font-family="DM Sans,sans-serif" font-size="8.5" fill="rgba(200,201,184,0.5)" text-anchor="middle">1pm</text>
+        <text x="360" y="135" font-family="DM Sans,sans-serif" font-size="8.5" fill="rgba(200,201,184,0.5)" text-anchor="middle">3pm</text>
+        <text x="440" y="135" font-family="DM Sans,sans-serif" font-size="8.5" fill="rgba(200,201,184,0.5)" text-anchor="middle">5pm</text>
+        <text x="520" y="135" font-family="DM Sans,sans-serif" font-size="8.5" fill="rgba(200,201,184,0.5)" text-anchor="middle">7pm</text>
 
         <!-- Y axis label -->
-        <text x="14" y="75" font-family="DM Sans,sans-serif" font-size="7" fill="#3A4A30" text-anchor="middle" transform="rotate(-90,14,75)">FOCUS</text>
+        <text x="14" y="75" font-family="DM Sans,sans-serif" font-size="7.5" fill="rgba(200,201,184,0.4)" text-anchor="middle" transform="rotate(-90,14,75)">FOCUS</text>
       </svg>
     </div>
   </div>
@@ -822,43 +888,107 @@
 <section id="s6">
   <div class="wrap">
     <div class="label">What's in the Scoop</div>
-    <p class="ing-intro">Every ingredient has a job. Every dose is listed on the label.</p>
-    <div class="ing-grid">
-      <div class="ing-card">
-        <div class="ing-name">Caffeine (from green tea)</div>
-        <div class="ing-dose">200mg</div>
-        <div class="ing-desc">The alertness signal. Wakes you up without the harsh edge of synthetic caffeine.</div>
+    <p class="ing-intro">Every ingredient has a job. Every dose is listed on the label. Tap to expand.</p>
+    <div class="ing-accordion">
+
+      <div class="ing-row open">
+        <button class="ing-row-hd" aria-expanded="true">
+          <span class="ing-icon">⚡</span>
+          <div class="ing-row-meta">
+            <span class="ing-name">Caffeine (from green tea)</span>
+            <span class="ing-dose">200mg</span>
+          </div>
+          <span class="ing-toggle">+</span>
+        </button>
+        <div class="ing-row-body">
+          <div class="ing-row-body-inner">The alertness signal. Wakes you up without the harsh edge of synthetic caffeine. Slower release, cleaner activation.</div>
+        </div>
       </div>
-      <div class="ing-card">
-        <div class="ing-name">L-Theanine</div>
-        <div class="ing-dose">100mg</div>
-        <div class="ing-desc">The steadiness signal. Smooths out the caffeine so you don't get jittery.</div>
+
+      <div class="ing-row">
+        <button class="ing-row-hd" aria-expanded="false">
+          <span class="ing-icon">〰️</span>
+          <div class="ing-row-meta">
+            <span class="ing-name">L-Theanine</span>
+            <span class="ing-dose">100mg</span>
+          </div>
+          <span class="ing-toggle">+</span>
+        </button>
+        <div class="ing-row-body">
+          <div class="ing-row-body-inner">The steadiness signal. Smooths out the caffeine so you don't get jittery. The reason this feels different from coffee alone.</div>
+        </div>
       </div>
-      <div class="ing-card">
-        <div class="ing-name">Alpha-GPC</div>
-        <div class="ing-dose">300mg</div>
-        <div class="ing-desc">Supports mental sharpness for demanding work. This is the ingredient that makes the focus feel "clean."</div>
+
+      <div class="ing-row">
+        <button class="ing-row-hd" aria-expanded="false">
+          <span class="ing-icon">🧠</span>
+          <div class="ing-row-meta">
+            <span class="ing-name">Alpha-GPC</span>
+            <span class="ing-dose">300mg</span>
+          </div>
+          <span class="ing-toggle">+</span>
+        </button>
+        <div class="ing-row-body">
+          <div class="ing-row-body-inner">Supports mental sharpness for demanding work. This is the ingredient that makes the focus feel "clean." Clinical dose, not a trace amount.</div>
+        </div>
       </div>
-      <div class="ing-card">
-        <div class="ing-name">Asian Ginseng</div>
-        <div class="ing-dose">50mg</div>
-        <div class="ing-desc">Supports mental stamina on long work days. The reason you don't hit a 3pm wall.</div>
+
+      <div class="ing-row">
+        <button class="ing-row-hd" aria-expanded="false">
+          <span class="ing-icon">🌿</span>
+          <div class="ing-row-meta">
+            <span class="ing-name">Asian Ginseng</span>
+            <span class="ing-dose">50mg</span>
+          </div>
+          <span class="ing-toggle">+</span>
+        </button>
+        <div class="ing-row-body">
+          <div class="ing-row-body-inner">Supports mental stamina on long work days. The reason you don't hit a 3pm wall. Stacks with caffeine without adding jitter.</div>
+        </div>
       </div>
-      <div class="ing-card">
-        <div class="ing-name">B-Vitamins (B3, B6, B12)</div>
-        <div class="ing-dose">Full complex</div>
-        <div class="ing-desc">Help your body turn food into usable energy. The foundation layer.</div>
+
+      <div class="ing-row">
+        <button class="ing-row-hd" aria-expanded="false">
+          <span class="ing-icon">⬡</span>
+          <div class="ing-row-meta">
+            <span class="ing-name">B-Vitamins (B3, B6, B12)</span>
+            <span class="ing-dose">Full complex</span>
+          </div>
+          <span class="ing-toggle">+</span>
+        </button>
+        <div class="ing-row-body">
+          <div class="ing-row-body-inner">Help your body turn food into usable energy. The foundation layer — everything else stacks on top of this.</div>
+        </div>
       </div>
-      <div class="ing-card">
-        <div class="ing-name">Inositol</div>
-        <div class="ing-dose">600mg</div>
-        <div class="ing-desc">Supports a calm, steady focus state. Part of the steadiness layer.</div>
+
+      <div class="ing-row">
+        <button class="ing-row-hd" aria-expanded="false">
+          <span class="ing-icon">◎</span>
+          <div class="ing-row-meta">
+            <span class="ing-name">Inositol</span>
+            <span class="ing-dose">600mg</span>
+          </div>
+          <span class="ing-toggle">+</span>
+        </button>
+        <div class="ing-row-body">
+          <div class="ing-row-body-inner">Supports a calm, steady focus state. Part of the steadiness layer — works alongside L-theanine to keep you grounded under pressure.</div>
+        </div>
       </div>
-      <div class="ing-card" style="grid-column: span 1;">
-        <div class="ing-name">Black Pepper Extract</div>
-        <div class="ing-dose">Bioavailability layer</div>
-        <div class="ing-desc">Helps your body absorb everything above. So you actually feel the dose.</div>
+
+      <div class="ing-row">
+        <button class="ing-row-hd" aria-expanded="false">
+          <span class="ing-icon">↑</span>
+          <div class="ing-row-meta">
+            <span class="ing-name">Black Pepper Extract</span>
+            <span class="ing-dose">Bioavailability layer</span>
+          </div>
+          <span class="ing-toggle">+</span>
+        </button>
+        <div class="ing-row-body">
+          <div class="ing-row-body-inner">Helps your body absorb everything above. So you actually feel the full dose — not a fraction of it. Standard on clinical formulas.</div>
+        </div>
       </div>
+
     </div>
     <p class="ing-note"><em>Every dose is on the label. No proprietary blends.</em></p>
   </div>
@@ -886,13 +1016,32 @@
     <div class="label">Start Your Stack</div>
     <img class="offer-img" src="/assets/presales-offer.png" alt="Mindor Performance Stack — 30 servings" loading="lazy">
     <p class="offer-intro">One scoop. Once a day. Built for the work you keep putting off.</p>
-    <div class="offer-block">
-      <div class="offer-name">Mindor Performance Stack</div>
-      <div class="offer-servings">30 servings — one full month of work sessions.</div>
-      <div class="offer-price">$36</div>
-      <div class="offer-normal">Normally $42.99</div>
+
+    <!-- Bundle selector -->
+    <div class="bundle-opts" id="bundleOpts">
+      <div class="bundle-opt" data-qty="1" data-price="42.99" data-label="1 bag">
+        <div class="bundle-opt-qty">1</div>
+        <div class="bundle-opt-label">bag</div>
+        <div class="bundle-opt-price">$42.99</div>
+        <div class="bundle-opt-each">&nbsp;</div>
+      </div>
+      <div class="bundle-opt active" data-qty="2" data-price="77.38" data-label="2 bags — 10% off">
+        <div class="bundle-opt-badge">POPULAR</div>
+        <div class="bundle-opt-qty">2</div>
+        <div class="bundle-opt-label">bags</div>
+        <div class="bundle-opt-price">$77.38</div>
+        <div class="bundle-opt-each">$38.69 each</div>
+      </div>
+      <div class="bundle-opt" data-qty="3" data-price="109.62" data-label="3 bags — 15% off">
+        <div class="bundle-opt-qty">3</div>
+        <div class="bundle-opt-label">bags</div>
+        <div class="bundle-opt-price">$109.62</div>
+        <div class="bundle-opt-each">$36.54 each</div>
+      </div>
     </div>
-    <a class="btn" href="index.html">Get My First Bag →</a>
+    <p class="bundle-total-row">Total: <strong id="bundleTotalDisplay">$77.38</strong> — <span id="bundleSaveDisplay">save $8.60</span></p>
+
+    <a class="btn" href="index.html" id="bundleCta">Get 2 Bags — Save 10% →</a>
     <div class="trust-row">
       <span class="trust-item"><span class="trust-check">✓</span> Ships in 24 hours</span>
       <span class="trust-item"><span class="trust-check">✓</span> Third-party tested</span>
@@ -1061,6 +1210,60 @@
   window.addEventListener('scroll', updateSticky, { passive: true });
   window.addEventListener('resize', updateSticky, { passive: true });
   updateSticky();
+
+  // ── Ingredient accordion ───────────────────────────────
+  // Open first row by default
+  (function() {
+    var firstRow = document.querySelector('.ing-row.open');
+    if (firstRow) {
+      var body = firstRow.querySelector('.ing-row-body');
+      var inner = firstRow.querySelector('.ing-row-body-inner');
+      if (body && inner) body.style.maxHeight = inner.offsetHeight + 'px';
+    }
+  })();
+
+  document.querySelectorAll('.ing-row-hd').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var row = this.closest('.ing-row');
+      var body = row.querySelector('.ing-row-body');
+      var inner = row.querySelector('.ing-row-body-inner');
+      var isOpen = row.classList.contains('open');
+
+      document.querySelectorAll('.ing-row.open').forEach(function(r) {
+        r.classList.remove('open');
+        r.querySelector('.ing-row-body').style.maxHeight = '0';
+        r.querySelector('.ing-row-hd').setAttribute('aria-expanded', 'false');
+      });
+
+      if (!isOpen) {
+        row.classList.add('open');
+        body.style.maxHeight = inner.offsetHeight + 'px';
+        this.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+
+  // ── Bundle selector ────────────────────────────────────
+  var bundleData = {
+    '1': { price: '$42.99', total: '$42.99', save: '',         cta: 'Get 1 Bag — $42.99 →' },
+    '2': { price: '$77.38', total: '$77.38', save: 'save $8.60', cta: 'Get 2 Bags — Save 10% →' },
+    '3': { price: '$109.62',total: '$109.62',save: 'save $19.35',cta: 'Get 3 Bags — Save 15% →' }
+  };
+
+  document.querySelectorAll('.bundle-opt').forEach(function(opt) {
+    opt.addEventListener('click', function() {
+      document.querySelectorAll('.bundle-opt').forEach(function(o) { o.classList.remove('active'); });
+      this.classList.add('active');
+      var qty = this.dataset.qty;
+      var d = bundleData[qty];
+      document.getElementById('bundleTotalDisplay').textContent = d.total;
+      var saveEl = document.getElementById('bundleSaveDisplay');
+      saveEl.textContent = d.save || '';
+      saveEl.style.display = d.save ? 'inline' : 'none';
+      document.getElementById('bundleCta').textContent = d.cta;
+    });
+  });
+  document.getElementById('bundleSaveDisplay').style.display = 'inline';
 </script>
 
 </body>
