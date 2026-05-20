@@ -234,7 +234,7 @@
       color: var(--text-primary); text-transform: uppercase;
       max-width: 680px; margin: 0 auto;
     }
-    .reframe-pull p + p { margin-top: 4px; color: var(--execution-green); }
+    .reframe-pull p + p { margin-top: 16px; color: var(--execution-green); }
 
     /* WIRED ≠ PRODUCTIVE comparison */
     .compare-wrap {
@@ -245,9 +245,9 @@
     }
     .compare-col {
       padding: 32px 28px;
-      background: rgba(255,60,60,0.05);
+      background: rgba(255,60,60,0.1);
     }
-    .compare-col.right { background: rgba(226,255,71,0.06); }
+    .compare-col.right { background: rgba(226,255,71,0.09); }
     .compare-col-tag {
       font-size: 9px; font-weight: 600; letter-spacing: 0.2em;
       text-transform: uppercase; color: rgba(255,120,120,0.5); margin-bottom: 12px;
@@ -259,7 +259,7 @@
       line-height: 0.95; text-transform: uppercase; letter-spacing: -0.01em;
       margin-bottom: 20px;
     }
-    .compare-col .compare-big { color: rgba(240,240,232,0.35); }
+    .compare-col .compare-big { color: rgba(240,240,232,0.55); }
     .compare-col.right .compare-big { color: var(--text-primary); }
     .compare-items { list-style: none; }
     .compare-items li {
@@ -312,8 +312,36 @@
       border: 0.5px solid var(--border-subtle);
     }
     .s4-img img {
-      width: 100%; height: 280px; object-fit: cover; display: block;
+      width: 100%; height: 320px; object-fit: cover; object-position: center 20%; display: block;
     }
+
+    /* ── Day timeline (section 2) ── */
+    .day-timeline { margin: 36px 0 0; }
+    .tl-item { display:flex; gap:20px; align-items:baseline; padding:13px 0; border-bottom:0.5px solid var(--border-subtle); }
+    .tl-item:last-child { border-bottom:none; }
+    .tl-time { font-size:11px; font-weight:700; letter-spacing:0.08em; color:var(--text-muted); min-width:58px; flex-shrink:0; }
+    .tl-text { font-size:15px; color:var(--fog-grey); line-height:1.55; }
+    .tl-text strong { color:var(--text-primary); }
+    .tl-crash .tl-time { color:rgba(255,80,80,0.75); }
+    .tl-crash .tl-text strong { color:rgba(255,100,100,0.9); }
+
+    /* ── Section 4 moments (callout cards) ── */
+    .s4-moments { display:flex; flex-direction:column; gap:14px; }
+    .s4-moment { padding:18px 22px; background:var(--surface); border:0.5px solid var(--border-subtle); border-radius:6px; border-left:3px solid var(--execution-green); }
+    .s4-moment-lead { font-weight:600; font-size:15px; color:var(--text-primary); margin-bottom:5px; line-height:1.45; }
+    .s4-moment-body { font-size:13px; color:var(--fog-grey); line-height:1.6; }
+
+    /* ── Gift display (section 8) ── */
+    .gift-display { display:none; margin:20px 0 28px; padding:14px 20px; background:rgba(226,255,71,0.05); border:0.5px solid rgba(226,255,71,0.18); border-radius:6px; }
+    .gift-display-inner { font-size:13px; color:var(--fog-grey); line-height:1.55; }
+    .gift-display-inner strong { color:var(--execution-green); }
+    .gift-row { display:flex; align-items:flex-start; gap:10px; margin-bottom:6px; }
+    .gift-row:last-child { margin-bottom:0; }
+    .gift-icon { font-size:14px; flex-shrink:0; margin-top:1px; }
+
+    /* ── Flavor rows (section 8) ── */
+    .flavor-row { margin-bottom:16px; }
+    .flavor-row-label { font-size:11px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-muted); margin-bottom:8px; display:block; }
 
     /* ── SECTION 5: FOCUS ARC ── */
     #s5 {
@@ -678,13 +706,31 @@
   <div class="wrap">
     <div class="s2-line"></div>
     <div class="label">The Problem You Already Know</div>
-    <div class="body-copy">
-      <p>You sit down at your desk with a plan.</p>
-      <p>By 8:20 you've opened Slack. Checked two emails. Lost the thread.</p>
-      <p>You make a coffee. It works for about 45 minutes.</p>
-      <p>By 10am you're wired. You feel "on." But you still haven't started the real work.</p>
-      <p>By 2pm the coffee has worn off. You're tired and tense at the same time. Your task list is full. Your brain is empty.</p>
-      <p>You're not lazy. You've been "working" all day. So why do you feel like you got nothing done?</p>
+    <div class="day-timeline">
+      <div class="tl-item">
+        <span class="tl-time">7:00am</span>
+        <div class="tl-text">You sit down. <strong>You have a plan.</strong></div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-time">8:20am</span>
+        <div class="tl-text">Slack. Two emails. <strong>Thread lost.</strong></div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-time">9:00am</span>
+        <div class="tl-text">☕ Coffee. <strong>Works for ~45 minutes.</strong></div>
+      </div>
+      <div class="tl-item">
+        <span class="tl-time">10:00am</span>
+        <div class="tl-text">Wired. Feel "on." <strong>Real work still untouched.</strong></div>
+      </div>
+      <div class="tl-item tl-crash">
+        <span class="tl-time">2:00pm</span>
+        <div class="tl-text">Coffee wore off. Tired <em>and</em> tense at the same time. <strong>Task list full. Brain empty.</strong></div>
+      </div>
+      <div class="tl-item tl-crash">
+        <span class="tl-time">6:00pm</span>
+        <div class="tl-text">"Working" all day. <strong>Nothing shipped.</strong> You're not lazy. So what happened?</div>
+      </div>
     </div>
 
     <!-- Day timeline chart -->
@@ -798,12 +844,23 @@
     <div class="label">What It Feels Like When It Works</div>
     <div class="s4-inner">
       <div class="s4-copy">
-        <div class="body-copy">
-          <p>You sit down. Open the doc. And just... start.</p>
-          <p>You don't reach for a second cup. Your leg isn't bouncing under the desk. Your phone stays face-down because you forgot to check it.</p>
-          <p>The focus doesn't hit you like a wall. It comes on slowly. Settles in. Stays.</p>
-          <p>An hour goes by. Then two. You look up and the work is done.</p>
-          <p>This isn't a fantasy. It's how your brain works when it isn't fighting itself.</p>
+        <div class="s4-moments">
+          <div class="s4-moment">
+            <div class="s4-moment-lead">You sit down. Open the doc. Just... start.</div>
+            <div class="s4-moment-body">No warm-up. No "getting into it." The cursor is already moving.</div>
+          </div>
+          <div class="s4-moment">
+            <div class="s4-moment-lead">No second coffee. Phone face-down. You forgot to check it.</div>
+            <div class="s4-moment-body">You didn't decide to focus. You just were.</div>
+          </div>
+          <div class="s4-moment">
+            <div class="s4-moment-lead">The focus comes on slowly. Settles in. Stays.</div>
+            <div class="s4-moment-body">Not a jolt. Not a spike. Just a window — steady for hours.</div>
+          </div>
+          <div class="s4-moment">
+            <div class="s4-moment-lead">An hour goes by. Then two. Work is done.</div>
+            <div class="s4-moment-body">This isn't a fantasy. It's how your brain works when it isn't fighting itself.</div>
+          </div>
         </div>
       </div>
       <div class="s4-img">
@@ -846,8 +903,8 @@
 
         <!-- Coffee spike (dim reference) -->
         <path d="M 68 175 L 88 68 L 108 175" stroke="rgba(255,255,255,0.14)" stroke-width="1.5" fill="none" stroke-dasharray="4,3" stroke-linejoin="round"/>
-        <text x="88" y="60" font-family="DM Sans,sans-serif" font-size="9" fill="rgba(255,255,255,0.22)" text-anchor="middle" letter-spacing="1">COFFEE</text>
-        <text x="88" y="190" font-family="DM Sans,sans-serif" font-size="8" fill="#3A4A30" text-anchor="middle">SPIKE</text>
+        <text x="88" y="58" font-family="DM Sans,sans-serif" font-size="12" fill="rgba(255,255,255,0.3)" text-anchor="middle" letter-spacing="1">COFFEE</text>
+        <text x="88" y="192" font-family="DM Sans,sans-serif" font-size="11" fill="rgba(90,110,70,0.8)" text-anchor="middle">SPIKE</text>
 
         <!-- Mindor arc fill -->
         <path d="M 185 175 C 225 175, 265 62, 320 54 C 360 48, 400 46, 440 46 C 480 46, 512 46, 535 54 C 568 66, 600 120, 635 175 Z"
@@ -860,26 +917,26 @@
         <!-- Point 01 — Clean On-Ramp -->
         <circle cx="278" cy="76" r="5" fill="#E2FF47" filter="url(#lg)"/>
         <line x1="278" y1="72" x2="278" y2="32" stroke="rgba(226,255,71,0.25)" stroke-width="0.5" stroke-dasharray="3,2"/>
-        <text x="278" y="26" font-family="Barlow Condensed,sans-serif" font-weight="700" font-size="10" fill="#E2FF47" text-anchor="middle" letter-spacing="1.5">01</text>
+        <text x="278" y="26" font-family="Barlow Condensed,sans-serif" font-weight="700" font-size="13" fill="#E2FF47" text-anchor="middle" letter-spacing="1.5">01</text>
 
         <!-- Point 02 — Stable Plateau -->
         <circle cx="435" cy="46" r="5" fill="#E2FF47" filter="url(#lg)"/>
         <line x1="435" y1="42" x2="435" y2="16" stroke="rgba(226,255,71,0.25)" stroke-width="0.5" stroke-dasharray="3,2"/>
-        <text x="435" y="12" font-family="Barlow Condensed,sans-serif" font-weight="700" font-size="10" fill="#E2FF47" text-anchor="middle" letter-spacing="1.5">02</text>
+        <text x="435" y="12" font-family="Barlow Condensed,sans-serif" font-weight="700" font-size="13" fill="#E2FF47" text-anchor="middle" letter-spacing="1.5">02</text>
 
         <!-- Point 03 — Soft Landing -->
         <circle cx="565" cy="88" r="5" fill="#E2FF47" filter="url(#lg)"/>
         <line x1="565" y1="84" x2="565" y2="32" stroke="rgba(226,255,71,0.25)" stroke-width="0.5" stroke-dasharray="3,2"/>
-        <text x="565" y="26" font-family="Barlow Condensed,sans-serif" font-weight="700" font-size="10" fill="#E2FF47" text-anchor="middle" letter-spacing="1.5">03</text>
+        <text x="565" y="26" font-family="Barlow Condensed,sans-serif" font-weight="700" font-size="13" fill="#E2FF47" text-anchor="middle" letter-spacing="1.5">03</text>
 
         <!-- MINDOR label on curve -->
-        <text x="440" y="38" font-family="DM Sans,sans-serif" font-size="8" fill="rgba(226,255,71,0.35)" text-anchor="middle" letter-spacing="1.5">MINDOR</text>
+        <text x="440" y="38" font-family="DM Sans,sans-serif" font-size="11" fill="rgba(226,255,71,0.45)" text-anchor="middle" letter-spacing="1.5">MINDOR</text>
 
         <!-- Time axis labels -->
-        <text x="185" y="190" font-family="DM Sans,sans-serif" font-size="8" fill="#3A4A30" text-anchor="middle">0 min</text>
-        <text x="295" y="190" font-family="DM Sans,sans-serif" font-size="8" fill="#3A4A30" text-anchor="middle">20 min</text>
-        <text x="435" y="190" font-family="DM Sans,sans-serif" font-size="8" fill="#3A4A30" text-anchor="middle">2 hrs</text>
-        <text x="635" y="190" font-family="DM Sans,sans-serif" font-size="8" fill="#3A4A30" text-anchor="middle">4 hrs</text>
+        <text x="185" y="192" font-family="DM Sans,sans-serif" font-size="11" fill="rgba(90,110,70,0.9)" text-anchor="middle">0 min</text>
+        <text x="295" y="192" font-family="DM Sans,sans-serif" font-size="11" fill="rgba(90,110,70,0.9)" text-anchor="middle">20 min</text>
+        <text x="435" y="192" font-family="DM Sans,sans-serif" font-size="11" fill="rgba(90,110,70,0.9)" text-anchor="middle">2 hrs</text>
+        <text x="635" y="192" font-family="DM Sans,sans-serif" font-size="11" fill="rgba(90,110,70,0.9)" text-anchor="middle">4 hrs</text>
       </svg>
     </div>
 
@@ -1041,49 +1098,42 @@
     <img class="offer-img" src="/assets/presales-offer.png" alt="Mindor Performance Stack — 30 servings" loading="lazy">
     <p class="offer-intro">One scoop. Once a day. Built for the work you keep putting off.</p>
 
-    <!-- Flavor selector -->
-    <p class="s8-step">1 — Choose Your Flavor</p>
-    <div class="flavor-select" id="flavorSelect">
-      <div class="flavor-pill active" data-flavor="sour-candy">
-        <span class="flavor-swatch" style="background:#FF6B9D;"></span>
-        Sour Candy
-      </div>
-      <div class="flavor-pill" data-flavor="sour-grape">
-        <span class="flavor-swatch" style="background:#BF7FFF;"></span>
-        Sour Grape
-      </div>
-      <div class="flavor-pill" data-flavor="sour-gummy-worms">
-        <span class="flavor-swatch" style="background:#FF9B4A;"></span>
-        Sour Gummy Worms
-      </div>
-    </div>
-
-    <!-- Bundle selector -->
-    <p class="s8-step">2 — Choose Your Bundle</p>
+    <!-- Step 1: Bundle selector -->
+    <p class="s8-step">1 — Choose Your Bundle</p>
     <div class="bundle-opts" id="bundleOpts">
-      <div class="bundle-opt" data-qty="1" data-price="42.99" data-label="1 bag">
+      <div class="bundle-opt" data-qty="1" data-price="42.99" data-label="1 tub">
         <div class="bundle-opt-qty">1</div>
-        <div class="bundle-opt-label">bag</div>
+        <div class="bundle-opt-label">tub</div>
         <div class="bundle-opt-price">$42.99</div>
         <div class="bundle-opt-each">&nbsp;</div>
       </div>
-      <div class="bundle-opt active" data-qty="2" data-price="77.38" data-label="2 bags — 10% off">
+      <div class="bundle-opt active" data-qty="2" data-price="77.38" data-label="2 tubs — 10% off">
         <div class="bundle-opt-badge">POPULAR</div>
         <div class="bundle-opt-qty">2</div>
-        <div class="bundle-opt-label">bags</div>
+        <div class="bundle-opt-label">tubs</div>
         <div class="bundle-opt-price">$77.38</div>
         <div class="bundle-opt-each">$38.69 each</div>
       </div>
-      <div class="bundle-opt" data-qty="3" data-price="109.62" data-label="3 bags — 15% off">
+      <div class="bundle-opt" data-qty="3" data-price="109.62" data-label="3 tubs — 15% off">
         <div class="bundle-opt-qty">3</div>
-        <div class="bundle-opt-label">bags</div>
+        <div class="bundle-opt-label">tubs</div>
         <div class="bundle-opt-price">$109.62</div>
         <div class="bundle-opt-each">$36.54 each</div>
       </div>
     </div>
+
+    <!-- Step 2: Flavor picker (dynamic — rendered by JS based on qty) -->
+    <p class="s8-step">2 — Choose Your Flavor(s)</p>
+    <div id="flavorPickerContainer"></div>
+
+    <!-- Step 3: Free gift (automatic) -->
+    <div class="gift-display" id="giftDisplay">
+      <div class="gift-display-inner" id="giftDisplayInner"></div>
+    </div>
+
     <p class="bundle-total-row">Total: <strong id="bundleTotalDisplay">$77.38</strong> — <span id="bundleSaveDisplay">save $8.60</span></p>
 
-    <button class="btn" id="bundleCta" onclick="handleBundleCheckout()">Get 2 Bags — Save 10% →</button>
+    <button class="btn" id="bundleCta" onclick="handleBundleCheckout()">Get 2 Tubs — Save 10% →</button>
     <div class="trust-row">
       <span class="trust-item"><span class="trust-check">✓</span> Ships in 24 hours</span>
       <span class="trust-item"><span class="trust-check">✓</span> Third-party tested</span>
@@ -1175,7 +1225,7 @@
       <p>Coffee gives you a spike.</p>
       <p>Mindor gives you a window.</p>
     </div>
-    <button class="btn" onclick="handleBundleCheckout()">Start Your First Month — $36</button>
+    <button class="btn" onclick="handleBundleCheckout()">Start Your First Month — $42.99</button>
     <p class="final-trust"><em>30-day money-back guarantee. Ships in 24 hours.</em></p>
   </div>
 </section>
@@ -1202,7 +1252,7 @@
 
 <!-- STICKY MOBILE CTA -->
 <div id="sticky" role="complementary" aria-label="Quick checkout">
-  <button onclick="handleBundleCheckout()" style="background:var(--execution-green);color:var(--bg);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;border:none;border-radius:3px;width:100%;min-height:48px;cursor:pointer;">Get Mindor — $36</button>
+  <button id="stickyBtn" onclick="handleBundleCheckout()" style="background:var(--flavor-accent,var(--execution-green));color:var(--bg);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;border:none;border-radius:3px;width:100%;min-height:48px;cursor:pointer;">Get Mindor — $42.99</button>
 </div>
 
 <script>
@@ -1285,50 +1335,108 @@
     });
   });
 
-  // ── Bundle selector ────────────────────────────────────
+  // ── Bundle + Flavor + Gift ─────────────────────────────
   var bundleData = {
-    '1': { total: '$42.99', save: '',           cta: 'Get 1 Bag — $42.99 →' },
-    '2': { total: '$77.38', save: 'save $8.60', cta: 'Get 2 Bags — Save 10% →' },
-    '3': { total: '$109.62',save: 'save $19.35',cta: 'Get 3 Bags — Save 15% →' }
+    '1': { total: '$42.99', save: '',           cta: 'Get 1 Tub — $42.99 →',       sticky: 'Get Mindor — $42.99' },
+    '2': { total: '$77.38', save: 'save $8.60', cta: 'Get 2 Tubs — Save 10% →',    sticky: 'Get 2 Tubs — $77.38' },
+    '3': { total: '$109.62',save: 'save $19.35',cta: 'Get 3 Tubs — Save 15% →',    sticky: 'Get 3 Tubs — $109.62' }
   };
   var selectedQty = '2';
+
+  var FLAVOR_COLORS = {
+    'sour-candy':       '#E2FF47',
+    'sour-grape':       '#BF7FFF',
+    'sour-gummy-worms': '#FF2255'
+  };
+  var FLAVOR_NAMES = { 'sour-candy': 'Sour Candy', 'sour-grape': 'Sour Grape', 'sour-gummy-worms': 'Sour Gummy Worms' };
+  var FLAVOR_KEYS = ['sour-candy', 'sour-grape', 'sour-gummy-worms'];
+
+  var selectedFlavors = ['sour-candy', 'sour-candy']; // one entry per tub, default 2 tubs
+
+  var GIFTS = {
+    '1': null,
+    '2': '<div class="gift-row"><span class="gift-icon">🥤</span><span>Free <strong>Shaker</strong> included</span></div>',
+    '3': '<div class="gift-row"><span class="gift-icon">🥤</span><span>Free <strong>Shaker</strong> included</span></div><div class="gift-row"><span class="gift-icon">📋</span><span>Free <strong>Productivity Tracker</strong> (digital) ×2 included</span></div>'
+  };
+
+  function applyFlavorTheme(flavor) {
+    var color = FLAVOR_COLORS[flavor];
+    document.getElementById('s8').style.setProperty('--flavor-accent', color);
+  }
+
+  function updateFlavorPickers() {
+    var qty = parseInt(selectedQty);
+    // Trim or extend selectedFlavors to match qty
+    while (selectedFlavors.length < qty) selectedFlavors.push(selectedFlavors[selectedFlavors.length - 1] || 'sour-candy');
+    selectedFlavors = selectedFlavors.slice(0, qty);
+
+    var container = document.getElementById('flavorPickerContainer');
+    container.innerHTML = '';
+
+    for (var i = 0; i < qty; i++) {
+      (function(idx) {
+        var rowLabel = qty === 1 ? 'Your Tub' : 'Tub ' + (idx + 1);
+        var row = document.createElement('div');
+        row.className = 'flavor-row';
+        row.innerHTML = '<span class="flavor-row-label">' + rowLabel + '</span><div class="flavor-select"></div>';
+        var select = row.querySelector('.flavor-select');
+        FLAVOR_KEYS.forEach(function(flavor) {
+          var pill = document.createElement('div');
+          pill.className = 'flavor-pill' + (selectedFlavors[idx] === flavor ? ' active' : '');
+          pill.dataset.flavor = flavor;
+          pill.innerHTML = '<span class="flavor-swatch" style="background:' + FLAVOR_COLORS[flavor] + ';"></span>' + FLAVOR_NAMES[flavor];
+          pill.addEventListener('click', function() {
+            row.querySelectorAll('.flavor-pill').forEach(function(p) { p.classList.remove('active'); });
+            pill.classList.add('active');
+            selectedFlavors[idx] = flavor;
+            if (idx === 0) applyFlavorTheme(flavor);
+          });
+          select.appendChild(pill);
+        });
+        container.appendChild(row);
+      })(i);
+    }
+
+    applyFlavorTheme(selectedFlavors[0] || 'sour-candy');
+  }
+
+  function updateGiftDisplay() {
+    var el = document.getElementById('giftDisplay');
+    var inner = document.getElementById('giftDisplayInner');
+    var gift = GIFTS[selectedQty];
+    if (gift) {
+      inner.innerHTML = gift;
+      el.style.display = 'block';
+    } else {
+      el.style.display = 'none';
+    }
+  }
+
+  function syncBundleUI() {
+    var d = bundleData[selectedQty];
+    document.getElementById('bundleTotalDisplay').textContent = d.total;
+    var saveEl = document.getElementById('bundleSaveDisplay');
+    saveEl.textContent = d.save || '';
+    saveEl.style.display = d.save ? 'inline' : 'none';
+    document.getElementById('bundleCta').textContent = d.cta;
+    var stickyBtn = document.getElementById('stickyBtn');
+    if (stickyBtn) stickyBtn.textContent = d.sticky;
+    updateFlavorPickers();
+    updateGiftDisplay();
+  }
 
   document.querySelectorAll('.bundle-opt').forEach(function(opt) {
     opt.addEventListener('click', function() {
       document.querySelectorAll('.bundle-opt').forEach(function(o) { o.classList.remove('active'); });
       this.classList.add('active');
       selectedQty = this.dataset.qty;
-      var d = bundleData[selectedQty];
-      document.getElementById('bundleTotalDisplay').textContent = d.total;
-      var saveEl = document.getElementById('bundleSaveDisplay');
-      saveEl.textContent = d.save || '';
-      saveEl.style.display = d.save ? 'inline' : 'none';
-      document.getElementById('bundleCta').textContent = d.cta;
+      syncBundleUI();
     });
   });
+
+  // Init
   document.getElementById('bundleSaveDisplay').style.display = 'inline';
-
-  // ── Flavor selector ────────────────────────────────────
-  var FLAVOR_COLORS = {
-    'sour-candy':       '#FF6B9D',
-    'sour-grape':       '#BF7FFF',
-    'sour-gummy-worms': '#FF9B4A'
-  };
-  var selectedFlavor = 'sour-candy';
-
-  function applyFlavorTheme(flavor) {
-    document.getElementById('s8').style.setProperty('--flavor-accent', FLAVOR_COLORS[flavor]);
-  }
-
-  document.querySelectorAll('.flavor-pill').forEach(function(pill) {
-    pill.addEventListener('click', function() {
-      document.querySelectorAll('.flavor-pill').forEach(function(p) { p.classList.remove('active'); });
-      this.classList.add('active');
-      selectedFlavor = this.dataset.flavor;
-      applyFlavorTheme(selectedFlavor);
-    });
-  });
-  applyFlavorTheme(selectedFlavor);
+  syncBundleUI();
 
   // ── Shopify checkout ───────────────────────────────────
   var SHOPIFY_DOMAIN   = 'mindor-1950.myshopify.com';
@@ -1341,16 +1449,16 @@
   var DISCOUNT_CODES = { '1': null, '2': 'BUNDLE2', '3': 'HVCO-STACK' };
   var _variantCache  = {};
 
-  async function _getVariantId() {
-    if (_variantCache[selectedFlavor]) return _variantCache[selectedFlavor];
+  async function _getVariantIdForFlavor(flavor) {
+    if (_variantCache[flavor]) return _variantCache[flavor];
     var res = await fetch('https://' + SHOPIFY_DOMAIN + '/api/2024-01/graphql.json', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'X-Shopify-Storefront-Access-Token': STOREFRONT_TOKEN },
-      body: JSON.stringify({ query: '{ product(id:"' + PRODUCT_IDS[selectedFlavor] + '") { variants(first:1) { nodes { id } } } }' })
+      body: JSON.stringify({ query: '{ product(id:"' + PRODUCT_IDS[flavor] + '") { variants(first:1) { nodes { id } } } }' })
     });
     var d = await res.json();
-    _variantCache[selectedFlavor] = d.data.product.variants.nodes[0].id;
-    return _variantCache[selectedFlavor];
+    _variantCache[flavor] = d.data.product.variants.nodes[0].id;
+    return _variantCache[flavor];
   }
 
   async function handleBundleCheckout() {
@@ -1359,26 +1467,36 @@
     if (btn) { btn.textContent = 'Loading…'; btn.disabled = true; }
 
     try {
-      var qty = parseInt(selectedQty) || 1;
-      var code = DISCOUNT_CODES[String(qty)];
-      var variantId = await _getVariantId();
+      // Group selected flavors by variant
+      var flavorCount = {};
+      selectedFlavors.forEach(function(f) { flavorCount[f] = (flavorCount[f] || 0) + 1; });
+
+      // Resolve all needed variant IDs in parallel
+      var flavorsNeeded = Object.keys(flavorCount);
+      var variantIds = await Promise.all(flavorsNeeded.map(function(f) { return _getVariantIdForFlavor(f); }));
+
+      // Build line items
+      var lines = flavorsNeeded.map(function(f, i) {
+        return '{ quantity: ' + flavorCount[f] + ', merchandiseId: "' + variantIds[i] + '" }';
+      });
+
+      var code = DISCOUNT_CODES[String(selectedQty)];
       var discountPart = code ? 'discountCodes: ["' + code + '"],' : '';
-      var mutation = 'mutation { cartCreate(input: { ' + discountPart + ' lines: [{ quantity: ' + qty + ', merchandiseId: "' + variantId + '" }] }) { cart { checkoutUrl } userErrors { message } } }';
+      var mutation = 'mutation { cartCreate(input: { ' + discountPart + ' lines: [' + lines.join(', ') + '] }) { cart { checkoutUrl } userErrors { message } } }';
       var res = await fetch('https://' + SHOPIFY_DOMAIN + '/api/2024-01/graphql.json', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'X-Shopify-Storefront-Access-Token': STOREFRONT_TOKEN },
         body: JSON.stringify({ query: mutation })
       });
       var data = await res.json();
-      var checkoutUrl = data.data.cartCreate.cart.checkoutUrl;
-      window.location.href = checkoutUrl;
+      window.location.href = data.data.cartCreate.cart.checkoutUrl;
     } catch(e) {
       console.error('[Mindor checkout]', e);
       if (btn) { btn.textContent = origText; btn.disabled = false; }
     }
   }
 
-  // Re-enable button when user navigates back from Shopify checkout (bfcache restore)
+  // Re-enable buttons when user navigates back from Shopify (bfcache restore)
   window.addEventListener('pageshow', function(e) {
     if (e.persisted) {
       var btn = document.getElementById('bundleCta');
