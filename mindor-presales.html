@@ -36,9 +36,11 @@
     :root {
       --execution-green: #E2FF47;
       --bg:              #111309;
-      --bg-dark:         #0D1009;
-      --surface:         #161A0E;
+      --bg-dark:         #0C0F07;
+      --bg-deep:         #060804;
+      --surface:         #171B0F;
       --surface2:        #1E2416;
+      --surface3:        #131709;
       --clean-cream:     #F8ECC3;
       --fog-grey:        #C8C9B8;
       --text-primary:    #F0F0E8;
@@ -59,6 +61,15 @@
       line-height: 1.65;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
+    }
+
+    /* grain texture overlay */
+    body::after {
+      content: '';
+      position: fixed; inset: 0; z-index: 998;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.028;
     }
 
     /* ── LAYOUT ── */
@@ -92,8 +103,10 @@
       font-family: 'Barlow Condensed', sans-serif;
       font-weight: 900; font-size: 22px;
       color: var(--execution-green); letter-spacing: 0.02em;
-      text-decoration: none;
+      text-decoration: none; cursor: pointer;
+      transition: opacity 0.15s;
     }
+    .nav-mark:hover { opacity: 0.7; }
     .nav-btn {
       font-family: 'DM Sans', sans-serif; font-size: 11px;
       font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
@@ -139,8 +152,17 @@
     #s1::before {
       content: ''; position: absolute;
       top: 50%; left: 50%; transform: translate(-50%, -50%);
-      width: 800px; height: 800px;
-      background: radial-gradient(circle, rgba(226,255,71,0.04) 0%, transparent 60%);
+      width: 900px; height: 900px;
+      background:
+        radial-gradient(circle at 50% 45%, rgba(226,255,71,0.07) 0%, transparent 50%),
+        radial-gradient(circle at 30% 60%, rgba(226,255,71,0.025) 0%, transparent 45%),
+        radial-gradient(circle at 70% 30%, rgba(226,255,71,0.02) 0%, transparent 40%);
+      pointer-events: none;
+    }
+    #s1::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+      height: 120px;
+      background: linear-gradient(to bottom, transparent, var(--bg));
       pointer-events: none;
     }
     .hero-img {
@@ -175,18 +197,31 @@
     }
 
     /* ── SECTION 2: THE MIRROR ── */
-    #s2 { padding: 100px 0; }
+    #s2 { padding: 100px 0; border-top: 0.5px solid var(--border-subtle); }
     .s2-line {
       width: 40px; height: 1.5px;
       background: var(--execution-green); opacity: 0.4;
       margin-bottom: 48px;
     }
 
+    /* Day-timeline chart */
+    .day-chart { margin-top: 56px; }
+    .day-chart-svg { width: 100%; max-width: 560px; height: auto; }
+
     /* ── SECTION 3: THE REFRAME ── */
-    #s3 { padding: 100px 0; background: var(--bg-dark); }
-    .reframe-pull {
-      padding: 56px 0; text-align: center;
+    #s3 {
+      padding: 100px 0; background: var(--bg-dark);
+      border-top: 0.5px solid var(--border-subtle);
+      border-bottom: 0.5px solid var(--border-subtle);
+      position: relative; overflow: hidden;
     }
+    #s3::before {
+      content: ''; position: absolute;
+      top: 0; right: -200px; width: 600px; height: 100%;
+      background: radial-gradient(ellipse at 80% 50%, rgba(226,255,71,0.025) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .reframe-pull { padding: 56px 0; text-align: center; }
     .reframe-pull p {
       font-family: 'Barlow Condensed', sans-serif;
       font-weight: 900; font-size: clamp(26px, 5vw, 44px);
@@ -196,13 +231,63 @@
     }
     .reframe-pull p + p { margin-top: 4px; color: var(--execution-green); }
 
+    /* WIRED ≠ PRODUCTIVE comparison */
+    .compare-wrap {
+      display: grid; grid-template-columns: 1fr auto 1fr;
+      gap: 0; align-items: center; margin-top: 56px;
+      border: 0.5px solid var(--border-subtle); border-radius: 6px;
+      overflow: hidden;
+    }
+    .compare-col {
+      padding: 32px 28px;
+      background: var(--surface3);
+    }
+    .compare-col.right { background: rgba(226,255,71,0.04); }
+    .compare-col-tag {
+      font-size: 9px; font-weight: 600; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--text-dim); margin-bottom: 12px;
+    }
+    .compare-col.right .compare-col-tag { color: rgba(226,255,71,0.4); }
+    .compare-big {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900; font-size: clamp(32px, 5vw, 48px);
+      line-height: 0.95; text-transform: uppercase; letter-spacing: -0.01em;
+      margin-bottom: 20px;
+    }
+    .compare-col .compare-big { color: rgba(240,240,232,0.4); }
+    .compare-col.right .compare-big { color: var(--text-primary); }
+    .compare-items { list-style: none; }
+    .compare-items li {
+      font-size: 13px; color: var(--text-muted);
+      padding: 6px 0; border-bottom: 0.5px solid var(--border-subtle);
+      line-height: 1.4;
+    }
+    .compare-col.right .compare-items li { color: var(--fog-grey); }
+    .compare-items li:last-child { border-bottom: none; }
+    .compare-ne {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900; font-size: clamp(32px, 5vw, 52px);
+      color: var(--text-dim); padding: 0 20px; text-align: center;
+      background: var(--bg-dark);
+      align-self: stretch; display: flex;
+      align-items: center; justify-content: center;
+      border-left: 0.5px solid var(--border-subtle);
+      border-right: 0.5px solid var(--border-subtle);
+    }
+    @media (max-width: 640px) {
+      .compare-wrap { grid-template-columns: 1fr; }
+      .compare-ne { padding: 16px; border-left: none; border-right: none; border-top: 0.5px solid var(--border-subtle); border-bottom: 0.5px solid var(--border-subtle); }
+    }
+
     /* ── SECTION 4: LIGHT AT THE END ── */
     #s4 { padding: 100px 0; position: relative; overflow: hidden; }
     #s4::before {
       content: ''; position: absolute;
-      top: 40%; left: 50%; transform: translate(-50%, -50%);
-      width: 640px; height: 640px;
-      background: radial-gradient(circle, rgba(226,255,71,0.04) 0%, transparent 65%);
+      top: 50%; left: 30%; transform: translate(-50%, -50%);
+      width: 700px; height: 700px;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(226,255,71,0.06) 0%, transparent 55%),
+        radial-gradient(circle at 40% 60%, rgba(226,255,71,0.03) 0%, transparent 50%);
       pointer-events: none;
     }
     .s4-inner { display: flex; gap: 60px; align-items: flex-start; }
@@ -217,7 +302,11 @@
     }
 
     /* ── SECTION 5: FOCUS ARC ── */
-    #s5 { padding: 100px 0; background: var(--bg-dark); }
+    #s5 {
+      padding: 100px 0; background: var(--bg-dark);
+      border-top: 0.5px solid var(--border-subtle);
+      border-bottom: 0.5px solid var(--border-subtle);
+    }
     #s5 .label-wrap { text-align: center; }
     .arc-heading {
       font-family: 'Barlow Condensed', sans-serif;
@@ -255,7 +344,7 @@
     }
 
     /* ── SECTION 6: INGREDIENTS ── */
-    #s6 { padding: 100px 0; }
+    #s6 { padding: 100px 0; border-bottom: 0.5px solid var(--border-subtle); }
     .ing-intro {
       font-size: 15px; color: var(--fog-grey);
       max-width: 480px; margin-bottom: 40px; line-height: 1.7;
@@ -285,7 +374,7 @@
     }
 
     /* ── SECTION 7: DARK TUNNEL ── */
-    #s7 { padding: 120px 0; background: var(--bg-dark); }
+    #s7 { padding: 120px 0; background: var(--bg-deep); }
     .tunnel-copy {
       font-size: 17px; color: var(--fog-grey);
       line-height: 1.85; max-width: 520px;
@@ -501,6 +590,60 @@
       <p>By 2pm the coffee has worn off. You're tired and tense at the same time. Your task list is full. Your brain is empty.</p>
       <p>You're not lazy. You've been "working" all day. So why do you feel like you got nothing done?</p>
     </div>
+
+    <!-- Day timeline chart -->
+    <div class="day-chart">
+      <svg class="day-chart-svg" viewBox="0 0 560 160" xmlns="http://www.w3.org/2000/svg" aria-label="A typical broken day: coffee spikes followed by energy crashes">
+        <defs>
+          <linearGradient id="crashFill" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="rgba(255,255,255,0.05)"/>
+            <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Grid lines -->
+        <line x1="40" y1="30"  x2="540" y2="30"  stroke="rgba(255,255,255,0.03)" stroke-width="0.5"/>
+        <line x1="40" y1="75"  x2="540" y2="75"  stroke="rgba(255,255,255,0.03)" stroke-width="0.5"/>
+        <line x1="40" y1="120" x2="540" y2="120" stroke="rgba(255,255,255,0.07)" stroke-width="0.5"/>
+
+        <!-- Crash fill zones -->
+        <path d="M 155 80 C 165 100, 175 120, 190 120 L 220 120 C 205 120, 195 100, 185 80 Z" fill="url(#crashFill)"/>
+        <path d="M 335 75 C 345 98, 355 120, 370 120 L 400 120 C 385 120, 375 98, 365 75 Z" fill="url(#crashFill)"/>
+
+        <!-- Broken day energy line -->
+        <polyline
+          points="40,108 85,108 95,104 140,38 165,120 185,110 225,92 265,90 285,86 340,32 365,120 385,110 420,112 470,116 520,119"
+          stroke="rgba(255,255,255,0.18)" stroke-width="1.5" fill="none"
+          stroke-linejoin="round" stroke-linecap="round"/>
+
+        <!-- Coffee spike dots -->
+        <circle cx="140" cy="38"  r="3" fill="rgba(255,255,255,0.25)"/>
+        <circle cx="340" cy="32"  r="3" fill="rgba(255,255,255,0.25)"/>
+
+        <!-- Coffee labels -->
+        <text x="140" y="28"  font-family="DM Sans,sans-serif" font-size="7.5" fill="rgba(255,255,255,0.22)" text-anchor="middle" letter-spacing="0.5">1st coffee</text>
+        <text x="340" y="22"  font-family="DM Sans,sans-serif" font-size="7.5" fill="rgba(255,255,255,0.22)" text-anchor="middle" letter-spacing="0.5">2nd coffee</text>
+
+        <!-- Crash labels -->
+        <text x="192" y="116" font-family="DM Sans,sans-serif" font-size="7" fill="rgba(255,100,100,0.32)" text-anchor="middle">crash</text>
+        <text x="372" y="116" font-family="DM Sans,sans-serif" font-size="7" fill="rgba(255,100,100,0.32)" text-anchor="middle">crash</text>
+
+        <!-- Baseline -->
+        <line x1="40" y1="120" x2="540" y2="120" stroke="rgba(255,255,255,0.07)" stroke-width="0.5"/>
+
+        <!-- Time axis labels -->
+        <text x="40"  y="135" font-family="DM Sans,sans-serif" font-size="8" fill="#3A4A30" text-anchor="middle">7am</text>
+        <text x="120" y="135" font-family="DM Sans,sans-serif" font-size="8" fill="#3A4A30" text-anchor="middle">9am</text>
+        <text x="200" y="135" font-family="DM Sans,sans-serif" font-size="8" fill="#3A4A30" text-anchor="middle">11am</text>
+        <text x="280" y="135" font-family="DM Sans,sans-serif" font-size="8" fill="#3A4A30" text-anchor="middle">1pm</text>
+        <text x="360" y="135" font-family="DM Sans,sans-serif" font-size="8" fill="#3A4A30" text-anchor="middle">3pm</text>
+        <text x="440" y="135" font-family="DM Sans,sans-serif" font-size="8" fill="#3A4A30" text-anchor="middle">5pm</text>
+        <text x="520" y="135" font-family="DM Sans,sans-serif" font-size="8" fill="#3A4A30" text-anchor="middle">7pm</text>
+
+        <!-- Y axis label -->
+        <text x="14" y="75" font-family="DM Sans,sans-serif" font-size="7" fill="#3A4A30" text-anchor="middle" transform="rotate(-90,14,75)">FOCUS</text>
+      </svg>
+    </div>
   </div>
 </section>
 
@@ -522,6 +665,31 @@
     </div>
     <div class="body-copy">
       <p>You don't need more stimulation. You need a steadier brain.</p>
+    </div>
+
+    <!-- WIRED ≠ PRODUCTIVE comparison -->
+    <div class="compare-wrap">
+      <div class="compare-col">
+        <div class="compare-col-tag">What wired feels like</div>
+        <div class="compare-big">Wired</div>
+        <ul class="compare-items">
+          <li>Heart rate up, thoughts scattered</li>
+          <li>15 tabs open, none finished</li>
+          <li>You feel like you're working</li>
+          <li>6pm: task list untouched</li>
+        </ul>
+      </div>
+      <div class="compare-ne">≠</div>
+      <div class="compare-col right">
+        <div class="compare-col-tag">What productive looks like</div>
+        <div class="compare-big">Locked in</div>
+        <ul class="compare-items">
+          <li>Calm, single thread of thought</li>
+          <li>One tab. One task. Done.</li>
+          <li>You are actually working</li>
+          <li>2pm: already shipped</li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
