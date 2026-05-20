@@ -477,6 +477,27 @@
       .bundle-opt-qty { font-size: 24px; }
       .bundle-opt-price { font-size: 16px; }
     }
+
+    /* ── Flavor selector ── */
+    #s8 { --flavor-accent: #FF6B9D; }
+    .s8-step { font-family:'DM Sans',sans-serif; font-size:11px; font-weight:700; letter-spacing:0.11em; text-transform:uppercase; color:var(--text-muted); margin-bottom:14px; }
+    .flavor-select { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:36px; }
+    .flavor-pill {
+      display:flex; align-items:center; gap:8px;
+      padding:10px 20px; border:1.5px solid rgba(255,255,255,0.12); border-radius:100px;
+      cursor:pointer; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:500;
+      color:var(--fog-grey); background:transparent;
+      transition:border-color 0.18s, color 0.18s; user-select:none;
+    }
+    .flavor-swatch { width:10px; height:10px; border-radius:50%; flex-shrink:0; transition:transform 0.18s; }
+    .flavor-pill.active { border-color:var(--flavor-accent); color:var(--flavor-accent); }
+    .flavor-pill.active .flavor-swatch { transform:scale(1.25); }
+    .flavor-pill:hover:not(.active) { border-color:rgba(255,255,255,0.28); color:var(--text-primary); }
+    /* Flavor accent drives price/CTA colors in offer section */
+    #bundleCta { background:var(--flavor-accent); }
+    #s8 .bundle-opt.active { border-color:var(--flavor-accent); }
+    #bundleTotalDisplay { color:var(--flavor-accent); }
+    #bundleSaveDisplay { color:var(--flavor-accent); }
     .offer-intro {
       font-size: 16px; color: var(--fog-grey);
       max-width: 400px; margin: 0 auto 40px; line-height: 1.65;
@@ -1020,7 +1041,25 @@
     <img class="offer-img" src="/assets/presales-offer.png" alt="Mindor Performance Stack — 30 servings" loading="lazy">
     <p class="offer-intro">One scoop. Once a day. Built for the work you keep putting off.</p>
 
+    <!-- Flavor selector -->
+    <p class="s8-step">1 — Choose Your Flavor</p>
+    <div class="flavor-select" id="flavorSelect">
+      <div class="flavor-pill active" data-flavor="sour-candy">
+        <span class="flavor-swatch" style="background:#FF6B9D;"></span>
+        Sour Candy
+      </div>
+      <div class="flavor-pill" data-flavor="sour-grape">
+        <span class="flavor-swatch" style="background:#BF7FFF;"></span>
+        Sour Grape
+      </div>
+      <div class="flavor-pill" data-flavor="sour-gummy-worms">
+        <span class="flavor-swatch" style="background:#FF9B4A;"></span>
+        Sour Gummy Worms
+      </div>
+    </div>
+
     <!-- Bundle selector -->
+    <p class="s8-step">2 — Choose Your Bundle</p>
     <div class="bundle-opts" id="bundleOpts">
       <div class="bundle-opt" data-qty="1" data-price="42.99" data-label="1 bag">
         <div class="bundle-opt-qty">1</div>
@@ -1269,26 +1308,49 @@
   });
   document.getElementById('bundleSaveDisplay').style.display = 'inline';
 
+  // ── Flavor selector ────────────────────────────────────
+  var FLAVOR_COLORS = {
+    'sour-candy':       '#FF6B9D',
+    'sour-grape':       '#BF7FFF',
+    'sour-gummy-worms': '#FF9B4A'
+  };
+  var selectedFlavor = 'sour-candy';
+
+  function applyFlavorTheme(flavor) {
+    document.getElementById('s8').style.setProperty('--flavor-accent', FLAVOR_COLORS[flavor]);
+  }
+
+  document.querySelectorAll('.flavor-pill').forEach(function(pill) {
+    pill.addEventListener('click', function() {
+      document.querySelectorAll('.flavor-pill').forEach(function(p) { p.classList.remove('active'); });
+      this.classList.add('active');
+      selectedFlavor = this.dataset.flavor;
+      applyFlavorTheme(selectedFlavor);
+    });
+  });
+  applyFlavorTheme(selectedFlavor);
+
   // ── Shopify checkout ───────────────────────────────────
-  var SHOPIFY_DOMAIN  = 'mindor-1950.myshopify.com';
+  var SHOPIFY_DOMAIN   = 'mindor-1950.myshopify.com';
   var STOREFRONT_TOKEN = 'c1f8ad6a65722ad1a022b7e5f8a8660c';
-  var PRODUCT_ID      = 'gid://shopify/Product/9049594593435'; // Sour Candy
-  // Discount codes — must be active in Shopify Admin:
-  //   BUNDLE2    = 10% off (create this in Shopify Admin)
-  //   HVCO-STACK = 15% off (already exists)
-  var DISCOUNT_CODES  = { '1': null, '2': 'BUNDLE2', '3': 'HVCO-STACK' };
-  var _variantId = null;
+  var PRODUCT_IDS = {
+    'sour-candy':       'gid://shopify/Product/9049594593435',
+    'sour-grape':       'gid://shopify/Product/9049594626203',
+    'sour-gummy-worms': 'gid://shopify/Product/9049594495131'
+  };
+  var DISCOUNT_CODES = { '1': null, '2': 'BUNDLE2', '3': 'HVCO-STACK' };
+  var _variantCache  = {};
 
   async function _getVariantId() {
-    if (_variantId) return _variantId;
+    if (_variantCache[selectedFlavor]) return _variantCache[selectedFlavor];
     var res = await fetch('https://' + SHOPIFY_DOMAIN + '/api/2024-01/graphql.json', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'X-Shopify-Storefront-Access-Token': STOREFRONT_TOKEN },
-      body: JSON.stringify({ query: '{ product(id:"' + PRODUCT_ID + '") { variants(first:1) { nodes { id } } } }' })
+      body: JSON.stringify({ query: '{ product(id:"' + PRODUCT_IDS[selectedFlavor] + '") { variants(first:1) { nodes { id } } } }' })
     });
     var d = await res.json();
-    _variantId = d.data.product.variants.nodes[0].id;
-    return _variantId;
+    _variantCache[selectedFlavor] = d.data.product.variants.nodes[0].id;
+    return _variantCache[selectedFlavor];
   }
 
   async function handleBundleCheckout() {
