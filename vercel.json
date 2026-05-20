@@ -13,7 +13,8 @@
     { "source": "/quiz-upsell", "destination": "/quiz-focus-upsell-1.html" },
     { "source": "/quiz-downsell", "destination": "/quiz-focus-downsell.html" },
     { "source": "/quiz-thankyou", "destination": "/quiz-focus-thankyou.html" },
-    { "source": "/tracker", "destination": "/productivity-tracker.html" }
+    { "source": "/tracker", "destination": "/productivity-tracker.html" },
+    { "source": "/fb/lander/relaunch", "destination": "/mindor-presales.html" }
   ],
   "headers": [
     {

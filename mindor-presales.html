@@ -166,13 +166,9 @@
       pointer-events: none;
     }
     .hero-img {
-      width: 160px; height: 200px;
-      background: var(--surface); border: 0.5px solid var(--border);
-      border-radius: 8px; display: flex; align-items: center;
-      justify-content: center; margin: 0 auto 52px;
-      font-size: 9px; color: var(--text-dim);
-      letter-spacing: 0.12em; text-transform: uppercase; text-align: center;
-      padding: 16px;
+      width: 320px; max-width: 85vw;
+      margin: 0 auto 52px; display: block;
+      filter: drop-shadow(0 0 40px rgba(226,255,71,0.08));
     }
     .hero-h1 {
       font-family: 'Barlow Condensed', sans-serif;
@@ -293,12 +289,12 @@
     .s4-inner { display: flex; gap: 60px; align-items: flex-start; }
     .s4-copy { flex: 1; }
     .s4-img {
-      flex-shrink: 0; width: 120px; height: 150px;
-      background: var(--surface); border: 0.5px solid var(--border);
-      border-radius: 6px; display: flex; align-items: center;
-      justify-content: center; font-size: 9px; color: var(--text-dim);
-      letter-spacing: 0.1em; text-transform: uppercase;
-      text-align: center; padding: 12px;
+      flex-shrink: 0; width: 340px; max-width: 100%;
+      border-radius: 6px; overflow: hidden;
+      border: 0.5px solid var(--border-subtle);
+    }
+    .s4-img img {
+      width: 100%; height: 280px; object-fit: cover; display: block;
     }
 
     /* ── SECTION 5: FOCUS ARC ── */
@@ -395,13 +391,9 @@
       pointer-events: none;
     }
     .offer-img {
-      width: 200px; height: 245px;
-      background: var(--surface); border: 0.5px solid var(--border);
-      border-radius: 8px; display: flex; align-items: center;
-      justify-content: center; margin: 0 auto 52px;
-      font-size: 9px; color: var(--text-dim);
-      letter-spacing: 0.1em; text-transform: uppercase;
-      text-align: center; padding: 16px;
+      width: 300px; max-width: 85vw;
+      margin: 0 auto 52px; display: block;
+      filter: drop-shadow(0 0 48px rgba(226,255,71,0.10));
     }
     .offer-intro {
       font-size: 16px; color: var(--fog-grey);
@@ -564,7 +556,7 @@
 <!-- SECTION 1 — HERO                      -->
 <!-- ───────────────────────────────────── -->
 <section id="s1">
-  <div class="hero-img">[ASSET: Hero product photo]</div>
+  <img class="hero-img" src="assets/presales-hero.png" alt="Mindor Performance Stack tubs" loading="eager">
   <h1 class="hero-h1">
     <span>Wired by 10am.</span>
     <span>Useless by 2pm.</span>
@@ -710,7 +702,9 @@
           <p>This isn't a fantasy. It's how your brain works when it isn't fighting itself.</p>
         </div>
       </div>
-      <div class="s4-img">[ASSET: Lifestyle shot]</div>
+      <div class="s4-img">
+        <img src="assets/presales-lifestyle.png" alt="Person locked into deep work at their desk" loading="lazy">
+      </div>
     </div>
   </div>
 </section>
@@ -876,7 +870,7 @@
 <section id="s8">
   <div class="wrap">
     <div class="label">Start Your Stack</div>
-    <div class="offer-img">[ASSET: Premium 3/4 angle product shot]</div>
+    <img class="offer-img" src="assets/presales-offer.png" alt="Mindor Performance Stack — 30 servings" loading="lazy">
     <p class="offer-intro">One scoop. Once a day. Built for the work you keep putting off.</p>
     <div class="offer-block">
       <div class="offer-name">Mindor Performance Stack</div>
