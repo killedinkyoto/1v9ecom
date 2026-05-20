@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mindor Performance Stack — Build Your Focus</title>
+  <meta name="description" content="Stop feeling wired but useless. Mindor is a clean focus drink built around the Focus Arc — steady for hours, no crash, no jitters.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+  <!-- Meta Pixel -->
+  <script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+  document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init','1460636158529685');
+  fbq('track','PageView');
+  fbq('track','ViewContent',{content_name:'Mindor Performance Stack',value:36.00,currency:'USD'});
+  </script>
+  <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1460636158529685&ev=PageView&noscript=1"/></noscript>
+
+  <!-- Microsoft Clarity -->
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+      t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "wtnfe3y3tz");
+  </script>
+
+  <style>
+    :root {
+      --execution-green: #E2FF47;
+      --bg:              #111309;
+      --bg-dark:         #0D1009;
+      --surface:         #161A0E;
+      --surface2:        #1E2416;
+      --clean-cream:     #F8ECC3;
+      --fog-grey:        #C8C9B8;
+      --text-primary:    #F0F0E8;
+      --text-muted:      #6A7A5A;
+      --text-dim:        #3A4A30;
+      --border:          rgba(235,255,71,0.12);
+      --border-subtle:   rgba(255,255,255,0.06);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ── LAYOUT ── */
+    .wrap        { max-width: 960px; margin: 0 auto; padding: 0 40px; }
+    .wrap-narrow { max-width: 600px; margin: 0 auto; padding: 0 40px; }
+    .wrap-mid    { max-width: 740px; margin: 0 auto; padding: 0 40px; }
+
+    /* ── SECTION LABEL ── */
+    .label {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      padding-bottom: 10px;
+      border-bottom: 0.5px solid var(--border-subtle);
+      margin-bottom: 36px;
+    }
+
+    /* ── NAV ── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: 56px; display: flex; align-items: center;
+      justify-content: space-between; padding: 0 40px;
+      background: rgba(17,19,9,0.92);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      border-bottom: 0.5px solid var(--border);
+    }
+    .nav-mark {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900; font-size: 22px;
+      color: var(--execution-green); letter-spacing: 0.02em;
+      text-decoration: none;
+    }
+    .nav-btn {
+      font-family: 'DM Sans', sans-serif; font-size: 11px;
+      font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--bg); background: var(--execution-green);
+      border: none; padding: 9px 20px; border-radius: 3px;
+      cursor: pointer; text-decoration: none;
+      transition: opacity 0.15s, transform 0.15s;
+    }
+    .nav-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+    .nav-btn:active { transform: translateY(0); }
+
+    /* ── PRIMARY BUTTON ── */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      font-family: 'DM Sans', sans-serif; font-size: 12px;
+      font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--bg); background: var(--execution-green);
+      border: none; padding: 16px 40px; border-radius: 3px;
+      cursor: pointer; text-decoration: none; min-height: 52px;
+      box-shadow: 0 0 32px rgba(226,255,71,0.14), 0 4px 20px rgba(0,0,0,0.5);
+      transition: opacity 0.15s, transform 0.15s, box-shadow 0.15s;
+    }
+    .btn:hover {
+      opacity: 0.88; transform: translateY(-2px);
+      box-shadow: 0 0 48px rgba(226,255,71,0.2), 0 8px 28px rgba(0,0,0,0.6);
+    }
+    .btn:active { transform: translateY(0); }
+    .btn:focus-visible { outline: 2px solid var(--execution-green); outline-offset: 3px; }
+
+    /* ── BODY COPY ── */
+    .body-copy { font-size: 16px; color: var(--fog-grey); line-height: 1.8; }
+    .body-copy p { margin-bottom: 20px; }
+    .body-copy p:last-child { margin-bottom: 0; }
+
+    /* ── SECTION 1: HERO ── */
+    #s1 {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 140px 40px 96px;
+      position: relative; overflow: hidden;
+    }
+    #s1::before {
+      content: ''; position: absolute;
+      top: 50%; left: 50%; transform: translate(-50%, -50%);
+      width: 800px; height: 800px;
+      background: radial-gradient(circle, rgba(226,255,71,0.04) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .hero-img {
+      width: 160px; height: 200px;
+      background: var(--surface); border: 0.5px solid var(--border);
+      border-radius: 8px; display: flex; align-items: center;
+      justify-content: center; margin: 0 auto 52px;
+      font-size: 9px; color: var(--text-dim);
+      letter-spacing: 0.12em; text-transform: uppercase; text-align: center;
+      padding: 16px;
+    }
+    .hero-h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900; font-size: clamp(56px, 11vw, 96px);
+      line-height: 0.9; letter-spacing: -0.01em;
+      color: var(--text-primary); margin-bottom: 28px;
+      max-width: 720px;
+    }
+    .hero-h1 span { display: block; }
+    .hero-sub {
+      font-size: clamp(15px, 2.5vw, 19px);
+      color: var(--fog-grey); line-height: 1.55;
+      max-width: 500px; margin: 0 auto 16px;
+    }
+    .hero-copy {
+      font-size: 15px; color: var(--text-muted);
+      max-width: 420px; margin: 0 auto 44px; line-height: 1.6;
+    }
+    .hero-trust {
+      margin-top: 20px; font-size: 12px;
+      font-style: italic; color: var(--text-muted);
+    }
+
+    /* ── SECTION 2: THE MIRROR ── */
+    #s2 { padding: 100px 0; }
+    .s2-line {
+      width: 40px; height: 1.5px;
+      background: var(--execution-green); opacity: 0.4;
+      margin-bottom: 48px;
+    }
+
+    /* ── SECTION 3: THE REFRAME ── */
+    #s3 { padding: 100px 0; background: var(--bg-dark); }
+    .reframe-pull {
+      padding: 56px 0; text-align: center;
+    }
+    .reframe-pull p {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900; font-size: clamp(26px, 5vw, 44px);
+      line-height: 1.05; letter-spacing: 0.01em;
+      color: var(--text-primary); text-transform: uppercase;
+      max-width: 680px; margin: 0 auto;
+    }
+    .reframe-pull p + p { margin-top: 4px; color: var(--execution-green); }
+
+    /* ── SECTION 4: LIGHT AT THE END ── */
+    #s4 { padding: 100px 0; position: relative; overflow: hidden; }
+    #s4::before {
+      content: ''; position: absolute;
+      top: 40%; left: 50%; transform: translate(-50%, -50%);
+      width: 640px; height: 640px;
+      background: radial-gradient(circle, rgba(226,255,71,0.04) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .s4-inner { display: flex; gap: 60px; align-items: flex-start; }
+    .s4-copy { flex: 1; }
+    .s4-img {
+      flex-shrink: 0; width: 120px; height: 150px;
+      background: var(--surface); border: 0.5px solid var(--border);
+      border-radius: 6px; display: flex; align-items: center;
+      justify-content: center; font-size: 9px; color: var(--text-dim);
+      letter-spacing: 0.1em; text-transform: uppercase;
+      text-align: center; padding: 12px;
+    }
+
+    /* ── SECTION 5: FOCUS ARC ── */
+    #s5 { padding: 100px 0; background: var(--bg-dark); }
+    #s5 .label-wrap { text-align: center; }
+    .arc-heading {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800; font-size: clamp(26px, 4.5vw, 40px);
+      color: var(--text-primary); text-transform: uppercase;
+      letter-spacing: 0.02em; margin-bottom: 24px; text-align: center;
+    }
+    .arc-intro { text-align: center; max-width: 560px; margin: 0 auto 48px; }
+    .arc-svg-wrap { margin: 0 auto; max-width: 680px; padding: 0 8px; }
+    .arc-svg { width: 100%; height: auto; display: block; overflow: visible; }
+    .arc-cards {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 16px; margin-top: 40px;
+    }
+    .arc-card {
+      background: var(--surface); border: 0.5px solid var(--border);
+      border-radius: 4px; padding: 24px 22px;
+    }
+    .arc-card-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.2em; color: var(--execution-green);
+      text-transform: uppercase; margin-bottom: 10px;
+    }
+    .arc-card-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800; font-size: 19px;
+      color: var(--text-primary); text-transform: uppercase;
+      letter-spacing: 0.02em; margin-bottom: 10px; line-height: 1.1;
+    }
+    .arc-card-desc { font-size: 13px; color: var(--fog-grey); line-height: 1.6; }
+    .arc-tagline {
+      text-align: center; margin-top: 40px;
+      font-size: 15px; color: var(--text-muted); font-style: italic;
+    }
+
+    /* ── SECTION 6: INGREDIENTS ── */
+    #s6 { padding: 100px 0; }
+    .ing-intro {
+      font-size: 15px; color: var(--fog-grey);
+      max-width: 480px; margin-bottom: 40px; line-height: 1.7;
+    }
+    .ing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .ing-card {
+      background: var(--surface); border: 0.5px solid var(--border);
+      border-radius: 4px; padding: 26px 28px;
+      transition: border-color 0.2s;
+    }
+    .ing-card:hover { border-color: rgba(226,255,71,0.2); }
+    .ing-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800; font-size: 18px;
+      color: var(--text-primary); text-transform: uppercase;
+      letter-spacing: 0.02em; margin-bottom: 5px;
+    }
+    .ing-dose {
+      font-size: 11px; font-weight: 600;
+      color: var(--execution-green); letter-spacing: 0.12em;
+      text-transform: uppercase; margin-bottom: 12px;
+    }
+    .ing-desc { font-size: 13px; color: var(--fog-grey); line-height: 1.6; }
+    .ing-note {
+      margin-top: 28px; font-size: 12px;
+      font-style: italic; color: var(--text-muted);
+    }
+
+    /* ── SECTION 7: DARK TUNNEL ── */
+    #s7 { padding: 120px 0; background: var(--bg-dark); }
+    .tunnel-copy {
+      font-size: 17px; color: var(--fog-grey);
+      line-height: 1.85; max-width: 520px;
+    }
+    .tunnel-copy p { margin-bottom: 22px; }
+    .tunnel-copy p:last-child {
+      margin-bottom: 0; color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    /* ── SECTION 8: THE OFFER ── */
+    #s8 { padding: 100px 0; text-align: center; position: relative; overflow: hidden; }
+    #s8::before {
+      content: ''; position: absolute;
+      top: 0; left: 50%; transform: translateX(-50%);
+      width: 900px; height: 480px;
+      background: radial-gradient(ellipse at 50% 0%, rgba(226,255,71,0.05) 0%, transparent 68%);
+      pointer-events: none;
+    }
+    .offer-img {
+      width: 200px; height: 245px;
+      background: var(--surface); border: 0.5px solid var(--border);
+      border-radius: 8px; display: flex; align-items: center;
+      justify-content: center; margin: 0 auto 52px;
+      font-size: 9px; color: var(--text-dim);
+      letter-spacing: 0.1em; text-transform: uppercase;
+      text-align: center; padding: 16px;
+    }
+    .offer-intro {
+      font-size: 16px; color: var(--fog-grey);
+      max-width: 400px; margin: 0 auto 40px; line-height: 1.65;
+    }
+    .offer-block {
+      background: var(--surface); border: 0.5px solid var(--border);
+      border-radius: 6px; padding: 36px 40px;
+      max-width: 400px; margin: 0 auto 32px; text-align: left;
+    }
+    .offer-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900; font-size: 22px;
+      color: var(--text-primary); text-transform: uppercase;
+      letter-spacing: 0.04em; margin-bottom: 6px;
+    }
+    .offer-servings { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+    .offer-price {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900; font-size: 52px;
+      color: var(--execution-green); line-height: 1;
+      letter-spacing: -0.01em;
+    }
+    .offer-normal { font-size: 13px; color: var(--text-muted); margin-top: 5px; }
+    .trust-row {
+      display: flex; justify-content: center; flex-wrap: wrap;
+      gap: 28px; margin: 26px auto 14px; max-width: 480px;
+    }
+    .trust-item {
+      font-size: 12px; color: var(--fog-grey);
+      display: flex; align-items: center; gap: 7px;
+    }
+    .trust-check { color: var(--execution-green); font-size: 13px; font-weight: 600; }
+    .offer-fine { font-size: 12px; font-style: italic; color: var(--text-muted); margin-top: 14px; }
+
+    /* ── SECTION 9: FAQ ── */
+    #s9 { padding: 100px 0; background: var(--bg-dark); }
+    .faq-list { max-width: 640px; margin: 0 auto; }
+    .faq-item { border-bottom: 0.5px solid var(--border-subtle); }
+    .faq-q {
+      display: flex; justify-content: space-between;
+      align-items: center; padding: 22px 0; gap: 20px;
+      cursor: pointer; font-size: 15px; font-weight: 500;
+      color: var(--text-primary); user-select: none;
+      -webkit-tap-highlight-color: transparent; min-height: 44px;
+      transition: color 0.15s;
+    }
+    .faq-q:hover { color: var(--execution-green); }
+    .faq-icon {
+      width: 26px; height: 26px; flex-shrink: 0;
+      border: 0.5px solid var(--border-subtle); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px; line-height: 1; color: var(--text-muted);
+      transition: transform 0.25s, border-color 0.25s, color 0.25s;
+    }
+    .faq-item.open .faq-icon {
+      transform: rotate(45deg);
+      border-color: rgba(226,255,71,0.28); color: var(--execution-green);
+    }
+    .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.32s ease; }
+    .faq-a-inner {
+      padding: 0 0 24px;
+      font-size: 14px; color: var(--fog-grey); line-height: 1.75;
+    }
+
+    /* ── SECTION 10: FINAL CTA ── */
+    #s10 { padding: 128px 0; text-align: center; }
+    .final-h2 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900; font-size: clamp(52px, 9vw, 80px);
+      line-height: 0.9; color: var(--text-primary); margin-bottom: 28px;
+    }
+    .final-copy {
+      font-size: 17px; color: var(--fog-grey);
+      line-height: 1.65; margin-bottom: 44px;
+    }
+    .final-copy p { margin-bottom: 6px; }
+    .final-trust { margin-top: 20px; font-size: 12px; font-style: italic; color: var(--text-muted); }
+
+    /* ── FOOTER ── */
+    footer { border-top: 0.5px solid var(--border-subtle); padding: 52px 40px 48px; }
+    .footer-top {
+      max-width: 960px; margin: 0 auto 36px;
+      display: flex; justify-content: space-between;
+      align-items: center; flex-wrap: wrap; gap: 24px;
+    }
+    .footer-mark {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900; font-size: 20px;
+      color: var(--execution-green); letter-spacing: 0.02em;
+    }
+    .footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
+    .footer-links a {
+      font-size: 12px; color: var(--text-muted);
+      text-decoration: none; letter-spacing: 0.06em;
+      transition: color 0.15s;
+    }
+    .footer-links a:hover { color: var(--fog-grey); }
+    .footer-legal {
+      max-width: 960px; margin: 0 auto;
+      font-size: 11px; color: var(--text-dim);
+      line-height: 1.7; text-align: center;
+    }
+    .footer-legal p { margin-bottom: 8px; }
+
+    /* ── STICKY MOBILE CTA ── */
+    #sticky {
+      display: none; position: fixed;
+      bottom: 0; left: 0; right: 0; z-index: 90;
+      padding: 12px 20px 16px;
+      background: rgba(13,16,9,0.97);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      border-top: 0.5px solid var(--border);
+    }
+    #sticky a {
+      display: flex; align-items: center; justify-content: center;
+      background: var(--execution-green); color: var(--bg);
+      font-family: 'DM Sans', sans-serif; font-size: 12px;
+      font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+      text-decoration: none; border-radius: 3px;
+      min-height: 48px; padding: 14px 24px;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .wrap, .wrap-narrow, .wrap-mid { padding: 0 24px; }
+      .nav { padding: 0 24px; }
+      #s1 { padding: 110px 24px 72px; }
+      #s2, #s3, #s4, #s5, #s6, #s8, #s9 { padding: 72px 0; }
+      #s7 { padding: 88px 0; }
+      #s10 { padding: 88px 0; }
+      footer { padding: 44px 24px 40px; }
+      .footer-top { flex-direction: column; align-items: flex-start; }
+      .s4-inner { flex-direction: column; gap: 36px; }
+      .s4-img { width: 100%; height: 160px; max-width: 200px; }
+      .arc-cards { grid-template-columns: 1fr; }
+      .ing-grid { grid-template-columns: 1fr; }
+      .offer-block { padding: 28px 24px; }
+      .trust-row { gap: 16px; }
+      #sticky { display: block; }
+    }
+
+    @media (max-width: 480px) {
+      .hero-h1 { font-size: 48px; }
+      .offer-price { font-size: 44px; }
+      .final-h2 { font-size: 48px; }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- NAV -->
+<nav class="nav" aria-label="Main navigation">
+  <a class="nav-mark" href="/">MINDOR</a>
+  <a class="nav-btn" href="index.html">Get Yours →</a>
+</nav>
+
+<!-- ───────────────────────────────────── -->
+<!-- SECTION 1 — HERO                      -->
+<!-- ───────────────────────────────────── -->
+<section id="s1">
+  <div class="hero-img">[ASSET: Hero product photo]</div>
+  <h1 class="hero-h1">
+    <span>Wired by 10am.</span>
+    <span>Useless by 2pm.</span>
+  </h1>
+  <p class="hero-sub">You drink the coffee. You feel the buzz. You still can't get the work done.</p>
+  <p class="hero-copy">This is the page for people who are sick of feeling busy all day and shipping nothing.</p>
+  <a class="btn" href="index.html">Build My Focus</a>
+  <p class="hero-trust"><em>Trusted by builders who can't afford a low-focus day.</em></p>
+</section>
+
+<!-- ───────────────────────────────────── -->
+<!-- SECTION 2 — THE MIRROR                -->
+<!-- ───────────────────────────────────── -->
+<section id="s2">
+  <div class="wrap">
+    <div class="s2-line"></div>
+    <div class="label">The Problem You Already Know</div>
+    <div class="body-copy">
+      <p>You sit down at your desk with a plan.</p>
+      <p>By 8:20 you've opened Slack. Checked two emails. Lost the thread.</p>
+      <p>You make a coffee. It works for about 45 minutes.</p>
+      <p>By 10am you're wired. You feel "on." But you still haven't started the real work.</p>
+      <p>By 2pm the coffee has worn off. You're tired and tense at the same time. Your task list is full. Your brain is empty.</p>
+      <p>You're not lazy. You've been "working" all day. So why do you feel like you got nothing done?</p>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────────────────────────────── -->
+<!-- SECTION 3 — THE REFRAME               -->
+<!-- ───────────────────────────────────── -->
+<section id="s3">
+  <div class="wrap">
+    <div class="label">Here's What's Actually Happening</div>
+    <div class="body-copy">
+      <p>Most people think the problem is they need more energy.</p>
+      <p>So they drink more coffee. Or pop a pre-workout. Or chew nicotine gum.</p>
+      <p>And it sort of works. For about an hour. Then the crash comes.</p>
+      <p>The truth is simpler. Feeling wired and being productive are two different things.</p>
+    </div>
+    <div class="reframe-pull">
+      <p>Coffee makes you feel like you're working.</p>
+      <p>It doesn't make you actually work.</p>
+    </div>
+    <div class="body-copy">
+      <p>You don't need more stimulation. You need a steadier brain.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────────────────────────────── -->
+<!-- SECTION 4 — LIGHT AT THE END          -->
+<!-- ───────────────────────────────────── -->
+<section id="s4">
+  <div class="wrap">
+    <div class="label">What It Feels Like When It Works</div>
+    <div class="s4-inner">
+      <div class="s4-copy">
+        <div class="body-copy">
+          <p>You sit down. Open the doc. And just... start.</p>
+          <p>You don't reach for a second cup. Your leg isn't bouncing under the desk. Your phone stays face-down because you forgot to check it.</p>
+          <p>The focus doesn't hit you like a wall. It comes on slowly. Settles in. Stays.</p>
+          <p>An hour goes by. Then two. You look up and the work is done.</p>
+          <p>This isn't a fantasy. It's how your brain works when it isn't fighting itself.</p>
+        </div>
+      </div>
+      <div class="s4-img">[ASSET: Lifestyle shot]</div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────────────────────────────── -->
+<!-- SECTION 5 — THE FOCUS ARC             -->
+<!-- ───────────────────────────────────── -->
+<section id="s5">
+  <div class="wrap-mid">
+    <div style="text-align:center;">
+      <div class="label">The Focus Arc</div>
+    </div>
+    <h2 class="arc-heading">Why Mindor feels different from coffee.</h2>
+    <div class="arc-intro body-copy">
+      <p>Coffee gives you a spike. It hits hard, then drops you. That's the crash.</p>
+      <p>Mindor was built around a different shape. We call it the Focus Arc.</p>
+    </div>
+
+    <!-- FOCUS ARC SVG -->
+    <div class="arc-svg-wrap">
+      <svg class="arc-svg" viewBox="0 0 680 210" xmlns="http://www.w3.org/2000/svg" aria-label="Focus Arc diagram showing steady rise, plateau, and soft descent">
+        <defs>
+          <linearGradient id="arcGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#E2FF47" stop-opacity="0.10"/>
+            <stop offset="100%" stop-color="#E2FF47" stop-opacity="0.00"/>
+          </linearGradient>
+          <filter id="lg">
+            <feGaussianBlur stdDeviation="2.5" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+        <!-- Base line -->
+        <line x1="30" y1="175" x2="660" y2="175" stroke="rgba(255,255,255,0.07)" stroke-width="0.5"/>
+
+        <!-- Coffee spike (dim reference) -->
+        <path d="M 68 175 L 88 68 L 108 175" stroke="rgba(255,255,255,0.14)" stroke-width="1.5" fill="none" stroke-dasharray="4,3" stroke-linejoin="round"/>
+        <text x="88" y="60" font-family="DM Sans,sans-serif" font-size="9" fill="rgba(255,255,255,0.22)" text-anchor="middle" letter-spacing="1">COFFEE</text>
+        <text x="88" y="190" font-family="DM Sans,sans-serif" font-size="8" fill="#3A4A30" text-anchor="middle">SPIKE</text>
+
+        <!-- Mindor arc fill -->
+        <path d="M 185 175 C 225 175, 265 62, 320 54 C 360 48, 400 46, 440 46 C 480 46, 512 46, 535 54 C 568 66, 600 120, 635 175 Z"
+              fill="url(#arcGrad)"/>
+
+        <!-- Mindor arc line -->
+        <path d="M 185 175 C 225 175, 265 62, 320 54 C 360 48, 400 46, 440 46 C 480 46, 512 46, 535 54 C 568 66, 600 120, 635 175"
+              stroke="#E2FF47" stroke-width="2.5" fill="none" stroke-linecap="round" filter="url(#lg)"/>
+
+        <!-- Point 01 — Clean On-Ramp -->
+        <circle cx="278" cy="76" r="5" fill="#E2FF47" filter="url(#lg)"/>
+        <line x1="278" y1="72" x2="278" y2="32" stroke="rgba(226,255,71,0.25)" stroke-width="0.5" stroke-dasharray="3,2"/>
+        <text x="278" y="26" font-family="Barlow Condensed,sans-serif" font-weight="700" font-size="10" fill="#E2FF47" text-anchor="middle" letter-spacing="1.5">01</text>
+
+        <!-- Point 02 — Stable Plateau -->
+        <circle cx="435" cy="46" r="5" fill="#E2FF47" filter="url(#lg)"/>
+        <line x1="435" y1="42" x2="435" y2="16" stroke="rgba(226,255,71,0.25)" stroke-width="0.5" stroke-dasharray="3,2"/>
+        <text x="435" y="12" font-family="Barlow Condensed,sans-serif" font-weight="700" font-size="10" fill="#E2FF47" text-anchor="middle" letter-spacing="1.5">02</text>
+
+        <!-- Point 03 — Soft Landing -->
+        <circle cx="565" cy="88" r="5" fill="#E2FF47" filter="url(#lg)"/>
+        <line x1="565" y1="84" x2="565" y2="32" stroke="rgba(226,255,71,0.25)" stroke-width="0.5" stroke-dasharray="3,2"/>
+        <text x="565" y="26" font-family="Barlow Condensed,sans-serif" font-weight="700" font-size="10" fill="#E2FF47" text-anchor="middle" letter-spacing="1.5">03</text>
+
+        <!-- MINDOR label on curve -->
+        <text x="440" y="38" font-family="DM Sans,sans-serif" font-size="8" fill="rgba(226,255,71,0.35)" text-anchor="middle" letter-spacing="1.5">MINDOR</text>
+
+        <!-- Time axis labels -->
+        <text x="185" y="190" font-family="DM Sans,sans-serif" font-size="8" fill="#3A4A30" text-anchor="middle">0 min</text>
+        <text x="295" y="190" font-family="DM Sans,sans-serif" font-size="8" fill="#3A4A30" text-anchor="middle">20 min</text>
+        <text x="435" y="190" font-family="DM Sans,sans-serif" font-size="8" fill="#3A4A30" text-anchor="middle">2 hrs</text>
+        <text x="635" y="190" font-family="DM Sans,sans-serif" font-size="8" fill="#3A4A30" text-anchor="middle">4 hrs</text>
+      </svg>
+    </div>
+
+    <!-- Phase cards -->
+    <div class="arc-cards">
+      <div class="arc-card">
+        <div class="arc-card-num">01</div>
+        <div class="arc-card-name">Clean On-Ramp</div>
+        <div class="arc-card-desc">The focus comes on slowly. You feel sharp inside 20 minutes. No jolt.</div>
+      </div>
+      <div class="arc-card">
+        <div class="arc-card-num">02</div>
+        <div class="arc-card-name">Stable Plateau</div>
+        <div class="arc-card-desc">You stay there. For three to four hours. Steady. No spikes.</div>
+      </div>
+      <div class="arc-card">
+        <div class="arc-card-num">03</div>
+        <div class="arc-card-name">Soft Landing</div>
+        <div class="arc-card-desc">The focus fades the way it came on. No crash. No tense afternoon.</div>
+      </div>
+    </div>
+
+    <p class="arc-tagline"><em>Coffee gives you a spike. Mindor gives you a window.</em></p>
+  </div>
+</section>
+
+<!-- ───────────────────────────────────── -->
+<!-- SECTION 6 — INGREDIENTS               -->
+<!-- ───────────────────────────────────── -->
+<section id="s6">
+  <div class="wrap">
+    <div class="label">What's in the Scoop</div>
+    <p class="ing-intro">Every ingredient has a job. Every dose is listed on the label.</p>
+    <div class="ing-grid">
+      <div class="ing-card">
+        <div class="ing-name">Caffeine (from green tea)</div>
+        <div class="ing-dose">200mg</div>
+        <div class="ing-desc">The alertness signal. Wakes you up without the harsh edge of synthetic caffeine.</div>
+      </div>
+      <div class="ing-card">
+        <div class="ing-name">L-Theanine</div>
+        <div class="ing-dose">100mg</div>
+        <div class="ing-desc">The steadiness signal. Smooths out the caffeine so you don't get jittery.</div>
+      </div>
+      <div class="ing-card">
+        <div class="ing-name">Alpha-GPC</div>
+        <div class="ing-dose">300mg</div>
+        <div class="ing-desc">Supports mental sharpness for demanding work. This is the ingredient that makes the focus feel "clean."</div>
+      </div>
+      <div class="ing-card">
+        <div class="ing-name">Asian Ginseng</div>
+        <div class="ing-dose">50mg</div>
+        <div class="ing-desc">Supports mental stamina on long work days. The reason you don't hit a 3pm wall.</div>
+      </div>
+      <div class="ing-card">
+        <div class="ing-name">B-Vitamins (B3, B6, B12)</div>
+        <div class="ing-dose">Full complex</div>
+        <div class="ing-desc">Help your body turn food into usable energy. The foundation layer.</div>
+      </div>
+      <div class="ing-card">
+        <div class="ing-name">Inositol</div>
+        <div class="ing-dose">600mg</div>
+        <div class="ing-desc">Supports a calm, steady focus state. Part of the steadiness layer.</div>
+      </div>
+      <div class="ing-card" style="grid-column: span 1;">
+        <div class="ing-name">Black Pepper Extract</div>
+        <div class="ing-dose">Bioavailability layer</div>
+        <div class="ing-desc">Helps your body absorb everything above. So you actually feel the dose.</div>
+      </div>
+    </div>
+    <p class="ing-note"><em>Every dose is on the label. No proprietary blends.</em></p>
+  </div>
+</section>
+
+<!-- ───────────────────────────────────── -->
+<!-- SECTION 7 — DARK TUNNEL               -->
+<!-- ───────────────────────────────────── -->
+<section id="s7">
+  <div class="wrap-narrow">
+    <div class="label">Or You Can Stay Where You Are</div>
+    <div class="tunnel-copy">
+      <p>You can close this page. Pour another coffee. Pop another energy drink.</p>
+      <p>Crash at 2pm. Push through the afternoon on willpower. Lose another day to "busy."</p>
+      <p>Or you can try a different shape.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────────────────────────────── -->
+<!-- SECTION 8 — THE OFFER                 -->
+<!-- ───────────────────────────────────── -->
+<section id="s8">
+  <div class="wrap">
+    <div class="label">Start Your Stack</div>
+    <div class="offer-img">[ASSET: Premium 3/4 angle product shot]</div>
+    <p class="offer-intro">One scoop. Once a day. Built for the work you keep putting off.</p>
+    <div class="offer-block">
+      <div class="offer-name">Mindor Performance Stack</div>
+      <div class="offer-servings">30 servings — one full month of work sessions.</div>
+      <div class="offer-price">$36</div>
+      <div class="offer-normal">Normally $42.99</div>
+    </div>
+    <a class="btn" href="index.html">Get My First Bag →</a>
+    <div class="trust-row">
+      <span class="trust-item"><span class="trust-check">✓</span> Ships in 24 hours</span>
+      <span class="trust-item"><span class="trust-check">✓</span> Third-party tested</span>
+      <span class="trust-item"><span class="trust-check">✓</span> 30-day money-back guarantee</span>
+    </div>
+    <p class="offer-fine"><em>Cancel anytime. No subscription unless you ask for one.</em></p>
+  </div>
+</section>
+
+<!-- ───────────────────────────────────── -->
+<!-- SECTION 9 — FAQ                       -->
+<!-- ───────────────────────────────────── -->
+<section id="s9">
+  <div class="wrap">
+    <div class="label">Stuff People Ask Before They Buy</div>
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
+          "I already drink coffee. Why would I switch?"
+          <span class="faq-icon" aria-hidden="true">+</span>
+        </div>
+        <div class="faq-a" role="region">
+          <div class="faq-a-inner">You don't have to switch. A lot of our customers still drink coffee. Mindor isn't a replacement for one thing. It's a replacement for the whole chaotic stack — the second coffee, the energy drink, the afternoon scramble. One scoop in the morning and most people stop needing the rest.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
+          "I've tried nootropics before and felt nothing."
+          <span class="faq-icon" aria-hidden="true">+</span>
+        </div>
+        <div class="faq-a" role="region">
+          <div class="faq-a-inner">Most nootropic products hide their doses behind "proprietary blends." That's why they don't work. Mindor lists every ingredient and every milligram on the label. The dose is built to be felt. If you don't feel it, send it back.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
+          "Will I get jitters?"
+          <span class="faq-icon" aria-hidden="true">+</span>
+        </div>
+        <div class="faq-a" role="region">
+          <div class="faq-a-inner">The caffeine in Mindor is paired with L-theanine. That's the ingredient that smooths the edge. Most people describe it as "alert without the buzz." If you're caffeine-sensitive, start with half a scoop and work up.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
+          "What about the crash?"
+          <span class="faq-icon" aria-hidden="true">+</span>
+        </div>
+        <div class="faq-a" role="region">
+          <div class="faq-a-inner">The Focus Arc is built to fade slowly. Caffeine alone spikes and drops. Caffeine plus L-theanine plus the stamina layer fades the way it came in. No wall, no crash.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
+          "Is there sucralose?"
+          <span class="faq-icon" aria-hidden="true">+</span>
+        </div>
+        <div class="faq-a" role="region">
+          <div class="faq-a-inner">Yes. It's how we keep zero sugar and a consistent taste in every scoop. FDA-reviewed and approved for food use. If you avoid all artificial sweeteners on principle, this isn't the product for you.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
+          "What if I don't like it?"
+          <span class="faq-icon" aria-hidden="true">+</span>
+        </div>
+        <div class="faq-a" role="region">
+          <div class="faq-a-inner">Send back what's left within 30 days and we refund the full price. We don't ask questions and we cover return shipping.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ───────────────────────────────────── -->
+<!-- SECTION 10 — FINAL CTA                -->
+<!-- ───────────────────────────────────── -->
+<section id="s10">
+  <div class="wrap" style="text-align:center;">
+    <h2 class="final-h2">Pick your shape.</h2>
+    <div class="final-copy">
+      <p>Coffee gives you a spike.</p>
+      <p>Mindor gives you a window.</p>
+    </div>
+    <a class="btn" href="index.html">Start Your First Month — $36</a>
+    <p class="final-trust"><em>30-day money-back guarantee. Ships in 24 hours.</em></p>
+  </div>
+</section>
+
+<!-- ───────────────────────────────────── -->
+<!-- FOOTER                                -->
+<!-- ───────────────────────────────────── -->
+<footer>
+  <div class="footer-top">
+    <span class="footer-mark">MINDOR</span>
+    <nav class="footer-links" aria-label="Footer">
+      <a href="mailto:support@drinkmindor.com">Contact</a>
+      <a href="#">Shipping</a>
+      <a href="#">Returns</a>
+      <a href="#">Terms</a>
+      <a href="#">Privacy</a>
+    </nav>
+  </div>
+  <div class="footer-legal">
+    <p>These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease.</p>
+    <p>Consult a healthcare provider before use if you are pregnant, nursing, on medication, or have a medical condition.</p>
+  </div>
+</footer>
+
+<!-- STICKY MOBILE CTA -->
+<div id="sticky" role="complementary" aria-label="Quick checkout">
+  <a href="index.html">Get Mindor — $36</a>
+</div>
+
+<script>
+  // ── FAQ accordion ──────────────────────────────────────
+  document.querySelectorAll('.faq-q').forEach(function(btn) {
+    btn.addEventListener('click', toggle);
+    btn.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle.call(this); }
+    });
+  });
+
+  function toggle() {
+    var item   = this.closest('.faq-item');
+    var answer = item.querySelector('.faq-a');
+    var inner  = item.querySelector('.faq-a-inner');
+    var isOpen = item.classList.contains('open');
+
+    document.querySelectorAll('.faq-item.open').forEach(function(o) {
+      o.classList.remove('open');
+      o.querySelector('.faq-a').style.maxHeight = '0';
+      o.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
+    });
+
+    if (!isOpen) {
+      item.classList.add('open');
+      answer.style.maxHeight = inner.offsetHeight + 'px';
+      this.setAttribute('aria-expanded', 'true');
+    }
+  }
+
+  // ── Sticky mobile CTA ──────────────────────────────────
+  var hero   = document.getElementById('s1');
+  var offer  = document.getElementById('s8');
+  var sticky = document.getElementById('sticky');
+
+  function updateSticky() {
+    if (window.innerWidth >= 768) { sticky.style.display = 'none'; return; }
+    var heroBtm  = hero.getBoundingClientRect().bottom;
+    var offerTop = offer.getBoundingClientRect().top;
+    if (heroBtm < 0 && offerTop > window.innerHeight * 0.6) {
+      sticky.style.display = 'block';
+    } else {
+      sticky.style.display = 'none';
+    }
+  }
+
+  window.addEventListener('scroll', updateSticky, { passive: true });
+  window.addEventListener('resize', updateSticky, { passive: true });
+  updateSticky();
+</script>
+
+</body>
+</html>
