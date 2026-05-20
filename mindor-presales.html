@@ -210,7 +210,7 @@
     .day-chart-svg { width: 100%; max-width: 560px; height: auto; display: block; }
     @media (max-width: 768px) {
       .day-chart { margin-top: 40px; }
-      .day-chart-svg { min-height: 120px; }
+      .day-chart-svg { min-height: 150px; }
     }
 
     /* ── SECTION 3: THE REFRAME ── */
@@ -668,55 +668,55 @@
 
     <!-- Day timeline chart -->
     <div class="day-chart">
-      <svg class="day-chart-svg" viewBox="0 0 560 160" xmlns="http://www.w3.org/2000/svg" aria-label="A typical broken day: coffee spikes followed by energy crashes">
+      <svg class="day-chart-svg" viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg" aria-label="A typical broken day: coffee spikes followed by energy crashes">
         <defs>
           <linearGradient id="crashFill" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="rgba(255,255,255,0.05)"/>
-            <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+            <stop offset="0%" stop-color="rgba(255,80,80,0.12)"/>
+            <stop offset="100%" stop-color="rgba(255,80,80,0)"/>
           </linearGradient>
         </defs>
 
         <!-- Grid lines -->
-        <line x1="40" y1="30"  x2="540" y2="30"  stroke="rgba(255,255,255,0.03)" stroke-width="0.5"/>
-        <line x1="40" y1="75"  x2="540" y2="75"  stroke="rgba(255,255,255,0.03)" stroke-width="0.5"/>
-        <line x1="40" y1="120" x2="540" y2="120" stroke="rgba(255,255,255,0.07)" stroke-width="0.5"/>
+        <line x1="40" y1="50"  x2="540" y2="50"  stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/>
+        <line x1="40" y1="95"  x2="540" y2="95"  stroke="rgba(255,255,255,0.04)" stroke-width="0.5"/>
+        <line x1="40" y1="140" x2="540" y2="140" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>
 
         <!-- Crash fill zones -->
-        <path d="M 155 80 C 165 100, 175 120, 190 120 L 220 120 C 205 120, 195 100, 185 80 Z" fill="url(#crashFill)"/>
-        <path d="M 335 75 C 345 98, 355 120, 370 120 L 400 120 C 385 120, 375 98, 365 75 Z" fill="url(#crashFill)"/>
+        <path d="M 155 100 C 165 120, 175 140, 190 140 L 220 140 C 205 140, 195 120, 185 100 Z" fill="url(#crashFill)"/>
+        <path d="M 335 95 C 345 118, 355 140, 370 140 L 400 140 C 385 140, 375 118, 365 95 Z" fill="url(#crashFill)"/>
 
         <!-- Broken day energy line -->
         <polyline
-          points="40,108 85,108 95,104 140,38 165,120 185,110 225,92 265,90 285,86 340,32 365,120 385,110 420,112 470,116 520,119"
-          stroke="rgba(255,255,255,0.4)" stroke-width="2" fill="none"
+          points="40,128 85,128 95,124 140,58 165,140 185,130 225,112 265,110 285,106 340,52 365,140 385,130 420,132 470,136 520,139"
+          stroke="rgba(255,255,255,0.8)" stroke-width="3.5" fill="none"
           stroke-linejoin="round" stroke-linecap="round"/>
 
         <!-- Coffee spike dots -->
-        <circle cx="140" cy="38"  r="3.5" fill="rgba(255,255,255,0.55)"/>
-        <circle cx="340" cy="32"  r="3.5" fill="rgba(255,255,255,0.55)"/>
+        <circle cx="140" cy="58" r="5.5" fill="rgba(255,255,255,0.95)"/>
+        <circle cx="340" cy="52" r="5.5" fill="rgba(255,255,255,0.95)"/>
 
         <!-- Coffee labels -->
-        <text x="140" y="27" font-family="DM Sans,sans-serif" font-size="8.5" fill="rgba(255,255,255,0.6)" text-anchor="middle" letter-spacing="0.5">1st coffee</text>
-        <text x="340" y="21" font-family="DM Sans,sans-serif" font-size="8.5" fill="rgba(255,255,255,0.6)" text-anchor="middle" letter-spacing="0.5">2nd coffee</text>
+        <text x="140" y="44" font-family="DM Sans,sans-serif" font-size="14" font-weight="600" fill="rgba(255,255,255,0.9)" text-anchor="middle">1st coffee</text>
+        <text x="340" y="38" font-family="DM Sans,sans-serif" font-size="14" font-weight="600" fill="rgba(255,255,255,0.9)" text-anchor="middle">2nd coffee</text>
 
         <!-- Crash labels -->
-        <text x="192" y="115" font-family="DM Sans,sans-serif" font-size="8.5" fill="rgba(255,100,100,0.7)" text-anchor="middle">crash</text>
-        <text x="372" y="115" font-family="DM Sans,sans-serif" font-size="8.5" fill="rgba(255,100,100,0.7)" text-anchor="middle">crash</text>
+        <text x="192" y="134" font-family="DM Sans,sans-serif" font-size="14" font-weight="700" fill="rgba(255,70,70,1)" text-anchor="middle">crash</text>
+        <text x="372" y="134" font-family="DM Sans,sans-serif" font-size="14" font-weight="700" fill="rgba(255,70,70,1)" text-anchor="middle">crash</text>
 
         <!-- Baseline -->
-        <line x1="40" y1="120" x2="540" y2="120" stroke="rgba(255,255,255,0.12)" stroke-width="0.5"/>
+        <line x1="40" y1="140" x2="540" y2="140" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
 
         <!-- Time axis labels -->
-        <text x="40"  y="135" font-family="DM Sans,sans-serif" font-size="8.5" fill="rgba(200,201,184,0.5)" text-anchor="middle">7am</text>
-        <text x="120" y="135" font-family="DM Sans,sans-serif" font-size="8.5" fill="rgba(200,201,184,0.5)" text-anchor="middle">9am</text>
-        <text x="200" y="135" font-family="DM Sans,sans-serif" font-size="8.5" fill="rgba(200,201,184,0.5)" text-anchor="middle">11am</text>
-        <text x="280" y="135" font-family="DM Sans,sans-serif" font-size="8.5" fill="rgba(200,201,184,0.5)" text-anchor="middle">1pm</text>
-        <text x="360" y="135" font-family="DM Sans,sans-serif" font-size="8.5" fill="rgba(200,201,184,0.5)" text-anchor="middle">3pm</text>
-        <text x="440" y="135" font-family="DM Sans,sans-serif" font-size="8.5" fill="rgba(200,201,184,0.5)" text-anchor="middle">5pm</text>
-        <text x="520" y="135" font-family="DM Sans,sans-serif" font-size="8.5" fill="rgba(200,201,184,0.5)" text-anchor="middle">7pm</text>
+        <text x="40"  y="160" font-family="DM Sans,sans-serif" font-size="13" fill="rgba(200,201,184,0.8)" text-anchor="middle">7am</text>
+        <text x="120" y="160" font-family="DM Sans,sans-serif" font-size="13" fill="rgba(200,201,184,0.8)" text-anchor="middle">9am</text>
+        <text x="200" y="160" font-family="DM Sans,sans-serif" font-size="13" fill="rgba(200,201,184,0.8)" text-anchor="middle">11am</text>
+        <text x="280" y="160" font-family="DM Sans,sans-serif" font-size="13" fill="rgba(200,201,184,0.8)" text-anchor="middle">1pm</text>
+        <text x="360" y="160" font-family="DM Sans,sans-serif" font-size="13" fill="rgba(200,201,184,0.8)" text-anchor="middle">3pm</text>
+        <text x="440" y="160" font-family="DM Sans,sans-serif" font-size="13" fill="rgba(200,201,184,0.8)" text-anchor="middle">5pm</text>
+        <text x="520" y="160" font-family="DM Sans,sans-serif" font-size="13" fill="rgba(200,201,184,0.8)" text-anchor="middle">7pm</text>
 
         <!-- Y axis label -->
-        <text x="14" y="75" font-family="DM Sans,sans-serif" font-size="7.5" fill="rgba(200,201,184,0.4)" text-anchor="middle" transform="rotate(-90,14,75)">FOCUS</text>
+        <text x="14" y="95" font-family="DM Sans,sans-serif" font-size="11" fill="rgba(200,201,184,0.55)" text-anchor="middle" transform="rotate(-90,14,95)">FOCUS</text>
       </svg>
     </div>
   </div>
