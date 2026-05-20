@@ -202,7 +202,11 @@
 
     /* Day-timeline chart */
     .day-chart { margin-top: 56px; }
-    .day-chart-svg { width: 100%; max-width: 560px; height: auto; }
+    .day-chart-svg { width: 100%; max-width: 560px; height: auto; display: block; }
+    @media (max-width: 768px) {
+      .day-chart { margin-top: 40px; }
+      .day-chart-svg { min-height: 120px; }
+    }
 
     /* ── SECTION 3: THE REFRAME ── */
     #s3 {
@@ -272,7 +276,14 @@
     }
     @media (max-width: 640px) {
       .compare-wrap { grid-template-columns: 1fr; }
-      .compare-ne { padding: 16px; border-left: none; border-right: none; border-top: 0.5px solid var(--border-subtle); border-bottom: 0.5px solid var(--border-subtle); }
+      .compare-col { padding: 24px 20px; }
+      .compare-ne {
+        padding: 12px 20px; font-size: 28px;
+        border-left: none; border-right: none;
+        border-top: 0.5px solid var(--border-subtle);
+        border-bottom: 0.5px solid var(--border-subtle);
+        justify-content: flex-start;
+      }
     }
 
     /* ── SECTION 4: LIGHT AT THE END ── */
@@ -528,7 +539,8 @@
       footer { padding: 44px 24px 40px; }
       .footer-top { flex-direction: column; align-items: flex-start; }
       .s4-inner { flex-direction: column; gap: 36px; }
-      .s4-img { width: 100%; height: 160px; max-width: 200px; }
+      .s4-img { width: 100%; max-width: 100%; }
+      .s4-img img { height: 220px; }
       .arc-cards { grid-template-columns: 1fr; }
       .ing-grid { grid-template-columns: 1fr; }
       .offer-block { padding: 28px 24px; }
