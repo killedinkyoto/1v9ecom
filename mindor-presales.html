@@ -1312,6 +1312,14 @@
       if (btn) { btn.textContent = origText; btn.disabled = false; }
     }
   }
+
+  // Re-enable button when user navigates back from Shopify checkout (bfcache restore)
+  window.addEventListener('pageshow', function(e) {
+    if (e.persisted) {
+      var btn = document.getElementById('bundleCta');
+      if (btn) { btn.disabled = false; btn.textContent = bundleData[selectedQty].cta; }
+    }
+  });
 </script>
 
 </body>
