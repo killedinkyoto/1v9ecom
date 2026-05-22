@@ -1,0 +1,1927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Mindor Performance Stack — 600mg Inositol + Green Tea Caffeine. The Steady Base formula for founders, operators, and knowledge workers who can't afford a low-focus day.">
+  <title>Mindor — Put a Floor Under Your Focus</title>
+
+  <!--
+    MINDOR LANDER V3 — BUILD FLAGS
+    ===============================
+    [CONFIRM PRICING] Bundle prices ($42.99 / $76.99 / $99.99) are placeholders — confirm before launch.
+    [CONFIRM CHECKOUT URL] Checkout is wired to Shopify Storefront API (same domain/token as presales page). Confirm discount codes (BUNDLE2 for 2-tub, HVCO-STACK for 3-tub) match Shopify admin settings.
+    [CONNECT email capture endpoint] Popup email form captures email to console.log only — connect to Klaviyo or email service before launch.
+    [CONFIRM] Final CTA shows $36 (post-discount anchor price) — confirm this is intended.
+    [CONFIRM ROUTE] Page served at /lander via vercel.json — update to desired URL before launch.
+  -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Meta Pixel -->
+  <script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','1460636158529685');fbq('track','PageView');</script>
+  <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1460636158529685&ev=PageView&noscript=1"/></noscript>
+
+  <!-- Microsoft Clarity -->
+  <script type="text/javascript">(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y)})(window,document,"clarity","script","wtnfe3y3tz");</script>
+
+  <!-- Vercel Analytics -->
+  <script defer src="/_vercel/insights/script.js"></script>
+
+  <style>
+  /* ===== ROOT ===== */
+  :root {
+    --execution-green: #E2FF47;
+    --locked-lime: #EBFF47;
+    --deep-work-black: #0A0A0A;
+    --sprint-green: #425743;
+    --clean-cream: #F8ECC3;
+    --fog-grey: #C8C9B8;
+    --bg: #111309;
+    --surface: #161A0E;
+    --surface2: #1E2416;
+    --border: rgba(235,255,71,0.12);
+    --border-subtle: rgba(255,255,255,0.06);
+    --border-accent: rgba(235,255,71,0.3);
+    --border-active: #E2FF47;
+    --text-primary: #F0F0E8;
+    --text-muted: #6A7A5A;
+    --text-dim: #3A4A30;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+
+  /* ===== LAYOUT ===== */
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  /* ===== SECTION LABEL ===== */
+  .section-label {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    border-bottom: 0.5px solid var(--text-dim);
+    display: inline-block;
+    padding-bottom: 5px;
+    margin-bottom: 28px;
+  }
+
+  /* ===== SCANNABILITY ENGINE ===== */
+  /* Skim layer — bold fragments that carry the argument alone */
+  .skim-frag {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: clamp(19px, 4.8vw, 22px);
+    color: var(--text-primary);
+    display: block;
+    line-height: 1.2;
+    margin-top: 18px;
+    margin-bottom: 18px;
+  }
+
+  /* Depth layer — full sentences, recessive */
+  .depth {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    font-size: 15px;
+    color: var(--fog-grey);
+    line-height: 1.7;
+  }
+
+  /* ===== BUTTONS ===== */
+  .btn-primary {
+    background: var(--execution-green);
+    color: #1A1F14;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 14px 32px;
+    border-radius: 3px;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+    display: inline-block;
+    text-decoration: none;
+    text-align: center;
+  }
+  .btn-primary:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+    box-shadow: 0 0 20px rgba(226,255,71,0.18);
+  }
+  .btn-primary:active { transform: translateY(0); opacity: 1; }
+  .btn-primary:focus-visible { outline: 2px solid var(--execution-green); outline-offset: 3px; }
+  .btn-full { width: 100%; display: block; }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--execution-green);
+    border: 0.5px solid var(--border-accent);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 14px 32px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    display: inline-block;
+    text-decoration: none;
+    text-align: center;
+  }
+  .btn-ghost:hover { background: rgba(235,255,71,0.06); }
+  .btn-ghost:focus-visible { outline: 2px solid var(--execution-green); outline-offset: 3px; }
+
+  /* ===== NAV ===== */
+  #nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(17,19,9,0.92);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 0.5px solid var(--border-subtle);
+    height: 56px;
+  }
+  .nav-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 20px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    text-decoration: none;
+  }
+  .nav-wordmark {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 22px;
+    color: var(--execution-green);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+  .nav-cta { font-size: 11px; padding: 10px 24px; }
+
+  /* ===== HERO ===== */
+  #hero {
+    background: var(--bg);
+    background-image: radial-gradient(circle at 80% 20%, rgba(235,255,71,0.04) 0%, transparent 50%);
+    min-height: 92vh;
+    display: flex;
+    align-items: center;
+    padding: 72px 0 64px;
+  }
+  .hero-inner {
+    text-align: center;
+    width: 100%;
+  }
+  .hero-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 28px;
+  }
+  .hero-product-wrap {
+    margin: 0 auto 36px;
+    width: min(300px, 76vw);
+  }
+  .hero-product-wrap img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+  }
+  .hero-headline {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(38px, 9vw, 72px);
+    line-height: 0.95;
+    color: var(--text-primary);
+    margin: 0 auto 24px;
+    max-width: 720px;
+  }
+  .hero-headline .h-accent { color: var(--execution-green); }
+  .hero-subhead {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    color: var(--fog-grey);
+    max-width: 460px;
+    margin: 0 auto 14px;
+    line-height: 1.6;
+  }
+  .hero-copy {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    font-size: 15px;
+    color: var(--fog-grey);
+    max-width: 440px;
+    margin: 0 auto 32px;
+    line-height: 1.7;
+  }
+  .hero-cta-wrap { max-width: 300px; margin: 0 auto 14px; }
+  .hero-trust {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  /* ===== MIRROR (Section 2) ===== */
+  #mirror {
+    background: var(--surface);
+    padding: 88px 0;
+  }
+  @media (min-width: 768px) { #mirror { padding: 100px 0; } }
+
+  .mirror-lime-rule {
+    width: 32px;
+    height: 1px;
+    background: var(--execution-green);
+    margin-bottom: 32px;
+  }
+  .mirror-inner { max-width: 640px; }
+  .mirror-para { margin-bottom: 0; }
+
+  /* ===== REFRAME (Section 3) ===== */
+  #reframe {
+    background: var(--bg);
+    padding: 64px 0;
+  }
+  @media (min-width: 768px) { #reframe { padding: 100px 0; } }
+
+  .reframe-inner { max-width: 640px; }
+  .pull-quote-wrap {
+    position: relative;
+    margin: 48px 0;
+    text-align: center;
+    padding: 12px 0;
+    overflow: hidden;
+  }
+  .pull-quote-ghost {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(80px, 22vw, 160px);
+    color: var(--text-dim);
+    opacity: 0.12;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+    line-height: 1;
+  }
+  .pull-quote-accent {
+    width: 32px;
+    height: 2px;
+    background: var(--execution-green);
+    margin: 0 auto 20px;
+    position: relative;
+    z-index: 1;
+  }
+  .pull-quote {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: clamp(26px, 6vw, 42px);
+    color: var(--clean-cream);
+    line-height: 1.15;
+    position: relative;
+    z-index: 1;
+  }
+  .pull-quote span { display: block; }
+
+  /* ===== STEADY BASE (Section 4) ===== */
+  #steady-base {
+    background: var(--surface2);
+    background-image: radial-gradient(ellipse at 50% 0%, rgba(235,255,71,0.06) 0%, transparent 55%);
+    padding: 64px 0;
+  }
+  @media (min-width: 768px) { #steady-base { padding: 100px 0; } }
+
+  .steady-subhead {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: clamp(17px, 3.8vw, 24px);
+    color: var(--clean-cream);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 36px;
+    line-height: 1.2;
+  }
+
+  /* Two-layer stack diagram */
+  .stack-diagram {
+    background: rgba(10,10,8,0.45);
+    border: 0.5px solid var(--border-subtle);
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 36px 0;
+  }
+  .stack-alertness-row {
+    padding: 12px 16px;
+    display: flex;
+    justify-content: center;
+  }
+  .stack-alertness {
+    background: var(--execution-green);
+    border-radius: 4px;
+    padding: 14px 24px;
+    width: 72%;
+    text-align: center;
+  }
+  .stack-layer-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 17px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: block;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stack-alertness .stack-layer-name { color: #1A1F14; }
+  .stack-layer-cap {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    display: block;
+    line-height: 1.4;
+  }
+  .stack-alertness .stack-layer-cap { color: #2A3020; }
+  .stack-steadiness {
+    background: var(--sprint-green);
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border-top: 3px solid rgba(10,10,8,0.45);
+  }
+  .stack-steadiness .stack-layer-name { color: var(--fog-grey); }
+  .stack-steadiness .stack-layer-cap { color: rgba(200,201,184,0.7); font-size: 11px; }
+
+  /* Focus Arc */
+  .focus-arc-wrap {
+    margin-top: 52px;
+  }
+  .focus-arc-label {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 20px;
+  }
+  .focus-arc-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .arc-path {
+    stroke-dasharray: 720;
+    stroke-dashoffset: 720;
+    transition: stroke-dashoffset 1.2s ease-out;
+  }
+  .arc-path.animated { stroke-dashoffset: 0; }
+  @media (prefers-reduced-motion: reduce) {
+    .arc-path { stroke-dashoffset: 0; transition: none; }
+    .arc-dot { opacity: 1 !important; }
+    .arc-labels li { opacity: 1 !important; transform: none !important; }
+  }
+  .arc-dot {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .arc-dot.visible { opacity: 1; }
+  .arc-labels {
+    list-style: none;
+    margin-top: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .arc-labels li {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+  .arc-labels li.visible { opacity: 1; transform: none; }
+  .arc-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 30px;
+    color: var(--execution-green);
+    line-height: 1;
+    min-width: 30px;
+  }
+  .arc-label-copy strong {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--text-primary);
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    line-height: 1.2;
+    margin-bottom: 3px;
+  }
+  .arc-label-copy span {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--fog-grey);
+    line-height: 1.5;
+  }
+  .arc-closing {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: clamp(18px, 4vw, 22px);
+    color: var(--text-primary);
+    text-align: center;
+    margin-top: 36px;
+    line-height: 1.3;
+  }
+
+  /* ===== SCOOP — INGREDIENTS (Section 5 — cream) ===== */
+  #scoop {
+    background: var(--clean-cream);
+    padding: 64px 0;
+  }
+  @media (min-width: 768px) { #scoop { padding: 100px 0; } }
+
+  /* Flip colors on cream */
+  #scoop .section-label { color: #3A4A30; border-color: #3A4A30; }
+  #scoop .depth { color: #3A3A2E; }
+  #scoop .skim-frag { color: #1A1F14; }
+  .scoop-intro {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: #3A3A2E;
+    margin-bottom: 32px;
+    line-height: 1.65;
+    max-width: 580px;
+  }
+
+  /* Inositol hero card */
+  .inositol-card {
+    background: #FFFDF5;
+    border: 0.5px solid var(--sprint-green);
+    border-radius: 6px;
+    padding: 28px 24px;
+    box-shadow: 0 4px 24px rgba(66,87,67,0.14), 0 1px 4px rgba(0,0,0,0.06);
+    margin-bottom: 20px;
+  }
+  .inositol-badge {
+    display: inline-block;
+    background: var(--sprint-green);
+    color: var(--clean-cream);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 2px;
+    margin-bottom: 14px;
+  }
+  .inositol-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: clamp(26px, 6vw, 36px);
+    color: #1A1F14;
+    line-height: 1.0;
+    margin-bottom: 14px;
+  }
+  .inositol-body {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: #3A3A2E;
+    line-height: 1.65;
+  }
+
+  /* Ingredient grid */
+  .ingredient-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  @media (min-width: 600px) {
+    .ingredient-grid { grid-template-columns: 1fr 1fr; }
+  }
+  .ingredient-card {
+    background: #FFFDF5;
+    border: 0.5px solid rgba(66,87,67,0.2);
+    border-radius: 4px;
+    padding: 14px 16px;
+  }
+  .ing-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+  .ing-dose {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--sprint-green);
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  .ing-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: #1A1F14;
+    text-transform: uppercase;
+    flex: 1;
+    line-height: 1.15;
+  }
+  .ing-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--sprint-green);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 20px;
+    line-height: 1;
+    padding: 0 0 0 6px;
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+  }
+  .ingredient-card.expanded .ing-toggle { transform: rotate(45deg); }
+  .ing-preview {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    color: #3A3A2E;
+    line-height: 1.5;
+  }
+  .ing-full {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    color: #3A3A2E;
+    line-height: 1.55;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+  .ingredient-card.expanded .ing-full { max-height: 200px; }
+  @media (min-width: 768px) {
+    .ing-full { max-height: none !important; overflow: visible; }
+    .ing-preview { display: none; }
+    .ing-toggle { display: none; }
+  }
+  .scoop-footer-note {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    color: #3A3A2E;
+    text-align: center;
+    margin-top: 24px;
+    font-style: italic;
+    opacity: 0.7;
+  }
+
+  /* ===== COST (Section 6) ===== */
+  #cost {
+    background: var(--bg);
+    padding: 64px 0;
+  }
+  @media (min-width: 768px) { #cost { padding: 100px 0; } }
+
+  .cost-inner {
+    max-width: 580px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .cost-inner .section-label { display: block; text-align: center; border-bottom: none; padding-bottom: 0; border-bottom: 0.5px solid var(--text-dim); width: fit-content; margin: 0 auto 28px; }
+  .cost-inner .depth { text-align: left; }
+  .cost-inner .skim-frag { text-align: left; }
+  .cost-para { margin-bottom: 20px; }
+
+  /* ===== OFFER (Section 7) ===== */
+  #offer {
+    background: var(--surface);
+    padding: 64px 0;
+  }
+  @media (min-width: 768px) { #offer { padding: 100px 0; } }
+
+  .offer-product-wrap {
+    margin: 0 auto 36px;
+    max-width: 480px;
+  }
+  .offer-product-wrap img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+    object-fit: cover;
+  }
+  .offer-intro {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--fog-grey);
+    margin-bottom: 32px;
+    line-height: 1.65;
+  }
+
+  /* Bundle cards */
+  .bundle-step {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+  }
+  .bundle-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  @media (min-width: 640px) {
+    .bundle-cards { flex-direction: row; }
+  }
+  .bundle-card {
+    flex: 1;
+    background: var(--surface2);
+    border: 1px solid var(--border-subtle);
+    border-radius: 4px;
+    padding: 20px 14px 18px;
+    cursor: pointer;
+    position: relative;
+    text-align: center;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .bundle-card:focus-visible { outline: 2px solid var(--execution-green); outline-offset: 2px; }
+  .bundle-card.active {
+    border-color: var(--border-active);
+    box-shadow: 0 0 18px rgba(226,255,71,0.08);
+  }
+  .bundle-badge {
+    position: absolute;
+    top: -11px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--execution-green);
+    color: #1A1F14;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 8px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+  .bundle-tubs {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    margin-bottom: 12px;
+  }
+  .tub-thumb {
+    width: 26px;
+    height: 34px;
+    border-radius: 3px;
+    object-fit: contain;
+    background: var(--bg);
+    border: 0.5px solid var(--border);
+  }
+  .bundle-qty-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+  .bundle-price-big {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(28px, 6vw, 36px);
+    color: var(--text-primary);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .bundle-per-tub {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+  .bundle-save {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--execution-green);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    min-height: 18px;
+    display: block;
+  }
+
+  /* Flavor selector */
+  .flavor-row {
+    margin-bottom: 24px;
+  }
+  .flavor-step {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+  .flavor-opts {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .flavor-opt {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 13px;
+    padding: 10px 16px;
+    border-radius: 3px;
+    border: 0.5px solid var(--border-subtle);
+    background: var(--surface2);
+    color: var(--fog-grey);
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+  }
+  .flavor-opt:focus-visible { outline: 2px solid var(--execution-green); outline-offset: 2px; }
+  .flavor-opt.active {
+    border-color: var(--execution-green);
+    color: var(--text-primary);
+    background: rgba(226,255,71,0.06);
+  }
+
+  /* CTA + trust */
+  .offer-cta-wrap { margin-bottom: 14px; }
+  .trust-strip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 12px 0 6px;
+  }
+  .trust-strip span {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .trust-dot { color: var(--text-dim) !important; }
+  .offer-one-time {
+    text-align: center;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    color: var(--text-dim);
+    font-style: italic;
+    margin-top: 4px;
+  }
+
+  /* ===== FAQ (Section 8) ===== */
+  #faq {
+    background: var(--bg);
+    padding: 64px 0;
+  }
+  @media (min-width: 768px) { #faq { padding: 100px 0; } }
+
+  .faq-list { margin-top: 8px; }
+  .faq-item { border-bottom: 0.5px solid var(--border-subtle); }
+  .faq-item:first-child { border-top: 0.5px solid var(--border-subtle); }
+  .faq-q {
+    width: 100%;
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 17px;
+    text-align: left;
+    padding: 18px 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    line-height: 1.3;
+  }
+  .faq-q:focus-visible { outline: 2px solid var(--execution-green); outline-offset: 2px; border-radius: 2px; }
+  .faq-icon {
+    font-size: 22px;
+    color: var(--execution-green);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+    line-height: 1;
+  }
+  .faq-item.open .faq-icon { transform: rotate(45deg); }
+  .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+  .faq-item.open .faq-a { max-height: 400px; }
+  .faq-a-inner {
+    padding: 0 0 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--fog-grey);
+    line-height: 1.7;
+    max-width: 640px;
+  }
+
+  /* ===== FINAL CTA (Section 9) ===== */
+  #final-cta {
+    background: linear-gradient(170deg, #243018, #161A0C, #0E1208);
+    padding: 88px 0 96px;
+    text-align: center;
+  }
+  .final-headline {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(42px, 10vw, 72px);
+    color: var(--execution-green);
+    line-height: 0.95;
+    margin-bottom: 28px;
+  }
+  .final-body-line {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: clamp(18px, 4vw, 24px);
+    color: var(--text-primary);
+    line-height: 1.4;
+    display: block;
+  }
+  .final-body { margin-bottom: 36px; }
+  .final-cta-wrap { max-width: 320px; margin: 0 auto 16px; }
+  .final-sub {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-top: 14px;
+  }
+
+  /* ===== FOOTER ===== */
+  #footer {
+    background: var(--surface);
+    padding: 40px 0;
+  }
+  .footer-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding-bottom: 24px;
+    margin-bottom: 20px;
+    border-bottom: 0.5px solid var(--border-subtle);
+  }
+  .footer-brand { display: flex; flex-direction: column; gap: 4px; }
+  .footer-wordmark {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 20px;
+    color: var(--execution-green);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .footer-sub {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .footer-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+  .footer-links a {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+  .footer-links a:hover { color: var(--text-primary); }
+  .footer-compliance {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    color: var(--text-dim);
+    line-height: 1.7;
+  }
+  .footer-compliance p { margin-bottom: 8px; }
+  .footer-compliance p:last-child { margin-bottom: 0; }
+
+  /* ===== STICKY MOBILE BAR ===== */
+  #sticky-bar {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 90;
+    background: var(--surface);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-top: 0.5px solid var(--border);
+    padding: 10px 16px;
+    padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+  }
+  .sticky-bar-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .sticky-bar-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+  .sticky-bar-thumb {
+    width: 30px;
+    height: 38px;
+    border-radius: 2px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+  .sticky-bar-brand {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--text-primary);
+    letter-spacing: 0.03em;
+    display: block;
+    line-height: 1.2;
+  }
+  .sticky-bar-price {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+  .sticky-cta { font-size: 12px; padding: 12px 20px; white-space: nowrap; flex-shrink: 0; }
+
+  @media (max-width: 767px) {
+    #sticky-bar { display: block; }
+    body { padding-bottom: 70px; }
+  }
+  #sticky-bar.sb-hidden { display: none !important; }
+
+  /* ===== POPUP ===== */
+  #popup-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(0,0,0,0.8);
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  #popup-overlay.open { display: flex; }
+  #popup-panel {
+    background: var(--surface2);
+    border: 0.5px solid var(--border-accent);
+    border-radius: 4px;
+    max-width: 360px;
+    width: 100%;
+    padding: 32px;
+    position: relative;
+    animation: popIn 0.22s ease;
+  }
+  @keyframes popIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { #popup-panel { animation: none; } }
+  .popup-close {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 4px;
+    transition: color 0.15s ease;
+  }
+  .popup-close:hover { color: var(--text-primary); }
+  .popup-close:focus-visible { outline: 2px solid var(--execution-green); outline-offset: 2px; border-radius: 2px; }
+  .popup-label {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+  }
+  .popup-headline {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 30px;
+    color: var(--execution-green);
+    line-height: 1.05;
+    margin-bottom: 12px;
+  }
+  .popup-body {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--fog-grey);
+    line-height: 1.6;
+    margin-bottom: 18px;
+  }
+  .popup-field-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .popup-email {
+    flex: 1;
+    background: var(--bg);
+    border: 0.5px solid var(--border-subtle);
+    border-radius: 3px;
+    padding: 11px 13px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--text-primary);
+    outline: none;
+    transition: border-color 0.15s ease;
+    min-width: 0;
+  }
+  .popup-email::placeholder { color: var(--text-muted); }
+  .popup-email:focus { border-color: var(--execution-green); }
+  .popup-submit { font-size: 12px; padding: 11px 18px; flex-shrink: 0; }
+  .popup-disclaimer {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    color: var(--text-dim);
+    font-style: italic;
+  }
+  .popup-success { text-align: center; padding: 16px 0; }
+  .popup-success-hl {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 24px;
+    color: var(--execution-green);
+    margin-bottom: 10px;
+  }
+  .popup-success-body {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--fog-grey);
+  }
+
+  /* ===== UTILS ===== */
+  .mt-4 { margin-top: 16px; }
+  .mt-5 { margin-top: 20px; }
+  .mt-6 { margin-top: 24px; }
+  .mt-8 { margin-top: 32px; }
+  .mb-4 { margin-bottom: 16px; }
+  .mb-5 { margin-bottom: 20px; }
+  .mb-6 { margin-bottom: 24px; }
+  .mb-8 { margin-bottom: 32px; }
+  </style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<nav id="nav" aria-label="Site navigation">
+  <div class="nav-inner">
+    <a href="#hero" class="nav-logo" aria-label="Mindor home">
+      <svg width="28" height="20" viewBox="0 0 28 20" fill="none" aria-hidden="true">
+        <polyline points="0,16 5,4 9,12 14,2 19,12 23,4 28,16" stroke="#E2FF47" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="nav-wordmark">Mindor</span>
+    </a>
+    <a href="#offer" class="btn-primary nav-cta">GET YOURS &rarr;</a>
+  </div>
+</nav>
+
+
+<!-- ===== SECTION 1 — HERO ===== -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <p class="hero-eyebrow">Performance Stack &middot; Est. 2026</p>
+
+      <div class="hero-product-wrap">
+        <img src="/assets/product-photos/tub-candy.webp" alt="Mindor Performance Stack tub" loading="eager">
+      </div>
+
+      <h1 class="hero-headline">
+        You've been taking caffeine with<br><span class="h-accent">no floor under it.</span>
+      </h1>
+
+      <p class="hero-subhead">
+        It was never a discipline problem... But a formulation one. And it's the reason most work days fall apart by mid-afternoon.
+      </p>
+
+      <p class="hero-copy">
+        You did everything right. You showed up, you caffeinated, you sat down to work. The drink just had nothing underneath it to hold the focus steady.
+      </p>
+
+      <div class="hero-cta-wrap">
+        <a href="#mirror" class="btn-primary btn-full">Reveal The Solution</a>
+      </div>
+      <p class="hero-trust"><em>Made for people who can't afford a low-focus day.</em></p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== SECTION 2 — THE MIRROR ===== -->
+<section id="mirror">
+  <div class="container">
+    <div class="mirror-inner">
+      <div class="mirror-lime-rule"></div>
+      <span class="section-label">The Problem You Already Know</span>
+
+      <div class="mirror-para">
+        <p class="depth">You start the morning with a clear plan and a real intention to follow it.</p>
+        <p class="skim-frag">The intention was never the problem.</p>
+      </div>
+
+      <div class="mirror-para mt-8">
+        <p class="depth">Then the first coffee kicks in and you feel it. That lift, that hum, the sense that you're finally switched on. So you open your laptop to start the real work, and somehow end up answering messages instead.</p>
+        <p class="skim-frag">The buzz showed up. The focus didn't.</p>
+      </div>
+
+      <div class="mirror-para mt-8">
+        <p class="depth">By early afternoon the coffee has worn off and left you in a strange place: tired and tense at the same time, restless but not sharp. You make another one, because what else is there.</p>
+        <p class="skim-frag">The drink runs the day. You just ride it.</p>
+      </div>
+
+      <div class="mirror-para mt-8">
+        <p class="depth">You're not lazy and you haven't been slacking. You've been busy since 8am. So why does it feel like the important work never actually got touched?</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== SECTION 3 — THE REFRAME ===== -->
+<section id="reframe">
+  <div class="container">
+    <div class="reframe-inner">
+      <span class="section-label">Why More Caffeine Never Fixes It</span>
+
+      <p class="depth">When the focus won't hold, the obvious move is more: a second coffee, a pre-workout, nicotine gum on the worst days. And it lifts you again&hellip; For about an hour.</p>
+
+      <div class="mt-6">
+        <p class="depth">But adding more caffeine to a brain that already feels scattered doesn't make it steady.</p>
+        <p class="skim-frag">It just makes it loud.</p>
+      </div>
+
+      <div class="pull-quote-wrap">
+        <div class="pull-quote-ghost" aria-hidden="true">STEADY</div>
+        <div class="pull-quote-accent"></div>
+        <blockquote class="pull-quote">
+          <span>Caffeine can switch you on.</span>
+          <span>It was never built to hold you there.</span>
+        </blockquote>
+      </div>
+
+      <p class="depth">The thing your focus has been missing isn't a stronger signal. It's something underneath the signal, holding it level. A floor. A base.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== SECTION 4 — THE STEADY BASE ===== -->
+<section id="steady-base">
+  <div class="container">
+    <span class="section-label">The Steady Base</span>
+    <p class="steady-subhead">The part of the formula every other focus drink leaves out.</p>
+
+    <!-- Two-layer diagram -->
+    <div class="stack-diagram" role="img" aria-label="Diagram showing Alertness layer sitting on top of the Steadiness Layer">
+      <div class="stack-alertness-row">
+        <div class="stack-alertness">
+          <span class="stack-layer-name">Alertness</span>
+          <span class="stack-layer-cap">Lands on top of a brain that's already steady.</span>
+        </div>
+      </div>
+      <div class="stack-steadiness">
+        <div>
+          <span class="stack-layer-name">Steadiness Layer</span>
+          <span class="stack-layer-cap">Goes in first.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Body copy -->
+    <p class="depth">Here's what almost every focus product does: they start with caffeine, the caffeine spikes you, the spike brings an edge. And only then, they add a smoothing ingredient on top to clean up the edge after it shows up. It works, sort of. But you're still feeling the spike. They're just sanding it down after the fact.</p>
+
+    <p class="depth mt-5">Mindor was built the other way around.</p>
+
+    <p class="skim-frag">The calm goes in first.</p>
+
+    <p class="depth">Before the caffeine, there's a steadiness layer: led by 600mg of inositol, one of the largest doses in the whole formula. It isn't there for energy. It's there to set a level, calm baseline for your focus to sit on.</p>
+
+    <p class="skim-frag">Then the alertness lands on top of it.</p>
+
+    <p class="depth">The caffeine goes to work, but it's working on a brain that's already steady. So there's no edge to sand down. There was never an edge to begin with.</p>
+
+    <p class="skim-frag">That's the Steady Base. It's also why Mindor doesn't feel like coffee.</p>
+
+    <!-- Focus Arc graphic -->
+    <div class="focus-arc-wrap">
+      <p class="focus-arc-label">The Focus Arc &mdash; what the Steady Base produces</p>
+      <div class="focus-arc-svg-wrap">
+        <svg id="focusArcSvg" class="focus-arc-svg" viewBox="0 0 560 110" fill="none" aria-hidden="true">
+          <!-- Baseline -->
+          <line x1="20" y1="98" x2="540" y2="98" stroke="rgba(200,201,184,0.12)" stroke-width="0.5"/>
+          <!-- Time axis labels -->
+          <text x="20" y="108" font-size="10" fill="rgba(200,201,184,0.35)" font-family="DM Sans,sans-serif" text-anchor="middle">7am</text>
+          <text x="280" y="108" font-size="10" fill="rgba(200,201,184,0.35)" font-family="DM Sans,sans-serif" text-anchor="middle">12pm</text>
+          <text x="540" y="108" font-size="10" fill="rgba(200,201,184,0.35)" font-family="DM Sans,sans-serif" text-anchor="middle">3pm</text>
+          <!-- Coffee spike reference (faint) -->
+          <polyline points="80,96 95,28 110,96" stroke="rgba(255,255,255,0.1)" stroke-width="1.5" fill="none" stroke-dasharray="3,2"/>
+          <text x="95" y="20" font-size="9" fill="rgba(255,255,255,0.22)" font-family="DM Sans,sans-serif" text-anchor="middle">COFFEE</text>
+          <!-- Main arc path -->
+          <path id="arcPath" class="arc-path"
+            d="M 160,96 C 185,94 198,16 220,12 L 380,12 C 402,16 415,94 440,96"
+            stroke="var(--execution-green)" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- Marker dots -->
+          <circle id="arcDot0" class="arc-dot" cx="220" cy="12" r="4.5" fill="var(--execution-green)"/>
+          <circle id="arcDot1" class="arc-dot" cx="300" cy="12" r="4.5" fill="var(--execution-green)"/>
+          <circle id="arcDot2" class="arc-dot" cx="380" cy="12" r="4.5" fill="var(--execution-green)"/>
+        </svg>
+      </div>
+
+      <ul class="arc-labels" id="arcLabels">
+        <li id="arcLbl0">
+          <span class="arc-num">1</span>
+          <div class="arc-label-copy">
+            <strong>Clean On-Ramp</strong>
+            <span>Focus comes up gradually. You're sharp in about 20 minutes.</span>
+          </div>
+        </li>
+        <li id="arcLbl1">
+          <span class="arc-num">2</span>
+          <div class="arc-label-copy">
+            <strong>Stable Plateau</strong>
+            <span>You hold there for three to four hours.</span>
+          </div>
+        </li>
+        <li id="arcLbl2">
+          <span class="arc-num">3</span>
+          <div class="arc-label-copy">
+            <strong>Soft Landing</strong>
+            <span>It fades the way it arrived. No wall. No tense afternoon.</span>
+          </div>
+        </li>
+      </ul>
+
+      <p class="arc-closing">Coffee gives you a spike. The Steady Base gives you a window.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== SECTION 5 — WHAT'S IN THE SCOOP (cream) ===== -->
+<section id="scoop">
+  <div class="container">
+    <span class="section-label">What's In The Scoop</span>
+    <p class="scoop-intro">Every ingredient has a job. Every dose is printed on the label. No proprietary blends, no hiding the numbers.</p>
+
+    <!-- Hero Inositol Card -->
+    <div class="inositol-card">
+      <span class="inositol-badge">The Steady Base</span>
+      <h3 class="inositol-title">Inositol &mdash; 600mg</h3>
+      <p class="inositol-body">This is the layer most people have never heard of, and it's the reason Mindor works differently. Inositol supports a calm, steady focus state. The level baseline the rest of the formula is built on top of. Most focus drinks don't include it at all. It's the floor under everything else.</p>
+    </div>
+
+    <!-- Standard ingredient grid -->
+    <div class="ingredient-grid">
+
+      <div class="ingredient-card" id="ing-caffeine">
+        <div class="ing-header">
+          <span class="ing-dose">200mg</span>
+          <span class="ing-name">Caffeine, from green tea</span>
+          <button class="ing-toggle" aria-expanded="false" data-card="ing-caffeine" aria-label="Expand caffeine details">+</button>
+        </div>
+        <p class="ing-preview">The alertness signal.</p>
+        <div class="ing-full"><p>Green tea caffeine comes on cleaner than the synthetic kind. It does its job on a brain that's already steady.</p></div>
+      </div>
+
+      <div class="ingredient-card" id="ing-theanine">
+        <div class="ing-header">
+          <span class="ing-dose">100mg</span>
+          <span class="ing-name">L-Theanine</span>
+          <button class="ing-toggle" aria-expanded="false" data-card="ing-theanine" aria-label="Expand L-Theanine details">+</button>
+        </div>
+        <p class="ing-preview">Works alongside the caffeine.</p>
+        <div class="ing-full"><p>Works alongside the caffeine to keep the alertness smooth instead of sharp. Part of the steadiness layer, not a patch on top of it.</p></div>
+      </div>
+
+      <div class="ingredient-card" id="ing-alpha">
+        <div class="ing-header">
+          <span class="ing-dose">300mg</span>
+          <span class="ing-name">Alpha-GPC</span>
+          <button class="ing-toggle" aria-expanded="false" data-card="ing-alpha" aria-label="Expand Alpha-GPC details">+</button>
+        </div>
+        <p class="ing-preview">Supports mental sharpness.</p>
+        <div class="ing-full"><p>Supports mental sharpness during demanding work. This is the ingredient that makes the focus feel clean and deliberate rather than frantic.</p></div>
+      </div>
+
+      <div class="ingredient-card" id="ing-ginseng">
+        <div class="ing-header">
+          <span class="ing-dose">50mg</span>
+          <span class="ing-name">Asian Ginseng</span>
+          <button class="ing-toggle" aria-expanded="false" data-card="ing-ginseng" aria-label="Expand Asian Ginseng details">+</button>
+        </div>
+        <p class="ing-preview">Supports mental stamina.</p>
+        <div class="ing-full"><p>Supports mental stamina across a long work day. A big reason the focus is still there in the late afternoon instead of gone.</p></div>
+      </div>
+
+      <div class="ingredient-card" id="ing-arginine">
+        <div class="ing-header">
+          <span class="ing-dose">1000mg</span>
+          <span class="ing-name">L-Arginine</span>
+          <button class="ing-toggle" aria-expanded="false" data-card="ing-arginine" aria-label="Expand L-Arginine details">+</button>
+        </div>
+        <p class="ing-preview">Supports healthy circulation.</p>
+        <div class="ing-full"><p>Supports healthy circulation, getting you to that peak in under 20 minutes.</p></div>
+      </div>
+
+      <div class="ingredient-card" id="ing-bvit">
+        <div class="ing-header">
+          <span class="ing-dose">Complex</span>
+          <span class="ing-name">B-Vitamins (B3, B6, B12+)</span>
+          <button class="ing-toggle" aria-expanded="false" data-card="ing-bvit" aria-label="Expand B-Vitamins details">+</button>
+        </div>
+        <p class="ing-preview">Support energy metabolism.</p>
+        <div class="ing-full"><p>Support your body's normal energy metabolism, turning food into usable energy. The foundation layer underneath the focus layer.</p></div>
+      </div>
+
+      <div class="ingredient-card" id="ing-pepper">
+        <div class="ing-header">
+          <span class="ing-dose">5mg</span>
+          <span class="ing-name">Black Pepper Extract</span>
+          <button class="ing-toggle" aria-expanded="false" data-card="ing-pepper" aria-label="Expand Black Pepper Extract details">+</button>
+        </div>
+        <p class="ing-preview">Enhances absorption.</p>
+        <div class="ing-full"><p>Helps your body absorb the ingredients above, so the doses on the label are doses you actually feel.</p></div>
+      </div>
+
+    </div>
+    <p class="scoop-footer-note"><em>Every dose is on the label. No proprietary blends. Third-party tested.</em></p>
+  </div>
+</section>
+
+
+<!-- ===== SECTION 6 — THE COST OF STAYING THE SAME ===== -->
+<section id="cost">
+  <div class="container">
+    <div class="cost-inner">
+      <span class="section-label">What Another Day Of This Costs</span>
+
+      <div class="cost-para">
+        <p class="depth">Picture the version of the day where the focus holds. You sit down, you start, and the work actually moves — not because you forced it, but because your brain finally cooperated. You decided how the day would go.</p>
+        <p class="skim-frag">That's the part that's been missing. Not energy. Control.</p>
+      </div>
+
+      <div class="cost-para mt-6">
+        <p class="depth">Without it, the day decides for you. The drink works or it doesn't. The focus shows up or it doesn't. And you spend the afternoon reacting to a brain you can't quite steer.</p>
+      </div>
+
+      <div class="cost-para mt-6">
+        <p class="depth">You can close this page and run it back tomorrow. Same coffee, same buzz, same scattered afternoon, same quiet feeling at 6pm that you were busy all day and somehow never got to the thing that mattered.</p>
+      </div>
+
+      <div class="cost-para mt-6">
+        <p class="depth">Or you can put a floor under it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== SECTION 7 — THE OFFER ===== -->
+<section id="offer">
+  <div class="container">
+    <span class="section-label">Start Your Stack</span>
+
+    <div class="offer-product-wrap">
+      <img src="/assets/presales-offer.png" alt="Mindor Performance Stack tubs" loading="lazy">
+    </div>
+
+    <p class="offer-intro">One scoop, once a day. Built for the work you keep putting off to tomorrow.</p>
+
+    <!-- Bundle selector -->
+    <p class="bundle-step">1 &mdash; Choose Your Bundle</p>
+    <!-- [CONFIRM PRICING] -->
+    <div class="bundle-cards" id="bundleCards" role="radiogroup" aria-label="Choose bundle size">
+
+      <div class="bundle-card" data-qty="1" role="radio" aria-checked="false" tabindex="0">
+        <div class="bundle-tubs">
+          <img class="tub-thumb" src="/assets/product-photos/tub-candy.webp" alt="1 tub">
+        </div>
+        <p class="bundle-qty-text">1 Tub</p>
+        <p class="bundle-price-big">$42.99</p>
+        <p class="bundle-per-tub">$42.99/tub</p>
+        <span class="bundle-save">&nbsp;</span>
+      </div>
+
+      <div class="bundle-card active" data-qty="2" role="radio" aria-checked="true" tabindex="0">
+        <div class="bundle-badge">Most Popular &middot; Save $9</div>
+        <div class="bundle-tubs">
+          <img class="tub-thumb" src="/assets/product-photos/tub-candy.webp" alt="tub 1 of 2">
+          <img class="tub-thumb" src="/assets/product-photos/tub-candy.webp" alt="tub 2 of 2">
+        </div>
+        <p class="bundle-qty-text">2 Tubs</p>
+        <p class="bundle-price-big">$76.99</p>
+        <p class="bundle-per-tub">$38.50/tub</p>
+        <span class="bundle-save">Save $9</span>
+      </div>
+
+      <div class="bundle-card" data-qty="3" role="radio" aria-checked="false" tabindex="0">
+        <div class="bundle-badge" style="background:var(--text-primary);color:#1A1F14;">Best Value &middot; Save $29</div>
+        <div class="bundle-tubs">
+          <img class="tub-thumb" src="/assets/product-photos/tub-candy.webp" alt="tub 1 of 3">
+          <img class="tub-thumb" src="/assets/product-photos/tub-candy.webp" alt="tub 2 of 3">
+          <img class="tub-thumb" src="/assets/product-photos/tub-candy.webp" alt="tub 3 of 3">
+        </div>
+        <p class="bundle-qty-text">3 Tubs</p>
+        <p class="bundle-price-big">$99.99</p>
+        <p class="bundle-per-tub">$33.33/tub</p>
+        <span class="bundle-save">Save $29</span>
+      </div>
+
+    </div>
+
+    <!-- Flavor selector -->
+    <div class="flavor-row">
+      <p class="flavor-step">2 &mdash; Choose Your Flavor</p>
+      <div class="flavor-opts" id="flavorOpts">
+        <button class="flavor-opt active" data-flavor="sour-candy">Sour Candy</button>
+        <button class="flavor-opt" data-flavor="sour-grape">Sour Grape</button>
+        <button class="flavor-opt" data-flavor="sour-gummy-worms">Sour Gummy Worms</button>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <!-- [CONFIRM CHECKOUT URL] -->
+    <div class="offer-cta-wrap">
+      <button id="bundleCta" class="btn-primary btn-full" onclick="handleCheckout()">GET 2 TUBS &mdash; $76.99 &rarr;</button>
+    </div>
+
+    <div class="trust-strip">
+      <span>30-Day Guarantee</span>
+      <span class="trust-dot">&middot;</span>
+      <span>Ships in 24 Hours</span>
+      <span class="trust-dot">&middot;</span>
+      <span>Third-Party Tested</span>
+    </div>
+    <p class="offer-one-time"><em>One-time purchase. No subscription.</em></p>
+  </div>
+</section>
+
+
+<!-- ===== SECTION 8 — FAQ ===== -->
+<section id="faq">
+  <div class="container">
+    <span class="section-label">Stuff People Ask Before They Buy</span>
+
+    <div class="faq-list" id="faqList">
+
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">&ldquo;What is inositol, and why is it the main thing?&rdquo;<span class="faq-icon" aria-hidden="true">+</span></button>
+        <div class="faq-a" role="region">
+          <div class="faq-a-inner">Fair question &mdash; most people haven't heard of it. Inositol is a compound your body already makes and uses. In Mindor it supports a calm, steady focus state, which is the base layer the rest of the formula sits on. It's not a stimulant and it won't make you feel &ldquo;energized&rdquo; on its own. That's the point. It's the floor, not the spike.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">&ldquo;I already drink coffee. Why would I switch?&rdquo;<span class="faq-icon" aria-hidden="true">+</span></button>
+        <div class="faq-a" role="region">
+          <div class="faq-a-inner">You don't have to quit coffee. Plenty of our customers keep a cup. Mindor isn't a swap for one drink &mdash; it replaces the chaotic stack: the second coffee, the energy drink, the afternoon scramble. One scoop in the morning, and most people find they stop reaching for the rest.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">&ldquo;I've tried nootropics before and felt nothing.&rdquo;<span class="faq-icon" aria-hidden="true">+</span></button>
+        <div class="faq-a" role="region">
+          <div class="faq-a-inner">Usually that's a dosing problem. A lot of products bury their ingredients in a &ldquo;proprietary blend&rdquo; so you can't see how little is actually in there. Mindor lists every ingredient and every milligram on the label. The doses are built to be felt. If you don't feel it, send it back.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">&ldquo;Will I get jitters?&rdquo;<span class="faq-icon" aria-hidden="true">+</span></button>
+        <div class="faq-a" role="region">
+          <div class="faq-a-inner">The Steady Base is the answer to that. The calm layer goes in before the caffeine, so the caffeine works on a brain that's already steady. Most people describe it as alert without the buzz. If you're caffeine-sensitive, start with half a scoop.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">&ldquo;What about the 2pm crash?&rdquo;<span class="faq-icon" aria-hidden="true">+</span></button>
+        <div class="faq-a" role="region">
+          <div class="faq-a-inner">The Focus Arc is built to fade slowly instead of dropping. Caffeine on its own spikes and falls. Caffeine on top of the Steady Base, with the stamina layer holding the back half of the day, comes down gently. No wall.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">&ldquo;Is there sucralose in it?&rdquo;<span class="faq-icon" aria-hidden="true">+</span></button>
+        <div class="faq-a" role="region">
+          <div class="faq-a-inner">Yes. It's how we keep every scoop zero-sugar and tasting the same. It's FDA-reviewed and approved for food use. If you avoid all artificial sweeteners on principle, this is an honest heads-up that Mindor isn't the right fit for you.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" aria-expanded="false">&ldquo;What if I don't like it?&rdquo;<span class="faq-icon" aria-hidden="true">+</span></button>
+        <div class="faq-a" role="region">
+          <div class="faq-a-inner">If it's a flavor problem, we'll replace your tub with another delicious tub from our sour collection, free of charge. Or, simply send back what's left within 30 days for the full price back. No questions, and we cover return shipping.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== SECTION 9 — FINAL CTA ===== -->
+<section id="final-cta">
+  <div class="container">
+    <h2 class="final-headline">Put a floor under it.</h2>
+    <div class="final-body">
+      <span class="final-body-line">Caffeine can switch you on.</span>
+      <span class="final-body-line">The Steady Base is what holds you there.</span>
+    </div>
+    <!-- [CONFIRM] $36 is post-discount anchor price — confirm intended -->
+    <div class="final-cta-wrap">
+      <a href="#offer" class="btn-primary btn-full" style="font-size:14px;padding:16px 32px;">START MY FIRST TUB &mdash; $36 &rarr;</a>
+    </div>
+    <p class="final-sub"><em>30-day money-back guarantee. Ships in 24 hours.</em></p>
+  </div>
+</section>
+
+
+<!-- ===== FOOTER ===== -->
+<footer id="footer">
+  <div class="footer-inner container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <span class="footer-wordmark">Mindor</span>
+        <span class="footer-sub">Performance Stack &middot; Est. 2026</span>
+      </div>
+      <ul class="footer-links">
+        <li><a href="#">Terms</a></li>
+        <li><a href="#">Privacy</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-compliance">
+      <p>These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease.</p>
+      <p>Consult a healthcare provider before use if you are pregnant, nursing, on medication, or have a medical condition. Contains a black pepper extract that may affect how the body absorbs some medications.</p>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ===== STICKY MOBILE BAR ===== -->
+<div id="sticky-bar" class="sb-hidden" aria-label="Quick checkout">
+  <div class="sticky-bar-inner">
+    <div class="sticky-bar-left">
+      <img class="sticky-bar-thumb" src="/assets/product-photos/tub-candy.webp" alt="" aria-hidden="true">
+      <div>
+        <span class="sticky-bar-brand">MINDOR</span>
+        <span class="sticky-bar-price">from $42.99</span>
+      </div>
+    </div>
+    <a href="#offer" class="btn-primary sticky-cta">GET YOURS &rarr;</a>
+  </div>
+</div>
+
+
+<!-- ===== 15% OFF POPUP ===== -->
+<!-- [CONNECT email capture endpoint] -->
+<div id="popup-overlay" role="dialog" aria-modal="true" aria-labelledby="popupHeadline">
+  <div id="popup-panel">
+    <button class="popup-close" id="popupClose" aria-label="Close">&times;</button>
+    <div id="popupFormContent">
+      <p class="popup-label">Before You Decide</p>
+      <h2 class="popup-headline" id="popupHeadline">Take 15% off your first order.</h2>
+      <p class="popup-body">Drop your email &mdash; we'll send the code and a short note on getting the most out of your first week.</p>
+      <form id="popupForm" novalidate>
+        <div class="popup-field-row">
+          <input type="email" class="popup-email" id="popupEmail" placeholder="your@email.com" autocomplete="email" required aria-label="Email address">
+          <button type="submit" class="btn-primary popup-submit">SEND MY CODE</button>
+        </div>
+        <p class="popup-disclaimer">No spam. Unsubscribe anytime.</p>
+      </form>
+    </div>
+    <div id="popupSuccess" class="popup-success" style="display:none;">
+      <p class="popup-success-hl">Code's on its way.</p>
+      <p class="popup-success-body">Check your inbox.</p>
+    </div>
+  </div>
+</div>
+
+
+<script>
+// ===== SHOPIFY CONFIG =====
+var SHOPIFY_DOMAIN = 'mindor-1950.myshopify.com';
+var STOREFRONT_TOKEN = 'c1f8ad6a65722ad1a022b7e5f8a8660c';
+var PRODUCT_IDS = {
+  'sour-candy':       'gid://shopify/Product/9049594593435',
+  'sour-grape':       'gid://shopify/Product/9049594626203',
+  'sour-gummy-worms': 'gid://shopify/Product/9049594495131'
+};
+var _variantCache = {};
+
+// ===== BUNDLE STATE =====
+var selectedQty = 2;
+var selectedFlavor = 'sour-candy';
+var checkoutStarted = false;
+
+var BUNDLE_DATA = {
+  1: { price: '$42.99', cta: 'GET 1 TUB — $42.99 →', discount: null },
+  2: { price: '$76.99', cta: 'GET 2 TUBS — $76.99 →', discount: 'BUNDLE2' },
+  3: { price: '$99.99', cta: 'GET 3 TUBS — $99.99 →', discount: 'HVCO-STACK' }
+};
+
+function updateBundleUI() {
+  var cards = document.querySelectorAll('.bundle-card');
+  cards.forEach(function(card) {
+    var qty = parseInt(card.dataset.qty);
+    var isActive = qty === selectedQty;
+    card.classList.toggle('active', isActive);
+    card.setAttribute('aria-checked', isActive ? 'true' : 'false');
+  });
+  var cta = document.getElementById('bundleCta');
+  if (cta && !cta.disabled) cta.textContent = BUNDLE_DATA[selectedQty].cta;
+}
+
+// Bundle card click/keyboard
+document.querySelectorAll('.bundle-card').forEach(function(card) {
+  card.addEventListener('click', function() {
+    selectedQty = parseInt(this.dataset.qty);
+    updateBundleUI();
+  });
+  card.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      selectedQty = parseInt(this.dataset.qty);
+      updateBundleUI();
+    }
+  });
+});
+
+// Flavor buttons
+document.querySelectorAll('.flavor-opt').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    selectedFlavor = this.dataset.flavor;
+    document.querySelectorAll('.flavor-opt').forEach(function(b) { b.classList.remove('active'); });
+    this.classList.add('active');
+  });
+});
+
+// ===== SHOPIFY CHECKOUT =====
+async function _getVariant(flavor) {
+  if (_variantCache[flavor]) return _variantCache[flavor];
+  var res = await fetch('https://' + SHOPIFY_DOMAIN + '/api/2024-01/graphql.json', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Shopify-Storefront-Access-Token': STOREFRONT_TOKEN
+    },
+    body: JSON.stringify({ query: '{ product(id:"' + PRODUCT_IDS[flavor] + '") { variants(first:1) { nodes { id } } } }' })
+  });
+  var d = await res.json();
+  _variantCache[flavor] = d.data.product.variants.nodes[0].id;
+  return _variantCache[flavor];
+}
+
+async function handleCheckout() {
+  checkoutStarted = true;
+  var btn = document.getElementById('bundleCta');
+  var origText = btn ? btn.textContent : '';
+  if (btn) { btn.textContent = 'Loading…'; btn.disabled = true; }
+  try {
+    var variantId = await _getVariant(selectedFlavor);
+    var code = BUNDLE_DATA[selectedQty].discount;
+    var discountPart = code ? 'discountCodes: ["' + code + '"],' : '';
+    var mutation = 'mutation { cartCreate(input: { ' + discountPart + ' lines: [{ quantity: ' + selectedQty + ', merchandiseId: "' + variantId + '" }] }) { cart { checkoutUrl } userErrors { message } } }';
+    var res = await fetch('https://' + SHOPIFY_DOMAIN + '/api/2024-01/graphql.json', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Shopify-Storefront-Access-Token': STOREFRONT_TOKEN
+      },
+      body: JSON.stringify({ query: mutation })
+    });
+    var data = await res.json();
+    var errors = data.data && data.data.cartCreate && data.data.cartCreate.userErrors;
+    if (errors && errors.length) throw new Error(errors[0].message);
+    window.location.href = data.data.cartCreate.cart.checkoutUrl;
+  } catch(e) {
+    console.error('[Mindor checkout]', e);
+    checkoutStarted = false;
+    if (btn) { btn.textContent = origText; btn.disabled = false; }
+  }
+}
+
+// bfcache re-enable
+window.addEventListener('pageshow', function(e) {
+  if (e.persisted) {
+    checkoutStarted = false;
+    var btn = document.getElementById('bundleCta');
+    if (btn) { btn.disabled = false; btn.textContent = BUNDLE_DATA[selectedQty].cta; }
+  }
+});
+
+// ===== FAQ ACCORDION =====
+document.querySelectorAll('.faq-q').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var item = this.closest('.faq-item');
+    var wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(function(el) {
+      el.classList.remove('open');
+      el.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
+    });
+    if (!wasOpen) {
+      item.classList.add('open');
+      this.setAttribute('aria-expanded', 'true');
+    }
+  });
+});
+
+// ===== INGREDIENT CARD TOGGLES (mobile expand) =====
+document.querySelectorAll('.ing-toggle').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var card = document.getElementById(this.dataset.card);
+    if (!card) return;
+    var expanded = card.classList.toggle('expanded');
+    this.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+  });
+});
+
+// ===== FOCUS ARC ANIMATION =====
+var arcAnimated = false;
+var arcObs = new IntersectionObserver(function(entries) {
+  if (!entries[0].isIntersecting || arcAnimated) return;
+  arcAnimated = true;
+  var path = document.getElementById('arcPath');
+  if (path) path.classList.add('animated');
+  var delays = [650, 950, 1200];
+  [0,1,2].forEach(function(i) {
+    setTimeout(function() {
+      var dot = document.getElementById('arcDot' + i);
+      var lbl = document.getElementById('arcLbl' + i);
+      if (dot) dot.classList.add('visible');
+      if (lbl) lbl.classList.add('visible');
+    }, delays[i]);
+  });
+}, { threshold: 0.3 });
+var steadyEl = document.getElementById('steady-base');
+if (steadyEl) arcObs.observe(steadyEl);
+
+// ===== POPUP =====
+var popupShown = false;
+
+function openPopup() {
+  var overlay = document.getElementById('popup-overlay');
+  overlay.classList.add('open');
+  var firstFocusable = overlay.querySelector('input:not([disabled]), button:not([disabled])');
+  if (firstFocusable) setTimeout(function() { firstFocusable.focus(); }, 50);
+  document.addEventListener('keydown', onPopupKey);
+}
+
+function closePopup() {
+  document.getElementById('popup-overlay').classList.remove('open');
+  document.removeEventListener('keydown', onPopupKey);
+}
+
+function onPopupKey(e) {
+  if (e.key === 'Escape') { closePopup(); return; }
+  if (e.key === 'Tab') {
+    var panel = document.getElementById('popup-panel');
+    var focusables = Array.from(panel.querySelectorAll('button:not([disabled]),input:not([disabled]),a[href]'));
+    if (!focusables.length) return;
+    var first = focusables[0], last = focusables[focusables.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  }
+}
+
+document.getElementById('popup-overlay').addEventListener('click', function(e) {
+  if (e.target === this) closePopup();
+});
+document.getElementById('popupClose').addEventListener('click', closePopup);
+
+document.getElementById('popupForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  var email = document.getElementById('popupEmail').value.trim();
+  if (!email || !email.includes('@')) {
+    document.getElementById('popupEmail').focus();
+    return;
+  }
+  // [CONNECT email capture endpoint]
+  console.log('[Mindor popup] email captured:', email);
+  document.getElementById('popupFormContent').style.display = 'none';
+  document.getElementById('popupSuccess').style.display = 'block';
+  setTimeout(closePopup, 2500);
+});
+
+// Popup trigger — 2.5s after offer enters viewport, once per session
+var popupOfferObs = new IntersectionObserver(function(entries) {
+  if (entries[0].isIntersecting && !popupShown && !checkoutStarted) {
+    popupShown = true;
+    setTimeout(function() {
+      if (!checkoutStarted) openPopup();
+    }, 2500);
+  }
+}, { threshold: 0.15 });
+var offerEl = document.getElementById('offer');
+if (offerEl) popupOfferObs.observe(offerEl);
+
+// ===== STICKY MOBILE BAR =====
+var heroVisible = true;
+var offerVisible = false;
+
+function updateStickyBar() {
+  var bar = document.getElementById('sticky-bar');
+  if (!bar) return;
+  if (!heroVisible && !offerVisible) {
+    bar.classList.remove('sb-hidden');
+  } else {
+    bar.classList.add('sb-hidden');
+  }
+}
+
+var heroObs = new IntersectionObserver(function(entries) {
+  heroVisible = entries[0].isIntersecting;
+  updateStickyBar();
+}, { threshold: 0 });
+var heroEl = document.getElementById('hero');
+if (heroEl) heroObs.observe(heroEl);
+
+var stickyOfferObs = new IntersectionObserver(function(entries) {
+  offerVisible = entries[0].isIntersecting;
+  updateStickyBar();
+}, { threshold: 0 });
+if (offerEl) stickyOfferObs.observe(offerEl);
+</script>
+
+</body>
+</html>
