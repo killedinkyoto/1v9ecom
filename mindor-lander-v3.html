@@ -46,6 +46,7 @@
     --border-subtle: rgba(255,255,255,0.06);
     --border-accent: rgba(235,255,71,0.3);
     --border-active: #E2FF47;
+    --flavor-accent: #E2FF47;
     --text-primary: #F0F0E8;
     --text-muted: #6A7A5A;
     --text-dim: #3A4A30;
@@ -697,7 +698,7 @@
   }
   .bundle-card:focus-visible { outline: 2px solid var(--execution-green); outline-offset: 2px; }
   .bundle-card.active {
-    border-color: var(--border-active);
+    border-color: var(--flavor-accent);
     box-shadow: 0 0 18px rgba(226,255,71,0.08);
   }
   .bundle-badge {
@@ -719,26 +720,27 @@
   .bundle-tubs {
     display: flex;
     justify-content: center;
-    gap: 4px;
-    margin-bottom: 12px;
+    gap: 6px;
+    margin-bottom: 14px;
   }
-  .tub-thumb {
-    width: 26px;
-    height: 34px;
-    border-radius: 3px;
-    object-fit: contain;
-    background: var(--bg);
-    border: 0.5px solid var(--border);
+  .tub-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--text-dim);
+    transition: background 0.2s ease;
   }
+  .bundle-card.active .tub-dot { background: var(--flavor-accent); }
   .bundle-qty-text {
     font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 12px;
-    color: var(--text-muted);
+    font-weight: 800;
+    font-size: 20px;
+    color: var(--fog-grey);
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
     margin-bottom: 8px;
   }
+  .bundle-card.active .bundle-qty-text { color: var(--text-primary); }
   .bundle-price-big {
     font-family: 'Barlow Condensed', sans-serif;
     font-weight: 900;
@@ -796,9 +798,21 @@
   }
   .flavor-opt:focus-visible { outline: 2px solid var(--execution-green); outline-offset: 2px; }
   .flavor-opt.active {
-    border-color: var(--execution-green);
     color: var(--text-primary);
-    background: rgba(226,255,71,0.06);
+  }
+  /* per-flavor active colors set inline by JS */
+  .flavor-picker-group {
+    margin-bottom: 14px;
+  }
+  .flavor-picker-label {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+    display: block;
   }
 
   /* CTA + trust */
@@ -1294,9 +1308,10 @@
           <text x="20" y="108" font-size="10" fill="rgba(200,201,184,0.35)" font-family="DM Sans,sans-serif" text-anchor="middle">7am</text>
           <text x="280" y="108" font-size="10" fill="rgba(200,201,184,0.35)" font-family="DM Sans,sans-serif" text-anchor="middle">12pm</text>
           <text x="540" y="108" font-size="10" fill="rgba(200,201,184,0.35)" font-family="DM Sans,sans-serif" text-anchor="middle">3pm</text>
-          <!-- Coffee spike reference (faint) -->
-          <polyline points="80,96 95,28 110,96" stroke="rgba(255,255,255,0.1)" stroke-width="1.5" fill="none" stroke-dasharray="3,2"/>
-          <text x="95" y="20" font-size="9" fill="rgba(255,255,255,0.22)" font-family="DM Sans,sans-serif" text-anchor="middle">COFFEE</text>
+          <!-- Coffee spike reference -->
+          <polyline points="80,96 95,30 110,96" stroke="rgba(255,255,255,0.55)" stroke-width="2" fill="none" stroke-dasharray="4,3"/>
+          <text x="95" y="20" font-size="12" font-weight="600" fill="rgba(255,255,255,0.75)" font-family="DM Sans,sans-serif" text-anchor="middle">COFFEE</text>
+          <text x="95" y="106" font-size="10" fill="rgba(255,120,60,0.8)" font-family="DM Sans,sans-serif" text-anchor="middle">SPIKE</text>
           <!-- Main arc path -->
           <path id="arcPath" class="arc-path"
             d="M 160,96 C 185,94 198,16 220,12 L 380,12 C 402,16 415,94 440,96"
@@ -1474,9 +1489,7 @@
     <div class="bundle-cards" id="bundleCards" role="radiogroup" aria-label="Choose bundle size">
 
       <div class="bundle-card" data-qty="1" role="radio" aria-checked="false" tabindex="0">
-        <div class="bundle-tubs">
-          <img class="tub-thumb" src="/assets/product-photos/tub-candy.webp" alt="1 tub">
-        </div>
+        <div class="bundle-tubs"><span class="tub-dot"></span></div>
         <p class="bundle-qty-text">1 Tub</p>
         <p class="bundle-price-big">$42.99</p>
         <p class="bundle-per-tub">$42.99/tub</p>
@@ -1485,10 +1498,7 @@
 
       <div class="bundle-card active" data-qty="2" role="radio" aria-checked="true" tabindex="0">
         <div class="bundle-badge">Most Popular &middot; Save $9</div>
-        <div class="bundle-tubs">
-          <img class="tub-thumb" src="/assets/product-photos/tub-candy.webp" alt="tub 1 of 2">
-          <img class="tub-thumb" src="/assets/product-photos/tub-candy.webp" alt="tub 2 of 2">
-        </div>
+        <div class="bundle-tubs"><span class="tub-dot"></span><span class="tub-dot"></span></div>
         <p class="bundle-qty-text">2 Tubs</p>
         <p class="bundle-price-big">$76.99</p>
         <p class="bundle-per-tub">$38.50/tub</p>
@@ -1497,11 +1507,7 @@
 
       <div class="bundle-card" data-qty="3" role="radio" aria-checked="false" tabindex="0">
         <div class="bundle-badge" style="background:var(--text-primary);color:#1A1F14;">Best Value &middot; Save $29</div>
-        <div class="bundle-tubs">
-          <img class="tub-thumb" src="/assets/product-photos/tub-candy.webp" alt="tub 1 of 3">
-          <img class="tub-thumb" src="/assets/product-photos/tub-candy.webp" alt="tub 2 of 3">
-          <img class="tub-thumb" src="/assets/product-photos/tub-candy.webp" alt="tub 3 of 3">
-        </div>
+        <div class="bundle-tubs"><span class="tub-dot"></span><span class="tub-dot"></span><span class="tub-dot"></span></div>
         <p class="bundle-qty-text">3 Tubs</p>
         <p class="bundle-price-big">$99.99</p>
         <p class="bundle-per-tub">$33.33/tub</p>
@@ -1510,15 +1516,8 @@
 
     </div>
 
-    <!-- Flavor selector -->
-    <div class="flavor-row">
-      <p class="flavor-step">2 &mdash; Choose Your Flavor</p>
-      <div class="flavor-opts" id="flavorOpts">
-        <button class="flavor-opt active" data-flavor="sour-candy">Sour Candy</button>
-        <button class="flavor-opt" data-flavor="sour-grape">Sour Grape</button>
-        <button class="flavor-opt" data-flavor="sour-gummy-worms">Sour Gummy Worms</button>
-      </div>
-    </div>
+    <!-- Flavor selector (rendered by JS) -->
+    <div id="flavorRow" class="flavor-row"></div>
 
     <!-- CTA -->
     <!-- [CONFIRM CHECKOUT URL] -->
@@ -1672,7 +1671,11 @@
     </div>
     <div id="popupSuccess" class="popup-success" style="display:none;">
       <p class="popup-success-hl">Code's on its way.</p>
-      <p class="popup-success-body">Check your inbox.</p>
+      <p class="popup-success-body" style="margin-bottom:14px;">Check your inbox.</p>
+      <div style="background:var(--bg);border:1px solid var(--border-active);border-radius:3px;padding:12px 16px;text-align:center;">
+        <p style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px;">Your code</p>
+        <p style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:28px;color:var(--execution-green);letter-spacing:0.06em;">FLOOR15</p>
+      </div>
     </div>
   </div>
 </div>
@@ -1682,6 +1685,8 @@
 // ===== SHOPIFY CONFIG =====
 var SHOPIFY_DOMAIN = 'mindor-1950.myshopify.com';
 var STOREFRONT_TOKEN = 'c1f8ad6a65722ad1a022b7e5f8a8660c';
+var KLAVIYO_KEY = 'S3D76Q';
+var KLAVIYO_LIST = 'TUAJJE';
 var PRODUCT_IDS = {
   'sour-candy':       'gid://shopify/Product/9049594593435',
   'sour-grape':       'gid://shopify/Product/9049594626203',
@@ -1689,20 +1694,92 @@ var PRODUCT_IDS = {
 };
 var _variantCache = {};
 
+// ===== FLAVOR CONFIG =====
+var FLAVOR_COLORS = {
+  'sour-candy':       '#E2FF47',
+  'sour-grape':       '#BF7FFF',
+  'sour-gummy-worms': '#FF2255'
+};
+var FLAVOR_NAMES = {
+  'sour-candy':       'Sour Candy',
+  'sour-grape':       'Sour Grape',
+  'sour-gummy-worms': 'Sour Gummy Worms'
+};
+function hexToRgba(hex, a) {
+  var r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+  return 'rgba('+r+','+g+','+b+','+a+')';
+}
+
 // ===== BUNDLE STATE =====
 var selectedQty = 2;
-var selectedFlavor = 'sour-candy';
+var selectedFlavors = ['sour-candy', 'sour-candy', 'sour-candy'];
 var checkoutStarted = false;
 
 var BUNDLE_DATA = {
-  1: { price: '$42.99', cta: 'GET 1 TUB — $42.99 →', discount: null },
-  2: { price: '$76.99', cta: 'GET 2 TUBS — $76.99 →', discount: 'BUNDLE2' },
-  3: { price: '$99.99', cta: 'GET 3 TUBS — $99.99 →', discount: 'HVCO-STACK' }
+  1: { cta: 'GET 1 TUB — $42.99 →', discount: null },
+  2: { cta: 'GET 2 TUBS — $76.99 →', discount: 'BUNDLE2' },
+  3: { cta: 'GET 3 TUBS — $99.99 →', discount: 'HVCO-STACK' }
 };
 
+// ===== FLAVOR ACCENT =====
+function applyFlavorAccent() {
+  var color = FLAVOR_COLORS[selectedFlavors[0]] || '#E2FF47';
+  document.documentElement.style.setProperty('--flavor-accent', color);
+  var cta = document.getElementById('bundleCta');
+  if (cta) {
+    cta.style.background = color;
+    cta.style.color = (color === '#E2FF47' || color === '#BF7FFF') ? '#1A1F14' : '#fff';
+  }
+  // Update active card border
+  document.querySelectorAll('.bundle-card').forEach(function(card) {
+    if (card.classList.contains('active')) {
+      card.style.borderColor = color;
+      card.style.boxShadow = '0 0 18px ' + hexToRgba(color, 0.1);
+    } else {
+      card.style.borderColor = '';
+      card.style.boxShadow = '';
+    }
+  });
+}
+
+// ===== FLAVOR PICKERS =====
+function renderFlavorPickers() {
+  var container = document.getElementById('flavorRow');
+  if (!container) return;
+  var qty = selectedQty;
+  var html = '<p class="flavor-step">2 &mdash; Choose Your Flavor' + (qty > 1 ? 's' : '') + '</p>';
+  for (var i = 0; i < qty; i++) {
+    html += '<div class="flavor-picker-group">';
+    if (qty > 1) html += '<span class="flavor-picker-label">Tub ' + (i+1) + '</span>';
+    html += '<div class="flavor-opts">';
+    ['sour-candy','sour-grape','sour-gummy-worms'].forEach(function(f) {
+      var isActive = selectedFlavors[i] === f;
+      var c = FLAVOR_COLORS[f];
+      var style = isActive
+        ? 'border-color:' + c + ';color:' + c + ';background:' + hexToRgba(c, 0.1) + ';'
+        : '';
+      html += '<button class="flavor-opt' + (isActive ? ' active' : '') + '"'
+            + ' data-flavor="' + f + '" data-idx="' + i + '"'
+            + (style ? ' style="' + style + '"' : '')
+            + '>' + FLAVOR_NAMES[f] + '</button>';
+    });
+    html += '</div></div>';
+  }
+  container.innerHTML = html;
+  container.querySelectorAll('.flavor-opt').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var idx = parseInt(this.dataset.idx);
+      selectedFlavors[idx] = this.dataset.flavor;
+      renderFlavorPickers();
+      applyFlavorAccent();
+      updateBundleUI();
+    });
+  });
+}
+
+// ===== BUNDLE UI =====
 function updateBundleUI() {
-  var cards = document.querySelectorAll('.bundle-card');
-  cards.forEach(function(card) {
+  document.querySelectorAll('.bundle-card').forEach(function(card) {
     var qty = parseInt(card.dataset.qty);
     var isActive = qty === selectedQty;
     card.classList.toggle('active', isActive);
@@ -1710,41 +1787,36 @@ function updateBundleUI() {
   });
   var cta = document.getElementById('bundleCta');
   if (cta && !cta.disabled) cta.textContent = BUNDLE_DATA[selectedQty].cta;
+  applyFlavorAccent();
 }
 
 // Bundle card click/keyboard
 document.querySelectorAll('.bundle-card').forEach(function(card) {
   card.addEventListener('click', function() {
     selectedQty = parseInt(this.dataset.qty);
+    renderFlavorPickers();
     updateBundleUI();
   });
   card.addEventListener('keydown', function(e) {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       selectedQty = parseInt(this.dataset.qty);
+      renderFlavorPickers();
       updateBundleUI();
     }
   });
 });
 
-// Flavor buttons
-document.querySelectorAll('.flavor-opt').forEach(function(btn) {
-  btn.addEventListener('click', function() {
-    selectedFlavor = this.dataset.flavor;
-    document.querySelectorAll('.flavor-opt').forEach(function(b) { b.classList.remove('active'); });
-    this.classList.add('active');
-  });
-});
+// Init
+renderFlavorPickers();
+updateBundleUI();
 
 // ===== SHOPIFY CHECKOUT =====
 async function _getVariant(flavor) {
   if (_variantCache[flavor]) return _variantCache[flavor];
   var res = await fetch('https://' + SHOPIFY_DOMAIN + '/api/2024-01/graphql.json', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Shopify-Storefront-Access-Token': STOREFRONT_TOKEN
-    },
+    headers: { 'Content-Type': 'application/json', 'X-Shopify-Storefront-Access-Token': STOREFRONT_TOKEN },
     body: JSON.stringify({ query: '{ product(id:"' + PRODUCT_IDS[flavor] + '") { variants(first:1) { nodes { id } } } }' })
   });
   var d = await res.json();
@@ -1758,16 +1830,22 @@ async function handleCheckout() {
   var origText = btn ? btn.textContent : '';
   if (btn) { btn.textContent = 'Loading…'; btn.disabled = true; }
   try {
-    var variantId = await _getVariant(selectedFlavor);
+    // Group flavors by count
+    var flavorCount = {};
+    selectedFlavors.slice(0, selectedQty).forEach(function(f) {
+      flavorCount[f] = (flavorCount[f] || 0) + 1;
+    });
+    var flavorsNeeded = Object.keys(flavorCount);
+    var variantIds = await Promise.all(flavorsNeeded.map(function(f) { return _getVariant(f); }));
+    var lines = flavorsNeeded.map(function(f, i) {
+      return '{ quantity: ' + flavorCount[f] + ', merchandiseId: "' + variantIds[i] + '" }';
+    });
     var code = BUNDLE_DATA[selectedQty].discount;
     var discountPart = code ? 'discountCodes: ["' + code + '"],' : '';
-    var mutation = 'mutation { cartCreate(input: { ' + discountPart + ' lines: [{ quantity: ' + selectedQty + ', merchandiseId: "' + variantId + '" }] }) { cart { checkoutUrl } userErrors { message } } }';
+    var mutation = 'mutation { cartCreate(input: { ' + discountPart + ' lines: [' + lines.join(',') + '] }) { cart { checkoutUrl } userErrors { message } } }';
     var res = await fetch('https://' + SHOPIFY_DOMAIN + '/api/2024-01/graphql.json', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Shopify-Storefront-Access-Token': STOREFRONT_TOKEN
-      },
+      headers: { 'Content-Type': 'application/json', 'X-Shopify-Storefront-Access-Token': STOREFRONT_TOKEN },
       body: JSON.stringify({ query: mutation })
     });
     var data = await res.json();
@@ -1786,7 +1864,7 @@ window.addEventListener('pageshow', function(e) {
   if (e.persisted) {
     checkoutStarted = false;
     var btn = document.getElementById('bundleCta');
-    if (btn) { btn.disabled = false; btn.textContent = BUNDLE_DATA[selectedQty].cta; }
+    if (btn) { btn.disabled = false; btn.textContent = BUNDLE_DATA[selectedQty].cta; applyFlavorAccent(); }
   }
 });
 
@@ -1872,15 +1950,27 @@ document.getElementById('popupClose').addEventListener('click', closePopup);
 document.getElementById('popupForm').addEventListener('submit', function(e) {
   e.preventDefault();
   var email = document.getElementById('popupEmail').value.trim();
-  if (!email || !email.includes('@')) {
-    document.getElementById('popupEmail').focus();
-    return;
-  }
-  // [CONNECT email capture endpoint]
-  console.log('[Mindor popup] email captured:', email);
+  if (!email || !email.includes('@')) { document.getElementById('popupEmail').focus(); return; }
+  var btn = this.querySelector('button[type="submit"]');
+  if (btn) { btn.textContent = 'Sending…'; btn.disabled = true; }
+  // Subscribe to Klaviyo
+  // [CONFIRM: discount code FLOOR15 must be created in Shopify admin as 15% off first order]
+  fetch('https://a.klaviyo.com/client/subscriptions/?company_id=' + KLAVIYO_KEY, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'revision': '2023-02-22' },
+    body: JSON.stringify({
+      data: {
+        type: 'subscription',
+        attributes: {
+          profile: { data: { type: 'profile', attributes: { email: email, properties: { hvco_popup: true, discount_code: 'FLOOR15' } } } },
+          list_id: KLAVIYO_LIST
+        }
+      }
+    })
+  }).catch(function(err) { console.error('[Mindor Klaviyo popup]', err); });
   document.getElementById('popupFormContent').style.display = 'none';
   document.getElementById('popupSuccess').style.display = 'block';
-  setTimeout(closePopup, 2500);
+  setTimeout(closePopup, 3500);
 });
 
 // Popup trigger — 2.5s after offer enters viewport, once per session
