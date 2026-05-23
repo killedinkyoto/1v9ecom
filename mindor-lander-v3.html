@@ -215,7 +215,8 @@
     height: 100%;
     pointer-events: none;
     z-index: 0;
-    filter: blur(8px);
+    will-change: transform;
+    transform: translateZ(0);
   }
   .hero-inner {
     text-align: center;
@@ -1405,17 +1406,18 @@
   }
   .popup-field-row {
     display: flex;
+    flex-direction: column;
     gap: 8px;
     margin-bottom: 10px;
   }
   .popup-email {
-    flex: 1;
+    width: 100%;
     background: var(--bg);
     border: 0.5px solid var(--border-subtle);
     border-radius: 3px;
     padding: 11px 13px;
     font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
+    font-size: 16px;
     color: var(--text-primary);
     outline: none;
     transition: border-color 0.15s ease;
@@ -1423,7 +1425,7 @@
   }
   .popup-email::placeholder { color: var(--text-muted); }
   .popup-email:focus { border-color: var(--execution-green); }
-  .popup-submit { font-size: 12px; padding: 11px 18px; flex-shrink: 0; }
+  .popup-submit { font-size: 14px; padding: 13px 18px; width: 100%; }
   .popup-disclaimer {
     font-family: 'DM Sans', sans-serif;
     font-size: 10px;
