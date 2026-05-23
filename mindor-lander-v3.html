@@ -1284,6 +1284,47 @@
     color: var(--text-dim);
     font-style: italic;
   }
+  /* ===== DISCOUNT REVEAL ===== */
+  .price-was {
+    font-size: 0.62em;
+    text-decoration: line-through;
+    color: var(--text-muted);
+    margin-right: 4px;
+    opacity: 0.7;
+    font-weight: 700;
+  }
+  .bundle-per-tub .price-was { font-size: 0.88em; }
+  .price-now {
+    color: var(--execution-green);
+    text-shadow: 0 0 16px rgba(226,255,71,0.45);
+    animation: priceReveal 0.45s cubic-bezier(0.34,1.56,0.64,1) forwards;
+  }
+  @keyframes priceReveal {
+    from { opacity: 0; transform: scale(0.85) translateY(5px); }
+    to   { opacity: 1; transform: none; }
+  }
+  .discount-toast {
+    position: fixed;
+    bottom: 88px;
+    left: 50%;
+    transform: translateX(-50%) translateY(12px);
+    background: var(--surface2);
+    border: 1px solid rgba(226,255,71,0.5);
+    border-radius: 40px;
+    padding: 10px 22px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--execution-green);
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+    white-space: nowrap;
+    box-shadow: 0 0 20px rgba(226,255,71,0.15);
+  }
+  .discount-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
   .popup-success { text-align: center; padding: 16px 0; }
   .popup-success-hl {
     font-family: 'Barlow Condensed', sans-serif;
@@ -1765,8 +1806,8 @@
       <div class="bundle-card" data-qty="1" role="radio" aria-checked="false" tabindex="0">
         <div class="bundle-tubs"><span class="tub-dot"></span></div>
         <p class="bundle-qty-text">1 Tub</p>
-        <p class="bundle-price-big">$42.99</p>
-        <p class="bundle-per-tub">$42.99/tub</p>
+        <p class="bundle-price-big" data-disc="$36.54">$42.99</p>
+        <p class="bundle-per-tub" data-disc="$36.54/tub">$42.99/tub</p>
         <span class="bundle-save">&nbsp;</span>
       </div>
 
@@ -1774,8 +1815,8 @@
         <div class="bundle-badge">Most Popular &middot; Save $9</div>
         <div class="bundle-tubs"><span class="tub-dot"></span><span class="tub-dot"></span></div>
         <p class="bundle-qty-text">2 Tubs</p>
-        <p class="bundle-price-big">$76.99</p>
-        <p class="bundle-per-tub">$38.50/tub</p>
+        <p class="bundle-price-big" data-disc="$65.44">$76.99</p>
+        <p class="bundle-per-tub" data-disc="$32.72/tub">$38.50/tub</p>
         <span class="bundle-save">Save $9</span>
       </div>
 
@@ -1783,8 +1824,8 @@
         <div class="bundle-badge" style="background:var(--text-primary);color:#1A1F14;">Best Value &middot; Save $29</div>
         <div class="bundle-tubs"><span class="tub-dot"></span><span class="tub-dot"></span><span class="tub-dot"></span></div>
         <p class="bundle-qty-text">3 Tubs</p>
-        <p class="bundle-price-big">$99.99</p>
-        <p class="bundle-per-tub">$33.33/tub</p>
+        <p class="bundle-price-big" data-disc="$84.99">$99.99</p>
+        <p class="bundle-per-tub" data-disc="$28.33/tub">$33.33/tub</p>
         <span class="bundle-save">Save $29</span>
       </div>
 
@@ -1881,7 +1922,7 @@
       <span class="final-body-line">The Steady Base is what holds you there.</span>
     </div>
     <div class="final-cta-wrap">
-      <a href="#offer" class="btn-primary btn-full" style="font-size:14px;padding:16px 32px;">START MY FIRST TUB &mdash; $42.99 &rarr;</a>
+      <a href="#offer" id="finalCta" class="btn-primary btn-full" style="font-size:14px;padding:16px 32px;">START MY FIRST TUB &mdash; $42.99 &rarr;</a>
     </div>
     <p class="final-sub"><em>30-day money-back guarantee. Ships in 24 hours.</em></p>
   </div>
@@ -1917,7 +1958,7 @@
       <img class="sticky-bar-thumb" src="/assets/product-photos/tub-candy.webp" alt="" aria-hidden="true">
       <div>
         <span class="sticky-bar-brand">MINDOR</span>
-        <span class="sticky-bar-price">from $42.99</span>
+        <span class="sticky-bar-price" id="stickyPrice">from $42.99</span>
       </div>
     </div>
     <a href="#offer" class="btn-primary sticky-cta">GET YOURS &rarr;</a>
@@ -1943,12 +1984,8 @@
       </form>
     </div>
     <div id="popupSuccess" class="popup-success" style="display:none;">
-      <p class="popup-success-hl">Here's your code.</p>
-      <p class="popup-success-body" style="margin-bottom:14px;">Apply it at checkout.</p>
-      <div style="background:var(--bg);border:1px solid var(--border-active);border-radius:3px;padding:12px 16px;text-align:center;">
-        <p style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px;">Your code</p>
-        <p style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:28px;color:var(--execution-green);letter-spacing:0.06em;">FLOOR15</p>
-      </div>
+      <p class="popup-success-hl" style="color:var(--execution-green);">15% off unlocked.</p>
+      <p class="popup-success-body">Discount auto-applies at checkout.<br>Prices updated below.</p>
     </div>
   </div>
 </div>
@@ -2113,8 +2150,10 @@ async function handleCheckout() {
     var lines = flavorsNeeded.map(function(f, i) {
       return '{ quantity: ' + flavorCount[f] + ', merchandiseId: "' + variantIds[i] + '" }';
     });
-    var code = BUNDLE_DATA[selectedQty].discount;
-    var discountPart = code ? 'discountCodes: ["' + code + '"],' : '';
+    var codes = [];
+    if (BUNDLE_DATA[selectedQty].discount) codes.push(BUNDLE_DATA[selectedQty].discount);
+    if (discountUnlocked) codes.push(DISC_CODE);
+    var discountPart = codes.length ? 'discountCodes: [' + codes.map(function(c) { return '"' + c + '"'; }).join(',') + '],' : '';
     var mutation = 'mutation { cartCreate(input: { ' + discountPart + ' lines: [' + lines.join(',') + '] }) { cart { checkoutUrl } userErrors { message } } }';
     var res = await fetch('https://' + SHOPIFY_DOMAIN + '/api/2024-01/graphql.json', {
       method: 'POST',
@@ -2187,6 +2226,53 @@ var arcObs = new IntersectionObserver(function(entries) {
 var steadyEl = document.getElementById('steady-base');
 if (steadyEl) arcObs.observe(steadyEl);
 
+// ===== DISCOUNT UNLOCK =====
+var discountUnlocked = sessionStorage.getItem('mindor_discount') === 'FLOOR15';
+var DISC_CODE = 'FLOOR15';
+var DISC_PRICES = {
+  1: { big: '$36.54', per: '$36.54/tub', cta: 'GET 1 TUB — $36.54 →' },
+  2: { big: '$65.44', per: '$32.72/tub', cta: 'GET 2 TUBS — $65.44 →' },
+  3: { big: '$84.99', per: '$28.33/tub', cta: 'GET 3 TUBS — $84.99 →' }
+};
+
+function applyDiscountVisuals(animate) {
+  document.querySelectorAll('.bundle-price-big[data-disc]').forEach(function(el) {
+    if (el.querySelector('.price-was')) return;
+    var orig = el.textContent.trim();
+    var disc = el.getAttribute('data-disc');
+    el.innerHTML = '<span class="price-was">' + orig + '</span><span class="price-now"' + (animate ? '' : ' style="animation:none"') + '>' + disc + '</span>';
+  });
+  document.querySelectorAll('.bundle-per-tub[data-disc]').forEach(function(el) {
+    if (el.querySelector('.price-now')) return;
+    var orig = el.textContent.trim();
+    var disc = el.getAttribute('data-disc');
+    el.innerHTML = '<span class="price-was">' + orig + '</span> <span class="price-now" style="animation:none">' + disc + '</span>';
+  });
+  BUNDLE_DATA[1].cta = DISC_PRICES[1].cta;
+  BUNDLE_DATA[2].cta = DISC_PRICES[2].cta;
+  BUNDLE_DATA[3].cta = DISC_PRICES[3].cta;
+  var ctaBtn = document.getElementById('bundleCta');
+  if (ctaBtn && !ctaBtn.disabled) ctaBtn.textContent = DISC_PRICES[selectedQty].cta;
+  var finalCta = document.getElementById('finalCta');
+  if (finalCta) finalCta.textContent = 'START MY FIRST TUB — $36.54 →';
+  var sp = document.getElementById('stickyPrice');
+  if (sp) sp.textContent = 'from $36.54';
+}
+
+function showDiscountToast() {
+  var t = document.createElement('div');
+  t.className = 'discount-toast';
+  t.textContent = '15% off applied to all prices';
+  document.body.appendChild(t);
+  requestAnimationFrame(function() { requestAnimationFrame(function() { t.classList.add('show'); }); });
+  setTimeout(function() { t.classList.remove('show'); }, 3200);
+  setTimeout(function() { if (t.parentNode) t.parentNode.removeChild(t); }, 3600);
+}
+
+if (discountUnlocked) {
+  window.addEventListener('DOMContentLoaded', function() { applyDiscountVisuals(false); });
+}
+
 // ===== POPUP =====
 var popupShown = false;
 
@@ -2241,9 +2327,15 @@ document.getElementById('popupForm').addEventListener('submit', function(e) {
       }
     })
   }).catch(function(err) { console.error('[Mindor Klaviyo popup]', err); });
+  sessionStorage.setItem('mindor_discount', 'FLOOR15');
+  discountUnlocked = true;
   document.getElementById('popupFormContent').style.display = 'none';
   document.getElementById('popupSuccess').style.display = 'block';
-  setTimeout(closePopup, 3500);
+  setTimeout(function() {
+    applyDiscountVisuals(true);
+    showDiscountToast();
+  }, 300);
+  setTimeout(closePopup, 3200);
 });
 
 // Popup trigger — 2.5s after offer enters viewport, once per session
