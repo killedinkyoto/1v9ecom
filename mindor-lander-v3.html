@@ -83,8 +83,8 @@
     font-size: 9px;
     letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: var(--text-dim);
-    border-bottom: 0.5px solid var(--text-dim);
+    color: var(--fog-grey);
+    border-bottom: 0.5px solid rgba(200,201,184,0.3);
     display: inline-block;
     padding-bottom: 5px;
     margin-bottom: 28px;
@@ -99,8 +99,8 @@
     color: var(--text-primary);
     display: block;
     line-height: 1.2;
-    margin-top: 18px;
-    margin-bottom: 18px;
+    margin-top: 32px;
+    margin-bottom: 6px;
   }
 
   /* Depth layer — full sentences, recessive */
@@ -110,6 +110,7 @@
     font-size: 15px;
     color: var(--fog-grey);
     line-height: 1.7;
+    margin-bottom: 0;
   }
 
   /* ===== BUTTONS ===== */
@@ -220,7 +221,7 @@
   }
   .hero-product-wrap {
     margin: 0 auto 36px;
-    width: min(300px, 76vw);
+    width: min(380px, 88vw);
   }
   .hero-product-wrap img {
     width: 100%;
@@ -267,9 +268,9 @@
   /* ===== MIRROR (Section 2) ===== */
   #mirror {
     background: var(--surface);
-    padding: 88px 0;
+    padding: 64px 0;
   }
-  @media (min-width: 768px) { #mirror { padding: 100px 0; } }
+  @media (min-width: 768px) { #mirror { padding: 80px 0; } }
 
   .mirror-lime-rule {
     width: 32px;
@@ -285,7 +286,7 @@
     background: var(--bg);
     padding: 64px 0;
   }
-  @media (min-width: 768px) { #reframe { padding: 100px 0; } }
+  @media (min-width: 768px) { #reframe { padding: 80px 0; } }
 
   .reframe-inner { max-width: 640px; }
   .pull-quote-wrap {
@@ -336,7 +337,7 @@
     background-image: radial-gradient(ellipse at 50% 0%, rgba(235,255,71,0.06) 0%, transparent 55%);
     padding: 64px 0;
   }
-  @media (min-width: 768px) { #steady-base { padding: 100px 0; } }
+  @media (min-width: 768px) { #steady-base { padding: 80px 0; } }
 
   .steady-subhead {
     font-family: 'Barlow Condensed', sans-serif;
@@ -351,53 +352,47 @@
 
   /* Two-layer stack diagram */
   .stack-diagram {
-    background: rgba(10,10,8,0.45);
-    border: 0.5px solid var(--border-subtle);
-    border-radius: 6px;
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
     overflow: hidden;
     margin: 36px 0;
   }
   .stack-alertness-row {
-    padding: 12px 16px;
-    display: flex;
-    justify-content: center;
+    padding: 0;
   }
   .stack-alertness {
     background: var(--execution-green);
-    border-radius: 4px;
-    padding: 14px 24px;
-    width: 72%;
+    padding: 20px 24px;
     text-align: center;
+    width: 100%;
+    box-sizing: border-box;
   }
   .stack-layer-name {
     font-family: 'Barlow Condensed', sans-serif;
     font-weight: 900;
-    font-size: 17px;
+    font-size: 18px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     display: block;
     line-height: 1;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
   }
   .stack-alertness .stack-layer-name { color: #1A1F14; }
   .stack-layer-cap {
     font-family: 'DM Sans', sans-serif;
-    font-size: 11px;
+    font-size: 12px;
     display: block;
     line-height: 1.4;
   }
   .stack-alertness .stack-layer-cap { color: #2A3020; }
   .stack-steadiness {
-    background: var(--sprint-green);
-    padding: 18px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    border-top: 3px solid rgba(10,10,8,0.45);
+    background: #2A3820;
+    padding: 20px 24px;
+    text-align: center;
+    border-top: 2px solid rgba(10,10,8,0.6);
   }
   .stack-steadiness .stack-layer-name { color: var(--fog-grey); }
-  .stack-steadiness .stack-layer-cap { color: rgba(200,201,184,0.7); font-size: 11px; }
+  .stack-steadiness .stack-layer-cap { color: rgba(200,201,184,0.6); font-size: 12px; }
 
   /* Focus Arc */
   .focus-arc-wrap {
@@ -628,7 +623,7 @@
     background: var(--bg);
     padding: 64px 0;
   }
-  @media (min-width: 768px) { #cost { padding: 100px 0; } }
+  @media (min-width: 768px) { #cost { padding: 80px 0; } }
 
   .cost-inner {
     max-width: 580px;
@@ -639,6 +634,11 @@
   .cost-inner .depth { text-align: left; }
   .cost-inner .skim-frag { text-align: left; }
   .cost-para { margin-bottom: 20px; }
+  .cost-floor {
+    font-size: clamp(22px, 5.5vw, 32px);
+    color: var(--execution-green);
+    margin-top: 4px;
+  }
 
   /* ===== OFFER (Section 7) ===== */
   #offer {
@@ -979,6 +979,45 @@
   .footer-compliance p { margin-bottom: 8px; }
   .footer-compliance p:last-child { margin-bottom: 0; }
 
+  /* ===== SOCIAL PROOF TICKER ===== */
+  .proof-ticker-wrap {
+    overflow: hidden; padding: 14px 0;
+    background: var(--surface); border-top: 0.5px solid var(--border-subtle); border-bottom: 0.5px solid var(--border-subtle);
+  }
+  .proof-ticker-track {
+    display: flex; width: max-content;
+    animation: ticker-scroll 36s linear infinite;
+  }
+  .proof-ticker-track:hover { animation-play-state: paused; }
+  .proof-ticker-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 0 44px; white-space: nowrap;
+    font-size: 13px; color: var(--fog-grey); font-family: 'DM Sans', sans-serif;
+  }
+  .proof-ticker-stars { font-size: 10px; color: var(--execution-green); letter-spacing: 2px; flex-shrink: 0; }
+  .proof-ticker-dot { color: var(--text-muted); font-size: 16px; line-height: 1; }
+  @keyframes ticker-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ===== SOCIAL PROOF CARDS ===== */
+  #s-proof { padding: 80px 0; background: var(--surface); border-top: 0.5px solid var(--border-subtle); border-bottom: 0.5px solid var(--border-subtle); }
+  .proof-header { text-align: center; margin-bottom: 48px; }
+  .proof-header-stars { font-size: 18px; color: var(--execution-green); letter-spacing: 4px; margin-bottom: 14px; }
+  .proof-heading { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: clamp(24px,4vw,36px); color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.02em; margin-bottom: 8px; }
+  .proof-sub { font-size: 14px; color: var(--text-muted); }
+  .proof-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .proof-card { background: var(--surface2); border: 0.5px solid var(--border-subtle); border-radius: 6px; padding: 28px 26px; }
+  .proof-card-stars { font-size: 11px; color: var(--execution-green); letter-spacing: 2.5px; margin-bottom: 14px; }
+  .proof-quote { font-size: 14px; color: var(--fog-grey); line-height: 1.72; margin-bottom: 22px; }
+  .proof-quote::before { content: '\201C'; font-size: 26px; color: rgba(226,255,71,0.22); line-height: 0; vertical-align: -8px; margin-right: 2px; font-family: Georgia, serif; }
+  .proof-attr { display: flex; align-items: center; gap: 12px; }
+  .proof-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--surface); border: 0.5px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--execution-green); flex-shrink: 0; }
+  .proof-name { font-size: 13px; font-weight: 600; color: var(--text-primary); line-height: 1.2; }
+  .proof-role { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+  @media (max-width: 640px) { .proof-grid { grid-template-columns: 1fr; } #s-proof { padding: 60px 0; } }
+
   /* ===== STICKY MOBILE BAR ===== */
   #sticky-bar {
     display: none;
@@ -1178,7 +1217,7 @@
       <p class="hero-eyebrow">Performance Stack &middot; Est. 2026</p>
 
       <div class="hero-product-wrap">
-        <img src="/assets/product-photos/tub-candy.webp" alt="Mindor Performance Stack tub" loading="eager">
+        <img src="/assets/presales-hero.png" alt="Mindor Performance Stack tubs" loading="eager">
       </div>
 
       <h1 class="hero-headline">
@@ -1202,6 +1241,46 @@
 </section>
 
 
+<!-- ===== SOCIAL PROOF TICKER ===== -->
+<div class="proof-ticker-wrap" aria-hidden="true">
+  <div class="proof-ticker-track">
+    <div class="proof-ticker-item"><span class="proof-ticker-stars">★★★★★</span> "shipped that project i'd been putting off for like 2 weeks lol"</div>
+    <div class="proof-ticker-dot">·</div>
+    <div class="proof-ticker-item"><span class="proof-ticker-stars">★★★★★</span> "the 3pm crash is literally just gone?? idk what they put in this"</div>
+    <div class="proof-ticker-dot">·</div>
+    <div class="proof-ticker-item"><span class="proof-ticker-stars">★★★★★</span> "studied 4 hours and didn't check my phone once 💀"</div>
+    <div class="proof-ticker-dot">·</div>
+    <div class="proof-ticker-item"><span class="proof-ticker-stars">★★★★★</span> "still drink my coffee just don't need the second one anymore"</div>
+    <div class="proof-ticker-dot">·</div>
+    <div class="proof-ticker-item"><span class="proof-ticker-stars">★★★★★</span> "doesn't feel like a jolt just kinda... locked in"</div>
+    <div class="proof-ticker-dot">·</div>
+    <div class="proof-ticker-item"><span class="proof-ticker-stars">★★★★★</span> "ok i was skeptical but this actually works"</div>
+    <div class="proof-ticker-dot">·</div>
+    <div class="proof-ticker-item"><span class="proof-ticker-stars">★★★★★</span> "my afternoons are actually useful now which is insane"</div>
+    <div class="proof-ticker-dot">·</div>
+    <div class="proof-ticker-item"><span class="proof-ticker-stars">★★★★★</span> "felt it within like 20 min and just started working"</div>
+    <div class="proof-ticker-dot">·</div>
+    <!-- duplicate for seamless loop -->
+    <div class="proof-ticker-item"><span class="proof-ticker-stars">★★★★★</span> "shipped that project i'd been putting off for like 2 weeks lol"</div>
+    <div class="proof-ticker-dot">·</div>
+    <div class="proof-ticker-item"><span class="proof-ticker-stars">★★★★★</span> "the 3pm crash is literally just gone?? idk what they put in this"</div>
+    <div class="proof-ticker-dot">·</div>
+    <div class="proof-ticker-item"><span class="proof-ticker-stars">★★★★★</span> "studied 4 hours and didn't check my phone once 💀"</div>
+    <div class="proof-ticker-dot">·</div>
+    <div class="proof-ticker-item"><span class="proof-ticker-stars">★★★★★</span> "still drink my coffee just don't need the second one anymore"</div>
+    <div class="proof-ticker-dot">·</div>
+    <div class="proof-ticker-item"><span class="proof-ticker-stars">★★★★★</span> "doesn't feel like a jolt just kinda... locked in"</div>
+    <div class="proof-ticker-dot">·</div>
+    <div class="proof-ticker-item"><span class="proof-ticker-stars">★★★★★</span> "ok i was skeptical but this actually works"</div>
+    <div class="proof-ticker-dot">·</div>
+    <div class="proof-ticker-item"><span class="proof-ticker-stars">★★★★★</span> "my afternoons are actually useful now which is insane"</div>
+    <div class="proof-ticker-dot">·</div>
+    <div class="proof-ticker-item"><span class="proof-ticker-stars">★★★★★</span> "felt it within like 20 min and just started working"</div>
+    <div class="proof-ticker-dot">·</div>
+  </div>
+</div>
+
+
 <!-- ===== SECTION 2 — THE MIRROR ===== -->
 <section id="mirror">
   <div class="container">
@@ -1215,7 +1294,7 @@
       </div>
 
       <div class="mirror-para mt-8">
-        <p class="depth">Then the first coffee kicks in and you feel it. That lift, that hum, the sense that you're finally switched on. So you open your laptop to start the real work, and somehow end up answering messages instead.</p>
+        <p class="depth">The first coffee kicks in. You feel switched on — and somehow end up in your inbox instead.</p>
         <p class="skim-frag">The buzz showed up. The focus didn't.</p>
       </div>
 
@@ -1225,7 +1304,8 @@
       </div>
 
       <div class="mirror-para mt-8">
-        <p class="depth">You're not lazy and you haven't been slacking. You've been busy since 8am. So why does it feel like the important work never actually got touched?</p>
+        <p class="depth">You've been busy since 8am. So why does it feel like the important work never got touched?</p>
+        <p class="skim-frag">Busy isn't the same as focused.</p>
       </div>
     </div>
   </div>
@@ -1238,7 +1318,7 @@
     <div class="reframe-inner">
       <span class="section-label">Why More Caffeine Never Fixes It</span>
 
-      <p class="depth">When the focus won't hold, the obvious move is more: a second coffee, a pre-workout, nicotine gum on the worst days. And it lifts you again&hellip; For about an hour.</p>
+      <p class="depth">When focus won't hold, the obvious move is more — another coffee, a pre-workout, nicotine on the worst days. Works for about an hour.</p>
 
       <div class="mt-6">
         <p class="depth">But adding more caffeine to a brain that already feels scattered doesn't make it steady.</p>
@@ -1254,7 +1334,8 @@
         </blockquote>
       </div>
 
-      <p class="depth">The thing your focus has been missing isn't a stronger signal. It's something underneath the signal, holding it level. A floor. A base.</p>
+      <p class="depth">The thing your focus has been missing isn't a stronger signal. It's something underneath the signal, holding it level.</p>
+      <p class="skim-frag">A floor. A base.</p>
     </div>
   </div>
 </section>
@@ -1268,32 +1349,28 @@
 
     <!-- Two-layer diagram -->
     <div class="stack-diagram" role="img" aria-label="Diagram showing Alertness layer sitting on top of the Steadiness Layer">
-      <div class="stack-alertness-row">
-        <div class="stack-alertness">
-          <span class="stack-layer-name">Alertness</span>
-          <span class="stack-layer-cap">Lands on top of a brain that's already steady.</span>
-        </div>
+      <div class="stack-alertness">
+        <span class="stack-layer-name">Alertness</span>
+        <span class="stack-layer-cap">Lands on top of a brain that's already steady.</span>
       </div>
       <div class="stack-steadiness">
-        <div>
-          <span class="stack-layer-name">Steadiness Layer</span>
-          <span class="stack-layer-cap">Goes in first.</span>
-        </div>
+        <span class="stack-layer-name">Steadiness Layer</span>
+        <span class="stack-layer-cap">Goes in first.</span>
       </div>
     </div>
 
     <!-- Body copy -->
-    <p class="depth">Here's what almost every focus product does: they start with caffeine, the caffeine spikes you, the spike brings an edge. And only then, they add a smoothing ingredient on top to clean up the edge after it shows up. It works, sort of. But you're still feeling the spike. They're just sanding it down after the fact.</p>
+    <p class="depth">Most focus drinks add caffeine first, then patch the spike after it shows up.</p>
 
-    <p class="depth mt-5">Mindor was built the other way around.</p>
+    <p class="skim-frag">Mindor was built the other way around.</p>
 
     <p class="skim-frag">The calm goes in first.</p>
 
-    <p class="depth">Before the caffeine, there's a steadiness layer: led by 600mg of inositol, one of the largest doses in the whole formula. It isn't there for energy. It's there to set a level, calm baseline for your focus to sit on.</p>
+    <p class="depth">600mg of inositol sets a calm, level baseline before anything stimulating reaches your brain.</p>
 
     <p class="skim-frag">Then the alertness lands on top of it.</p>
 
-    <p class="depth">The caffeine goes to work, but it's working on a brain that's already steady. So there's no edge to sand down. There was never an edge to begin with.</p>
+    <p class="depth">The caffeine works on a brain that's already steady — no spike, no edge to manage.</p>
 
     <p class="skim-frag">That's the Steady Base. It's also why Mindor doesn't feel like coffee.</p>
 
@@ -1310,12 +1387,16 @@
           <text x="540" y="108" font-size="10" fill="rgba(200,201,184,0.35)" font-family="DM Sans,sans-serif" text-anchor="middle">3pm</text>
           <!-- Coffee spike reference -->
           <polyline points="80,96 95,30 110,96" stroke="rgba(255,255,255,0.55)" stroke-width="2" fill="none" stroke-dasharray="4,3"/>
-          <text x="95" y="20" font-size="12" font-weight="600" fill="rgba(255,255,255,0.75)" font-family="DM Sans,sans-serif" text-anchor="middle">COFFEE</text>
-          <text x="95" y="106" font-size="10" fill="rgba(255,120,60,0.8)" font-family="DM Sans,sans-serif" text-anchor="middle">SPIKE</text>
+          <text x="95" y="18" font-size="10" font-weight="700" fill="rgba(255,255,255,0.65)" font-family="DM Sans,sans-serif" text-anchor="middle">COFFEE</text>
+          <text x="95" y="107" font-size="9" fill="rgba(255,120,60,0.85)" font-family="DM Sans,sans-serif" text-anchor="middle">SPIKE &amp; CRASH</text>
+          <!-- vs separator -->
+          <text x="137" y="60" font-size="9" font-weight="600" fill="rgba(200,201,184,0.3)" font-family="DM Sans,sans-serif" text-anchor="middle">vs</text>
           <!-- Main arc path -->
           <path id="arcPath" class="arc-path"
             d="M 160,96 C 185,94 198,16 220,12 L 380,12 C 402,16 415,94 440,96"
             stroke="var(--execution-green)" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- Mindor label above plateau -->
+          <text x="300" y="6" font-size="10" font-weight="700" fill="var(--execution-green)" font-family="DM Sans,sans-serif" text-anchor="middle" opacity="0.85">MINDOR</text>
           <!-- Marker dots -->
           <circle id="arcDot0" class="arc-dot" cx="220" cy="12" r="4.5" fill="var(--execution-green)"/>
           <circle id="arcDot1" class="arc-dot" cx="300" cy="12" r="4.5" fill="var(--execution-green)"/>
@@ -1452,21 +1533,85 @@
       <span class="section-label">What Another Day Of This Costs</span>
 
       <div class="cost-para">
-        <p class="depth">Picture the version of the day where the focus holds. You sit down, you start, and the work actually moves — not because you forced it, but because your brain finally cooperated. You decided how the day would go.</p>
+        <p class="depth">Picture the version of the day where the focus holds. You sit down, you start, the work moves.</p>
         <p class="skim-frag">That's the part that's been missing. Not energy. Control.</p>
       </div>
 
       <div class="cost-para mt-6">
-        <p class="depth">Without it, the day decides for you. The drink works or it doesn't. The focus shows up or it doesn't. And you spend the afternoon reacting to a brain you can't quite steer.</p>
+        <p class="skim-frag">Without it, the day decides for you.</p>
+        <p class="depth">The drink works or it doesn't. You spend the afternoon reacting to a brain you can't steer.</p>
       </div>
 
       <div class="cost-para mt-6">
-        <p class="depth">You can close this page and run it back tomorrow. Same coffee, same buzz, same scattered afternoon, same quiet feeling at 6pm that you were busy all day and somehow never got to the thing that mattered.</p>
+        <p class="skim-frag">Tomorrow: same coffee. Same buzz. Same scattered 6pm.</p>
       </div>
 
-      <div class="cost-para mt-6">
-        <p class="depth">Or you can put a floor under it.</p>
+      <div class="cost-para mt-8">
+        <p class="skim-frag cost-floor">Or you can put a floor under it.</p>
       </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== SOCIAL PROOF CARDS ===== -->
+<section id="s-proof">
+  <div class="container">
+    <div class="proof-header">
+      <div class="proof-header-stars">★★★★★</div>
+      <h2 class="proof-heading">Real People. Real Results.</h2>
+      <p class="proof-sub">Founders, students, and builders who stopped crashing at 2pm.</p>
+    </div>
+    <div class="proof-grid">
+
+      <div class="proof-card">
+        <div class="proof-card-stars">★★★★★</div>
+        <p class="proof-quote">ok so i had this notion doc i'd been avoiding for like 3 days. took mindor tuesday morning and shipped the whole thing by lunch. wasn't expecting it to actually work lol</p>
+        <div class="proof-attr">
+          <div class="proof-avatar">JM</div>
+          <div>
+            <div class="proof-name">Jake M.</div>
+            <div class="proof-role">Startup Founder</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="proof-card">
+        <div class="proof-card-stars">★★★★★</div>
+        <p class="proof-quote">still drink my morning coffee but i just… stopped needing the second one? the 3pm thing is gone. didn't realize how much of my day i was losing to that until it wasn't there</p>
+        <div class="proof-attr">
+          <div class="proof-avatar">PS</div>
+          <div>
+            <div class="proof-name">Priya S.</div>
+            <div class="proof-role">Product Designer</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="proof-card">
+        <div class="proof-card-stars">★★★★★</div>
+        <p class="proof-quote">4 hours studying, didn't touch my phone once. that's literally never happened. i didn't even feel it kick in i just started working and kinda forgot to stop</p>
+        <div class="proof-attr">
+          <div class="proof-avatar">MT</div>
+          <div>
+            <div class="proof-name">Marcus T.</div>
+            <div class="proof-role">CS Student</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="proof-card">
+        <div class="proof-card-stars">★★★★★</div>
+        <p class="proof-quote">it's not that wired buzzy feeling at all. more like… quiet focus? hard to explain but i'm outputting more than before so i'll take it</p>
+        <div class="proof-attr">
+          <div class="proof-avatar">LR</div>
+          <div>
+            <div class="proof-name">Lily R.</div>
+            <div class="proof-role">Creative Director</div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -1606,9 +1751,8 @@
       <span class="final-body-line">Caffeine can switch you on.</span>
       <span class="final-body-line">The Steady Base is what holds you there.</span>
     </div>
-    <!-- [CONFIRM] $36 is post-discount anchor price — confirm intended -->
     <div class="final-cta-wrap">
-      <a href="#offer" class="btn-primary btn-full" style="font-size:14px;padding:16px 32px;">START MY FIRST TUB &mdash; $36 &rarr;</a>
+      <a href="#offer" class="btn-primary btn-full" style="font-size:14px;padding:16px 32px;">START MY FIRST TUB &mdash; $42.99 &rarr;</a>
     </div>
     <p class="final-sub"><em>30-day money-back guarantee. Ships in 24 hours.</em></p>
   </div>
@@ -1658,20 +1802,20 @@
   <div id="popup-panel">
     <button class="popup-close" id="popupClose" aria-label="Close">&times;</button>
     <div id="popupFormContent">
-      <p class="popup-label">Before You Decide</p>
-      <h2 class="popup-headline" id="popupHeadline">Take 15% off your first order.</h2>
-      <p class="popup-body">Drop your email &mdash; we'll send the code and a short note on getting the most out of your first week.</p>
+      <p class="popup-label">Limited Offer</p>
+      <h2 class="popup-headline" id="popupHeadline">Get 15% off your first order.</h2>
+      <p class="popup-body">Enter your email to unlock the code.</p>
       <form id="popupForm" novalidate>
         <div class="popup-field-row">
           <input type="email" class="popup-email" id="popupEmail" placeholder="your@email.com" autocomplete="email" required aria-label="Email address">
-          <button type="submit" class="btn-primary popup-submit">SEND MY CODE</button>
+          <button type="submit" class="btn-primary popup-submit">UNLOCK</button>
         </div>
         <p class="popup-disclaimer">No spam. Unsubscribe anytime.</p>
       </form>
     </div>
     <div id="popupSuccess" class="popup-success" style="display:none;">
-      <p class="popup-success-hl">Code's on its way.</p>
-      <p class="popup-success-body" style="margin-bottom:14px;">Check your inbox.</p>
+      <p class="popup-success-hl">Here's your code.</p>
+      <p class="popup-success-body" style="margin-bottom:14px;">Apply it at checkout.</p>
       <div style="background:var(--bg);border:1px solid var(--border-active);border-radius:3px;padding:12px 16px;text-align:center;">
         <p style="font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px;">Your code</p>
         <p style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:28px;color:var(--execution-green);letter-spacing:0.06em;">FLOOR15</p>
