@@ -2225,7 +2225,6 @@ window.addEventListener('load', function() {
     var w = canvas.width / dpr;
     var h = canvas.height / dpr;
     ctx.clearRect(0, 0, w, h);
-    ctx.filter = 'blur(22px)';
     beams.forEach(function(b, i) {
       b.y -= b.speed;
       b.pulse += b.pulseSpeed;
@@ -2245,7 +2244,6 @@ window.addEventListener('load', function() {
       ctx.fillRect(-b.width / 2, 0, b.width, b.length);
       ctx.restore();
     });
-    ctx.filter = 'none';
     raf = requestAnimationFrame(tick);
   }
 
