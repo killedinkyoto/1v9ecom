@@ -1150,6 +1150,22 @@
     color: var(--execution-green);
     font-weight: 700;
   }
+  @keyframes bonusPop {
+    0%   { transform: scale(1); }
+    40%  { transform: scale(1.18); }
+    70%  { transform: scale(0.94); }
+    100% { transform: scale(1); }
+  }
+  @keyframes checkDraw {
+    0%   { stroke-dashoffset: 20; opacity: 0; }
+    30%  { opacity: 1; }
+    100% { stroke-dashoffset: 0; opacity: 1; }
+  }
+  @keyframes bonusCardPulse {
+    0%   { box-shadow: 0 0 0 0 rgba(226,255,71,0.35); }
+    60%  { box-shadow: 0 0 0 6px rgba(226,255,71,0); }
+    100% { box-shadow: 0 0 0 0 rgba(226,255,71,0); }
+  }
   .bonus-add-btn {
     margin-left: auto;
     flex-shrink: 0;
@@ -1161,24 +1177,42 @@
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    padding: 6px 12px;
+    padding: 6px 14px;
     border-radius: 6px;
     cursor: pointer;
-    transition: background 0.15s, border-color 0.15s, color 0.15s;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
     white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    min-width: 72px;
+    justify-content: center;
   }
   .bonus-add-btn:hover {
     background: rgba(226,255,71,0.08);
     border-color: var(--execution-green);
   }
   .bonus-add-btn.added {
-    background: rgba(226,255,71,0.15);
+    background: var(--execution-green);
     border-color: var(--execution-green);
-    color: var(--execution-green);
+    color: #1A1F14;
+    animation: bonusPop 0.32s cubic-bezier(0.34,1.56,0.64,1) forwards;
+  }
+  .bonus-add-btn.added svg {
+    animation: checkDraw 0.28s ease forwards 0.06s;
+  }
+  .bonus-add-btn svg {
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+  }
+  .bonus-card {
+    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
   }
   .bonus-card.added {
-    border-color: rgba(226,255,71,0.4);
-    background: rgba(226,255,71,0.04);
+    border-color: rgba(226,255,71,0.5);
+    background: rgba(226,255,71,0.05);
+    animation: bonusCardPulse 0.5s ease forwards;
   }
 
   /* Order summary */
@@ -2651,15 +2685,28 @@ var BUNDLE_DISC_PRICES = { 1: 36.54, 2: 65.44, 3: 84.99 };
 var bonusAdded = { shaker: false, tracker: false };
 var BONUS_PRICES = { shaker: 13.99, tracker: 7.00 };
 
+var CHECK_SVG = '<svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><polyline points="1.5,6 5,9.5 10.5,2.5" stroke="#1A1F14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="20" stroke-dashoffset="20"/></svg>';
+
 function toggleBonus(key) {
   bonusAdded[key] = !bonusAdded[key];
-  var btn = document.getElementById('bonusBtn' + key.charAt(0).toUpperCase() + key.slice(1));
-  var card = document.getElementById('bonusCard' + key.charAt(0).toUpperCase() + key.slice(1));
+  var id = key.charAt(0).toUpperCase() + key.slice(1);
+  var btn = document.getElementById('bonusBtn' + id);
+  var card = document.getElementById('bonusCard' + id);
   if (bonusAdded[key]) {
-    if (btn) { btn.textContent = '✓ Added'; btn.classList.add('added'); }
-    if (card) card.classList.add('added');
+    if (btn) {
+      // Force re-trigger animation by briefly removing the class
+      btn.classList.remove('added');
+      void btn.offsetWidth;
+      btn.innerHTML = CHECK_SVG + 'Added';
+      btn.classList.add('added');
+    }
+    if (card) {
+      card.classList.remove('added');
+      void card.offsetWidth;
+      card.classList.add('added');
+    }
   } else {
-    if (btn) { btn.textContent = '+ Add'; btn.classList.remove('added'); }
+    if (btn) { btn.innerHTML = '+ Add'; btn.classList.remove('added'); }
     if (card) card.classList.remove('added');
   }
   updateOrderSummary();
