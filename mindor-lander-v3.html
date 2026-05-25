@@ -1106,6 +1106,136 @@
     margin-top: 4px;
   }
 
+  /* Bonus cards */
+  .bonus-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 18px 0 20px;
+  }
+  .bonus-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--surface2);
+    border: 1px solid rgba(226,255,71,0.14);
+    border-radius: 10px;
+    padding: 12px 16px;
+  }
+  .bonus-icon {
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  .bonus-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .bonus-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .bonus-value {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    color: var(--fog-grey);
+  }
+  .bonus-value s {
+    color: var(--text-muted);
+    text-decoration-color: var(--text-muted);
+  }
+  .bonus-value strong {
+    color: var(--execution-green);
+    font-weight: 700;
+  }
+  .bonus-add-btn {
+    margin-left: auto;
+    flex-shrink: 0;
+    background: transparent;
+    border: 1.5px solid rgba(226,255,71,0.35);
+    color: var(--execution-green);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+    white-space: nowrap;
+  }
+  .bonus-add-btn:hover {
+    background: rgba(226,255,71,0.08);
+    border-color: var(--execution-green);
+  }
+  .bonus-add-btn.added {
+    background: rgba(226,255,71,0.15);
+    border-color: var(--execution-green);
+    color: var(--execution-green);
+  }
+  .bonus-card.added {
+    border-color: rgba(226,255,71,0.4);
+    background: rgba(226,255,71,0.04);
+  }
+
+  /* Order summary */
+  .order-summary {
+    background: var(--surface2);
+    border: 1px solid rgba(226,255,71,0.14);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 12px 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .order-summary-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .order-summary-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .order-summary-was {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--text-muted);
+    text-decoration: line-through;
+    text-decoration-color: var(--text-muted);
+  }
+  .order-summary-pay-line .order-summary-label {
+    color: var(--text-primary);
+    font-weight: 700;
+    font-size: 13px;
+  }
+  .order-summary-pay {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--execution-green);
+    letter-spacing: 0.01em;
+  }
+  .order-summary-savings {
+    padding-top: 4px;
+    border-top: 1px solid rgba(226,255,71,0.1);
+    text-align: center;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--execution-green);
+  }
+
   /* ===== FAQ (Section 8) ===== */
   #faq {
     background: var(--bg);
@@ -1940,11 +2070,11 @@
 
       <div class="proof-card">
         <div class="proof-card-stars">★★★★★</div>
-        <p class="proof-quote">ok so i had this notion doc i'd been avoiding for like 3 days. took mindor tuesday morning and shipped the whole thing by lunch. wasn't expecting it to actually work lol</p>
+        <p class="proof-quote">I thought this was just expensive coffee at first... but I gave it a shot anyways. I thought "I'm already in this deep, might aswell go for it." I'm not exaggerating when I say this, but they should charge more for this thing. it's NUTS! And the 15% off for my email really helped past me make my decision.</p>
         <div class="proof-attr">
-          <div class="proof-avatar">JM</div>
+          <div class="proof-avatar">MN</div>
           <div>
-            <div class="proof-name">Jake M.</div>
+            <div class="proof-name">Marcus N.</div>
             <div class="proof-role">Startup Founder</div>
           </div>
         </div>
@@ -1956,7 +2086,7 @@
         <div class="proof-attr">
           <div class="proof-avatar">PS</div>
           <div>
-            <div class="proof-name">Priya S.</div>
+            <div class="proof-name">Patel S.</div>
             <div class="proof-role">Product Designer</div>
           </div>
         </div>
@@ -1976,11 +2106,11 @@
 
       <div class="proof-card">
         <div class="proof-card-stars">★★★★★</div>
-        <p class="proof-quote">it's not that wired buzzy feeling at all. more like… quiet focus? hard to explain but i'm outputting more than before so i'll take it</p>
+        <p class="proof-quote">I've tried at least 5 other heavily marketed "nootropic" miracle brands by now, and they were all trash... Basically sugar pills. So, after 5 tries, what's a 6th? and I guess 6th time's the charm. These people really don't lie when it comes to that focus.</p>
         <div class="proof-attr">
-          <div class="proof-avatar">LR</div>
+          <div class="proof-avatar">TO</div>
           <div>
-            <div class="proof-name">Lily R.</div>
+            <div class="proof-name">Teresa O.</div>
             <div class="proof-role">Creative Director</div>
           </div>
         </div>
@@ -2037,6 +2167,42 @@
 
     <!-- Flavor selector (rendered by JS) -->
     <div id="flavorRow" class="flavor-row"></div>
+
+    <!-- Bonus inclusions -->
+    <p class="bundle-step" style="margin-top:22px;">3 &mdash; Add Free Gifts</p>
+    <div class="bonus-list">
+      <div class="bonus-card" id="bonusCardShaker">
+        <span class="bonus-icon">🥤</span>
+        <div class="bonus-text">
+          <span class="bonus-title">FREE Shaker Included</span>
+          <span class="bonus-value"><s>$13.99</s> <strong>FREE</strong></span>
+        </div>
+        <button class="bonus-add-btn" id="bonusBtnShaker" onclick="toggleBonus('shaker')">+ Add</button>
+      </div>
+      <div class="bonus-card" id="bonusCardTracker">
+        <span class="bonus-icon">📋</span>
+        <div class="bonus-text">
+          <span class="bonus-title">MINDOR Productivity Tracker</span>
+          <span class="bonus-value"><s>$7.00</s> <strong>FREE</strong></span>
+        </div>
+        <button class="bonus-add-btn" id="bonusBtnTracker" onclick="toggleBonus('tracker')">+ Add</button>
+      </div>
+    </div>
+
+    <!-- Order total summary -->
+    <div class="order-summary" id="orderSummary">
+      <div class="order-summary-line">
+        <span class="order-summary-label">Retail value</span>
+        <span class="order-summary-was" id="orderRetailValue">$76.99</span>
+      </div>
+      <div class="order-summary-line order-summary-pay-line">
+        <span class="order-summary-label">You pay today</span>
+        <span class="order-summary-pay" id="orderYouPay">$76.99</span>
+      </div>
+      <div class="order-summary-savings" id="orderSavingsRow" style="display:none;">
+        <span id="orderSavingsText"></span>
+      </div>
+    </div>
 
     <!-- CTA -->
     <!-- [CONFIRM CHECKOUT URL] -->
@@ -2302,6 +2468,7 @@ function updateBundleUI() {
   var cta = document.getElementById('bundleCta');
   if (cta && !cta.disabled) cta.textContent = BUNDLE_DATA[selectedQty].cta;
   applyFlavorAccent();
+  if (typeof updateOrderSummary === 'function') updateOrderSummary();
 }
 
 // Bundle card click/keyboard
@@ -2461,6 +2628,7 @@ function applyDiscountVisuals(animate) {
   if (finalCta) finalCta.textContent = 'START MY FIRST TUB — $36.54 →';
   var sp = document.getElementById('stickyPrice');
   if (sp) sp.textContent = 'from $36.54';
+  if (typeof updateOrderSummary === 'function') updateOrderSummary();
 }
 
 function showDiscountToast() {
@@ -2476,6 +2644,53 @@ function showDiscountToast() {
 if (discountUnlocked) {
   window.addEventListener('DOMContentLoaded', function() { applyDiscountVisuals(false); });
 }
+
+// ===== BONUS GIFTS =====
+var BUNDLE_FULL_PRICES = { 1: 42.99, 2: 76.99, 3: 99.99 };
+var BUNDLE_DISC_PRICES = { 1: 36.54, 2: 65.44, 3: 84.99 };
+var bonusAdded = { shaker: false, tracker: false };
+var BONUS_PRICES = { shaker: 13.99, tracker: 7.00 };
+
+function toggleBonus(key) {
+  bonusAdded[key] = !bonusAdded[key];
+  var btn = document.getElementById('bonusBtn' + key.charAt(0).toUpperCase() + key.slice(1));
+  var card = document.getElementById('bonusCard' + key.charAt(0).toUpperCase() + key.slice(1));
+  if (bonusAdded[key]) {
+    if (btn) { btn.textContent = '✓ Added'; btn.classList.add('added'); }
+    if (card) card.classList.add('added');
+  } else {
+    if (btn) { btn.textContent = '+ Add'; btn.classList.remove('added'); }
+    if (card) card.classList.remove('added');
+  }
+  updateOrderSummary();
+}
+
+function updateOrderSummary() {
+  var bundlePrice = discountUnlocked ? BUNDLE_DISC_PRICES[selectedQty] : BUNDLE_FULL_PRICES[selectedQty];
+  var retailBase = BUNDLE_FULL_PRICES[selectedQty];
+  var giftRetail = (bonusAdded.shaker ? BONUS_PRICES.shaker : 0) + (bonusAdded.tracker ? BONUS_PRICES.tracker : 0);
+  var retail = retailBase + giftRetail;
+  var youPay = bundlePrice; // gifts are always free
+
+  var wasEl = document.getElementById('orderRetailValue');
+  var payEl = document.getElementById('orderYouPay');
+  var savingsRow = document.getElementById('orderSavingsRow');
+  var savingsText = document.getElementById('orderSavingsText');
+
+  if (wasEl) wasEl.textContent = '$' + retail.toFixed(2);
+  if (payEl) payEl.textContent = '$' + youPay.toFixed(2);
+
+  var savings = retail - youPay;
+  if (savings > 0.005 && savingsRow && savingsText) {
+    savingsText.textContent = 'You save $' + savings.toFixed(2);
+    savingsRow.style.display = 'block';
+  } else if (savingsRow) {
+    savingsRow.style.display = 'none';
+  }
+}
+
+// Initialise on load
+window.addEventListener('DOMContentLoaded', function() { updateOrderSummary(); });
 
 // ===== POPUP =====
 var popupShown = false;
