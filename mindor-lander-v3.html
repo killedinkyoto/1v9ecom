@@ -2397,6 +2397,11 @@ var PRODUCT_IDS = {
   'sour-grape':       'gid://shopify/Product/9049594626203',
   'sour-gummy-worms': 'gid://shopify/Product/9049594495131'
 };
+// Free gift variants — priced at $0 via MINDORGIFT discount code in Shopify admin
+var BONUS_VARIANT_IDS = {
+  shaker:  'gid://shopify/ProductVariant/48489513582747',
+  tracker: 'gid://shopify/ProductVariant/48489510797467'
+};
 var _variantCache = {};
 
 // ===== FLAVOR CONFIG =====
@@ -2546,9 +2551,14 @@ async function handleCheckout() {
     var lines = flavorsNeeded.map(function(f, i) {
       return '{ quantity: ' + flavorCount[f] + ', merchandiseId: "' + variantIds[i] + '" }';
     });
+    // Add free gift lines
+    if (bonusAdded.shaker)  lines.push('{ quantity: 1, merchandiseId: "' + BONUS_VARIANT_IDS.shaker  + '" }');
+    if (bonusAdded.tracker) lines.push('{ quantity: 1, merchandiseId: "' + BONUS_VARIANT_IDS.tracker + '" }');
+
     var codes = [];
     if (BUNDLE_DATA[selectedQty].discount) codes.push(BUNDLE_DATA[selectedQty].discount);
     if (discountUnlocked) codes.push(DISC_CODE);
+    if (bonusAdded.shaker || bonusAdded.tracker) codes.push('MINDORGIFT');
     var discountPart = codes.length ? 'discountCodes: [' + codes.map(function(c) { return '"' + c + '"'; }).join(',') + '],' : '';
     var mutation = 'mutation { cartCreate(input: { ' + discountPart + ' lines: [' + lines.join(',') + '] }) { cart { checkoutUrl } userErrors { message } } }';
     var res = await fetch('https://' + SHOPIFY_DOMAIN + '/api/2024-01/graphql.json', {
@@ -2757,16 +2767,25 @@ document.getElementById('popupForm').addEventListener('submit', function(e) {
   var btn = this.querySelector('button[type="submit"]');
   if (btn) { btn.textContent = 'Sending…'; btn.disabled = true; }
   // Subscribe to Klaviyo
-  // [CONFIRM: discount code FLOOR15 must be created in Shopify admin as 15% off first order]
   fetch('https://a.klaviyo.com/client/subscriptions/?company_id=' + KLAVIYO_KEY, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'revision': '2023-02-22' },
+    headers: { 'Content-Type': 'application/json', 'revision': '2024-10-15' },
     body: JSON.stringify({
       data: {
         type: 'subscription',
         attributes: {
-          profile: { data: { type: 'profile', attributes: { email: email, properties: { hvco_popup: true, discount_code: 'FLOOR15' } } } },
-          list_id: KLAVIYO_LIST
+          profile: {
+            data: {
+              type: 'profile',
+              attributes: {
+                email: email,
+                properties: { hvco_popup: true, discount_code: 'FLOOR15', source: 'lander-popup' }
+              }
+            }
+          }
+        },
+        relationships: {
+          list: { data: { type: 'list', id: KLAVIYO_LIST } }
         }
       }
     })
