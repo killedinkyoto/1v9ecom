@@ -2955,7 +2955,7 @@ window.addEventListener('load', function() {
   window.addEventListener('resize', function() {
     if (raf) cancelAnimationFrame(raf);
     resize();
-    if (heroInView) tick();
+    if (heroInView) raf = requestAnimationFrame(tick);
   });
 
   // Re-add IO pause — but ignore `false` fires in first 600ms (iOS Safari quirk:
@@ -2967,14 +2967,14 @@ window.addEventListener('load', function() {
     if (inView) {
       heroInView = true;
       lastTs = null; // reset so delta doesn't spike on resume
-      if (!raf) tick();
+      if (!raf) raf = requestAnimationFrame(tick);
     } else if (ioReady) {
       heroInView = false;
     }
   }, { threshold: 0 });
   beamObs.observe(document.getElementById('hero'));
 
-  tick();
+  raf = requestAnimationFrame(tick);
 })();
 }); // end window load
 
