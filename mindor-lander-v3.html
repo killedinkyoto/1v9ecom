@@ -2833,7 +2833,7 @@ window.addEventListener('load', function() {
   var canvas = document.getElementById('heroBeams');
   if (!canvas || !canvas.getContext) return;
   var ctx = canvas.getContext('2d');
-  var beams = [], raf = null, N = 28, heroInView = true;
+  var beams = [], raf = null, N = 28;
 
   function makeBeam(w, h) {
     return {
@@ -2872,7 +2872,6 @@ window.addEventListener('load', function() {
   }
 
   function tick() {
-    if (!heroInView) { raf = null; return; }
     var dpr = window.devicePixelRatio || 1;
     var w = canvas.width / dpr, h = canvas.height / dpr;
     ctx.clearRect(0, 0, w, h);
@@ -2902,15 +2901,8 @@ window.addEventListener('load', function() {
   window.addEventListener('resize', function() {
     if (raf) cancelAnimationFrame(raf);
     resize();
-    if (heroInView) tick();
+    tick();
   });
-
-  // Pause RAF when hero scrolls off-screen — fixes mobile scroll repaint
-  var beamObs = new IntersectionObserver(function(entries) {
-    heroInView = entries[0].isIntersecting;
-    if (heroInView && !raf) tick();
-  }, { threshold: 0 });
-  beamObs.observe(document.getElementById('hero'));
 
   tick();
 })();
