@@ -2880,7 +2880,7 @@ window.addEventListener('load', function() {
   if (!canvas || !canvas.getContext) return;
   var ctx = canvas.getContext('2d');
   var N = window.innerWidth < 500 ? 16 : 28;
-  var beams = [], raf = null, heroInView = true;
+  var beams = [], raf = null, heroInView = true, lastTs = null;
 
   function makeBeam(w, h) {
     return {
@@ -2918,14 +2918,20 @@ window.addEventListener('load', function() {
     for (var i = 0; i < N; i++) beams.push(makeBeam(w, h));
   }
 
-  function tick() {
-    if (!heroInView) { raf = null; return; }
+  function tick(ts) {
+    if (!heroInView) { raf = null; lastTs = null; return; }
+    // Delta-time: cap at 50ms so scroll-burst RAF callbacks don't cause jumps
+    if (!lastTs) lastTs = ts;
+    var delta = Math.min(ts - lastTs, 50);
+    lastTs = ts;
+    var scale = delta / 16.667; // 1.0 at 60fps
+
     var dpr = Math.min(window.devicePixelRatio || 1, 2);
     var w = canvas.width / dpr, h = canvas.height / dpr;
     ctx.clearRect(0, 0, w, h);
     beams.forEach(function(b, i) {
-      b.y -= b.speed;
-      b.pulse += b.pulseSpeed;
+      b.y -= b.speed * scale;
+      b.pulse += b.pulseSpeed * scale;
       if (b.y + b.length < 0) resetBeam(b, i, w, h);
       var op = b.opacity * (0.8 + 0.2 * Math.sin(b.pulse));
       ctx.save();
@@ -2960,6 +2966,7 @@ window.addEventListener('load', function() {
     var inView = entries[0].isIntersecting;
     if (inView) {
       heroInView = true;
+      lastTs = null; // reset so delta doesn't spike on resume
       if (!raf) tick();
     } else if (ioReady) {
       heroInView = false;
