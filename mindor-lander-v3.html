@@ -215,6 +215,8 @@
     height: 100%;
     pointer-events: none;
     z-index: 0;
+    will-change: transform;
+    transform: translateZ(0);
   }
   .hero-inner {
     text-align: center;
@@ -2877,7 +2879,8 @@ window.addEventListener('load', function() {
   var canvas = document.getElementById('heroBeams');
   if (!canvas || !canvas.getContext) return;
   var ctx = canvas.getContext('2d');
-  var beams = [], raf = null, N = 28;
+  var N = window.innerWidth < 500 ? 16 : 28;
+  var beams = [], raf = null, heroInView = true;
 
   function makeBeam(w, h) {
     return {
@@ -2905,7 +2908,7 @@ window.addEventListener('load', function() {
   }
 
   function resize() {
-    var dpr = window.devicePixelRatio || 1;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2); // cap at 2x — prevents 3× canvas on iPhone Pro
     var hero = document.getElementById('hero');
     var w = hero.offsetWidth, h = hero.offsetHeight;
     canvas.width = w * dpr; canvas.height = h * dpr;
@@ -2916,7 +2919,8 @@ window.addEventListener('load', function() {
   }
 
   function tick() {
-    var dpr = window.devicePixelRatio || 1;
+    if (!heroInView) { raf = null; return; }
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
     var w = canvas.width / dpr, h = canvas.height / dpr;
     ctx.clearRect(0, 0, w, h);
     beams.forEach(function(b, i) {
@@ -2945,8 +2949,23 @@ window.addEventListener('load', function() {
   window.addEventListener('resize', function() {
     if (raf) cancelAnimationFrame(raf);
     resize();
-    tick();
+    if (heroInView) tick();
   });
+
+  // Re-add IO pause — but ignore `false` fires in first 600ms (iOS Safari quirk:
+  // fires isIntersecting:false on initial observation before layout settles)
+  var ioReady = false;
+  setTimeout(function() { ioReady = true; }, 600);
+  var beamObs = new IntersectionObserver(function(entries) {
+    var inView = entries[0].isIntersecting;
+    if (inView) {
+      heroInView = true;
+      if (!raf) tick();
+    } else if (ioReady) {
+      heroInView = false;
+    }
+  }, { threshold: 0 });
+  beamObs.observe(document.getElementById('hero'));
 
   tick();
 })();
