@@ -211,37 +211,10 @@
   #heroBeams {
     position: absolute;
     inset: 0;
-    overflow: hidden;
+    width: 100%;
+    height: 100%;
     pointer-events: none;
     z-index: 0;
-  }
-  .hb-track {
-    position: absolute;
-    top: 0;
-    width: 1px;
-    height: 100%;
-    animation: hbRise var(--dur, 10s) linear infinite var(--delay, 0s);
-    will-change: transform;
-  }
-  .hb-beam {
-    position: absolute;
-    bottom: -150%;
-    height: 300%;
-    transform: rotate(-30deg);
-    transform-origin: bottom center;
-    background: linear-gradient(
-      to bottom,
-      transparent 0%,
-      hsla(var(--hue, 70), 88%, 65%, 0) 8%,
-      hsla(var(--hue, 70), 88%, 65%, var(--op, 0.22)) 30%,
-      hsla(var(--hue, 70), 88%, 65%, var(--op, 0.22)) 70%,
-      hsla(var(--hue, 70), 88%, 65%, 0) 92%,
-      transparent 100%
-    );
-  }
-  @keyframes hbRise {
-    from { transform: translateY(0); }
-    to   { transform: translateY(-300%); }
   }
   .hero-inner {
     text-align: center;
@@ -1179,6 +1152,8 @@
     margin-left: auto;
     flex-shrink: 0;
     background: transparent;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
     border: 1.5px solid rgba(226,255,71,0.35);
     color: var(--execution-green);
     font-family: 'DM Sans', sans-serif;
@@ -1672,7 +1647,7 @@
 
 <!-- ===== SECTION 1 — HERO ===== -->
 <section id="hero">
-  <div id="heroBeams" aria-hidden="true"></div>
+  <canvas id="heroBeams" aria-hidden="true"></canvas>
   <div class="container">
     <div class="hero-inner">
       <p class="hero-eyebrow">Performance Stack &middot; Est. 2026</p>
@@ -2572,13 +2547,24 @@ async function handleCheckout() {
       body: JSON.stringify({ query: mutation })
     });
     var data = await res.json();
+    var cart = data.data && data.data.cartCreate && data.data.cartCreate.cart;
     var errors = data.data && data.data.cartCreate && data.data.cartCreate.userErrors;
-    if (errors && errors.length) throw new Error(errors[0].message);
-    window.location.href = data.data.cartCreate.cart.checkoutUrl;
+    // Redirect if we have a checkout URL — discount errors are non-fatal
+    if (cart && cart.checkoutUrl) {
+      window.location.href = cart.checkoutUrl;
+      return;
+    }
+    throw new Error((errors && errors[0] && errors[0].message) || 'Checkout failed');
   } catch(e) {
     console.error('[Mindor checkout]', e);
     checkoutStarted = false;
     if (btn) { btn.textContent = origText; btn.disabled = false; }
+    // Show error toast so user knows what happened
+    var t = document.createElement('div');
+    t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#2a0a0a;border:1px solid #ff4444;border-radius:8px;padding:10px 18px;font-family:\'DM Sans\',sans-serif;font-size:13px;color:#ff8888;z-index:9999;white-space:nowrap;pointer-events:none';
+    t.textContent = 'Checkout error — please try again';
+    document.body.appendChild(t);
+    setTimeout(function() { if (t.parentNode) t.parentNode.removeChild(t); }, 4000);
   }
 }
 
@@ -2841,39 +2827,94 @@ var stickyOfferObs = new IntersectionObserver(function(entries) {
 }, { threshold: 0 });
 if (offerEl) stickyOfferObs.observe(offerEl);
 
-// ===== HERO BEAMS (CSS-animated divs — scroll-safe, no RAF) =====
+// ===== HERO BEAMS (canvas — pauses via IntersectionObserver when off-screen) =====
+window.addEventListener('load', function() {
 (function() {
-  var container = document.getElementById('heroBeams');
-  if (!container) return;
-  var beams = [
-    { x: '4%',  w: 55, hue: 65, op: 0.22, dur: '9s',  delay: '0s'   },
-    { x: '14%', w: 80, hue: 72, op: 0.17, dur: '12s', delay: '-4s'  },
-    { x: '24%', w: 60, hue: 68, op: 0.26, dur: '8s',  delay: '-6s'  },
-    { x: '34%', w: 70, hue: 75, op: 0.19, dur: '11s', delay: '-2s'  },
-    { x: '44%', w: 90, hue: 62, op: 0.14, dur: '14s', delay: '-9s'  },
-    { x: '54%', w: 65, hue: 70, op: 0.24, dur: '10s', delay: '-5s'  },
-    { x: '64%', w: 75, hue: 80, op: 0.19, dur: '9s',  delay: '-3s'  },
-    { x: '74%', w: 55, hue: 67, op: 0.28, dur: '13s', delay: '-7s'  },
-    { x: '84%', w: 85, hue: 73, op: 0.16, dur: '11s', delay: '-1s'  },
-    { x: '94%', w: 60, hue: 60, op: 0.21, dur: '8s',  delay: '-8s'  },
-    { x: '9%',  w: 70, hue: 77, op: 0.15, dur: '12s', delay: '-10s' },
-    { x: '49%', w: 95, hue: 64, op: 0.18, dur: '15s', delay: '-4s'  },
-    { x: '29%', w: 58, hue: 85, op: 0.14, dur: '10s', delay: '-11s' },
-    { x: '69%', w: 80, hue: 69, op: 0.22, dur: '9s',  delay: '-6s'  }
-  ];
-  var frag = document.createDocumentFragment();
-  beams.forEach(function(b) {
-    var track = document.createElement('div');
-    track.className = 'hb-track';
-    track.style.cssText = 'left:' + b.x + ';--dur:' + b.dur + ';--delay:' + b.delay;
-    var beam = document.createElement('div');
-    beam.className = 'hb-beam';
-    beam.style.cssText = 'width:' + b.w + 'px;margin-left:' + (-b.w / 2) + 'px;--hue:' + b.hue + ';--op:' + b.op;
-    track.appendChild(beam);
-    frag.appendChild(track);
+  var canvas = document.getElementById('heroBeams');
+  if (!canvas || !canvas.getContext) return;
+  var ctx = canvas.getContext('2d');
+  var beams = [], raf = null, N = 28, heroInView = true;
+
+  function makeBeam(w, h) {
+    return {
+      x: Math.random() * w * 1.5 - w * 0.25,
+      y: Math.random() * h,
+      width: 50 + Math.random() * 80,
+      length: h * 2.5,
+      angle: -35 + Math.random() * 10,
+      speed: 0.5 + Math.random() * 1.0,
+      opacity: 0.22 + Math.random() * 0.18,
+      hue: 60 + Math.random() * 30,
+      pulse: Math.random() * Math.PI * 2,
+      pulseSpeed: 0.015 + Math.random() * 0.025
+    };
+  }
+
+  function resetBeam(b, i, w, h) {
+    var col = i % 3, spacing = w / 3;
+    b.y = h + 100;
+    b.x = col * spacing + spacing / 2 + (Math.random() - 0.5) * spacing * 0.5;
+    b.width = 80 + Math.random() * 90;
+    b.speed = 0.4 + Math.random() * 0.5;
+    b.hue = 55 + (i * 35) / N;
+    b.opacity = 0.20 + Math.random() * 0.15;
+  }
+
+  function resize() {
+    var dpr = window.devicePixelRatio || 1;
+    var hero = document.getElementById('hero');
+    var w = hero.offsetWidth, h = hero.offsetHeight;
+    canvas.width = w * dpr; canvas.height = h * dpr;
+    canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    beams = [];
+    for (var i = 0; i < N; i++) beams.push(makeBeam(w, h));
+  }
+
+  function tick() {
+    if (!heroInView) { raf = null; return; }
+    var dpr = window.devicePixelRatio || 1;
+    var w = canvas.width / dpr, h = canvas.height / dpr;
+    ctx.clearRect(0, 0, w, h);
+    beams.forEach(function(b, i) {
+      b.y -= b.speed;
+      b.pulse += b.pulseSpeed;
+      if (b.y + b.length < 0) resetBeam(b, i, w, h);
+      var op = b.opacity * (0.8 + 0.2 * Math.sin(b.pulse));
+      ctx.save();
+      ctx.translate(b.x, b.y);
+      ctx.rotate(b.angle * Math.PI / 180);
+      var g = ctx.createLinearGradient(0, 0, 0, b.length);
+      g.addColorStop(0,   'hsla(' + b.hue + ',90%,70%,0)');
+      g.addColorStop(0.1, 'hsla(' + b.hue + ',90%,70%,' + (op * 0.5) + ')');
+      g.addColorStop(0.4, 'hsla(' + b.hue + ',90%,70%,' + op + ')');
+      g.addColorStop(0.6, 'hsla(' + b.hue + ',90%,70%,' + op + ')');
+      g.addColorStop(0.9, 'hsla(' + b.hue + ',90%,70%,' + (op * 0.5) + ')');
+      g.addColorStop(1,   'hsla(' + b.hue + ',90%,70%,0)');
+      ctx.fillStyle = g;
+      ctx.fillRect(-b.width / 2, 0, b.width, b.length);
+      ctx.restore();
+    });
+    raf = requestAnimationFrame(tick);
+  }
+
+  resize();
+  window.addEventListener('resize', function() {
+    if (raf) cancelAnimationFrame(raf);
+    resize();
+    if (heroInView) tick();
   });
-  container.appendChild(frag);
+
+  // Pause RAF when hero scrolls off-screen — fixes mobile scroll repaint
+  var beamObs = new IntersectionObserver(function(entries) {
+    heroInView = entries[0].isIntersecting;
+    if (heroInView && !raf) tick();
+  }, { threshold: 0 });
+  beamObs.observe(document.getElementById('hero'));
+
+  tick();
 })();
+}); // end window load
 
 // ===== HOVER BUTTON TRAILS =====
 (function() {

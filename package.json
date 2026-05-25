@@ -4,5 +4,8 @@
   "private": true,
   "dependencies": {
     "@supabase/supabase-js": "^2.49.4"
+  },
+  "devDependencies": {
+    "puppeteer-core": "^25.0.4"
   }
 }
