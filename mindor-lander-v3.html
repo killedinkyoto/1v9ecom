@@ -2425,6 +2425,11 @@ var selectedQty = 2;
 var selectedFlavors = ['sour-candy', 'sour-candy', 'sour-candy'];
 var checkoutStarted = false;
 
+var BUNDLE_FULL_PRICES = { 1: 42.99, 2: 76.99, 3: 99.99 };
+var BUNDLE_DISC_PRICES = { 1: 36.54, 2: 65.44, 3: 84.99 };
+var bonusAdded = { shaker: false, tracker: false };
+var BONUS_PRICES = { shaker: 13.99, tracker: 7.00 };
+
 var BUNDLE_DATA = {
   1: { cta: 'GET 1 TUB — $42.99 →', discount: null },
   2: { cta: 'GET 2 TUBS — $76.99 →', discount: 'BUNDLE2' },
@@ -2681,10 +2686,6 @@ if (discountUnlocked) {
 }
 
 // ===== BONUS GIFTS =====
-var BUNDLE_FULL_PRICES = { 1: 42.99, 2: 76.99, 3: 99.99 };
-var BUNDLE_DISC_PRICES = { 1: 36.54, 2: 65.44, 3: 84.99 };
-var bonusAdded = { shaker: false, tracker: false };
-var BONUS_PRICES = { shaker: 13.99, tracker: 7.00 };
 
 function toggleBonus(key) {
   bonusAdded[key] = !bonusAdded[key];
