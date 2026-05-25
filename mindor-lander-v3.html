@@ -1170,6 +1170,8 @@
     margin-left: auto;
     flex-shrink: 0;
     background: transparent;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
     border: 1.5px solid rgba(226,255,71,0.35);
     color: var(--execution-green);
     font-family: 'DM Sans', sans-serif;
@@ -1213,6 +1215,20 @@
     border-color: rgba(226,255,71,0.5);
     background: rgba(226,255,71,0.05);
     animation: bonusCardPulse 0.5s ease forwards;
+  }
+  .bonus-list.locked .bonus-card {
+    opacity: 0.35;
+    pointer-events: none;
+    user-select: none;
+  }
+  .gifts-lock-msg {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    color: var(--fog-grey);
+    text-align: center;
+    padding: 2px 0 6px;
+    letter-spacing: 0.04em;
+    display: none;
   }
 
   /* Order summary */
@@ -2204,7 +2220,8 @@
 
     <!-- Bonus inclusions -->
     <p class="bundle-step" style="margin-top:22px;">3 &mdash; Add Free Gifts</p>
-    <div class="bonus-list">
+    <p class="gifts-lock-msg" id="giftsLockMsg">Minimum 2 tubs required to unlock free gifts</p>
+    <div class="bonus-list" id="bonusList">
       <div class="bonus-card" id="bonusCardShaker">
         <span class="bonus-icon">🥤</span>
         <div class="bonus-text">
@@ -2406,6 +2423,11 @@ var PRODUCT_IDS = {
   'sour-grape':       'gid://shopify/Product/9049594626203',
   'sour-gummy-worms': 'gid://shopify/Product/9049594495131'
 };
+// Free gift variants — priced at $0 via MINDORGIFT discount code in Shopify admin
+var BONUS_VARIANT_IDS = {
+  shaker:  'gid://shopify/ProductVariant/48489513582747',
+  tracker: 'gid://shopify/ProductVariant/48489510797467'
+};
 var _variantCache = {};
 
 // ===== FLAVOR CONFIG =====
@@ -2429,10 +2451,15 @@ var selectedQty = 2;
 var selectedFlavors = ['sour-candy', 'sour-candy', 'sour-candy'];
 var checkoutStarted = false;
 
+var BUNDLE_FULL_PRICES = { 1: 42.99, 2: 76.99, 3: 99.99 };
+var BUNDLE_DISC_PRICES = { 1: 36.54, 2: 65.44, 3: 84.99 };
+var bonusAdded = { shaker: false, tracker: false };
+var BONUS_PRICES = { shaker: 13.99, tracker: 7.00 };
+
 var BUNDLE_DATA = {
   1: { cta: 'GET 1 TUB — $42.99 →', discount: null },
-  2: { cta: 'GET 2 TUBS — $76.99 →', discount: 'BUNDLE2' },
-  3: { cta: 'GET 3 TUBS — $99.99 →', discount: 'HVCO-STACK' }
+  2: { cta: 'GET 2 TUBS — $76.99 →', discount: null },
+  3: { cta: 'GET 3 TUBS — $99.99 →', discount: null }
 };
 
 // ===== FLAVOR ACCENT =====
@@ -2502,6 +2529,7 @@ function updateBundleUI() {
   var cta = document.getElementById('bundleCta');
   if (cta && !cta.disabled) cta.textContent = BUNDLE_DATA[selectedQty].cta;
   applyFlavorAccent();
+  if (typeof updateGiftsLock === 'function') updateGiftsLock();
   if (typeof updateOrderSummary === 'function') updateOrderSummary();
 }
 
@@ -2555,9 +2583,14 @@ async function handleCheckout() {
     var lines = flavorsNeeded.map(function(f, i) {
       return '{ quantity: ' + flavorCount[f] + ', merchandiseId: "' + variantIds[i] + '" }';
     });
+    // Add free gift lines
+    if (bonusAdded.shaker)  lines.push('{ quantity: 1, merchandiseId: "' + BONUS_VARIANT_IDS.shaker  + '" }');
+    if (bonusAdded.tracker) lines.push('{ quantity: 1, merchandiseId: "' + BONUS_VARIANT_IDS.tracker + '" }');
+
     var codes = [];
     if (BUNDLE_DATA[selectedQty].discount) codes.push(BUNDLE_DATA[selectedQty].discount);
     if (discountUnlocked) codes.push(DISC_CODE);
+    if (bonusAdded.shaker || bonusAdded.tracker) codes.push('MINDORGIFT');
     var discountPart = codes.length ? 'discountCodes: [' + codes.map(function(c) { return '"' + c + '"'; }).join(',') + '],' : '';
     var mutation = 'mutation { cartCreate(input: { ' + discountPart + ' lines: [' + lines.join(',') + '] }) { cart { checkoutUrl } userErrors { message } } }';
     var res = await fetch('https://' + SHOPIFY_DOMAIN + '/api/2024-01/graphql.json', {
@@ -2566,13 +2599,24 @@ async function handleCheckout() {
       body: JSON.stringify({ query: mutation })
     });
     var data = await res.json();
+    var cart = data.data && data.data.cartCreate && data.data.cartCreate.cart;
     var errors = data.data && data.data.cartCreate && data.data.cartCreate.userErrors;
-    if (errors && errors.length) throw new Error(errors[0].message);
-    window.location.href = data.data.cartCreate.cart.checkoutUrl;
+    // Redirect if we have a checkout URL — discount errors are non-fatal
+    if (cart && cart.checkoutUrl) {
+      window.location.href = cart.checkoutUrl;
+      return;
+    }
+    throw new Error((errors && errors[0] && errors[0].message) || 'Checkout failed');
   } catch(e) {
     console.error('[Mindor checkout]', e);
     checkoutStarted = false;
     if (btn) { btn.textContent = origText; btn.disabled = false; }
+    // Show error toast so user knows what happened
+    var t = document.createElement('div');
+    t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#2a0a0a;border:1px solid #ff4444;border-radius:8px;padding:10px 18px;font-family:\'DM Sans\',sans-serif;font-size:13px;color:#ff8888;z-index:9999;white-space:nowrap;pointer-events:none';
+    t.textContent = 'Checkout error — please try again';
+    document.body.appendChild(t);
+    setTimeout(function() { if (t.parentNode) t.parentNode.removeChild(t); }, 4000);
   }
 }
 
@@ -2680,10 +2724,33 @@ if (discountUnlocked) {
 }
 
 // ===== BONUS GIFTS =====
-var BUNDLE_FULL_PRICES = { 1: 42.99, 2: 76.99, 3: 99.99 };
-var BUNDLE_DISC_PRICES = { 1: 36.54, 2: 65.44, 3: 84.99 };
-var bonusAdded = { shaker: false, tracker: false };
-var BONUS_PRICES = { shaker: 13.99, tracker: 7.00 };
+
+function updateGiftsLock() {
+  var list = document.getElementById('bonusList');
+  var msg = document.getElementById('giftsLockMsg');
+  if (selectedQty < 2) {
+    if (list) list.classList.add('locked');
+    if (msg) msg.style.display = 'block';
+    // Auto-remove any added gifts when dropping to 1 tub
+    if (bonusAdded.shaker) {
+      bonusAdded.shaker = false;
+      var btn = document.getElementById('bonusBtnShaker');
+      var card = document.getElementById('bonusCardShaker');
+      if (btn) { btn.textContent = '+ Add'; btn.classList.remove('added'); }
+      if (card) card.classList.remove('added');
+    }
+    if (bonusAdded.tracker) {
+      bonusAdded.tracker = false;
+      var btn2 = document.getElementById('bonusBtnTracker');
+      var card2 = document.getElementById('bonusCardTracker');
+      if (btn2) { btn2.textContent = '+ Add'; btn2.classList.remove('added'); }
+      if (card2) card2.classList.remove('added');
+    }
+  } else {
+    if (list) list.classList.remove('locked');
+    if (msg) msg.style.display = 'none';
+  }
+}
 
 var CHECK_SVG = '<svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><polyline points="1.5,6 5,9.5 10.5,2.5" stroke="#1A1F14" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="20" stroke-dashoffset="20"/></svg>';
 
@@ -2714,7 +2781,8 @@ function toggleBonus(key) {
 
 function updateOrderSummary() {
   var bundlePrice = discountUnlocked ? BUNDLE_DISC_PRICES[selectedQty] : BUNDLE_FULL_PRICES[selectedQty];
-  var retailBase = BUNDLE_FULL_PRICES[selectedQty];
+  // Retail = what they'd pay buying each item individually (single tub price × qty + gift values)
+  var retailBase = BUNDLE_FULL_PRICES[1] * selectedQty;
   var giftRetail = (bonusAdded.shaker ? BONUS_PRICES.shaker : 0) + (bonusAdded.tracker ? BONUS_PRICES.tracker : 0);
   var retail = retailBase + giftRetail;
   var youPay = bundlePrice; // gifts are always free
@@ -2737,7 +2805,7 @@ function updateOrderSummary() {
 }
 
 // Initialise on load
-window.addEventListener('DOMContentLoaded', function() { updateOrderSummary(); });
+window.addEventListener('DOMContentLoaded', function() { updateGiftsLock(); updateOrderSummary(); });
 
 // ===== POPUP =====
 var popupShown = false;
@@ -2779,16 +2847,25 @@ document.getElementById('popupForm').addEventListener('submit', function(e) {
   var btn = this.querySelector('button[type="submit"]');
   if (btn) { btn.textContent = 'Sending…'; btn.disabled = true; }
   // Subscribe to Klaviyo
-  // [CONFIRM: discount code FLOOR15 must be created in Shopify admin as 15% off first order]
   fetch('https://a.klaviyo.com/client/subscriptions/?company_id=' + KLAVIYO_KEY, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'revision': '2023-02-22' },
+    headers: { 'Content-Type': 'application/json', 'revision': '2024-10-15' },
     body: JSON.stringify({
       data: {
         type: 'subscription',
         attributes: {
-          profile: { data: { type: 'profile', attributes: { email: email, properties: { hvco_popup: true, discount_code: 'FLOOR15' } } } },
-          list_id: KLAVIYO_LIST
+          profile: {
+            data: {
+              type: 'profile',
+              attributes: {
+                email: email,
+                properties: { hvco_popup: true, discount_code: 'FLOOR15', source: 'lander-popup' }
+              }
+            }
+          }
+        },
+        relationships: {
+          list: { data: { type: 'list', id: KLAVIYO_LIST } }
         }
       }
     })
@@ -2843,15 +2920,14 @@ var stickyOfferObs = new IntersectionObserver(function(entries) {
 }, { threshold: 0 });
 if (offerEl) stickyOfferObs.observe(offerEl);
 
-// ===== HERO BEAMS =====
+// ===== HERO BEAMS (canvas — pauses via IntersectionObserver when off-screen) =====
 window.addEventListener('load', function() {
 (function() {
   var canvas = document.getElementById('heroBeams');
   if (!canvas || !canvas.getContext) return;
   var ctx = canvas.getContext('2d');
-  var beams = [];
-  var raf = null;
-  var N = 28;
+  var N = window.innerWidth < 500 ? 16 : 28;
+  var beams = [], raf = null, heroInView = true, lastTs = null;
 
   function makeBeam(w, h) {
     return {
@@ -2869,8 +2945,7 @@ window.addEventListener('load', function() {
   }
 
   function resetBeam(b, i, w, h) {
-    var col = i % 3;
-    var spacing = w / 3;
+    var col = i % 3, spacing = w / 3;
     b.y = h + 100;
     b.x = col * spacing + spacing / 2 + (Math.random() - 0.5) * spacing * 0.5;
     b.width = 80 + Math.random() * 90;
@@ -2880,27 +2955,30 @@ window.addEventListener('load', function() {
   }
 
   function resize() {
-    var dpr = window.devicePixelRatio || 1;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2); // cap at 2x — prevents 3× canvas on iPhone Pro
     var hero = document.getElementById('hero');
-    var w = hero.offsetWidth;
-    var h = hero.offsetHeight;
-    canvas.width = w * dpr;
-    canvas.height = h * dpr;
-    canvas.style.width = w + 'px';
-    canvas.style.height = h + 'px';
+    var w = hero.offsetWidth, h = hero.offsetHeight;
+    canvas.width = w * dpr; canvas.height = h * dpr;
+    canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     beams = [];
     for (var i = 0; i < N; i++) beams.push(makeBeam(w, h));
   }
 
-  function tick() {
-    var dpr = window.devicePixelRatio || 1;
-    var w = canvas.width / dpr;
-    var h = canvas.height / dpr;
+  function tick(ts) {
+    if (!heroInView) { raf = null; lastTs = null; return; }
+    // Delta-time: cap at 50ms so scroll-burst RAF callbacks don't cause jumps
+    if (!lastTs) lastTs = ts;
+    var delta = Math.min(ts - lastTs, 50);
+    lastTs = ts;
+    var scale = delta / 16.667; // 1.0 at 60fps
+
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var w = canvas.width / dpr, h = canvas.height / dpr;
     ctx.clearRect(0, 0, w, h);
     beams.forEach(function(b, i) {
-      b.y -= b.speed;
-      b.pulse += b.pulseSpeed;
+      b.y -= b.speed * scale;
+      b.pulse += b.pulseSpeed * scale;
       if (b.y + b.length < 0) resetBeam(b, i, w, h);
       var op = b.opacity * (0.8 + 0.2 * Math.sin(b.pulse));
       ctx.save();
@@ -2924,9 +3002,26 @@ window.addEventListener('load', function() {
   window.addEventListener('resize', function() {
     if (raf) cancelAnimationFrame(raf);
     resize();
-    tick();
+    if (heroInView) raf = requestAnimationFrame(tick);
   });
-  tick();
+
+  // Re-add IO pause — but ignore `false` fires in first 600ms (iOS Safari quirk:
+  // fires isIntersecting:false on initial observation before layout settles)
+  var ioReady = false;
+  setTimeout(function() { ioReady = true; }, 600);
+  var beamObs = new IntersectionObserver(function(entries) {
+    var inView = entries[0].isIntersecting;
+    if (inView) {
+      heroInView = true;
+      lastTs = null; // reset so delta doesn't spike on resume
+      if (!raf) raf = requestAnimationFrame(tick);
+    } else if (ioReady) {
+      heroInView = false;
+    }
+  }, { threshold: 0 });
+  beamObs.observe(document.getElementById('hero'));
+
+  raf = requestAnimationFrame(tick);
 })();
 }); // end window load
 
