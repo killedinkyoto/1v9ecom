@@ -1180,6 +1180,20 @@
     border-color: rgba(226,255,71,0.4);
     background: rgba(226,255,71,0.04);
   }
+  .bonus-list.locked .bonus-card {
+    opacity: 0.35;
+    pointer-events: none;
+    user-select: none;
+  }
+  .gifts-lock-msg {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    color: var(--fog-grey);
+    text-align: center;
+    padding: 2px 0 6px;
+    letter-spacing: 0.04em;
+    display: none;
+  }
 
   /* Order summary */
   .order-summary {
@@ -2170,7 +2184,8 @@
 
     <!-- Bonus inclusions -->
     <p class="bundle-step" style="margin-top:22px;">3 &mdash; Add Free Gifts</p>
-    <div class="bonus-list">
+    <p class="gifts-lock-msg" id="giftsLockMsg">Minimum 2 tubs required to unlock free gifts</p>
+    <div class="bonus-list" id="bonusList">
       <div class="bonus-card" id="bonusCardShaker">
         <span class="bonus-icon">🥤</span>
         <div class="bonus-text">
@@ -2478,6 +2493,7 @@ function updateBundleUI() {
   var cta = document.getElementById('bundleCta');
   if (cta && !cta.disabled) cta.textContent = BUNDLE_DATA[selectedQty].cta;
   applyFlavorAccent();
+  if (typeof updateGiftsLock === 'function') updateGiftsLock();
   if (typeof updateOrderSummary === 'function') updateOrderSummary();
 }
 
@@ -2673,6 +2689,33 @@ if (discountUnlocked) {
 
 // ===== BONUS GIFTS =====
 
+function updateGiftsLock() {
+  var list = document.getElementById('bonusList');
+  var msg = document.getElementById('giftsLockMsg');
+  if (selectedQty < 2) {
+    if (list) list.classList.add('locked');
+    if (msg) msg.style.display = 'block';
+    // Auto-remove any added gifts when dropping to 1 tub
+    if (bonusAdded.shaker) {
+      bonusAdded.shaker = false;
+      var btn = document.getElementById('bonusBtnShaker');
+      var card = document.getElementById('bonusCardShaker');
+      if (btn) { btn.textContent = '+ Add'; btn.classList.remove('added'); }
+      if (card) card.classList.remove('added');
+    }
+    if (bonusAdded.tracker) {
+      bonusAdded.tracker = false;
+      var btn2 = document.getElementById('bonusBtnTracker');
+      var card2 = document.getElementById('bonusCardTracker');
+      if (btn2) { btn2.textContent = '+ Add'; btn2.classList.remove('added'); }
+      if (card2) card2.classList.remove('added');
+    }
+  } else {
+    if (list) list.classList.remove('locked');
+    if (msg) msg.style.display = 'none';
+  }
+}
+
 function toggleBonus(key) {
   bonusAdded[key] = !bonusAdded[key];
   var btn = document.getElementById('bonusBtn' + key.charAt(0).toUpperCase() + key.slice(1));
@@ -2689,7 +2732,8 @@ function toggleBonus(key) {
 
 function updateOrderSummary() {
   var bundlePrice = discountUnlocked ? BUNDLE_DISC_PRICES[selectedQty] : BUNDLE_FULL_PRICES[selectedQty];
-  var retailBase = BUNDLE_FULL_PRICES[selectedQty];
+  // Retail = what they'd pay buying each item individually (single tub price × qty + gift values)
+  var retailBase = BUNDLE_FULL_PRICES[1] * selectedQty;
   var giftRetail = (bonusAdded.shaker ? BONUS_PRICES.shaker : 0) + (bonusAdded.tracker ? BONUS_PRICES.tracker : 0);
   var retail = retailBase + giftRetail;
   var youPay = bundlePrice; // gifts are always free
@@ -2712,7 +2756,7 @@ function updateOrderSummary() {
 }
 
 // Initialise on load
-window.addEventListener('DOMContentLoaded', function() { updateOrderSummary(); });
+window.addEventListener('DOMContentLoaded', function() { updateGiftsLock(); updateOrderSummary(); });
 
 // ===== POPUP =====
 var popupShown = false;
