@@ -1286,6 +1286,149 @@
     color: var(--execution-green);
   }
 
+  /* ===== WIZARD ===== */
+  .wizard-progress { margin-bottom: 28px; }
+  .wizard-progress-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .wizard-step-num {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--fog-grey);
+  }
+  .wizard-step-name {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--execution-green);
+  }
+  .wizard-bar {
+    height: 3px;
+    background: rgba(226,255,71,0.12);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .wizard-bar-fill {
+    height: 100%;
+    background: var(--execution-green);
+    border-radius: 2px;
+    width: 25%;
+    transition: width 0.4s ease;
+  }
+  .wizard-panel { display: none; }
+  .wizard-panel.active {
+    display: block;
+    animation: wIn 0.22s ease;
+  }
+  .wizard-panel.wback {
+    animation: wBack 0.22s ease;
+  }
+  @keyframes wIn {
+    from { opacity: 0; transform: translateX(14px); }
+    to   { opacity: 1; transform: none; }
+  }
+  @keyframes wBack {
+    from { opacity: 0; transform: translateX(-14px); }
+    to   { opacity: 1; transform: none; }
+  }
+  .wizard-step-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: clamp(20px, 5vw, 26px);
+    color: var(--text-primary);
+    margin-bottom: 18px;
+    letter-spacing: 0.01em;
+  }
+  .wizard-nav {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+  }
+  .wizard-nav .btn-primary { flex: 1; }
+  .wizard-back-btn {
+    background: transparent;
+    border: none;
+    color: var(--fog-grey);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 10px 4px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: color 0.15s;
+  }
+  .wizard-back-btn:hover { color: var(--text-primary); }
+
+  /* Order bump */
+  .order-bump {
+    border: 1.5px dashed rgba(226,255,71,0.35);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    background: rgba(226,255,71,0.02);
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .order-bump.bump-checked {
+    border-color: var(--execution-green);
+    background: rgba(226,255,71,0.07);
+  }
+  .order-bump-inner {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    cursor: pointer;
+  }
+  .order-bump-check {
+    margin-top: 3px;
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    accent-color: var(--execution-green);
+    cursor: pointer;
+  }
+  .order-bump-body { flex: 1; }
+  .order-bump-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--execution-green);
+    margin-bottom: 3px;
+  }
+  .order-bump-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 5px;
+    letter-spacing: 0.01em;
+  }
+  .order-bump-desc {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    color: var(--fog-grey);
+    line-height: 1.6;
+    margin-bottom: 5px;
+  }
+  .order-bump-price {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+  .order-bump-price s { color: var(--text-muted); font-weight: 400; }
+
   /* ===== FAQ (Section 8) ===== */
   #faq {
     background: var(--bg);
@@ -2182,83 +2325,125 @@
 
     <p class="offer-intro">One scoop, once a day. Built for the work you keep putting off to tomorrow.</p>
 
-    <!-- Bundle selector -->
-    <p class="bundle-step">1 &mdash; Choose Your Bundle</p>
-    <!-- [CONFIRM PRICING] -->
-    <div class="bundle-cards" id="bundleCards" role="radiogroup" aria-label="Choose bundle size">
-
-      <div class="bundle-card" data-qty="1" role="radio" aria-checked="false" tabindex="0">
-        <div class="bundle-tubs"><span class="tub-dot"></span></div>
-        <p class="bundle-qty-text">1 Tub</p>
-        <p class="bundle-price-big" data-disc="$36.54">$42.99</p>
-        <p class="bundle-per-tub" data-disc="$36.54/tub">$42.99/tub</p>
-        <span class="bundle-save">&nbsp;</span>
+    <!-- Wizard progress -->
+    <div class="wizard-progress">
+      <div class="wizard-progress-meta">
+        <span class="wizard-step-num" id="wizardStepNum">Step 1 of 4</span>
+        <span class="wizard-step-name" id="wizardStepName">Pick Your Bundle</span>
       </div>
-
-      <div class="bundle-card active" data-qty="2" role="radio" aria-checked="true" tabindex="0">
-        <div class="bundle-badge">Most Popular &middot; Save $9</div>
-        <div class="bundle-tubs"><span class="tub-dot"></span><span class="tub-dot"></span></div>
-        <p class="bundle-qty-text">2 Tubs</p>
-        <p class="bundle-price-big" data-disc="$65.44">$76.99</p>
-        <p class="bundle-per-tub" data-disc="$32.72/tub">$38.50/tub</p>
-        <span class="bundle-save">Save $9</span>
-      </div>
-
-      <div class="bundle-card" data-qty="3" role="radio" aria-checked="false" tabindex="0">
-        <div class="bundle-badge" style="background:var(--text-primary);color:#1A1F14;">Best Value &middot; Save $29</div>
-        <div class="bundle-tubs"><span class="tub-dot"></span><span class="tub-dot"></span><span class="tub-dot"></span></div>
-        <p class="bundle-qty-text">3 Tubs</p>
-        <p class="bundle-price-big" data-disc="$84.99">$99.99</p>
-        <p class="bundle-per-tub" data-disc="$28.33/tub">$33.33/tub</p>
-        <span class="bundle-save">Save $29</span>
-      </div>
-
+      <div class="wizard-bar"><div class="wizard-bar-fill" id="wizardBarFill"></div></div>
     </div>
 
-    <!-- Flavor selector (rendered by JS) -->
-    <div id="flavorRow" class="flavor-row"></div>
-
-    <!-- Bonus inclusions -->
-    <p class="bundle-step" style="margin-top:22px;">3 &mdash; Add Free Gifts</p>
-    <p class="gifts-lock-msg" id="giftsLockMsg">Minimum 2 tubs required to unlock free gifts</p>
-    <div class="bonus-list" id="bonusList">
-      <div class="bonus-card" id="bonusCardShaker">
-        <span class="bonus-icon">🥤</span>
-        <div class="bonus-text">
-          <span class="bonus-title">FREE Shaker Included</span>
-          <span class="bonus-value"><s>$13.99</s> <strong>FREE</strong></span>
+    <!-- Step 1: Bundle -->
+    <div class="wizard-panel active" id="wizardPanel1">
+      <h3 class="wizard-step-title">Pick Your Bundle</h3>
+      <div class="bundle-cards" id="bundleCards" role="radiogroup" aria-label="Choose bundle size">
+        <div class="bundle-card" data-qty="1" role="radio" aria-checked="false" tabindex="0">
+          <div class="bundle-tubs"><span class="tub-dot"></span></div>
+          <p class="bundle-qty-text">1 Tub</p>
+          <p class="bundle-price-big" data-disc="$36.54">$42.99</p>
+          <p class="bundle-per-tub" data-disc="$36.54/tub">$42.99/tub</p>
+          <span class="bundle-save">&nbsp;</span>
         </div>
-        <button class="bonus-add-btn" id="bonusBtnShaker" onclick="toggleBonus('shaker')">+ Add</button>
-      </div>
-      <div class="bonus-card" id="bonusCardTracker">
-        <span class="bonus-icon">📋</span>
-        <div class="bonus-text">
-          <span class="bonus-title">MINDOR Productivity Tracker</span>
-          <span class="bonus-value"><s>$7.00</s> <strong>FREE</strong></span>
+        <div class="bundle-card active" data-qty="2" role="radio" aria-checked="true" tabindex="0">
+          <div class="bundle-badge">Most Popular &middot; Save $9</div>
+          <div class="bundle-tubs"><span class="tub-dot"></span><span class="tub-dot"></span></div>
+          <p class="bundle-qty-text">2 Tubs</p>
+          <p class="bundle-price-big" data-disc="$65.44">$76.99</p>
+          <p class="bundle-per-tub" data-disc="$32.72/tub">$38.50/tub</p>
+          <span class="bundle-save">Save $9</span>
         </div>
-        <button class="bonus-add-btn" id="bonusBtnTracker" onclick="toggleBonus('tracker')">+ Add</button>
+        <div class="bundle-card" data-qty="3" role="radio" aria-checked="false" tabindex="0">
+          <div class="bundle-badge" style="background:var(--text-primary);color:#1A1F14;">Best Value &middot; Save $29</div>
+          <div class="bundle-tubs"><span class="tub-dot"></span><span class="tub-dot"></span><span class="tub-dot"></span></div>
+          <p class="bundle-qty-text">3 Tubs</p>
+          <p class="bundle-price-big" data-disc="$84.99">$99.99</p>
+          <p class="bundle-per-tub" data-disc="$28.33/tub">$33.33/tub</p>
+          <span class="bundle-save">Save $29</span>
+        </div>
+      </div>
+      <div class="wizard-nav">
+        <button class="btn-primary btn-full" onclick="wizardGo(2, false)">Choose Your Flavor &rarr;</button>
       </div>
     </div>
 
-    <!-- Order total summary -->
-    <div class="order-summary" id="orderSummary">
-      <div class="order-summary-line">
-        <span class="order-summary-label">Retail value</span>
-        <span class="order-summary-was" id="orderRetailValue">$76.99</span>
-      </div>
-      <div class="order-summary-line order-summary-pay-line">
-        <span class="order-summary-label">You pay today</span>
-        <span class="order-summary-pay" id="orderYouPay">$76.99</span>
-      </div>
-      <div class="order-summary-savings" id="orderSavingsRow" style="display:none;">
-        <span id="orderSavingsText"></span>
+    <!-- Step 2: Flavors -->
+    <div class="wizard-panel" id="wizardPanel2">
+      <h3 class="wizard-step-title" id="wizardFlavorTitle">Pick Your Flavor</h3>
+      <div id="flavorRow" class="flavor-row"></div>
+      <div class="wizard-nav">
+        <button class="wizard-back-btn" onclick="wizardGo(1, true)">&larr; Back</button>
+        <button class="btn-primary" style="flex:1" onclick="wizardGo(3, false)">Add Free Gifts &rarr;</button>
       </div>
     </div>
 
-    <!-- CTA -->
-    <!-- [CONFIRM CHECKOUT URL] -->
-    <div class="offer-cta-wrap">
-      <button id="bundleCta" class="btn-primary btn-full" onclick="handleCheckout()">GET 2 TUBS &mdash; $76.99 &rarr;</button>
+    <!-- Step 3: Free Gifts -->
+    <div class="wizard-panel" id="wizardPanel3">
+      <h3 class="wizard-step-title">Add Free Gifts</h3>
+      <p class="gifts-lock-msg" id="giftsLockMsg">Minimum 2 tubs required to unlock free gifts</p>
+      <div class="bonus-list" id="bonusList">
+        <div class="bonus-card" id="bonusCardShaker">
+          <span class="bonus-icon">🥤</span>
+          <div class="bonus-text">
+            <span class="bonus-title">FREE Shaker Included</span>
+            <span class="bonus-value"><s>$13.99</s> <strong>FREE</strong></span>
+          </div>
+          <button class="bonus-add-btn" id="bonusBtnShaker" onclick="toggleBonus('shaker')">+ Add</button>
+        </div>
+        <div class="bonus-card" id="bonusCardTracker">
+          <span class="bonus-icon">📋</span>
+          <div class="bonus-text">
+            <span class="bonus-title">MINDOR Productivity Tracker</span>
+            <span class="bonus-value"><s>$7.00</s> <strong>FREE</strong></span>
+          </div>
+          <button class="bonus-add-btn" id="bonusBtnTracker" onclick="toggleBonus('tracker')">+ Add</button>
+        </div>
+      </div>
+      <div class="wizard-nav">
+        <button class="wizard-back-btn" onclick="wizardGo(2, true)">&larr; Back</button>
+        <button class="btn-primary" style="flex:1" onclick="wizardGo(4, false)">Review My Order &rarr;</button>
+      </div>
+    </div>
+
+    <!-- Step 4: Summary + Order Bump -->
+    <div class="wizard-panel" id="wizardPanel4">
+      <h3 class="wizard-step-title">Review Your Order</h3>
+
+      <!-- Order bump: monthly subscription -->
+      <div class="order-bump" id="subscriptionBumpCard">
+        <label class="order-bump-inner">
+          <input type="checkbox" id="subscriptionBump" class="order-bump-check">
+          <div class="order-bump-body">
+            <p class="order-bump-eyebrow">&#10003; Special Add-On</p>
+            <p class="order-bump-title">Monthly Auto-Ship &mdash; Save 15%</p>
+            <p class="order-bump-desc">Get 1 tub shipped automatically every 30 days. Never run out during a peak work week. Cancel anytime, no questions asked.</p>
+            <p class="order-bump-price"><s>$42.99/mo</s> &rarr; <strong>$36.54/mo</strong></p>
+          </div>
+        </label>
+      </div>
+
+      <!-- Order summary -->
+      <div class="order-summary" id="orderSummary">
+        <div class="order-summary-line">
+          <span class="order-summary-label">Retail value</span>
+          <span class="order-summary-was" id="orderRetailValue">$85.98</span>
+        </div>
+        <div class="order-summary-line order-summary-pay-line">
+          <span class="order-summary-label">You pay today</span>
+          <span class="order-summary-pay" id="orderYouPay">$76.99</span>
+        </div>
+        <div class="order-summary-savings" id="orderSavingsRow" style="display:none;">
+          <span id="orderSavingsText"></span>
+        </div>
+      </div>
+
+      <div class="offer-cta-wrap">
+        <button id="bundleCta" class="btn-primary btn-full" onclick="handleCheckout()">GET 2 TUBS &mdash; $76.99 &rarr;</button>
+      </div>
+
+      <div class="wizard-nav" style="margin-top:8px; justify-content:center;">
+        <button class="wizard-back-btn" onclick="wizardGo(3, true)">&larr; Back</button>
+      </div>
     </div>
 
     <div class="trust-strip">
@@ -2268,7 +2453,6 @@
       <span class="trust-dot">&middot;</span>
       <span>Third-Party Tested</span>
     </div>
-    <p class="offer-one-time"><em>One-time purchase. No subscription.</em></p>
   </div>
 </section>
 
@@ -2446,6 +2630,73 @@ function hexToRgba(hex, a) {
   return 'rgba('+r+','+g+','+b+','+a+')';
 }
 
+// ===== WIZARD =====
+var wizardStep = 1;
+var WIZARD_STEPS = 4;
+var WIZARD_NAMES = ['', 'Pick Your Bundle', 'Pick Your Flavor', 'Add Free Gifts', 'Review Order'];
+
+function wizardGo(step, isBack) {
+  if (step === wizardStep) return;
+
+  // Pixel events
+  if (step === 2 && wizardStep === 1) {
+    try { fbq('track', 'AddToCart', { content_ids: ['mindor-stack'], content_type: 'product', value: BUNDLE_FULL_PRICES[selectedQty], currency: 'USD', num_items: selectedQty }); } catch(e) {}
+    try { clarity('event', 'add_to_cart'); } catch(e) {}
+  }
+  if (step === 4) {
+    try { fbq('track', 'InitiateCheckout', { content_ids: ['mindor-stack'], content_type: 'product', value: discountUnlocked ? BUNDLE_DISC_PRICES[selectedQty] : BUNDLE_FULL_PRICES[selectedQty], currency: 'USD', num_items: selectedQty }); } catch(e) {}
+    try { clarity('event', 'initiate_checkout'); } catch(e) {}
+  }
+
+  var prev = document.getElementById('wizardPanel' + wizardStep);
+  wizardStep = step;
+  var next = document.getElementById('wizardPanel' + wizardStep);
+
+  if (prev) prev.classList.remove('active');
+  if (next) {
+    next.classList.remove('wback');
+    void next.offsetWidth; // force reflow so animation replays
+    if (isBack) next.classList.add('wback');
+    next.classList.add('active');
+  }
+
+  // Update flavor title pluralisation
+  if (step === 2) {
+    var ft = document.getElementById('wizardFlavorTitle');
+    if (ft) ft.textContent = selectedQty > 1 ? 'Pick Your Flavors' : 'Pick Your Flavor';
+  }
+
+  // Update progress bar + label
+  document.getElementById('wizardStepNum').textContent = 'Step ' + wizardStep + ' of ' + WIZARD_STEPS;
+  document.getElementById('wizardStepName').textContent = WIZARD_NAMES[wizardStep];
+  document.getElementById('wizardBarFill').style.width = Math.round((wizardStep / WIZARD_STEPS) * 100) + '%';
+
+  // Scroll offer section top into view
+  var offer = document.getElementById('offer');
+  if (offer) {
+    var y = offer.getBoundingClientRect().top + window.pageYOffset - 72;
+    window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+  }
+}
+
+// ===== SUBSCRIPTION BUMP =====
+var subscriptionAdded = false;
+window.addEventListener('DOMContentLoaded', function() {
+  var bump = document.getElementById('subscriptionBump');
+  var card = document.getElementById('subscriptionBumpCard');
+  if (bump && card) {
+    bump.addEventListener('change', function() {
+      subscriptionAdded = this.checked;
+      card.classList.toggle('bump-checked', subscriptionAdded);
+      // TODO: wire to Stripe when keys available
+    });
+    // Clicking anywhere on the card toggles the checkbox
+    card.addEventListener('click', function(e) {
+      if (e.target !== bump) bump.click();
+    });
+  }
+});
+
 // ===== BUNDLE STATE =====
 var selectedQty = 2;
 var selectedFlavors = ['sour-candy', 'sour-candy', 'sour-candy'];
@@ -2603,6 +2854,7 @@ async function handleCheckout() {
     var errors = data.data && data.data.cartCreate && data.data.cartCreate.userErrors;
     // Redirect if we have a checkout URL — discount errors are non-fatal
     if (cart && cart.checkoutUrl) {
+      try { fbq('track', 'InitiateCheckout', { content_ids: ['mindor-stack'], content_type: 'product', value: discountUnlocked ? BUNDLE_DISC_PRICES[selectedQty] : BUNDLE_FULL_PRICES[selectedQty], currency: 'USD', num_items: selectedQty }); } catch(e) {}
       window.location.href = cart.checkoutUrl;
       return;
     }
@@ -2805,7 +3057,13 @@ function updateOrderSummary() {
 }
 
 // Initialise on load
-window.addEventListener('DOMContentLoaded', function() { updateGiftsLock(); updateOrderSummary(); });
+window.addEventListener('DOMContentLoaded', function() {
+  updateGiftsLock();
+  updateOrderSummary();
+  // Pixel: ViewContent
+  try { fbq('track', 'ViewContent', { content_ids: ['mindor-stack'], content_type: 'product', value: 76.99, currency: 'USD' }); } catch(e) {}
+  try { clarity('event', 'view_offer'); } catch(e) {}
+});
 
 // ===== POPUP =====
 var popupShown = false;
