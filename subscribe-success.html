@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subscription Active — Mindor</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #111309; --execution-green: #E2FF47;
+      --text-primary: #F0F0E8; --fog-grey: #C8C9B8;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&family=DM+Sans:wght@400;600&display=swap');
+    .card {
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+    }
+    .logo {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 22px;
+      letter-spacing: 0.04em;
+      color: var(--execution-green);
+      margin-bottom: 32px;
+    }
+    .check {
+      width: 56px; height: 56px;
+      background: rgba(226,255,71,0.12);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 26px;
+    }
+    h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 28px;
+      margin-bottom: 10px;
+      letter-spacing: 0.01em;
+    }
+    p {
+      font-size: 14px;
+      color: var(--fog-grey);
+      line-height: 1.65;
+      margin-bottom: 28px;
+    }
+    .cta {
+      display: inline-block;
+      background: var(--execution-green);
+      color: #111309;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 16px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 14px 32px;
+      border-radius: 4px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">MM MINDOR</div>
+    <div class="check">✓</div>
+    <h1>Auto-Ship Active</h1>
+    <p>Your monthly subscription is confirmed. 1 tub ships every 30 days — cancel anytime from your Stripe customer portal.<br><br>Now completing your order...</p>
+    <a class="cta" id="shopifyLink">Complete My Order →</a>
+  </div>
+
+  <script>
+    var params = new URLSearchParams(window.location.search);
+    var checkout = params.get('checkout');
+    var link = document.getElementById('shopifyLink');
+    if (checkout) {
+      var url = decodeURIComponent(checkout);
+      link.href = url;
+      // Auto-redirect after 2.5s
+      setTimeout(function() { window.location.href = url; }, 2500);
+    } else {
+      link.href = '/';
+      link.textContent = 'Back to Home →';
+    }
+  </script>
+</body>
+</html>

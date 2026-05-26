@@ -2855,6 +2855,23 @@ async function handleCheckout() {
     // Redirect if we have a checkout URL — discount errors are non-fatal
     if (cart && cart.checkoutUrl) {
       try { fbq('track', 'InitiateCheckout', { content_ids: ['mindor-stack'], content_type: 'product', value: discountUnlocked ? BUNDLE_DISC_PRICES[selectedQty] : BUNDLE_FULL_PRICES[selectedQty], currency: 'USD', num_items: selectedQty }); } catch(e) {}
+
+      // If subscription order bump checked — go through Stripe first, then Shopify
+      if (subscriptionAdded) {
+        var subEmail = sessionStorage.getItem('mindor_email') || '';
+        var subRes = await fetch('/api/stripe-subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: subEmail, shopifyCheckoutUrl: cart.checkoutUrl })
+        });
+        var subData = await subRes.json();
+        if (subData.url) {
+          window.location.href = subData.url;
+          return;
+        }
+        // Stripe failed — fall through to Shopify anyway
+      }
+
       window.location.href = cart.checkoutUrl;
       return;
     }
@@ -3129,6 +3146,7 @@ document.getElementById('popupForm').addEventListener('submit', function(e) {
     })
   }).catch(function(err) { console.error('[Mindor Klaviyo popup]', err); });
   sessionStorage.setItem('mindor_discount', 'FLOOR15');
+  sessionStorage.setItem('mindor_email', email);
   discountUnlocked = true;
   document.getElementById('popupFormContent').style.display = 'none';
   document.getElementById('popupSuccess').style.display = 'block';

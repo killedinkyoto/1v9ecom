@@ -16,7 +16,8 @@
     { "source": "/tracker", "destination": "/productivity-tracker.html" },
     { "source": "/fb/lander/relaunch", "destination": "/mindor-presales.html" },
     { "source": "/lander", "destination": "/mindor-lander-v3.html" },
-    { "source": "/focus", "destination": "/mindor-lander-v3.html" }
+    { "source": "/focus", "destination": "/mindor-lander-v3.html" },
+    { "source": "/subscribe-success", "destination": "/subscribe-success.html" }
   ],
   "headers": [
     {
