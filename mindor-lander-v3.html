@@ -1408,6 +1408,85 @@
     from { opacity: 0; transform: translateX(-14px); }
     to   { opacity: 1; transform: none; }
   }
+  .wizard-step-sub {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin: -10px 0 16px;
+    line-height: 1.5;
+  }
+
+  /* ===== ADD-ON CARDS ===== */
+  .addon-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0 0 20px;
+  }
+  .addon-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--surface2);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    padding: 12px 12px;
+    transition: border-color 0.2s ease;
+  }
+  .addon-card.added { border-color: rgba(226,255,71,0.35); }
+  .addon-img {
+    width: 56px;
+    height: 56px;
+    border-radius: 6px;
+    object-fit: cover;
+    flex-shrink: 0;
+    background: var(--surface);
+  }
+  .addon-body { flex: 1; min-width: 0; }
+  .addon-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .addon-tagline {
+    font-size: 11px;
+    color: var(--fog-grey);
+    line-height: 1.4;
+    margin-bottom: 3px;
+  }
+  .addon-price {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--execution-green);
+  }
+  .addon-btn {
+    flex-shrink: 0;
+    background: transparent;
+    border: 1px solid var(--border-accent);
+    color: var(--execution-green);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 7px 11px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    white-space: nowrap;
+  }
+  .addon-btn:hover { background: rgba(226,255,71,0.08); }
+  .addon-btn.added {
+    background: var(--execution-green);
+    border-color: var(--execution-green);
+    color: #1A1F14;
+  }
+
   .wizard-step-title {
     font-family: 'Barlow Condensed', sans-serif;
     font-weight: 800;
@@ -2494,12 +2573,25 @@
       </div>
       <div class="wizard-nav">
         <button class="wizard-back-btn" onclick="wizardGo(2, true)">&larr; Back</button>
-        <button class="btn-primary" style="flex:1" onclick="wizardGo(4, false)">Review My Order &rarr;</button>
+        <button class="btn-primary" style="flex:1" onclick="wizardGo(4, false)">Complete Your Stack &rarr;</button>
       </div>
     </div>
 
-    <!-- Step 4: Summary + Order Bump -->
+    <!-- Step 4: Add-Ons -->
     <div class="wizard-panel" id="wizardPanel4">
+      <h3 class="wizard-step-title">Complete Your Stack</h3>
+      <p class="wizard-step-sub">Commonly added by people who take focus seriously.</p>
+      <div class="addon-list" id="addonList">
+        <!-- Populated by JS -->
+      </div>
+      <div class="wizard-nav">
+        <button class="wizard-back-btn" onclick="wizardGo(3, true)">&larr; Back</button>
+        <button class="btn-primary" style="flex:1" onclick="wizardGo(5, false)">Review My Order &rarr;</button>
+      </div>
+    </div>
+
+    <!-- Step 5: Summary + Order Bump -->
+    <div class="wizard-panel" id="wizardPanel5">
       <h3 class="wizard-step-title">Review Your Order</h3>
 
       <!-- Order bump: monthly subscription -->
@@ -2535,7 +2627,7 @@
       </div>
 
       <div class="wizard-nav" style="margin-top:8px; justify-content:center;">
-        <button class="wizard-back-btn" onclick="wizardGo(3, true)">&larr; Back</button>
+        <button class="wizard-back-btn" onclick="wizardGo(4, true)">&larr; Back</button>
       </div>
     </div>
 
@@ -2808,8 +2900,8 @@ window.addEventListener('DOMContentLoaded', function() {
 
 // ===== WIZARD =====
 var wizardStep = 1;
-var WIZARD_STEPS = 4;
-var WIZARD_NAMES = ['', 'Pick Your Bundle', 'Pick Your Flavor', 'Add Free Gifts', 'Review Order'];
+var WIZARD_STEPS = 5;
+var WIZARD_NAMES = ['', 'Pick Your Bundle', 'Pick Your Flavor', 'Add Free Gifts', 'Complete Stack', 'Review Order'];
 
 function wizardGo(step, isBack) {
   if (step === wizardStep) return;
@@ -2820,6 +2912,10 @@ function wizardGo(step, isBack) {
     try { clarity('event', 'add_to_cart'); } catch(e) {}
   }
   if (step === 4) {
+    // Lazy-load add-on images + variant IDs when step is first shown
+    if (typeof fetchAddonData === 'function') fetchAddonData();
+  }
+  if (step === 5) {
     try { fbq('track', 'InitiateCheckout', { content_ids: ['mindor-stack'], content_type: 'product', value: discountUnlocked ? BUNDLE_DISC_PRICES[selectedQty] : BUNDLE_FULL_PRICES[selectedQty], currency: 'USD', num_items: selectedQty }); } catch(e) {}
     try { clarity('event', 'initiate_checkout'); } catch(e) {}
   }
@@ -2888,6 +2984,86 @@ window.addEventListener('DOMContentLoaded', function() {
   }
   updateBumpPricing();
 });
+
+// ===== ADD-ON PRODUCTS =====
+var ADDON_PRODUCTS = [
+  {
+    key: 'creatine',
+    name: 'Creatine Hydration',
+    tagline: 'Train harder. Recover faster.',
+    price: 19.99,
+    productId: 'gid://shopify/Product/9071829155995',
+    variantId: null, img: null
+  },
+  {
+    key: 'sleep',
+    name: 'Sleep Formula',
+    tagline: 'The other 8 hours matter too.',
+    price: 29.90,
+    productId: 'gid://shopify/Product/9071814148251',
+    variantId: null, img: null
+  },
+  {
+    key: 'magnesium',
+    name: 'Magnesium Glycinate',
+    tagline: 'Calm from the inside out.',
+    price: 14.99,
+    productId: 'gid://shopify/Product/9071773778075',
+    variantId: null, img: null
+  }
+];
+var addonAdded = { creatine: false, sleep: false, magnesium: false };
+var _addonsFetched = false;
+
+async function fetchAddonData() {
+  if (_addonsFetched) return;
+  _addonsFetched = true;
+  // Render placeholders immediately so the step doesn't look empty
+  renderAddonCards();
+  try {
+    var query = '{ ' + ADDON_PRODUCTS.map(function(p, i) {
+      return 'p' + i + ': product(id:"' + p.productId + '") { variants(first:1) { nodes { id } } featuredImage { url(transform:{maxWidth:120,maxHeight:120}) } }';
+    }).join(' ') + ' }';
+    var res = await fetch('https://' + SHOPIFY_DOMAIN + '/api/2024-01/graphql.json', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Shopify-Storefront-Access-Token': STOREFRONT_TOKEN },
+      body: JSON.stringify({ query: query })
+    });
+    var data = await res.json();
+    ADDON_PRODUCTS.forEach(function(p, i) {
+      var d = data.data && data.data['p' + i];
+      if (!d) return;
+      p.variantId = d.variants.nodes[0] && d.variants.nodes[0].id;
+      p.img      = d.featuredImage && d.featuredImage.url;
+    });
+    renderAddonCards();
+  } catch(e) { console.error('[addon fetch]', e); }
+}
+
+function renderAddonCards() {
+  var list = document.getElementById('addonList');
+  if (!list) return;
+  list.innerHTML = ADDON_PRODUCTS.map(function(p) {
+    var added = addonAdded[p.key];
+    var imgSrc = p.img || 'https://placehold.co/56x56/1E2416/6A7A5A?text=+';
+    return '<div class="addon-card' + (added ? ' added' : '') + '" id="addonCard-' + p.key + '">'
+      + '<img class="addon-img" src="' + imgSrc + '" alt="' + p.name + '" loading="lazy">'
+      + '<div class="addon-body">'
+      + '<div class="addon-name">' + p.name + '</div>'
+      + '<div class="addon-tagline">' + p.tagline + '</div>'
+      + '<div class="addon-price">+$' + p.price.toFixed(2) + '</div>'
+      + '</div>'
+      + '<button class="addon-btn' + (added ? ' added' : '') + '" onclick="toggleAddon(\'' + p.key + '\')">'
+      + (added ? '&#10003; Added' : '+ Add') + '</button>'
+      + '</div>';
+  }).join('');
+}
+
+function toggleAddon(key) {
+  addonAdded[key] = !addonAdded[key];
+  renderAddonCards();
+  if (typeof updateOrderSummary === 'function') updateOrderSummary();
+}
 
 // ===== BUNDLE STATE =====
 var selectedQty = 2;
@@ -3037,6 +3213,10 @@ async function handleCheckout() {
     // Add free gift lines
     if (bonusAdded.shaker)  lines.push('{ quantity: 1, merchandiseId: "' + BONUS_VARIANT_IDS.shaker  + '" }');
     if (bonusAdded.tracker) lines.push('{ quantity: 1, merchandiseId: "' + BONUS_VARIANT_IDS.tracker + '" }');
+    // Add selected add-on products
+    ADDON_PRODUCTS.forEach(function(p) {
+      if (addonAdded[p.key] && p.variantId) lines.push('{ quantity: 1, merchandiseId: "' + p.variantId + '" }');
+    });
 
     var codes = [];
     if (BUNDLE_DATA[selectedQty].discount) codes.push(BUNDLE_DATA[selectedQty].discount);
@@ -3259,11 +3439,11 @@ function toggleBonus(key) {
 
 function updateOrderSummary() {
   var bundlePrice = discountUnlocked ? BUNDLE_DISC_PRICES[selectedQty] : BUNDLE_FULL_PRICES[selectedQty];
-  // Retail = what they'd pay buying each item individually (single tub price × qty + gift values)
   var retailBase = BUNDLE_FULL_PRICES[1] * selectedQty;
   var giftRetail = (bonusAdded.shaker ? BONUS_PRICES.shaker : 0) + (bonusAdded.tracker ? BONUS_PRICES.tracker : 0);
-  var retail = retailBase + giftRetail;
-  var youPay = bundlePrice; // gifts are always free
+  var addonTotal = ADDON_PRODUCTS.reduce(function(sum, p) { return sum + (addonAdded[p.key] ? p.price : 0); }, 0);
+  var retail = retailBase + giftRetail + addonTotal;
+  var youPay = bundlePrice + addonTotal; // gifts are always free
 
   var wasEl = document.getElementById('orderRetailValue');
   var payEl = document.getElementById('orderYouPay');
