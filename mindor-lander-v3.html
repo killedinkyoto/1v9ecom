@@ -1011,8 +1011,8 @@
   .bundle-cards {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    margin-bottom: 24px;
+    gap: 8px;
+    margin-bottom: 16px;
   }
   @media (min-width: 640px) {
     .bundle-cards { flex-direction: row; }
@@ -1022,7 +1022,7 @@
     background: var(--surface2);
     border: 1px solid var(--border-subtle);
     border-radius: 4px;
-    padding: 20px 14px 18px;
+    padding: 14px 10px 11px;
     cursor: pointer;
     position: relative;
     text-align: center;
@@ -1052,12 +1052,12 @@
   .bundle-tubs {
     display: flex;
     justify-content: center;
-    gap: 6px;
-    margin-bottom: 14px;
+    gap: 5px;
+    margin-bottom: 8px;
   }
   .tub-dot {
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
     background: var(--text-dim);
     transition: background 0.2s ease;
@@ -1066,35 +1066,35 @@
   .bundle-qty-text {
     font-family: 'Barlow Condensed', sans-serif;
     font-weight: 800;
-    font-size: 20px;
+    font-size: 16px;
     color: var(--fog-grey);
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
   }
   .bundle-card.active .bundle-qty-text { color: var(--text-primary); }
   .bundle-price-big {
     font-family: 'Barlow Condensed', sans-serif;
     font-weight: 900;
-    font-size: clamp(28px, 6vw, 36px);
+    font-size: clamp(22px, 5vw, 28px);
     color: var(--text-primary);
     line-height: 1;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
   }
   .bundle-per-tub {
     font-family: 'DM Sans', sans-serif;
-    font-size: 11px;
+    font-size: 10px;
     color: var(--text-muted);
-    margin-bottom: 6px;
+    margin-bottom: 4px;
   }
   .bundle-save {
     font-family: 'Barlow Condensed', sans-serif;
     font-weight: 700;
-    font-size: 13px;
+    font-size: 12px;
     color: var(--execution-green);
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    min-height: 18px;
+    min-height: 14px;
     display: block;
   }
 
@@ -2906,10 +2906,16 @@ var BUNDLE_DATA = {
 };
 
 // ===== FLAVOR ACCENT =====
+var _lastCarouselFlavor = null;
 function applyFlavorAccent() {
   var color = FLAVOR_COLORS[selectedFlavors[0]] || '#E2FF47';
   document.documentElement.style.setProperty('--flavor-accent', color);
-  if (typeof renderCarousel === 'function') renderCarousel(selectedFlavors[0] || 'sour-candy');
+  // Only re-render carousel when flavor actually changes, not on every qty click
+  var f = selectedFlavors[0] || 'sour-candy';
+  if (typeof renderCarousel === 'function' && f !== _lastCarouselFlavor) {
+    _lastCarouselFlavor = f;
+    renderCarousel(f);
+  }
   var cta = document.getElementById('bundleCta');
   if (cta) {
     cta.style.background = color;
