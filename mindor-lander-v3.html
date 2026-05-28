@@ -227,18 +227,60 @@
     will-change: transform;
     transform: translateZ(0);
   }
-  /* Mobile: skip canvas entirely — replace with a cheap static gradient */
+  .hero-mobile-fx { display: none; } /* shown only on mobile */
+
+  /* Mobile: skip canvas — use CSS-only beams (compositor-thread only, no GPU drain) */
   @media (max-width: 767px) {
     #heroBeams { display: none; }
-    #hero::before {
-      content: '';
+    /* Two drifting beam shapes via pseudo-elements — only opacity+transform animated */
+    .hero-mobile-fx {
+      display: block;
       position: absolute;
       inset: 0;
       z-index: 0;
       pointer-events: none;
-      background:
-        linear-gradient(125deg, rgba(226,255,71,0.05) 0%, transparent 60%),
-        linear-gradient(250deg, rgba(100,160,60,0.07) 0%, transparent 55%);
+      overflow: hidden;
+    }
+    .hero-mobile-fx::before {
+      content: '';
+      position: absolute;
+      top: -30%;
+      left: -15%;
+      width: 65%;
+      height: 130%;
+      background: linear-gradient(to bottom,
+        transparent 0%,
+        rgba(226,255,71,0.04) 25%,
+        rgba(226,255,71,0.09) 50%,
+        rgba(226,255,71,0.04) 75%,
+        transparent 100%
+      );
+      transform: rotate(-32deg) translateY(0px);
+      animation: mobileBeamA 9s ease-in-out infinite alternate;
+    }
+    .hero-mobile-fx::after {
+      content: '';
+      position: absolute;
+      top: -20%;
+      right: -5%;
+      width: 45%;
+      height: 120%;
+      background: linear-gradient(to bottom,
+        transparent 0%,
+        rgba(130,180,50,0.04) 30%,
+        rgba(100,160,40,0.07) 55%,
+        transparent 100%
+      );
+      transform: rotate(-32deg) translateY(0px);
+      animation: mobileBeamB 13s ease-in-out infinite alternate;
+    }
+    @keyframes mobileBeamA {
+      from { opacity: 0.35; transform: rotate(-32deg) translateY(-10px); }
+      to   { opacity: 1;    transform: rotate(-32deg) translateY(10px); }
+    }
+    @keyframes mobileBeamB {
+      from { opacity: 0.25; transform: rotate(-32deg) translateY(8px); }
+      to   { opacity: 0.85; transform: rotate(-32deg) translateY(-12px); }
     }
   }
   .hero-inner {
@@ -2027,6 +2069,7 @@
 <!-- ===== SECTION 1 — HERO ===== -->
 <section id="hero">
   <canvas id="heroBeams" aria-hidden="true"></canvas>
+  <div class="hero-mobile-fx" aria-hidden="true"></div>
   <div class="container">
     <div class="hero-inner">
       <p class="hero-eyebrow">Performance Stack &middot; Est. 2026</p>
