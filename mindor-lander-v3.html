@@ -3112,7 +3112,6 @@ var _addonsFetched = false;
 
 async function fetchAddonData() {
   if (_addonsFetched) return;
-  _addonsFetched = true;
   renderAllAddonCards();
   try {
     var query = '{ ' + ADDON_PRODUCTS.map(function(p, i) {
@@ -3130,8 +3129,12 @@ async function fetchAddonData() {
       p.variantId = d.variants.nodes[0] && d.variants.nodes[0].id;
       p.img       = d.featuredImage && d.featuredImage.url;
     });
+    _addonsFetched = true; // only mark done after successful fetch
     renderAllAddonCards();
-  } catch(e) { console.error('[addon fetch]', e); }
+  } catch(e) {
+    console.error('[addon fetch]', e);
+    // leave _addonsFetched = false so it retries next time
+  }
 }
 
 function renderAddonCards(containerId, keys) {
@@ -3314,6 +3317,25 @@ async function handleCheckout() {
     // Add free gift lines
     if (bonusAdded.shaker)  lines.push('{ quantity: 1, merchandiseId: "' + BONUS_VARIANT_IDS.shaker  + '" }');
     if (bonusAdded.tracker) lines.push('{ quantity: 1, merchandiseId: "' + BONUS_VARIANT_IDS.tracker + '" }');
+    // Resolve any addon variantIds that didn't load yet
+    var missingAddons = ADDON_PRODUCTS.filter(function(p) { return addonAdded[p.key] && !p.variantId; });
+    if (missingAddons.length > 0) {
+      try {
+        var rq = '{ ' + missingAddons.map(function(p, i) {
+          return 'p' + i + ': product(id:"' + p.productId + '") { variants(first:1) { nodes { id } } }';
+        }).join(' ') + ' }';
+        var rr = await fetch('https://' + SHOPIFY_DOMAIN + '/api/2024-01/graphql.json', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-Shopify-Storefront-Access-Token': STOREFRONT_TOKEN },
+          body: JSON.stringify({ query: rq })
+        });
+        var rd = await rr.json();
+        missingAddons.forEach(function(p, i) {
+          var d = rd.data && rd.data['p' + i];
+          if (d && d.variants.nodes[0]) p.variantId = d.variants.nodes[0].id;
+        });
+      } catch(e) { console.error('[addon resolve at checkout]', e); }
+    }
     // Add selected add-on products
     ADDON_PRODUCTS.forEach(function(p) {
       if (addonAdded[p.key] && p.variantId) lines.push('{ quantity: 1, merchandiseId: "' + p.variantId + '" }');
