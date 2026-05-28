@@ -16,6 +16,15 @@
     [CONFIRM ROUTE] Page served at /lander via vercel.json — update to desired URL before launch.
   -->
 
+  <!-- Preload LCP image -->
+  <link rel="preload" as="image" href="/assets/presales-hero.png" fetchpriority="high">
+
+  <!-- DNS prefetch for third-party origins -->
+  <link rel="dns-prefetch" href="https://mindor-1950.myshopify.com">
+  <link rel="dns-prefetch" href="https://a.klaviyo.com">
+  <link rel="dns-prefetch" href="https://connect.facebook.net">
+  <link rel="dns-prefetch" href="https://www.clarity.ms">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -217,6 +226,20 @@
     z-index: 0;
     will-change: transform;
     transform: translateZ(0);
+  }
+  /* Mobile: skip canvas entirely — replace with a cheap static gradient */
+  @media (max-width: 767px) {
+    #heroBeams { display: none; }
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(125deg, rgba(226,255,71,0.05) 0%, transparent 60%),
+        linear-gradient(250deg, rgba(100,160,60,0.07) 0%, transparent 55%);
+    }
   }
   .hero-inner {
     text-align: center;
@@ -920,6 +943,52 @@
     display: block;
     border-radius: 4px;
     object-fit: cover;
+  }
+
+  /* ===== FLAVOR CAROUSEL ===== */
+  .flavor-carousel {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    background: var(--surface2);
+    user-select: none;
+    touch-action: pan-y;
+  }
+  .flavor-carousel-track {
+    display: flex;
+    transition: transform 0.32s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: transform;
+  }
+  .carousel-slide {
+    flex: 0 0 100%;
+    min-width: 100%;
+  }
+  .carousel-slide img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+  }
+  .flavor-carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 7px;
+    padding: 10px 0 2px;
+  }
+  .carousel-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--text-dim);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+    flex-shrink: 0;
+  }
+  .carousel-dot.active {
+    background: var(--execution-green);
+    transform: scale(1.4);
   }
   .offer-intro {
     font-family: 'DM Sans', sans-serif;
@@ -1689,6 +1758,27 @@
     to { opacity: 1; transform: none; }
   }
   @media (prefers-reduced-motion: reduce) { #popup-panel { animation: none; } }
+
+  /* ===== MOBILE PERFORMANCE ===== */
+  /* content-visibility: auto lets the browser skip paint/layout for off-screen sections */
+  @media (max-width: 767px) {
+    #mirror, #reframe, #scoop, #cost, #s-proof, #faq, #final-cta {
+      content-visibility: auto;
+      contain-intrinsic-size: 0 600px;
+    }
+    /* Kill wizard slide animations — instant show/hide on mobile saves JS + layout work */
+    .wizard-panel.active { animation: none !important; }
+    .wizard-panel.wback  { animation: none !important; }
+  }
+
+  /* Respect OS reduce-motion preference — kill all animations site-wide */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
   .popup-close {
     position: absolute;
     top: 12px;
@@ -1846,7 +1936,7 @@
       <p class="hero-eyebrow">Performance Stack &middot; Est. 2026</p>
 
       <div class="hero-product-wrap">
-        <img src="/assets/presales-hero.png" alt="Mindor Performance Stack tubs" loading="eager">
+        <img src="/assets/presales-hero.png" alt="Mindor Performance Stack tubs" loading="eager" fetchpriority="high" decoding="async">
       </div>
 
       <h1 class="hero-headline">
@@ -2320,13 +2410,16 @@
     <span class="section-label">Start Your Stack</span>
 
     <div class="offer-product-wrap">
-      <img src="/assets/presales-offer.png" alt="Mindor Performance Stack tubs" loading="lazy">
+      <div class="flavor-carousel" id="flavorCarousel">
+        <div class="flavor-carousel-track" id="flavorCarouselTrack"></div>
+      </div>
+      <div class="flavor-carousel-dots" id="flavorCarouselDots"></div>
     </div>
 
     <p class="offer-intro">One scoop, once a day. Built for the work you keep putting off to tomorrow.</p>
 
     <!-- Wizard progress -->
-    <div class="wizard-progress">
+    <div class="wizard-progress" id="wizardProgress">
       <div class="wizard-progress-meta">
         <span class="wizard-step-num" id="wizardStepNum">Step 1 of 4</span>
         <span class="wizard-step-name" id="wizardStepName">Pick Your Bundle</span>
@@ -2415,9 +2508,9 @@
           <input type="checkbox" id="subscriptionBump" class="order-bump-check">
           <div class="order-bump-body">
             <p class="order-bump-eyebrow">&#10003; Special Add-On</p>
-            <p class="order-bump-title">Monthly Auto-Ship &mdash; Save 15%</p>
-            <p class="order-bump-desc">Get 1 tub shipped automatically every 30 days. Never run out during a peak work week. Cancel anytime, no questions asked.</p>
-            <p class="order-bump-price"><s>$32.99/mo</s> &rarr; <strong>$28.04/mo</strong></p>
+            <p class="order-bump-title">Monthly Auto-Ship &mdash; Save 23%</p>
+            <p class="order-bump-desc" id="bumpDesc">Get 2 tubs shipped automatically every 30 days. Never run out during a peak work week. Cancel anytime, no questions asked.</p>
+            <p class="order-bump-price" id="bumpPrice"><s>$65.98/mo</s> &rarr; <strong>$50.98/mo</strong></p>
           </div>
         </label>
       </div>
@@ -2630,6 +2723,89 @@ function hexToRgba(hex, a) {
   return 'rgba('+r+','+g+','+b+','+a+')';
 }
 
+// ===== FLAVOR IMAGE CAROUSEL =====
+var FLAVOR_IMAGES = {
+  'sour-candy': [
+    '/assets/product-photos/tub-candy.webp',
+    '/assets/product-photos/tub-candy-2.webp',
+    '/assets/product-photos/tub-candy-3.webp',
+    '/assets/product-photos/tub-candy-4.webp',
+    '/assets/product-photos/powder-candy.webp'
+  ],
+  'sour-grape': [
+    '/assets/product-photos/tub-grape.webp',
+    '/assets/product-photos/tub-grape-2.webp',
+    '/assets/product-photos/tub-grape-3.webp',
+    '/assets/product-photos/tub-grape-4.webp',
+    '/assets/product-photos/powder-grape.webp'
+  ],
+  'sour-gummy-worms': [
+    '/assets/product-photos/tub-gummy.webp',
+    '/assets/product-photos/tub-gummy-2.webp',
+    '/assets/product-photos/tub-gummy-3.webp',
+    '/assets/product-photos/powder-gummy.webp'
+  ]
+};
+var carouselIndex = 0;
+
+function renderCarousel(flavor) {
+  var track = document.getElementById('flavorCarouselTrack');
+  var dots  = document.getElementById('flavorCarouselDots');
+  if (!track) return;
+  var imgs = FLAVOR_IMAGES[flavor] || FLAVOR_IMAGES['sour-candy'];
+  carouselIndex = 0;
+  track.style.transition = 'none';
+  track.innerHTML = imgs.map(function(src, i) {
+    return '<div class="carousel-slide"><img src="' + src + '" alt="' + (FLAVOR_NAMES[flavor] || 'Mindor') + '" loading="' + (i === 0 ? 'eager' : 'lazy') + '" decoding="async"></div>';
+  }).join('');
+  if (dots) {
+    dots.innerHTML = imgs.map(function(_, i) {
+      return '<button class="carousel-dot' + (i === 0 ? ' active' : '') + '" onclick="goCarousel(' + i + ')" aria-label="Image ' + (i+1) + '"></button>';
+    }).join('');
+  }
+  // re-enable transition after reset
+  requestAnimationFrame(function() {
+    track.style.transition = '';
+    track.style.transform = 'translateX(0)';
+  });
+}
+
+function goCarousel(idx) {
+  var track = document.getElementById('flavorCarouselTrack');
+  if (!track) return;
+  var count = track.querySelectorAll('.carousel-slide').length;
+  if (!count) return;
+  carouselIndex = ((idx % count) + count) % count;
+  track.style.transform = 'translateX(-' + (carouselIndex * 100) + '%)';
+  var dots = document.getElementById('flavorCarouselDots');
+  if (dots) dots.querySelectorAll('.carousel-dot').forEach(function(d, i) {
+    d.classList.toggle('active', i === carouselIndex);
+  });
+}
+
+// Touch-swipe for carousel
+window.addEventListener('DOMContentLoaded', function() {
+  var el = document.getElementById('flavorCarousel');
+  if (!el) return;
+  var startX = 0, startY = 0, dragging = false;
+  el.addEventListener('touchstart', function(e) {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    dragging = true;
+  }, { passive: true });
+  el.addEventListener('touchend', function(e) {
+    if (!dragging) return;
+    dragging = false;
+    var dx = e.changedTouches[0].clientX - startX;
+    var dy = e.changedTouches[0].clientY - startY;
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) {
+      goCarousel(carouselIndex + (dx < 0 ? 1 : -1));
+    }
+  }, { passive: true });
+  // Init carousel with default flavor
+  renderCarousel(selectedFlavors[0] || 'sour-candy');
+});
+
 // ===== WIZARD =====
 var wizardStep = 1;
 var WIZARD_STEPS = 4;
@@ -2671,30 +2847,46 @@ function wizardGo(step, isBack) {
   document.getElementById('wizardStepName').textContent = WIZARD_NAMES[wizardStep];
   document.getElementById('wizardBarFill').style.width = Math.round((wizardStep / WIZARD_STEPS) * 100) + '%';
 
-  // Scroll offer section top into view
-  var offer = document.getElementById('offer');
-  if (offer) {
-    var y = offer.getBoundingClientRect().top + window.pageYOffset - 72;
+  // Scroll so wizard progress bar sits just below nav — not the full offer section top
+  var wizProg = document.getElementById('wizardProgress');
+  if (wizProg) {
+    var y = wizProg.getBoundingClientRect().top + window.pageYOffset - 80;
     window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
   }
 }
 
 // ===== SUBSCRIPTION BUMP =====
-var subscriptionAdded = false;
+var subscriptionAdded = true; // checked by default
+var SUB_PER_TUB = 25.49;
+var SUB_RETAIL_PER_TUB = 32.99;
+
+function updateBumpPricing() {
+  var qty = selectedQty;
+  var monthly = (SUB_PER_TUB * qty).toFixed(2);
+  var retail  = (SUB_RETAIL_PER_TUB * qty).toFixed(2);
+  var priceEl = document.getElementById('bumpPrice');
+  var descEl  = document.getElementById('bumpDesc');
+  if (priceEl) priceEl.innerHTML = '<s>$' + retail + '/mo</s> &rarr; <strong>$' + monthly + '/mo</strong>';
+  if (descEl)  descEl.textContent = 'Get ' + qty + ' tub' + (qty > 1 ? 's' : '') + ' shipped automatically every 30 days. Never run out during a peak work week. Cancel anytime.';
+}
+
 window.addEventListener('DOMContentLoaded', function() {
   var bump = document.getElementById('subscriptionBump');
   var card = document.getElementById('subscriptionBumpCard');
   if (bump && card) {
+    // Pre-check by default
+    bump.checked = true;
+    card.classList.add('bump-checked');
     bump.addEventListener('change', function() {
       subscriptionAdded = this.checked;
       card.classList.toggle('bump-checked', subscriptionAdded);
-      // TODO: wire to Stripe when keys available
     });
     // Clicking anywhere on the card toggles the checkbox
     card.addEventListener('click', function(e) {
       if (e.target !== bump) bump.click();
     });
   }
+  updateBumpPricing();
 });
 
 // ===== BUNDLE STATE =====
@@ -2717,6 +2909,7 @@ var BUNDLE_DATA = {
 function applyFlavorAccent() {
   var color = FLAVOR_COLORS[selectedFlavors[0]] || '#E2FF47';
   document.documentElement.style.setProperty('--flavor-accent', color);
+  if (typeof renderCarousel === 'function') renderCarousel(selectedFlavors[0] || 'sour-candy');
   var cta = document.getElementById('bundleCta');
   if (cta) {
     cta.style.background = color;
@@ -2782,6 +2975,7 @@ function updateBundleUI() {
   applyFlavorAccent();
   if (typeof updateGiftsLock === 'function') updateGiftsLock();
   if (typeof updateOrderSummary === 'function') updateOrderSummary();
+  if (typeof updateBumpPricing === 'function') updateBumpPricing();
 }
 
 // Bundle card click/keyboard
@@ -2859,10 +3053,19 @@ async function handleCheckout() {
       // If subscription order bump checked — go through Stripe first, then Shopify
       if (subscriptionAdded) {
         var subEmail = sessionStorage.getItem('mindor_email') || '';
+        // Build variant map so webhook can create Shopify orders on renewal
+        var variantMap = {};
+        flavorsNeeded.forEach(function(f, i) { variantMap[f] = variantIds[i]; });
         var subRes = await fetch('/api/stripe-subscribe', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: subEmail, shopifyCheckoutUrl: cart.checkoutUrl })
+          body: JSON.stringify({
+            email: subEmail,
+            shopifyCheckoutUrl: cart.checkoutUrl,
+            qty: selectedQty,
+            flavors: selectedFlavors.slice(0, selectedQty),
+            variantMap: variantMap
+          })
         });
         var subData = await subRes.json();
         if (subData.url) {
@@ -3196,11 +3399,14 @@ var stickyOfferObs = new IntersectionObserver(function(entries) {
 }, { threshold: 0 });
 if (offerEl) stickyOfferObs.observe(offerEl);
 
-// ===== HERO BEAMS (canvas — pauses via IntersectionObserver when off-screen) =====
+// ===== HERO BEAMS (canvas — desktop only, pauses via IntersectionObserver when off-screen) =====
+// Deferred via requestIdleCallback so it never blocks LCP on slower phones
 window.addEventListener('load', function() {
+  var _startBeams = function() {
 (function() {
   var canvas = document.getElementById('heroBeams');
-  if (!canvas || !canvas.getContext) return;
+  // Skip on mobile — CSS already hides it, but bail early to save CPU
+  if (!canvas || !canvas.getContext || window.innerWidth < 768) return;
   var ctx = canvas.getContext('2d');
   var N = window.innerWidth < 500 ? 16 : 28;
   var beams = [], raf = null, heroInView = true, lastTs = null;
@@ -3299,6 +3505,12 @@ window.addEventListener('load', function() {
 
   raf = requestAnimationFrame(tick);
 })();
+  }; // end _startBeams
+  if (window.requestIdleCallback) {
+    requestIdleCallback(_startBeams, { timeout: 2000 });
+  } else {
+    setTimeout(_startBeams, 200);
+  }
 }); // end window load
 
 // ===== HOVER BUTTON TRAILS =====
