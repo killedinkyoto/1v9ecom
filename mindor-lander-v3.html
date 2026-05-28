@@ -976,14 +976,13 @@
   @media (min-width: 768px) { #offer { padding: 100px 0; } }
 
   .offer-product-wrap {
-    margin: 0 auto 36px;
-    max-width: 480px;
+    width: 100%;
+    margin: 0 0 28px;
   }
   .offer-product-wrap img {
     width: 100%;
     height: auto;
     display: block;
-    border-radius: 4px;
     object-fit: cover;
   }
 
@@ -991,7 +990,7 @@
   .flavor-carousel {
     position: relative;
     overflow: hidden;
-    border-radius: 8px;
+    border-radius: 0;
     background: var(--surface2);
     user-select: none;
     touch-action: pan-y;
@@ -1161,37 +1160,39 @@
   .flavor-opt {
     font-family: 'DM Sans', sans-serif;
     font-weight: 500;
-    font-size: 12px;
-    padding: 8px 14px 8px 8px;
-    border-radius: 8px;
+    font-size: 11px;
+    padding: 10px 6px 8px;
+    border-radius: 10px;
     border: 1px solid var(--border-subtle);
     background: var(--surface2);
     color: var(--fog-grey);
     cursor: pointer;
     transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 8px;
+    justify-content: center;
+    gap: 6px;
     flex: 1;
     min-width: 0;
+    text-align: center;
   }
   .flavor-opt:focus-visible { outline: 2px solid var(--execution-green); outline-offset: 2px; }
   .flavor-opt.active { color: var(--text-primary); }
   .flavor-opt-img {
-    width: 38px;
-    height: 38px;
-    border-radius: 5px;
-    object-fit: cover;
+    width: 56px;
+    height: 56px;
+    object-fit: contain;
     flex-shrink: 0;
-    background: var(--surface);
     display: block;
   }
   .flavor-opt-label {
     line-height: 1.25;
-    text-align: left;
+    text-align: center;
     white-space: normal;
     word-break: break-word;
-    font-size: 11px;
+    font-size: 10px;
+    letter-spacing: 0.02em;
   }
   /* per-flavor active colors set inline by JS */
   .flavor-picker-group {
@@ -2559,16 +2560,16 @@
 
 <!-- ===== SECTION 7 — THE OFFER ===== -->
 <section id="offer">
+  <!-- Full-bleed carousel — outside container so it touches both edges -->
+  <div class="offer-product-wrap">
+    <div class="flavor-carousel" id="flavorCarousel">
+      <div class="flavor-carousel-track" id="flavorCarouselTrack"></div>
+    </div>
+    <div class="flavor-carousel-dots" id="flavorCarouselDots"></div>
+  </div>
+
   <div class="container">
     <span class="section-label">Start Your Stack</span>
-
-    <div class="offer-product-wrap">
-      <div class="flavor-carousel" id="flavorCarousel">
-        <div class="flavor-carousel-track" id="flavorCarouselTrack"></div>
-      </div>
-      <div class="flavor-carousel-dots" id="flavorCarouselDots"></div>
-    </div>
-
     <p class="offer-intro">One scoop, once a day. Built for the work you keep putting off to tomorrow.</p>
 
     <!-- Wizard progress -->
@@ -2897,9 +2898,9 @@ var FLAVOR_NAMES = {
   'sour-gummy-worms': 'Sour Gummy Worms'
 };
 var FLAVOR_THUMBS = {
-  'sour-candy':       '/assets/product-photos/tub-candy.webp',
-  'sour-grape':       '/assets/product-photos/tub-grape.webp',
-  'sour-gummy-worms': '/assets/product-photos/tub-gummy.webp'
+  'sour-candy':       '/assets/product-photos/flavor-candy.png',
+  'sour-grape':       '/assets/product-photos/flavor-grape.png',
+  'sour-gummy-worms': '/assets/product-photos/flavor-gummy.png'
 };
 function hexToRgba(hex, a) {
   var r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
@@ -2909,21 +2910,21 @@ function hexToRgba(hex, a) {
 // ===== FLAVOR IMAGE CAROUSEL =====
 var FLAVOR_IMAGES = {
   'sour-candy': [
-    '/assets/product-photos/tub-candy.webp',
+    '/assets/product-photos/flavor-candy.png',
     '/assets/product-photos/tub-candy-2.webp',
     '/assets/product-photos/tub-candy-3.webp',
     '/assets/product-photos/tub-candy-4.webp',
     '/assets/product-photos/powder-candy.webp'
   ],
   'sour-grape': [
-    '/assets/product-photos/tub-grape.webp',
+    '/assets/product-photos/flavor-grape.png',
     '/assets/product-photos/tub-grape-2.webp',
     '/assets/product-photos/tub-grape-3.webp',
     '/assets/product-photos/tub-grape-4.webp',
     '/assets/product-photos/powder-grape.webp'
   ],
   'sour-gummy-worms': [
-    '/assets/product-photos/tub-gummy.webp',
+    '/assets/product-photos/flavor-gummy.png',
     '/assets/product-photos/tub-gummy-2.webp',
     '/assets/product-photos/tub-gummy-3.webp',
     '/assets/product-photos/powder-gummy.webp'
@@ -3003,7 +3004,7 @@ function wizardGo(step, isBack) {
     try { clarity('event', 'add_to_cart'); } catch(e) {}
   }
   if (step === 4) {
-    if (typeof fetchAddonData === 'function') fetchAddonData();
+    renderAllAddonCards(); // re-render in case images loaded since last visit
   }
   if (step === 6) {
     try { fbq('track', 'InitiateCheckout', { content_ids: ['mindor-stack'], content_type: 'product', value: discountUnlocked ? BUNDLE_DISC_PRICES[selectedQty] : BUNDLE_FULL_PRICES[selectedQty], currency: 'USD', num_items: selectedQty }); } catch(e) {}
@@ -3539,7 +3540,13 @@ function updateOrderSummary() {
   var giftRetail = (bonusAdded.shaker ? BONUS_PRICES.shaker : 0) + (bonusAdded.tracker ? BONUS_PRICES.tracker : 0);
   var addonTotal = ADDON_PRODUCTS.reduce(function(sum, p) { return sum + (addonAdded[p.key] ? p.price : 0); }, 0);
   var retail = retailBase + giftRetail + addonTotal;
-  var youPay = bundlePrice + addonTotal; // gifts are always free
+  var youPay = bundlePrice + addonTotal;
+  // Keep CTA button price in sync
+  var cta = document.getElementById('bundleCta');
+  if (cta && !cta.disabled) {
+    var qtyText = selectedQty === 1 ? '1 TUB' : selectedQty + ' TUBS';
+    cta.textContent = 'GET ' + qtyText + ' — $' + youPay.toFixed(2) + ' →';
+  }
 
   var wasEl = document.getElementById('orderRetailValue');
   var payEl = document.getElementById('orderYouPay');
@@ -3560,6 +3567,8 @@ function updateOrderSummary() {
 
 // Initialise on load
 window.addEventListener('DOMContentLoaded', function() {
+  // Prefetch addon variant IDs immediately so they're ready by checkout time
+  if (typeof fetchAddonData === 'function') fetchAddonData();
   updateGiftsLock();
   updateOrderSummary();
   // Pixel: ViewContent
