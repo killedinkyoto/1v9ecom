@@ -3088,7 +3088,7 @@ var ADDON_PRODUCTS = [
     tagline: 'Train harder. Recover faster.',
     price: 19.99,
     productId: 'gid://shopify/Product/9071829155995',
-    variantId: null, img: null
+    variantId: 'gid://shopify/ProductVariant/48650528587931', img: null
   },
   {
     key: 'sleep',
@@ -3096,7 +3096,7 @@ var ADDON_PRODUCTS = [
     tagline: 'The other 8 hours matter too.',
     price: 29.90,
     productId: 'gid://shopify/Product/9071814148251',
-    variantId: null, img: null
+    variantId: 'gid://shopify/ProductVariant/48650454761627', img: null
   },
   {
     key: 'magnesium',
@@ -3104,11 +3104,11 @@ var ADDON_PRODUCTS = [
     tagline: 'Calm from the inside out.',
     price: 14.99,
     productId: 'gid://shopify/Product/9071773778075',
-    variantId: null, img: null
+    variantId: 'gid://shopify/ProductVariant/48650208837787', img: null
   }
 ];
 var addonAdded = { creatine: false, sleep: false, magnesium: false };
-var _addonsFetched = false;
+var _addonsFetched = true; // variant IDs hardcoded — no fetch needed
 
 async function fetchAddonData() {
   if (_addonsFetched) return;
