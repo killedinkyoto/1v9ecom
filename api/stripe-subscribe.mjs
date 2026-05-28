@@ -2,7 +2,7 @@ import Stripe from 'stripe';
 
 // $25.49/tub/mo recurring price — create in Stripe Dashboard → Products → Add price
 // Set STRIPE_PRICE_ID env var in Vercel, or replace the fallback below
-const PRICE_ID = process.env.STRIPE_PRICE_ID || 'price_1TbIHyRsLEp3Bab3xcR3R3jv';
+const PRICE_ID = process.env.STRIPE_PRICE_ID || 'price_1Tc5aZRsLEp3Bab3OgURKLaR';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
