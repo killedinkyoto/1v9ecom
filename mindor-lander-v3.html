@@ -1898,13 +1898,8 @@
   @media (prefers-reduced-motion: reduce) { #popup-panel { animation: none; } }
 
   /* ===== MOBILE PERFORMANCE ===== */
-  /* content-visibility: auto lets the browser skip paint/layout for off-screen sections */
   @media (max-width: 767px) {
-    #mirror, #reframe, #scoop, #cost, #s-proof, #faq, #final-cta {
-      content-visibility: auto;
-      contain-intrinsic-size: 0 600px;
-    }
-    /* Kill wizard slide animations — instant show/hide on mobile saves JS + layout work */
+    /* Kill wizard slide animations — instant show/hide on mobile */
     .wizard-panel.active { animation: none !important; }
     .wizard-panel.wback  { animation: none !important; }
   }
