@@ -3349,7 +3349,26 @@ async function handleCheckout() {
     var data = await res.json();
     var cart = data.data && data.data.cartCreate && data.data.cartCreate.cart;
     var errors = data.data && data.data.cartCreate && data.data.cartCreate.userErrors;
-    // Redirect if we have a checkout URL — discount errors are non-fatal
+    console.log('[cart]', JSON.stringify({ cart: cart ? 'ok' : null, errors: errors, graphqlErrors: data.errors }));
+
+    // If cart failed and addons were selected, retry without addons (never lose the main sale)
+    if (!cart && ADDON_PRODUCTS.some(function(p) { return addonAdded[p.key]; })) {
+      console.warn('[cart] retrying without addons');
+      var mainLines = lines.filter(function(l) {
+        return !ADDON_PRODUCTS.some(function(p) { return p.variantId && l.indexOf(p.variantId) !== -1; });
+      });
+      var retryMutation = 'mutation { cartCreate(input: { ' + discountPart + ' lines: [' + mainLines.join(',') + '] }) { cart { checkoutUrl } userErrors { message } } }';
+      var retryRes = await fetch('https://' + SHOPIFY_DOMAIN + '/api/2024-01/graphql.json', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Shopify-Storefront-Access-Token': STOREFRONT_TOKEN },
+        body: JSON.stringify({ query: retryMutation })
+      });
+      var retryData = await retryRes.json();
+      cart = retryData.data && retryData.data.cartCreate && retryData.data.cartCreate.cart;
+      errors = retryData.data && retryData.data.cartCreate && retryData.data.cartCreate.userErrors;
+      console.log('[cart retry]', JSON.stringify({ cart: cart ? 'ok' : null, errors: errors }));
+    }
+
     if (cart && cart.checkoutUrl) {
       try { fbq('track', 'InitiateCheckout', { content_ids: ['mindor-stack'], content_type: 'product', value: discountUnlocked ? BUNDLE_DISC_PRICES[selectedQty] : BUNDLE_FULL_PRICES[selectedQty], currency: 'USD', num_items: selectedQty }); } catch(e) {}
 
