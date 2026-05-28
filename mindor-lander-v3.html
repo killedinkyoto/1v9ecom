@@ -3619,9 +3619,7 @@ var stickyOfferObs = new IntersectionObserver(function(entries) {
 if (offerEl) stickyOfferObs.observe(offerEl);
 
 // ===== HERO BEAMS (canvas — desktop only, pauses via IntersectionObserver when off-screen) =====
-// Deferred via requestIdleCallback so it never blocks LCP on slower phones
 window.addEventListener('load', function() {
-  var _startBeams = function() {
 (function() {
   var canvas = document.getElementById('heroBeams');
   // Skip on mobile — CSS already hides it, but bail early to save CPU
@@ -3724,12 +3722,7 @@ window.addEventListener('load', function() {
 
   raf = requestAnimationFrame(tick);
 })();
-  }; // end _startBeams
-  if (window.requestIdleCallback) {
-    requestIdleCallback(_startBeams, { timeout: 2000 });
-  } else {
-    setTimeout(_startBeams, 200);
-  }
+})();
 }); // end window load
 
 // ===== HOVER BUTTON TRAILS =====
