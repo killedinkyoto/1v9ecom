@@ -2869,6 +2869,10 @@
 
 
 <script>
+// Prevent browser scroll restoration from animating to bottom on refresh
+if (history.scrollRestoration) history.scrollRestoration = 'manual';
+window.scrollTo(0, 0);
+
 // ===== SHOPIFY CONFIG =====
 var SHOPIFY_DOMAIN = 'mindor-1950.myshopify.com';
 var STOREFRONT_TOKEN = 'c1f8ad6a65722ad1a022b7e5f8a8660c';
