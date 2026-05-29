@@ -8,8 +8,9 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --bg: #111309; --execution-green: #E2FF47;
-      --text-primary: #F0F0E8; --fog-grey: #C8C9B8;
+      --text-primary: #F0F0E8; --fog-grey: #C8C9B8; --surface: #161A0E;
     }
+    @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&family=DM+Sans:wght@400;600&display=swap');
     body {
       background: var(--bg);
       color: var(--text-primary);
@@ -20,79 +21,89 @@
       justify-content: center;
       padding: 24px;
     }
-    @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&family=DM+Sans:wght@400;600&display=swap');
-    .card {
-      max-width: 420px;
-      width: 100%;
-      text-align: center;
-    }
+    .card { max-width: 440px; width: 100%; text-align: center; }
     .logo {
       font-family: 'Barlow Condensed', sans-serif;
       font-weight: 800;
       font-size: 22px;
       letter-spacing: 0.04em;
       color: var(--execution-green);
-      margin-bottom: 32px;
+      margin-bottom: 36px;
     }
     .check {
-      width: 56px; height: 56px;
+      width: 60px; height: 60px;
       background: rgba(226,255,71,0.12);
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 20px;
-      font-size: 26px;
+      margin: 0 auto 24px;
+      font-size: 28px;
     }
     h1 {
       font-family: 'Barlow Condensed', sans-serif;
       font-weight: 800;
-      font-size: 28px;
-      margin-bottom: 10px;
+      font-size: 30px;
+      margin-bottom: 8px;
       letter-spacing: 0.01em;
+    }
+    .sub-line {
+      font-size: 15px;
+      color: var(--execution-green);
+      font-weight: 600;
+      margin-bottom: 10px;
     }
     p {
       font-size: 14px;
       color: var(--fog-grey);
-      line-height: 1.65;
+      line-height: 1.7;
       margin-bottom: 28px;
     }
-    .cta {
-      display: inline-block;
-      background: var(--execution-green);
-      color: #111309;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 800;
-      font-size: 16px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 14px 32px;
-      border-radius: 4px;
-      text-decoration: none;
-      cursor: pointer;
+    .detail-box {
+      background: var(--surface);
+      border: 1px solid rgba(226,255,71,0.14);
+      border-radius: 8px;
+      padding: 18px 20px;
+      margin-bottom: 0;
+      text-align: left;
     }
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      padding: 6px 0;
+      border-bottom: 0.5px solid rgba(255,255,255,0.06);
+    }
+    .detail-row:last-child { border-bottom: none; }
+    .detail-label { color: var(--fog-grey); }
+    .detail-value { color: var(--text-primary); font-weight: 600; }
   </style>
 </head>
 <body>
   <div class="card">
     <div class="logo">MM MINDOR</div>
     <div class="check">✓</div>
-    <h1>Auto-Ship Active</h1>
-    <p>Your monthly subscription is confirmed. 1 tub ships every 30 days — cancel anytime from your Stripe customer portal.<br><br>Now completing your order...</p>
-    <a class="cta" id="shopifyLink">Complete My Order →</a>
+    <h1>You're Subscribed.</h1>
+    <p class="sub-line">First tub ships within 24–48 hours.</p>
+    <p>Your monthly auto-ship is confirmed at $28.04/mo. We'll charge your card and ship a fresh tub every 30 days. Cancel anytime.</p>
+    <div class="detail-box">
+      <div class="detail-row">
+        <span class="detail-label">Plan</span>
+        <span class="detail-value">Monthly Auto-Ship</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Price</span>
+        <span class="detail-value">$28.04/mo per tub</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Next charge</span>
+        <span class="detail-value" id="detailNext">In 30 days</span>
+      </div>
+    </div>
   </div>
-
   <script>
-    var params = new URLSearchParams(window.location.search);
-    var checkout = params.get('checkout');
-    var link = document.getElementById('shopifyLink');
-    if (checkout) {
-      var url = decodeURIComponent(checkout);
-      link.href = url;
-      // Auto-redirect after 2.5s
-      setTimeout(function() { window.location.href = url; }, 2500);
-    } else {
-      link.href = '/';
-      link.textContent = 'Back to Home →';
-    }
+    var next = new Date();
+    next.setDate(next.getDate() + 30);
+    var el = document.getElementById('detailNext');
+    if (el) el.textContent = next.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
   </script>
 </body>
 </html>

@@ -2855,7 +2855,7 @@
           <input type="checkbox" id="subscriptionBump" class="order-bump-check">
           <div class="order-bump-body">
             <p class="order-bump-eyebrow">&#10003; Special Add-On</p>
-            <p class="order-bump-title">Monthly Auto-Ship &mdash; Save 23%</p>
+            <p class="order-bump-title">Subscribe &amp; Save 15% &mdash; Every Month</p>
             <p class="order-bump-desc" id="bumpDesc">Get 2 tubs shipped automatically every 30 days. Never run out during a peak work week. Cancel anytime, no questions asked.</p>
             <p class="order-bump-price" id="bumpPrice"><s>$65.98/mo</s> &rarr; <strong>$50.98/mo</strong></p>
           </div>
@@ -3216,7 +3216,7 @@ function wizardGo(step, isBack) {
 
 // ===== SUBSCRIPTION BUMP =====
 var subscriptionAdded = true; // checked by default
-var SUB_PER_TUB = 25.49;
+var SUB_PER_TUB = 28.04;       // 15% off $32.99
 var SUB_RETAIL_PER_TUB = 32.99;
 
 function updateBumpPricing() {
@@ -3475,30 +3475,43 @@ async function handleCheckout() {
     });
     var flavorsNeeded = Object.keys(flavorCount);
     var variantIds = await Promise.all(flavorsNeeded.map(function(f) { return _getVariant(f); }));
+    var variantMap = {};
+    flavorsNeeded.forEach(function(f, i) { variantMap[f] = variantIds[i]; });
+
+    // ===== SUBSCRIPTION PATH — Stripe IS the payment, skip Shopify entirely =====
+    if (subscriptionAdded) {
+      var subEmail = sessionStorage.getItem('mindor_email') || '';
+      var addonVarIds = ADDON_PRODUCTS.filter(function(p) { return addonAdded[p.key] && p.variantId; }).map(function(p) { return p.variantId; });
+      var giftVarIds = [];
+      if (bonusAdded.shaker)  giftVarIds.push(BONUS_VARIANT_IDS.shaker);
+      if (bonusAdded.tracker) giftVarIds.push(BONUS_VARIANT_IDS.tracker);
+      var subRes = await fetch('/api/stripe-subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: subEmail,
+          qty: selectedQty,
+          flavors: selectedFlavors.slice(0, selectedQty),
+          variantMap: variantMap,
+          addonVariantIds: addonVarIds,
+          giftVariantIds: giftVarIds
+        })
+      });
+      var subData = await subRes.json();
+      if (subData.url) {
+        try { fbq('track', 'InitiateCheckout', { content_ids: ['mindor-stack'], content_type: 'product', value: SUB_PER_TUB * selectedQty, currency: 'USD', num_items: selectedQty }); } catch(e) {}
+        window.location.href = subData.url;
+        return;
+      }
+      // Stripe failed — fall through to regular Shopify checkout
+    }
+
+    // ===== SHOPIFY PATH (no subscription or subscription failed) =====
     var lines = flavorsNeeded.map(function(f, i) {
       return '{ quantity: ' + flavorCount[f] + ', merchandiseId: "' + variantIds[i] + '" }';
     });
-    // Add free gift lines
     if (bonusAdded.shaker)  lines.push('{ quantity: 1, merchandiseId: "' + BONUS_VARIANT_IDS.shaker  + '" }');
     if (bonusAdded.tracker) lines.push('{ quantity: 1, merchandiseId: "' + BONUS_VARIANT_IDS.tracker + '" }');
-    // Resolve any addon variantIds that didn't load yet
-    var missingAddons = ADDON_PRODUCTS.filter(function(p) { return addonAdded[p.key] && !p.variantId; });
-    if (missingAddons.length > 0) {
-      try {
-        var rr = await fetch('/api/variant-ids', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ productIds: missingAddons.map(function(p) { return p.productId; }) })
-        });
-        var rd = await rr.json();
-        if (rd.variants) {
-          missingAddons.forEach(function(p) {
-            if (rd.variants[p.productId]) p.variantId = rd.variants[p.productId];
-          });
-        }
-      } catch(e) { console.error('[addon resolve at checkout]', e); }
-    }
-    // Add selected add-on products
     ADDON_PRODUCTS.forEach(function(p) {
       if (addonAdded[p.key] && p.variantId) lines.push('{ quantity: 1, merchandiseId: "' + p.variantId + '" }');
     });
@@ -3517,11 +3530,8 @@ async function handleCheckout() {
     var data = await res.json();
     var cart = data.data && data.data.cartCreate && data.data.cartCreate.cart;
     var errors = data.data && data.data.cartCreate && data.data.cartCreate.userErrors;
-    console.log('[cart]', JSON.stringify({ cart: cart ? 'ok' : null, errors: errors, graphqlErrors: data.errors }));
 
-    // If cart failed and addons were selected, retry without addons (never lose the main sale)
     if (!cart && ADDON_PRODUCTS.some(function(p) { return addonAdded[p.key]; })) {
-      console.warn('[cart] retrying without addons');
       var mainLines = lines.filter(function(l) {
         return !ADDON_PRODUCTS.some(function(p) { return p.variantId && l.indexOf(p.variantId) !== -1; });
       });
@@ -3532,39 +3542,12 @@ async function handleCheckout() {
         body: JSON.stringify({ query: retryMutation })
       });
       var retryData = await retryRes.json();
-      cart = retryData.data && retryData.data.cartCreate && retryData.data.cartCreate.cart;
+      cart  = retryData.data && retryData.data.cartCreate && retryData.data.cartCreate.cart;
       errors = retryData.data && retryData.data.cartCreate && retryData.data.cartCreate.userErrors;
-      console.log('[cart retry]', JSON.stringify({ cart: cart ? 'ok' : null, errors: errors }));
     }
 
     if (cart && cart.checkoutUrl) {
       try { fbq('track', 'InitiateCheckout', { content_ids: ['mindor-stack'], content_type: 'product', value: discountUnlocked ? BUNDLE_DISC_PRICES[selectedQty] : BUNDLE_FULL_PRICES[selectedQty], currency: 'USD', num_items: selectedQty }); } catch(e) {}
-
-      // If subscription order bump checked — go through Stripe first, then Shopify
-      if (subscriptionAdded) {
-        var subEmail = sessionStorage.getItem('mindor_email') || '';
-        // Build variant map so webhook can create Shopify orders on renewal
-        var variantMap = {};
-        flavorsNeeded.forEach(function(f, i) { variantMap[f] = variantIds[i]; });
-        var subRes = await fetch('/api/stripe-subscribe', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email: subEmail,
-            shopifyCheckoutUrl: cart.checkoutUrl,
-            qty: selectedQty,
-            flavors: selectedFlavors.slice(0, selectedQty),
-            variantMap: variantMap
-          })
-        });
-        var subData = await subRes.json();
-        if (subData.url) {
-          window.location.href = subData.url;
-          return;
-        }
-        // Stripe failed — fall through to Shopify anyway
-      }
-
       window.location.href = cart.checkoutUrl;
       return;
     }
