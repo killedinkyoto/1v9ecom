@@ -3478,13 +3478,34 @@ async function handleCheckout() {
     var variantMap = {};
     flavorsNeeded.forEach(function(f, i) { variantMap[f] = variantIds[i]; });
 
-    // ===== SUBSCRIPTION PATH — Stripe IS the payment, skip Shopify entirely =====
+    // ===== SUBSCRIPTION PATH — Stripe pays for tubs, Shopify handles addons/gifts =====
     if (subscriptionAdded) {
       var subEmail = sessionStorage.getItem('mindor_email') || '';
       var addonVarIds = ADDON_PRODUCTS.filter(function(p) { return addonAdded[p.key] && p.variantId; }).map(function(p) { return p.variantId; });
       var giftVarIds = [];
       if (bonusAdded.shaker)  giftVarIds.push(BONUS_VARIANT_IDS.shaker);
       if (bonusAdded.tracker) giftVarIds.push(BONUS_VARIANT_IDS.tracker);
+
+      // Build a Shopify cart with ONLY addons + gifts (no tubs — those are handled by Stripe)
+      var extraCheckoutUrl = null;
+      var extraLines = [];
+      addonVarIds.forEach(function(id) { extraLines.push('{ quantity: 1, merchandiseId: "' + id + '" }'); });
+      giftVarIds.forEach(function(id)  { extraLines.push('{ quantity: 1, merchandiseId: "' + id + '" }'); });
+      if (extraLines.length > 0) {
+        try {
+          var extraCodes = giftVarIds.length ? 'discountCodes: ["MINDORGIFT"],' : '';
+          var extraMutation = 'mutation { cartCreate(input: { ' + extraCodes + ' lines: [' + extraLines.join(',') + '] }) { cart { checkoutUrl } userErrors { message } } }';
+          var extraRes = await fetch('https://' + SHOPIFY_DOMAIN + '/api/2024-01/graphql.json', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-Shopify-Storefront-Access-Token': STOREFRONT_TOKEN },
+            body: JSON.stringify({ query: extraMutation })
+          });
+          var extraData = await extraRes.json();
+          var extraCart = extraData.data && extraData.data.cartCreate && extraData.data.cartCreate.cart;
+          if (extraCart && extraCart.checkoutUrl) extraCheckoutUrl = extraCart.checkoutUrl;
+        } catch(e) { console.error('[sub extra cart]', e); }
+      }
+
       var subRes = await fetch('/api/stripe-subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -3494,7 +3515,8 @@ async function handleCheckout() {
           flavors: selectedFlavors.slice(0, selectedQty),
           variantMap: variantMap,
           addonVariantIds: addonVarIds,
-          giftVariantIds: giftVarIds
+          giftVariantIds: giftVarIds,
+          shopifyCheckoutUrl: extraCheckoutUrl  // null if no addons/gifts
         })
       });
       var subData = await subRes.json();

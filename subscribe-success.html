@@ -104,6 +104,24 @@
     next.setDate(next.getDate() + 30);
     var el = document.getElementById('detailNext');
     if (el) el.textContent = next.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+    // If addons/gifts were selected, redirect to Shopify after a short delay
+    var params = new URLSearchParams(window.location.search);
+    var checkoutUrl = params.get('checkout');
+    if (checkoutUrl) {
+      var decoded = decodeURIComponent(checkoutUrl);
+      // Show a small note
+      var note = document.createElement('p');
+      note.style.cssText = 'margin-top:24px;font-size:13px;color:#6A7A5A;';
+      note.textContent = 'Completing your add-ons in 3 seconds…';
+      document.querySelector('.card').appendChild(note);
+      var count = 3;
+      var iv = setInterval(function() {
+        count--;
+        note.textContent = 'Completing your add-ons in ' + count + ' second' + (count !== 1 ? 's' : '') + '…';
+        if (count <= 0) { clearInterval(iv); window.location.href = decoded; }
+      }, 1000);
+    }
   </script>
 </body>
 </html>
