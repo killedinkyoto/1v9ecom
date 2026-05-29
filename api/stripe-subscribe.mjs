@@ -34,7 +34,10 @@ export default async function handler(req, res) {
     line_items: [{ price: PRICE_ID, quantity: Number(qty) || 1 }],
     success_url: `${origin}/subscribe-success?checkout=${encodedCart}&session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: shopifyCheckoutUrl,
-    subscription_data: { metadata: meta }
+    subscription_data: {
+      metadata: meta,
+      trial_period_days: 30  // first charge on day 30 — avoids double-charging on day 1
+    }
   });
 
   return res.status(200).json({ url: session.url });
