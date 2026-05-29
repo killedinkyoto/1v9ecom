@@ -721,6 +721,154 @@
   .stack-steadiness .stack-layer-name { color: var(--fog-grey); }
   .stack-steadiness .stack-layer-cap { color: rgba(200,201,184,0.6); font-size: 12px; }
 
+  /* ---- Compare switcher ---- */
+  .compare-headline {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(28px, 7vw, 44px);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: var(--clean-cream);
+    line-height: 1.08;
+    margin-bottom: 28px;
+  }
+  .switcher-wrap {
+    margin-bottom: 28px;
+  }
+  .switcher {
+    display: inline-flex;
+    background: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 100px;
+    padding: 4px;
+    position: relative;
+    user-select: none;
+  }
+  .switcher-track {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    height: calc(100% - 8px);
+    border-radius: 100px;
+    background: var(--execution-green);
+    transition: transform 0.38s cubic-bezier(0.34, 1.25, 0.64, 1), background 0.25s ease, width 0.38s cubic-bezier(0.34, 1.25, 0.64, 1);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .switcher-btn {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 15px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 10px 26px;
+    border: none;
+    background: transparent;
+    color: var(--fog-grey);
+    border-radius: 100px;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+    transition: color 0.22s ease;
+    -webkit-tap-highlight-color: transparent;
+    white-space: nowrap;
+  }
+  .switcher-btn:focus-visible {
+    outline: 2px solid var(--execution-green);
+    outline-offset: 2px;
+  }
+  .switcher[data-active="mindor"] .switcher-btn[data-side="mindor"],
+  .switcher[data-active="others"] .switcher-btn[data-side="others"] {
+    color: #1A1F14;
+  }
+  .switcher[data-active="others"] .switcher-track {
+    background: #E8A040;
+  }
+  .compare-panel {
+    position: relative;
+    overflow: hidden;
+  }
+  .compare-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(10px);
+    transition: opacity 0.28s ease, transform 0.28s ease;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .compare-steps.active {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+    position: relative;
+  }
+  .compare-steps.exiting {
+    opacity: 0;
+    transform: translateY(-8px);
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .compare-step {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 20px 20px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease, border-color 0.25s ease, background 0.25s ease;
+  }
+  .compare-steps.active .compare-step:nth-child(1) { transition-delay: 0.06s; opacity: 1; transform: none; }
+  .compare-steps.active .compare-step:nth-child(2) { transition-delay: 0.14s; opacity: 1; transform: none; }
+  .mindor-steps .compare-step {
+    background: rgba(226, 255, 71, 0.04);
+    border-color: rgba(226, 255, 71, 0.1);
+  }
+  .others-steps .compare-step {
+    background: rgba(232, 160, 64, 0.04);
+    border-color: rgba(232, 160, 64, 0.09);
+  }
+  .compare-step-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 32px;
+    line-height: 1;
+    flex-shrink: 0;
+    width: 28px;
+    text-align: left;
+    margin-top: -2px;
+  }
+  .mindor-steps .compare-step-num { color: var(--execution-green); }
+  .others-steps .compare-step-num { color: #E8A040; }
+  .compare-step-copy strong {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 6px;
+    line-height: 1.1;
+  }
+  .mindor-steps .compare-step-copy strong { color: var(--execution-green); }
+  .others-steps .compare-step-copy strong { color: #E8A040; }
+  .compare-step-copy p {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--fog-grey);
+    line-height: 1.55;
+    margin: 0;
+  }
+
   /* Focus Arc */
   .focus-arc-wrap {
     margin-top: 52px;
@@ -2286,34 +2434,54 @@
 <section id="steady-base">
   <div class="container">
     <span class="section-label">The Steady Base</span>
-    <p class="steady-subhead">The part of the formula every other focus drink leaves out.</p>
+    <h2 class="compare-headline">Why Everything Else<br>Hasn't Worked</h2>
 
-    <!-- Two-layer diagram -->
-    <div class="stack-diagram" role="img" aria-label="Diagram showing Alertness layer sitting on top of the Steadiness Layer">
-      <div class="stack-alertness">
-        <span class="stack-layer-name">Alertness</span>
-        <span class="stack-layer-cap">Lands on top of a brain that's already steady.</span>
-      </div>
-      <div class="stack-steadiness">
-        <span class="stack-layer-name">Steadiness Layer</span>
-        <span class="stack-layer-cap">Goes in first.</span>
+    <!-- Interactive compare switcher -->
+    <div class="switcher-wrap">
+      <div class="switcher" id="compareSwitcher" data-active="mindor" role="tablist" aria-label="Compare Mindor vs Others">
+        <div class="switcher-track" id="switcherTrack" aria-hidden="true"></div>
+        <button class="switcher-btn" data-side="mindor" role="tab" aria-selected="true" aria-controls="comparePanel">Mindor</button>
+        <button class="switcher-btn" data-side="others" role="tab" aria-selected="false" aria-controls="comparePanel">Others</button>
       </div>
     </div>
 
-    <!-- Body copy -->
-    <p class="depth">Most focus drinks add caffeine first, then patch the spike after it shows up.</p>
+    <div class="compare-panel" id="comparePanel">
+      <!-- MINDOR steps -->
+      <div class="compare-steps mindor-steps active" id="mindorSteps">
+        <div class="compare-step">
+          <span class="compare-step-num">1</span>
+          <div class="compare-step-copy">
+            <strong>The calm goes in first.</strong>
+            <p>600mg of inositol sets a level baseline before anything stimulating reaches your brain. Most focus drinks skip this entirely.</p>
+          </div>
+        </div>
+        <div class="compare-step">
+          <span class="compare-step-num">2</span>
+          <div class="compare-step-copy">
+            <strong>Then the alertness lands on top of it.</strong>
+            <p>Caffeine works on a brain that's already steady. No spike to manage, no edge to fight through — just clean, deliberate focus that holds for hours.</p>
+          </div>
+        </div>
+      </div>
 
-    <p class="skim-frag">Mindor was built the other way around.</p>
-
-    <p class="skim-frag">The calm goes in first.</p>
-
-    <p class="depth">600mg of inositol sets a calm, level baseline before anything stimulating reaches your brain.</p>
-
-    <p class="skim-frag">Then the alertness lands on top of it.</p>
-
-    <p class="depth">The caffeine works on a brain that's already steady, leaving no spike or edge to manage.</p>
-
-    <p class="skim-frag">That's the Steady Base. It's also why Mindor doesn't feel like coffee.</p>
+      <!-- OTHERS steps -->
+      <div class="compare-steps others-steps" id="othersSteps">
+        <div class="compare-step">
+          <span class="compare-step-num">1</span>
+          <div class="compare-step-copy">
+            <strong>Caffeine first.</strong>
+            <p>Most focus drinks add the stimulant directly, with nothing underneath it. The spike isn't a side effect — it's the entire plan.</p>
+          </div>
+        </div>
+        <div class="compare-step">
+          <span class="compare-step-num">2</span>
+          <div class="compare-step-copy">
+            <strong>Then they patch the spike.</strong>
+            <p>L-theanine, adaptogens, "calming blends" — all added after the fact. Not to build something better. Just to soften what they already caused.</p>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Focus Arc graphic -->
     <div class="focus-arc-wrap">
@@ -3088,7 +3256,7 @@ var ADDON_PRODUCTS = [
     tagline: 'Train harder. Recover faster.',
     price: 19.99,
     productId: 'gid://shopify/Product/9071829155995',
-    variantId: 'gid://shopify/ProductVariant/48650528587931', img: null
+    variantId: 'gid://shopify/ProductVariant/48650528587931', img: '1779977436974-generated-label-image-2.jpg'
   },
   {
     key: 'sleep',
@@ -3096,7 +3264,7 @@ var ADDON_PRODUCTS = [
     tagline: 'The other 8 hours matter too.',
     price: 29.90,
     productId: 'gid://shopify/Product/9071814148251',
-    variantId: 'gid://shopify/ProductVariant/48650454761627', img: null
+    variantId: 'gid://shopify/ProductVariant/48650454761627', img: '1779976665609-generated-label-image-1.jpg'
   },
   {
     key: 'magnesium',
@@ -3104,7 +3272,7 @@ var ADDON_PRODUCTS = [
     tagline: 'Calm from the inside out.',
     price: 14.99,
     productId: 'gid://shopify/Product/9071773778075',
-    variantId: 'gid://shopify/ProductVariant/48650208837787', img: null
+    variantId: 'gid://shopify/ProductVariant/48650208837787', img: '1779974883185-generated-label-image-1.jpg'
   }
 ];
 var addonAdded = { creatine: false, sleep: false, magnesium: false };
@@ -3468,6 +3636,66 @@ var arcObs = new IntersectionObserver(function(entries) {
 }, { threshold: 0.3 });
 var steadyEl = document.getElementById('steady-base');
 if (steadyEl) arcObs.observe(steadyEl);
+
+// ===== COMPARE SWITCHER =====
+(function() {
+  var switcher = document.getElementById('compareSwitcher');
+  var track = document.getElementById('switcherTrack');
+  var mindorSteps = document.getElementById('mindorSteps');
+  var othersSteps = document.getElementById('othersSteps');
+  if (!switcher) return;
+
+  function setTrackToBtn(btn) {
+    track.style.width = btn.offsetWidth + 'px';
+    track.style.transform = btn.getAttribute('data-side') === 'others'
+      ? 'translateX(' + btn.offsetLeft + 'px)'
+      : 'translateX(0px)';
+  }
+
+  var btns = switcher.querySelectorAll('.switcher-btn');
+
+  // Init track size on first render
+  var initBtn = switcher.querySelector('.switcher-btn[data-side="mindor"]');
+  requestAnimationFrame(function() { setTrackToBtn(initBtn); });
+
+  btns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var side = btn.getAttribute('data-side');
+      if (switcher.getAttribute('data-active') === side) return;
+
+      var leaving = side === 'mindor' ? othersSteps : mindorSteps;
+      var entering = side === 'mindor' ? mindorSteps : othersSteps;
+
+      // Swap ARIA
+      btns.forEach(function(b) { b.setAttribute('aria-selected', b === btn ? 'true' : 'false'); });
+
+      // Animate out
+      leaving.classList.remove('active');
+      leaving.classList.add('exiting');
+      leaving.style.height = leaving.offsetHeight + 'px';
+
+      // Reset entering step opacities so stagger re-fires
+      entering.querySelectorAll('.compare-step').forEach(function(s) {
+        s.style.opacity = '0';
+        s.style.transform = 'translateY(10px)';
+      });
+
+      switcher.setAttribute('data-active', side);
+      setTrackToBtn(btn);
+
+      setTimeout(function() {
+        leaving.classList.remove('exiting');
+        leaving.style.height = '';
+        entering.classList.add('active');
+        // Re-enable CSS transitions for step stagger
+        entering.querySelectorAll('.compare-step').forEach(function(s) {
+          s.style.opacity = '';
+          s.style.transform = '';
+        });
+      }, 120);
+    });
+  });
+})();
 
 // ===== DISCOUNT UNLOCK =====
 var discountUnlocked = sessionStorage.getItem('mindor_discount') === 'FLOOR15';
