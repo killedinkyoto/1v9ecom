@@ -2,7 +2,7 @@ import Stripe from 'stripe';
 
 // $28.04/tub/mo — 15% off $32.99. Create in Stripe Dashboard → Products → Add price
 // Set STRIPE_PRICE_ID env var in Vercel, or replace the fallback below
-const PRICE_ID = process.env.STRIPE_PRICE_ID || 'price_1Tc5aZRsLEp3Bab3OgURKLaR';
+const PRICE_ID = process.env.STRIPE_PRICE_ID || 'price_1TcVZuRsLEp3Bab3nkHcEEfY';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
