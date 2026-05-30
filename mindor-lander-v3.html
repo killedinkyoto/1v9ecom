@@ -784,7 +784,7 @@
     color: #fff;
   }
   .switcher[data-active="others"] .switcher-track {
-    background: #E8A040;
+    background: #C84A4A;
   }
   .compare-panel {
     position: relative;
@@ -835,8 +835,8 @@
     border-color: rgba(74,107,212,0.1);
   }
   .others-steps .compare-step {
-    background: rgba(232, 160, 64, 0.04);
-    border-color: rgba(232, 160, 64, 0.09);
+    background: rgba(200, 74, 74, 0.04);
+    border-color: rgba(200, 74, 74, 0.09);
   }
   .compare-step-num {
     font-family: 'Barlow Condensed', sans-serif;
@@ -849,7 +849,7 @@
     margin-top: -2px;
   }
   .mindor-steps .compare-step-num { color: var(--sprint-green); }
-  .others-steps .compare-step-num { color: #E8A040; }
+  .others-steps .compare-step-num { color: #C84A4A; }
   .compare-step-copy strong {
     font-family: 'Barlow Condensed', sans-serif;
     font-weight: 800;
@@ -861,7 +861,7 @@
     line-height: 1.1;
   }
   .mindor-steps .compare-step-copy strong { color: var(--sprint-green); }
-  .others-steps .compare-step-copy strong { color: #E8A040; }
+  .others-steps .compare-step-copy strong { color: #C84A4A; }
   .compare-step-copy p {
     font-family: 'DM Sans', sans-serif;
     font-size: 15px;
@@ -1847,6 +1847,35 @@
     margin-bottom: 14px;
   }
 
+  /* ===== FUN FACT CARD ===== */
+  .fun-fact-card {
+    background: var(--surface2);
+    border: 1px solid rgba(235,255,71,0.10);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 12px auto 0;
+    max-width: 360px;
+    text-align: left;
+  }
+  .fun-fact-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--execution-green);
+    margin-bottom: 6px;
+    display: block;
+  }
+  .fun-fact-text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12.5px;
+    font-weight: 400;
+    color: var(--fog-grey);
+    line-height: 1.55;
+    margin: 0;
+  }
+
   /* ===== ADD-ON CARDS ===== */
   .addon-list {
     display: flex;
@@ -2307,6 +2336,64 @@
   .htu-expect-text strong {
     color: var(--text-primary);
     font-weight: 500;
+  }
+  /* Expect carousel */
+  .htu-expect { position: relative; }
+  .htu-expect-verified-pill {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(34, 197, 94, 0.08);
+    border: 0.5px solid rgba(34, 197, 94, 0.25);
+    border-radius: 20px;
+    padding: 4px 10px 4px 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #4ade80;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  .htu-expect-carousel { position: relative; }
+  .htu-expect-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  @media (min-width: 640px) {
+    .htu-expect-slide {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 28px;
+    }
+  }
+  .htu-expect-slide.is-active {
+    position: relative;
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .htu-expect-content { flex: 1; min-width: 0; }
+  .htu-expect-headline {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 0.01em;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    line-height: 1.2;
   }
 
   .htu-week {
@@ -3543,34 +3630,6 @@
 
     <!-- Focus Arc vertical timeline -->
     <div class="focus-arc-wrap">
-      <p class="focus-arc-label">The Focus Arc &mdash; what the Steady Base produces</p>
-      <div class="focus-arc-svg-wrap">
-        <svg id="focusArcSvg" class="focus-arc-svg" viewBox="0 0 560 110" fill="none" aria-hidden="true">
-          <!-- Baseline -->
-          <line x1="20" y1="98" x2="540" y2="98" stroke="rgba(200,201,184,0.12)" stroke-width="0.5"/>
-          <!-- Time axis labels -->
-          <text x="20" y="108" font-size="10" fill="rgba(200,201,184,0.35)" font-family="DM Sans,sans-serif" text-anchor="middle">7am</text>
-          <text x="280" y="108" font-size="10" fill="rgba(200,201,184,0.35)" font-family="DM Sans,sans-serif" text-anchor="middle">12pm</text>
-          <text x="540" y="108" font-size="10" fill="rgba(200,201,184,0.35)" font-family="DM Sans,sans-serif" text-anchor="middle">3pm</text>
-          <!-- Coffee spike reference -->
-          <polyline points="80,96 95,30 110,96" stroke="rgba(74,107,212,0.45)" stroke-width="2" fill="none" stroke-dasharray="4,3"/>
-          <text x="95" y="18" font-size="10" font-weight="700" fill="rgba(26,32,64,0.55)" font-family="DM Sans,sans-serif" text-anchor="middle">COFFEE</text>
-          <text x="95" y="107" font-size="9" fill="rgba(220,80,40,0.85)" font-family="DM Sans,sans-serif" text-anchor="middle">SPIKE &amp; CRASH</text>
-          <!-- vs separator -->
-          <text x="137" y="60" font-size="9" font-weight="600" fill="rgba(74,107,212,0.3)" font-family="DM Sans,sans-serif" text-anchor="middle">vs</text>
-          <!-- Main arc path -->
-          <path id="arcPath" class="arc-path"
-            d="M 160,96 C 185,94 198,16 220,12 L 380,12 C 402,16 415,94 440,96"
-            stroke="var(--sprint-green)" stroke-width="2.5" stroke-linecap="round"/>
-          <!-- Mindor label above plateau -->
-          <text x="300" y="6" font-size="10" font-weight="700" fill="var(--sprint-green)" font-family="DM Sans,sans-serif" text-anchor="middle" opacity="0.9">MINDOR</text>
-          <!-- Marker dots -->
-          <circle id="arcDot0" class="arc-dot" cx="220" cy="12" r="4.5" fill="var(--sprint-green)"/>
-          <circle id="arcDot1" class="arc-dot" cx="300" cy="12" r="4.5" fill="var(--sprint-green)"/>
-          <circle id="arcDot2" class="arc-dot" cx="380" cy="12" r="4.5" fill="var(--sprint-green)"/>
-        </svg>
-      </div>
-
       <div class="vtl" id="arcLabels">
         <div class="vtl-item vtl-left" id="arcLbl0">
           <div class="vtl-content">
@@ -3700,33 +3759,6 @@
   </div>
 </section>
 
-
-<!-- ===== SECTION 6 — THE COST OF STAYING THE SAME ===== -->
-<section id="cost">
-  <div class="container">
-    <div class="cost-inner">
-      <span class="section-label">What Another Day Of This Costs</span>
-
-      <div class="cost-para">
-        <p class="depth">Picture the version of the day where the focus holds. You sit down, you start, the work moves.</p>
-        <p class="skim-frag">That's the part that's been missing. Not energy. Control.</p>
-      </div>
-
-      <div class="cost-para mt-6">
-        <p class="skim-frag">Without it, the day decides for you.</p>
-        <p class="depth">The drink works or it doesn't. You spend the afternoon reacting to a brain you can't steer.</p>
-      </div>
-
-      <div class="cost-para mt-6">
-        <p class="skim-frag">Tomorrow: same coffee. Same buzz. Same scattered 6pm.</p>
-      </div>
-
-      <div class="cost-para mt-8">
-        <p class="skim-frag cost-floor">Or you can put a floor under it.</p>
-      </div>
-    </div>
-  </div>
-</section>
 
 
 <!-- ===== SOCIAL PROOF CARDS ===== -->
@@ -3990,6 +4022,10 @@
       <div class="addon-list" id="addonListCreatine">
         <!-- Populated by JS -->
       </div>
+      <div class="fun-fact-card">
+        <span class="fun-fact-label">Fun Fact</span>
+        <p class="fun-fact-text">Your brain runs on creatine. It runs low first when you're tired. A 2024 study found that one dose helped sleep-deprived adults think faster and remember more within hours.</p>
+      </div>
       <div class="wizard-nav">
         <button class="wizard-back-btn" onclick="prevStepFromHydration()">&larr; Back</button>
         <button class="btn-primary" style="flex:1" onclick="wizardGo(5, false)">Continue &rarr;</button>
@@ -4002,6 +4038,10 @@
       <p class="upsell-sub">Rest well tonight:</p>
       <div class="addon-list" id="addonListSleep">
         <!-- Populated by JS -->
+      </div>
+      <div class="fun-fact-card">
+        <span class="fun-fact-label">Fun Fact</span>
+        <p class="fun-fact-text">Tomorrow's focus relies on tonight's rest. Magnesium quiets your brain while glycine cools your body down, so you can finally sleep peacefully tonight.</p>
       </div>
       <div class="wizard-nav">
         <button class="wizard-back-btn" onclick="wizardGo(4, true)">&larr; Back</button>
@@ -4112,25 +4152,105 @@
     <!-- What to expect -->
     <div class="htu-expect">
       <div class="htu-expect-eyebrow">What to expect</div>
-      <div class="htu-expect-inner">
-        <div class="htu-expect-stat">
-          <div class="htu-expect-circle-wrap">
-            <svg class="htu-expect-circle-svg" viewBox="0 0 140 140" width="140" height="140" aria-hidden="true">
-              <circle cx="70" cy="70" r="58" fill="none" stroke="rgba(74,107,212,0.15)" stroke-width="2.5"/>
-              <circle cx="70" cy="70" r="58" fill="none" stroke="#4A6BD4" stroke-width="2.5"
-                stroke-dasharray="364.42 364.42" stroke-dashoffset="40.09"
-                stroke-linecap="round" transform="rotate(-90 70 70)"/>
-            </svg>
-            <div class="htu-expect-stat-inner">
-              <div class="htu-expect-number">89%</div>
-              <span class="htu-expect-number-sub">Verified buyers</span>
+
+      <div class="htu-expect-verified-pill" aria-label="Verified buyers">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+          <circle cx="6" cy="6" r="6" fill="rgba(34,197,94,0.18)"/>
+          <path d="M3.5 6L5.2 7.7L8.5 4.3" stroke="#4ade80" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Verified Buyers
+      </div>
+
+      <div class="htu-expect-carousel" id="htExpectCarousel">
+
+        <!-- Card 1 -->
+        <div class="htu-expect-slide is-active">
+          <div class="htu-expect-stat">
+            <div class="htu-expect-circle-wrap">
+              <svg class="htu-expect-circle-svg" viewBox="0 0 140 140" width="140" height="140" aria-hidden="true">
+                <circle cx="70" cy="70" r="58" fill="none" stroke="rgba(74,107,212,0.15)" stroke-width="2.5"/>
+                <circle cx="70" cy="70" r="58" fill="none" stroke="#4A6BD4" stroke-width="2.5"
+                  stroke-dasharray="364.42 364.42" stroke-dashoffset="40.09"
+                  stroke-linecap="round" transform="rotate(-90 70 70)"/>
+              </svg>
+              <div class="htu-expect-stat-inner">
+                <div class="htu-expect-number">89%</div>
+              </div>
             </div>
           </div>
+          <div class="htu-expect-divider"></div>
+          <div class="htu-expect-content">
+            <div class="htu-expect-headline">Didn&rsquo;t feel a HIT</div>
+            <div class="htu-expect-text">Only noticed the noise in their head got quieter and the task got easier to stay with.</div>
+          </div>
         </div>
-        <div class="htu-expect-divider"></div>
-        <div class="htu-expect-text">
-          You won&rsquo;t feel it, but you&rsquo;ll notice the difference. 89% of verified buyers claimed to achieve <strong>4+ hours of clean focus</strong> from a single scoop &mdash; then it fades off the same way it arrived.
+
+        <!-- Card 2 -->
+        <div class="htu-expect-slide">
+          <div class="htu-expect-stat">
+            <div class="htu-expect-circle-wrap">
+              <svg class="htu-expect-circle-svg" viewBox="0 0 140 140" width="140" height="140" aria-hidden="true">
+                <circle cx="70" cy="70" r="58" fill="none" stroke="rgba(74,107,212,0.15)" stroke-width="2.5"/>
+                <circle cx="70" cy="70" r="58" fill="none" stroke="#4A6BD4" stroke-width="2.5"
+                  stroke-dasharray="364.42 364.42" stroke-dashoffset="32.80"
+                  stroke-linecap="round" transform="rotate(-90 70 70)"/>
+              </svg>
+              <div class="htu-expect-stat-inner">
+                <div class="htu-expect-number">91%</div>
+              </div>
+            </div>
+          </div>
+          <div class="htu-expect-divider"></div>
+          <div class="htu-expect-content">
+            <div class="htu-expect-headline">Felt it fade the same way it arrived</div>
+            <div class="htu-expect-text">Most people only notice it&rsquo;s worn off because the noise quietly comes back, but usually around the time work was wrapping up anyway.</div>
+          </div>
         </div>
+
+        <!-- Card 3 -->
+        <div class="htu-expect-slide">
+          <div class="htu-expect-stat">
+            <div class="htu-expect-circle-wrap">
+              <svg class="htu-expect-circle-svg" viewBox="0 0 140 140" width="140" height="140" aria-hidden="true">
+                <circle cx="70" cy="70" r="58" fill="none" stroke="rgba(74,107,212,0.15)" stroke-width="2.5"/>
+                <circle cx="70" cy="70" r="58" fill="none" stroke="#4A6BD4" stroke-width="2.5"
+                  stroke-dasharray="364.42 364.42" stroke-dashoffset="21.87"
+                  stroke-linecap="round" transform="rotate(-90 70 70)"/>
+              </svg>
+              <div class="htu-expect-stat-inner">
+                <div class="htu-expect-number">94%</div>
+              </div>
+            </div>
+          </div>
+          <div class="htu-expect-divider"></div>
+          <div class="htu-expect-content">
+            <div class="htu-expect-headline">Didn&rsquo;t feel &ldquo;wired&rdquo; or &ldquo;buzzing&rdquo;</div>
+            <div class="htu-expect-text">Closer to &ldquo;the room got quiet and I got to work.&rdquo; The cleanest signal most people have ever felt from a daily focus drink.</div>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="htu-expect-slide">
+          <div class="htu-expect-stat">
+            <div class="htu-expect-circle-wrap">
+              <svg class="htu-expect-circle-svg" viewBox="0 0 140 140" width="140" height="140" aria-hidden="true">
+                <circle cx="70" cy="70" r="58" fill="none" stroke="rgba(74,107,212,0.15)" stroke-width="2.5"/>
+                <circle cx="70" cy="70" r="58" fill="none" stroke="#4A6BD4" stroke-width="2.5"
+                  stroke-dasharray="364.42 364.42" stroke-dashoffset="14.58"
+                  stroke-linecap="round" transform="rotate(-90 70 70)"/>
+              </svg>
+              <div class="htu-expect-stat-inner">
+                <div class="htu-expect-number">96%</div>
+              </div>
+            </div>
+          </div>
+          <div class="htu-expect-divider"></div>
+          <div class="htu-expect-content">
+            <div class="htu-expect-headline">Loved the taste</div>
+            <div class="htu-expect-text">It&rsquo;s smooth and a little tart. Closer to a real drink than a supplement. No chalk or chunks at the bottom of the glass.</div>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -4162,7 +4282,7 @@
     <div class="vs-products">
       <div class="vs-product vs-product--mindor">
         <div class="vs-product-img-wrap">
-          <img src="/assets/product-photos/tub-candy.webp" alt="Mindor tub" loading="lazy">
+          <img src="/brand_assets/hf_20260518_161451_041559cf-fe2b-4eb0-bfbf-abdff8ed5113.png" alt="Mindor tub" loading="lazy">
         </div>
         <span class="vs-product-name">Mindor</span>
       </div>
@@ -4334,7 +4454,7 @@
         <div class="review-item-stars">★★★★★</div>
         <p class="review-item-title">Finally stopped cycling through alternatives</p>
         <div class="review-item-author">
-          <span class="review-item-name">James R.</span>
+          <span class="review-item-name">Harry D.</span>
           <span class="review-item-verified"><span class="review-item-verified-icon">✓</span> Verified buyer</span>
         </div>
         <p class="review-item-body">I've run through the whole list. Pre-workout before work, cold brew at noon, caffeine pills for the afternoon. Always chasing the next dose. Mindor took that cycle off the table. Two hours into a session I'm still there — not wired, just working.</p>
@@ -4344,7 +4464,7 @@
         <div class="review-item-stars">★★★★★</div>
         <p class="review-item-title">The floor I didn't know I needed</p>
         <div class="review-item-author">
-          <span class="review-item-name">Sarah K.</span>
+          <span class="review-item-name">Matheus S.</span>
           <span class="review-item-verified"><span class="review-item-verified-icon">✓</span> Verified buyer</span>
         </div>
         <p class="review-item-body">I run a small agency so the cost of an unfocused morning is real. Mindor doesn't make me feel buzzed. It makes me feel like I showed up. Sit down, open the doc, work happens. That's the whole pitch and it delivers.</p>
@@ -4354,7 +4474,7 @@
         <div class="review-item-stars">★★★★★</div>
         <p class="review-item-title">Quiet focus. Didn't expect that.</p>
         <div class="review-item-author">
-          <span class="review-item-name">Priya M.</span>
+          <span class="review-item-name">Jean T.</span>
           <span class="review-item-verified"><span class="review-item-verified-icon">✓</span> Verified buyer</span>
         </div>
         <p class="review-item-body">The focus isn't loud. That took some adjusting. With energy drinks you feel the on-switch. Mindor puts you in the right state and holds you there. I realized it was working when I finished a three-hour writing session and hadn't noticed the time.</p>
@@ -4364,7 +4484,7 @@
         <div class="review-item-stars">★★★★★</div>
         <p class="review-item-title">Skeptic, then subscriber</p>
         <div class="review-item-author">
-          <span class="review-item-name">Marcus T.</span>
+          <span class="review-item-name">Rodrigo V.</span>
           <span class="review-item-verified"><span class="review-item-verified-icon">✓</span> Verified buyer</span>
         </div>
         <p class="review-item-body">Three months convinced this category was all marketing. Tried it because a friend wouldn't let it go. The first week I noticed I was finishing deep work blocks without having drifted. Two months later, it's the one thing I keep reordering.</p>
@@ -4374,7 +4494,7 @@
         <div class="review-item-stars">★★★★★</div>
         <p class="review-item-title">Works with coffee, not instead of it</p>
         <div class="review-item-author">
-          <span class="review-item-name">Nadia C.</span>
+          <span class="review-item-name">Marcus N.</span>
           <span class="review-item-verified"><span class="review-item-verified-icon">✓</span> Verified buyer</span>
         </div>
         <p class="review-item-body">I wasn't ready to drop my morning espresso. Turns out I didn't have to. I mix Mindor mid-morning once the coffee's worn off and it carries me through without the spike of a second cup.</p>
@@ -4384,7 +4504,7 @@
         <div class="review-item-stars">★★★★★</div>
         <p class="review-item-title">Sour Candy is legitimately good</p>
         <div class="review-item-author">
-          <span class="review-item-name">Tom B.</span>
+          <span class="review-item-name">Jess O.</span>
           <span class="review-item-verified"><span class="review-item-verified-icon">✓</span> Verified buyer</span>
         </div>
         <p class="review-item-body">Tastes like it should be sold at a gas station. I mean that as a compliment. Mixes clean, no chalky finish, and I actually look forward to making it. Small thing, but it matters when you're drinking it every morning.</p>
@@ -4394,7 +4514,7 @@
         <div class="review-item-stars">★★★★★</div>
         <p class="review-item-title">Got through finals on this</p>
         <div class="review-item-author">
-          <span class="review-item-name">Alex D.</span>
+          <span class="review-item-name">Quentin R.</span>
           <span class="review-item-verified"><span class="review-item-verified-icon">✓</span> Verified buyer</span>
         </div>
         <p class="review-item-body">Five-hour library sessions, papers due at midnight, back-to-back exams. Mindor kept me on the material. Not because it made me smarter — because it stopped me drifting to my phone every eight minutes.</p>
@@ -4404,7 +4524,7 @@
         <div class="review-item-stars">★★★★★</div>
         <p class="review-item-title">Replaced three supplements</p>
         <div class="review-item-author">
-          <span class="review-item-name">Chris W.</span>
+          <span class="review-item-name">Alexander B.</span>
           <span class="review-item-verified"><span class="review-item-verified-icon">✓</span> Verified buyer</span>
         </div>
         <p class="review-item-body">Was taking L-theanine, Alpha-GPC, and a B-complex separately. Mindor covers all of it plus compounds I wasn't getting. Cleaner routine, lower total cost. And I can actually taste it instead of choking down capsules.</p>
@@ -4414,7 +4534,7 @@
         <div class="review-item-stars">★★★★★</div>
         <p class="review-item-title">Fewer scattered mornings</p>
         <div class="review-item-author">
-          <span class="review-item-name">Jordan L.</span>
+          <span class="review-item-name">Trish M.</span>
           <span class="review-item-verified"><span class="review-item-verified-icon">✓</span> Verified buyer</span>
         </div>
         <p class="review-item-body">Work expands or contracts based on how well your brain cooperates. Some days you're locked in, some days you're scattered. Mindor makes the locked-in days more consistent. I've had fewer scattered mornings since I started it.</p>
@@ -4424,7 +4544,7 @@
         <div class="review-item-stars">★★★★★</div>
         <p class="review-item-title">You don't feel the supplement. You feel the session.</p>
         <div class="review-item-author">
-          <span class="review-item-name">Megan F.</span>
+          <span class="review-item-name">Tyrell W.</span>
           <span class="review-item-verified"><span class="review-item-verified-icon">✓</span> Verified buyer</span>
         </div>
         <p class="review-item-body">I came in expecting the kind of focus you feel. Sharp edges, fast thoughts, that jittery hum. Mindor is different. The work just happens. You don't feel the supplement. You feel the session going well.</p>
@@ -5786,6 +5906,21 @@ window.addEventListener('load', function() {
   // Ask a question — reuse popup for now
   var askBtn = document.getElementById('reviewsAskBtn');
   if (askBtn) askBtn.addEventListener('click', openPopup);
+})();
+</script>
+
+<script>
+(function() {
+  var carousel = document.getElementById('htExpectCarousel');
+  if (!carousel) return;
+  var slides = Array.from(carousel.querySelectorAll('.htu-expect-slide'));
+  var current = 0;
+
+  setInterval(function() {
+    slides[current].classList.remove('is-active');
+    current = (current + 1) % slides.length;
+    slides[current].classList.add('is-active');
+  }, 5000);
 })();
 </script>
 
