@@ -1799,64 +1799,77 @@
   /* ===== ADD-ON CARDS ===== */
   .addon-list {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 10px;
-    margin: 0 0 20px;
+    margin: 0 auto 20px;
+    max-width: 360px;
   }
   .addon-card {
+    flex: 0 0 calc(50% - 5px);
+    max-width: 165px;
+    min-width: 120px;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 12px;
+    text-align: center;
     background: var(--surface2);
     border: 1px solid var(--border-subtle);
     border-radius: 10px;
-    padding: 12px 12px;
+    padding: 16px 12px 12px;
     transition: border-color 0.2s ease;
   }
   .addon-card.added { border-color: rgba(226,255,71,0.35); }
   .addon-img {
-    width: 56px;
-    height: 56px;
-    border-radius: 6px;
+    width: 72px;
+    height: 72px;
+    border-radius: 8px;
     object-fit: cover;
     flex-shrink: 0;
     background: var(--surface);
+    margin-bottom: 10px;
   }
-  .addon-body { flex: 1; min-width: 0; }
+  .addon-body {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
   .addon-name {
     font-family: 'Barlow Condensed', sans-serif;
     font-weight: 700;
-    font-size: 15px;
+    font-size: 14px;
     color: var(--text-primary);
-    margin-bottom: 2px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    margin-bottom: 4px;
+    line-height: 1.2;
+    white-space: normal;
   }
   .addon-tagline {
     font-size: 11px;
     color: var(--fog-grey);
     line-height: 1.4;
-    margin-bottom: 3px;
+    margin-bottom: 6px;
   }
   .addon-price {
     font-family: 'Barlow Condensed', sans-serif;
     font-weight: 700;
     font-size: 13px;
     color: var(--execution-green);
+    margin-bottom: 10px;
   }
   .addon-btn {
-    flex-shrink: 0;
+    width: 100%;
+    margin-top: auto;
     background: transparent;
     border: 1px solid var(--border-accent);
     color: var(--execution-green);
     font-family: 'DM Sans', sans-serif;
     font-weight: 600;
-    font-size: 11px;
-    letter-spacing: 0.06em;
+    font-size: 10px;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    padding: 7px 11px;
-    border-radius: 4px;
+    padding: 7px 8px;
+    border-radius: 6px;
     cursor: pointer;
     transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
     white-space: nowrap;
@@ -2317,6 +2330,17 @@
   }
   @media (min-width: 768px) { #vs-section { padding: 100px 0 108px; } }
 
+  .vs-headline {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: clamp(32px, 7vw, 52px);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+    line-height: 1;
+  }
+
   .vs-intro {
     font-family: 'DM Sans', sans-serif;
     font-size: 15px;
@@ -2368,7 +2392,7 @@
     pointer-events: none;
   }
   .vs-product--gorilla .vs-product-img-wrap img {
-    filter: grayscale(1) brightness(0.6) contrast(0.9);
+    filter: grayscale(1) brightness(0.55) contrast(0.85) blur(3px);
   }
   .vs-product-name {
     font-family: 'Barlow Condensed', sans-serif;
@@ -2402,7 +2426,6 @@
   .vs-table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 480px;
   }
   .vs-table thead tr {
     border-bottom: 0.5px solid var(--border);
@@ -2466,6 +2489,15 @@
   }
   .vs-table td.td-gorilla { color: #555; }
   .vs-table td.td-gorilla .td-win { color: #888; font-weight: 600; }
+
+  @media (max-width: 480px) {
+    .vs-table-wrap { overflow-x: hidden; }
+    .vs-table th { padding: 10px 8px; font-size: 8px; letter-spacing: 0.1em; }
+    .vs-table th.th-feature { width: 36%; }
+    .vs-table td { padding: 10px 8px; font-size: 11px; }
+    .vs-table td.td-feature { font-size: 10px; }
+    .vs-table td.td-feature em { font-size: 9px; }
+  }
 
   .vs-footer {
     background: var(--surface);
@@ -3357,6 +3389,45 @@
 
 <!-- ===== SECTION 7 — THE OFFER ===== -->
 <section id="offer">
+  <!-- Social proof ticker above media -->
+  <div class="proof-ticker-wrap" aria-hidden="true">
+    <div class="proof-ticker-track">
+      <div class="proof-ticker-item"><span class="proof-ticker-stars">★★★★★</span> "shipped that project i'd been putting off for like 2 weeks lol"</div>
+      <div class="proof-ticker-dot">·</div>
+      <div class="proof-ticker-item"><span class="proof-ticker-stars">★★★★★</span> "the 3pm crash is literally just gone?? idk what they put in this"</div>
+      <div class="proof-ticker-dot">·</div>
+      <div class="proof-ticker-item"><span class="proof-ticker-stars">★★★★★</span> "studied 4 hours and didn't check my phone once 💀"</div>
+      <div class="proof-ticker-dot">·</div>
+      <div class="proof-ticker-item"><span class="proof-ticker-stars">★★★★★</span> "still drink my coffee just don't need the second one anymore"</div>
+      <div class="proof-ticker-dot">·</div>
+      <div class="proof-ticker-item"><span class="proof-ticker-stars">★★★★★</span> "doesn't feel like a jolt just kinda... locked in"</div>
+      <div class="proof-ticker-dot">·</div>
+      <div class="proof-ticker-item"><span class="proof-ticker-stars">★★★★★</span> "ok i was skeptical but this actually works"</div>
+      <div class="proof-ticker-dot">·</div>
+      <div class="proof-ticker-item"><span class="proof-ticker-stars">★★★★★</span> "my afternoons are actually useful now which is insane"</div>
+      <div class="proof-ticker-dot">·</div>
+      <div class="proof-ticker-item"><span class="proof-ticker-stars">★★★★★</span> "felt it within like 20 min and just started working"</div>
+      <div class="proof-ticker-dot">·</div>
+      <!-- duplicate for seamless loop -->
+      <div class="proof-ticker-item"><span class="proof-ticker-stars">★★★★★</span> "shipped that project i'd been putting off for like 2 weeks lol"</div>
+      <div class="proof-ticker-dot">·</div>
+      <div class="proof-ticker-item"><span class="proof-ticker-stars">★★★★★</span> "the 3pm crash is literally just gone?? idk what they put in this"</div>
+      <div class="proof-ticker-dot">·</div>
+      <div class="proof-ticker-item"><span class="proof-ticker-stars">★★★★★</span> "studied 4 hours and didn't check my phone once 💀"</div>
+      <div class="proof-ticker-dot">·</div>
+      <div class="proof-ticker-item"><span class="proof-ticker-stars">★★★★★</span> "still drink my coffee just don't need the second one anymore"</div>
+      <div class="proof-ticker-dot">·</div>
+      <div class="proof-ticker-item"><span class="proof-ticker-stars">★★★★★</span> "doesn't feel like a jolt just kinda... locked in"</div>
+      <div class="proof-ticker-dot">·</div>
+      <div class="proof-ticker-item"><span class="proof-ticker-stars">★★★★★</span> "ok i was skeptical but this actually works"</div>
+      <div class="proof-ticker-dot">·</div>
+      <div class="proof-ticker-item"><span class="proof-ticker-stars">★★★★★</span> "my afternoons are actually useful now which is insane"</div>
+      <div class="proof-ticker-dot">·</div>
+      <div class="proof-ticker-item"><span class="proof-ticker-stars">★★★★★</span> "felt it within like 20 min and just started working"</div>
+      <div class="proof-ticker-dot">·</div>
+    </div>
+  </div>
+
   <!-- Full-bleed carousel — outside container so it touches both edges -->
   <div class="offer-product-wrap">
     <div class="flavor-carousel" id="flavorCarousel">
@@ -3467,7 +3538,7 @@
       <div id="flavorRow" class="flavor-row"></div>
       <div class="wizard-nav">
         <button class="wizard-back-btn" onclick="wizardGo(1, true)">&larr; Back</button>
-        <button class="btn-primary" style="flex:1" onclick="wizardGo(3, false)">Add Free Gifts &rarr;</button>
+        <button class="btn-primary" id="step2NextBtn" style="flex:1" onclick="nextStepFromFlavor()">Add Free Gifts &rarr;</button>
       </div>
     </div>
 
@@ -3506,7 +3577,7 @@
         <!-- Populated by JS -->
       </div>
       <div class="wizard-nav">
-        <button class="wizard-back-btn" onclick="wizardGo(3, true)">&larr; Back</button>
+        <button class="wizard-back-btn" onclick="prevStepFromHydration()">&larr; Back</button>
         <button class="btn-primary" style="flex:1" onclick="wizardGo(5, false)">Continue &rarr;</button>
       </div>
     </div>
@@ -3725,12 +3796,12 @@
 </section>
 
 
-<!-- ===== SECTION 10 — MINDOR VS. GORILLA MIND ENERGY ===== -->
+<!-- ===== SECTION 10 — MINDOR VS. COMPETITOR ===== -->
 <section id="vs-section">
   <div class="container">
-    <span class="section-label">Mindor vs. Gorilla Mind Energy</span>
+    <h2 class="vs-headline">An Honest Comparison</h2>
 
-    <p class="vs-intro">The closest comparison most people make is Gorilla Mind Energy. Same daily slot &mdash; the morning focus drink. Different build. Here&rsquo;s the straight read, from the labels.</p>
+    <p class="vs-intro">We&rsquo;ve seen customers compare us to a close competitor. Another &ldquo;morning focus drink,&rdquo; but with a different build. Here&rsquo;s the straight read, from the labels:</p>
 
     <!-- Product shots -->
     <div class="vs-products">
@@ -3743,10 +3814,9 @@
       <span class="vs-divider-label">VS</span>
       <div class="vs-product vs-product--gorilla">
         <div class="vs-product-img-wrap">
-          <!-- Replace src with /assets/gorilla-mind-can.png once the file is added to assets -->
-          <img src="/assets/gorilla-mind-can.png" alt="Gorilla Mind Energy can" loading="lazy" onerror="this.src='https://placehold.co/300x400/1a1a18/2a2a28'">
+          <img src="/gorilla%20mind.png" alt="Competitor product" loading="lazy">
         </div>
-        <span class="vs-product-name">Gorilla Mind Energy</span>
+        <span class="vs-product-name">Competitor</span>
       </div>
     </div>
 
@@ -3757,7 +3827,7 @@
           <tr>
             <th class="th-feature"></th>
             <th class="th-mindor">Mindor</th>
-            <th class="th-gorilla">Gorilla Mind Energy</th>
+            <th class="th-gorilla">Competitor</th>
           </tr>
         </thead>
         <tbody>
@@ -3818,14 +3888,6 @@
           </tr>
         </tbody>
       </table>
-    </div>
-
-    <!-- Closing copy -->
-    <div class="vs-footer">
-      <p>Gorilla Mind Energy is a serious product &mdash; and on a few ingredients, they dose harder than we do. We&rsquo;d rather be honest about that than pretend otherwise.</p>
-      <p>But focus isn&rsquo;t a list of ingredients. It&rsquo;s a format and a mechanism.</p>
-      <p>A can locks you into 16oz drunk fast. A scoop lets you pace it across an hour, which is when the Steady Base actually does its work. Their formula pushes signals harder. Ours supports the receiving end, so the signals land cleanly.</p>
-      <p>Same daily caffeine. A third of the cost. Built for the long work block, not the morning shot.</p>
     </div>
 
   </div>
@@ -4296,11 +4358,16 @@ function updateBundleUI() {
   });
   var cta = document.getElementById('bundleCta');
   if (cta && !cta.disabled) cta.textContent = BUNDLE_DATA[selectedQty].cta;
+  var s2btn = document.getElementById('step2NextBtn');
+  if (s2btn) s2btn.textContent = selectedQty > 1 ? 'Add Free Gifts →' : 'Continue →';
   applyFlavorAccent();
   if (typeof updateGiftsLock === 'function') updateGiftsLock();
   if (typeof updateOrderSummary === 'function') updateOrderSummary();
   if (typeof updateBumpPricing === 'function') updateBumpPricing();
 }
+
+function nextStepFromFlavor() { wizardGo(selectedQty > 1 ? 3 : 4, false); }
+function prevStepFromHydration() { wizardGo(selectedQty > 1 ? 3 : 2, true); }
 
 // Bundle card click/keyboard
 document.querySelectorAll('.bundle-card').forEach(function(card) {
