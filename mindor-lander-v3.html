@@ -1158,9 +1158,9 @@
   /* ===== OFFER (Section 7) ===== */
   #offer {
     background: var(--surface);
-    padding: 64px 0;
+    padding: 0 0 64px;
   }
-  @media (min-width: 768px) { #offer { padding: 100px 0; } }
+  @media (min-width: 768px) { #offer { padding: 0 0 100px; } }
 
   .offer-product-wrap {
     width: 100%;
@@ -1197,27 +1197,42 @@
     display: block;
     object-fit: cover;
   }
-  .flavor-carousel-dots {
+  .carousel-thumbs-wrap {
+    padding: 8px 12px 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .carousel-thumbs-wrap::-webkit-scrollbar { display: none; }
+  .carousel-thumbs {
     display: flex;
-    justify-content: center;
     gap: 7px;
-    padding: 10px 0 2px;
+    justify-content: center;
   }
-  .carousel-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--text-dim);
-    border: none;
-    padding: 0;
+  .carousel-thumb {
+    flex: 0 0 auto;
+    width: 60px;
+    height: 60px;
+    border-radius: 4px;
+    border: 1.5px solid transparent;
+    overflow: hidden;
     cursor: pointer;
-    transition: background 0.2s ease, transform 0.2s ease;
-    flex-shrink: 0;
+    background: none;
+    padding: 0;
+    transition: border-color 0.15s ease, opacity 0.15s ease;
+    opacity: 0.5;
   }
-  .carousel-dot.active {
-    background: var(--execution-green);
-    transform: scale(1.4);
+  .carousel-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
+  .carousel-thumb.active {
+    border-color: var(--execution-green);
+    opacity: 1;
+  }
+  .carousel-thumb:hover { opacity: 0.8; }
   .offer-intro {
     font-family: 'DM Sans', sans-serif;
     font-size: 15px;
@@ -1235,18 +1250,19 @@
   .pib-rating {
     display: flex;
     align-items: center;
-    gap: 6px;
-    margin-bottom: 10px;
+    gap: 8px;
+    margin-bottom: 12px;
   }
   .pib-stars {
-    font-size: 11px;
+    font-size: 15px;
     color: var(--execution-green);
-    letter-spacing: 2px;
+    letter-spacing: 3px;
   }
   .pib-rating-text {
     font-family: 'DM Sans', sans-serif;
-    font-size: 12px;
-    color: var(--text-muted);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--fog-grey);
   }
   .pib-name {
     font-family: 'Barlow Condensed', sans-serif;
@@ -1270,19 +1286,53 @@
     font-weight: 500;
   }
   .pib-price-row {
-    margin-bottom: 6px;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
   }
-  .pib-price {
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 700;
-    font-size: 15px;
-    color: var(--text-primary);
-  }
-  .pib-meta {
+  .pib-price-from {
     font-family: 'DM Sans', sans-serif;
     font-size: 13px;
     color: var(--text-muted);
+    font-weight: 400;
+  }
+  .pib-price-main {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(28px, 7vw, 36px);
+    color: var(--execution-green);
+    line-height: 1;
+    letter-spacing: 0.01em;
+  }
+  .pib-price-per {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--fog-grey);
+    font-weight: 500;
+  }
+  .pib-price-per strong {
+    color: var(--text-primary);
+    font-weight: 700;
+  }
+  .pib-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
     margin-bottom: 14px;
+  }
+  .pib-meta-item {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+    background: var(--surface2);
+    border: 0.5px solid var(--border);
+    border-radius: 4px;
+    padding: 4px 10px;
+    white-space: nowrap;
   }
   .pib-benefits {
     display: grid;
@@ -2392,7 +2442,7 @@
     pointer-events: none;
   }
   .vs-product--gorilla .vs-product-img-wrap img {
-    filter: grayscale(1) brightness(0.55) contrast(0.85) blur(3px);
+    filter: blur(3px);
   }
   .vs-product-name {
     font-family: 'Barlow Condensed', sans-serif;
@@ -2605,7 +2655,7 @@
   /* ===== SOCIAL PROOF TICKER ===== */
   .proof-ticker-wrap {
     overflow: hidden; padding: 14px 0;
-    background: var(--surface); border-top: 0.5px solid var(--border-subtle); border-bottom: 0.5px solid var(--border-subtle);
+    background: var(--execution-green);
   }
   .proof-ticker-track {
     display: flex; width: max-content;
@@ -2615,10 +2665,10 @@
   .proof-ticker-item {
     display: flex; align-items: center; gap: 10px;
     padding: 0 44px; white-space: nowrap;
-    font-size: 13px; color: var(--fog-grey); font-family: 'DM Sans', sans-serif;
+    font-size: 13px; color: #1A1F14; font-family: 'DM Sans', sans-serif;
   }
-  .proof-ticker-stars { font-size: 10px; color: var(--execution-green); letter-spacing: 2px; flex-shrink: 0; }
-  .proof-ticker-dot { color: var(--text-muted); font-size: 16px; line-height: 1; }
+  .proof-ticker-stars { font-size: 10px; color: rgba(26,31,20,0.65); letter-spacing: 2px; flex-shrink: 0; }
+  .proof-ticker-dot { color: rgba(26,31,20,0.35); font-size: 16px; line-height: 1; }
   @keyframes ticker-scroll {
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); }
@@ -2880,6 +2930,336 @@
   .mb-5 { margin-bottom: 20px; }
   .mb-6 { margin-bottom: 24px; }
   .mb-8 { margin-bottom: 32px; }
+
+  /* ===== REVIEWS SECTION (Section 10.5) ===== */
+  #reviews-section {
+    background: var(--surface);
+    padding: 64px 0 72px;
+    border-top: 0.5px solid var(--border-subtle);
+  }
+  @media (min-width: 768px) { #reviews-section { padding: 100px 0 108px; } }
+
+  .reviews-summary {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 32px 56px;
+    align-items: center;
+    margin-bottom: 36px;
+    padding-bottom: 32px;
+    border-bottom: 0.5px solid var(--border-subtle);
+  }
+  @media (max-width: 600px) { .reviews-summary { grid-template-columns: 1fr; gap: 24px; } }
+
+  .reviews-score-block { display: flex; align-items: flex-end; gap: 12px; }
+  .reviews-big-score {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 88px;
+    color: var(--execution-green);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .reviews-score-meta { display: flex; flex-direction: column; gap: 5px; padding-bottom: 8px; }
+  .reviews-stars-row { font-size: 18px; color: var(--execution-green); line-height: 1; letter-spacing: 1px; }
+  .reviews-out-of {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .reviews-total-count { font-family: 'DM Sans', sans-serif; font-size: 12px; color: var(--fog-grey); font-weight: 500; }
+
+  .reviews-bars { display: flex; flex-direction: column; gap: 9px; max-width: 360px; }
+  .rb-row { display: flex; align-items: center; gap: 10px; }
+  .rb-label { font-family: 'DM Sans', sans-serif; font-size: 10.5px; color: var(--text-muted); width: 22px; text-align: right; flex-shrink: 0; }
+  .rb-track { flex: 1; height: 3px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
+  .rb-fill { height: 100%; background: var(--execution-green); border-radius: 2px; }
+  .rb-pct { font-family: 'DM Sans', sans-serif; font-size: 10.5px; color: var(--text-muted); width: 30px; flex-shrink: 0; }
+
+  /* Meta bar */
+  .reviews-meta-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-bottom: 18px;
+    border-bottom: 0.5px solid var(--border-subtle);
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .reviews-tabs { display: flex; align-items: center; }
+  .reviews-tab {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--text-muted);
+    padding: 8px 0;
+    margin-right: 28px;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .reviews-tab.active { color: var(--text-primary); border-bottom-color: var(--execution-green); }
+  .reviews-tab-count { font-size: 13px; font-weight: 400; color: var(--text-muted); }
+  .reviews-tab.active .reviews-tab-count { color: var(--fog-grey); }
+  .reviews-actions { display: flex; gap: 10px; flex-shrink: 0; }
+  .reviews-action-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    padding: 10px 18px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+  }
+  .reviews-action-btn--outline { background: transparent; border: 1px solid var(--border-accent); color: var(--execution-green); }
+  .reviews-action-btn--outline:hover { background: rgba(226,255,71,0.06); }
+  .reviews-action-btn--filled { background: var(--execution-green); border: 1px solid var(--execution-green); color: var(--deep-work-black); }
+  .reviews-action-btn--filled:hover { background: #d4f040; }
+
+  /* Controls */
+  .reviews-controls { display: flex; gap: 10px; align-items: center; margin-bottom: 4px; flex-wrap: wrap; }
+  .reviews-search-wrap { position: relative; flex: 1; min-width: 180px; }
+  .reviews-search-wrap svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); pointer-events: none; }
+  .reviews-search {
+    width: 100%;
+    background: var(--surface2);
+    border: 0.5px solid var(--border-subtle);
+    border-radius: 100px;
+    padding: 9px 16px 9px 36px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--text-primary);
+    outline: none;
+    transition: border-color 0.15s ease;
+  }
+  .reviews-search::placeholder { color: var(--text-muted); }
+  .reviews-search:focus { border-color: rgba(226,255,71,0.3); }
+  .reviews-filter {
+    background: var(--surface2);
+    border: 0.5px solid var(--border-subtle);
+    border-radius: 100px;
+    padding: 9px 30px 9px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--fog-grey);
+    outline: none;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%236A7A5A' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+  }
+
+  /* Review list (flat, no cards) */
+  .review-list { display: flex; flex-direction: column; }
+  .review-item { padding: 30px 0; border-bottom: 0.5px solid var(--border-subtle); }
+  .review-item:last-child { border-bottom: none; }
+  .review-item-stars { font-size: 15px; color: var(--execution-green); letter-spacing: 2px; margin-bottom: 10px; line-height: 1; }
+  .review-item-title {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--text-primary);
+    margin: 0 0 8px;
+    line-height: 1.4;
+  }
+  .review-item-author { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+  .review-item-name { font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; color: var(--execution-green); }
+  .review-item-verified {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--fog-grey);
+  }
+  .review-item-verified-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 15px;
+    height: 15px;
+    background: var(--execution-green);
+    color: var(--deep-work-black);
+    border-radius: 50%;
+    font-size: 8px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .review-item-body {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--fog-grey);
+    line-height: 1.75;
+    margin: 0;
+    max-width: 700px;
+  }
+
+  /* Write a review popup */
+  .rp-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 9000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.22s ease;
+  }
+  .rp-overlay.open { opacity: 1; pointer-events: all; }
+  .rp-panel {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 14px;
+    width: 100%;
+    max-width: 440px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 32px;
+    position: relative;
+    transform: translateY(14px) scale(0.98);
+    transition: transform 0.22s ease;
+  }
+  .rp-overlay.open .rp-panel { transform: translateY(0) scale(1); }
+  .rp-close {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 22px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 4px 6px;
+    transition: color 0.15s ease;
+  }
+  .rp-close:hover { color: var(--text-primary); }
+  .rp-brand {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 28px;
+    color: var(--execution-green);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 18px;
+  }
+  .rp-product-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 13px 15px;
+    background: var(--surface2);
+    border: 0.5px solid var(--border-subtle);
+    border-radius: 8px;
+    margin-bottom: 26px;
+  }
+  .rp-product-img { width: 52px; height: 52px; object-fit: contain; border-radius: 6px; flex-shrink: 0; }
+  .rp-product-name { font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 14px; color: var(--text-primary); line-height: 1.4; }
+  .rp-product-sub { font-family: 'DM Sans', sans-serif; font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+  .rp-star-prompt {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-align: center;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .rp-star-picker { display: flex; gap: 6px; justify-content: center; }
+  .rp-star-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 2px;
+    color: rgba(200,201,184,0.2);
+    font-size: 40px;
+    line-height: 1;
+    transition: color 0.1s ease, transform 0.12s ease;
+  }
+  .rp-star-btn:hover, .rp-star-btn.lit { color: var(--execution-green); transform: scale(1.12); }
+  .rp-chosen-stars {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    margin-bottom: 22px;
+    font-size: 30px;
+    color: var(--execution-green);
+    letter-spacing: 3px;
+    line-height: 1;
+  }
+  .rp-field { margin-bottom: 14px; }
+  .rp-label { display: block; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; color: var(--fog-grey); margin-bottom: 6px; letter-spacing: 0.03em; }
+  .rp-label .req { color: var(--execution-green); }
+  .rp-input, .rp-textarea {
+    width: 100%;
+    background: var(--surface2);
+    border: 0.5px solid var(--border-subtle);
+    border-radius: 6px;
+    padding: 10px 13px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text-primary);
+    outline: none;
+    transition: border-color 0.15s ease;
+  }
+  .rp-input::placeholder, .rp-textarea::placeholder { color: var(--text-muted); }
+  .rp-input:focus, .rp-textarea:focus { border-color: rgba(226,255,71,0.35); }
+  .rp-textarea { min-height: 86px; resize: vertical; }
+  .rp-media-hint { font-family: 'DM Sans', sans-serif; font-size: 11px; color: var(--text-muted); margin-bottom: 10px; }
+  .rp-upload-btn {
+    width: 56px;
+    height: 56px;
+    border: 1px dashed rgba(200,201,184,0.2);
+    border-radius: 6px;
+    background: var(--surface2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 24px;
+    font-weight: 300;
+    line-height: 1;
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+  .rp-upload-btn:hover { border-color: rgba(226,255,71,0.35); color: var(--execution-green); }
+  .rp-submit {
+    width: 100%;
+    margin-top: 18px;
+    padding: 14px;
+    background: var(--execution-green);
+    color: var(--deep-work-black);
+    border: none;
+    border-radius: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+  .rp-submit:hover { background: #d4f040; }
+
   </style>
 </head>
 <body>
@@ -3433,7 +3813,9 @@
     <div class="flavor-carousel" id="flavorCarousel">
       <div class="flavor-carousel-track" id="flavorCarouselTrack"></div>
     </div>
-    <div class="flavor-carousel-dots" id="flavorCarouselDots"></div>
+    <div class="carousel-thumbs-wrap">
+      <div class="carousel-thumbs" id="flavorCarouselThumbs"></div>
+    </div>
   </div>
 
   <div class="container">
@@ -3446,9 +3828,15 @@
       <h2 class="pib-name">Productivity Drink &mdash; Citrus</h2>
       <p class="pib-tagline"><span class="pib-accent">Focus</span> that holds.</p>
       <div class="pib-price-row">
-        <span class="pib-price">From $36 / $0.90 per scoop</span>
+        <span class="pib-price-from">From</span>
+        <span class="pib-price-main">$36.99</span>
+        <span class="pib-price-per"><strong>$0.90</strong> per scoop</span>
       </div>
-      <p class="pib-meta">40 servings &middot; One tub &middot; One scoop a day</p>
+      <div class="pib-meta">
+        <span class="pib-meta-item">40 servings</span>
+        <span class="pib-meta-item">One tub</span>
+        <span class="pib-meta-item">One scoop a day</span>
+      </div>
       <div class="pib-benefits">
         <div class="pib-benefit">
           <div class="pib-benefit-icon">
@@ -3894,6 +4282,249 @@
 </section>
 
 
+<!-- ===== SECTION 10.5 — REVIEWS ===== -->
+<section id="reviews-section">
+  <div class="container">
+    <span class="section-label">Verified Reviews</span>
+
+    <div class="reviews-summary">
+      <div class="reviews-score-block">
+        <span class="reviews-big-score">4.9</span>
+        <div class="reviews-score-meta">
+          <div class="reviews-stars-row">★★★★★</div>
+          <span class="reviews-out-of">out of 5</span>
+          <span class="reviews-total-count">247 verified reviews</span>
+        </div>
+      </div>
+
+      <div class="reviews-bars">
+        <div class="rb-row">
+          <span class="rb-label">5★</span>
+          <div class="rb-track"><div class="rb-fill" style="width:92%"></div></div>
+          <span class="rb-pct">92%</span>
+        </div>
+        <div class="rb-row">
+          <span class="rb-label">4★</span>
+          <div class="rb-track"><div class="rb-fill" style="width:8%;opacity:0.5"></div></div>
+          <span class="rb-pct">8%</span>
+        </div>
+        <div class="rb-row">
+          <span class="rb-label">3★</span>
+          <div class="rb-track"><div class="rb-fill" style="width:0%"></div></div>
+          <span class="rb-pct">0%</span>
+        </div>
+        <div class="rb-row">
+          <span class="rb-label">2★</span>
+          <div class="rb-track"><div class="rb-fill" style="width:0%"></div></div>
+          <span class="rb-pct">0%</span>
+        </div>
+        <div class="rb-row">
+          <span class="rb-label">1★</span>
+          <div class="rb-track"><div class="rb-fill" style="width:0%"></div></div>
+          <span class="rb-pct">0%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Meta bar -->
+    <div class="reviews-meta-bar">
+      <div class="reviews-tabs">
+        <button class="reviews-tab active" id="reviewsTabReviews">Reviews <span class="reviews-tab-count">247</span></button>
+        <button class="reviews-tab" id="reviewsTabQuestions">Questions <span class="reviews-tab-count">0</span></button>
+      </div>
+      <div class="reviews-actions">
+        <button class="reviews-action-btn reviews-action-btn--outline" id="reviewsAskBtn">Ask a question</button>
+        <button class="reviews-action-btn reviews-action-btn--filled" id="reviewsWriteBtn">Write a review</button>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="reviews-controls">
+      <div class="reviews-search-wrap">
+        <svg width="13" height="13" fill="none" viewBox="0 0 13 13"><circle cx="5.5" cy="5.5" r="4.5" stroke="#6A7A5A" stroke-width="1.3"/><path d="M9 9l2.5 2.5" stroke="#6A7A5A" stroke-width="1.3" stroke-linecap="round"/></svg>
+        <input type="text" class="reviews-search" placeholder="Search reviews" aria-label="Search reviews">
+      </div>
+      <select class="reviews-filter" aria-label="Sort reviews">
+        <option>Most relevant</option>
+        <option>Most recent</option>
+        <option>Highest rated</option>
+        <option>Lowest rated</option>
+      </select>
+      <select class="reviews-filter" aria-label="Filter by rating">
+        <option>All ratings</option>
+        <option>5 stars</option>
+        <option>4 stars</option>
+        <option>3 stars</option>
+        <option>2 stars</option>
+        <option>1 star</option>
+      </select>
+    </div>
+
+    <!-- Review list -->
+    <div class="review-list">
+
+      <div class="review-item">
+        <div class="review-item-stars">★★★★★</div>
+        <p class="review-item-title">Finally stopped cycling through alternatives</p>
+        <div class="review-item-author">
+          <span class="review-item-name">James R.</span>
+          <span class="review-item-verified"><span class="review-item-verified-icon">✓</span> Verified buyer</span>
+        </div>
+        <p class="review-item-body">I've run through the whole list. Pre-workout before work, cold brew at noon, caffeine pills for the afternoon. Always chasing the next dose. Mindor took that cycle off the table. Two hours into a session I'm still there — not wired, just working.</p>
+      </div>
+
+      <div class="review-item">
+        <div class="review-item-stars">★★★★★</div>
+        <p class="review-item-title">The floor I didn't know I needed</p>
+        <div class="review-item-author">
+          <span class="review-item-name">Sarah K.</span>
+          <span class="review-item-verified"><span class="review-item-verified-icon">✓</span> Verified buyer</span>
+        </div>
+        <p class="review-item-body">I run a small agency so the cost of an unfocused morning is real. Mindor doesn't make me feel buzzed. It makes me feel like I showed up. Sit down, open the doc, work happens. That's the whole pitch and it delivers.</p>
+      </div>
+
+      <div class="review-item">
+        <div class="review-item-stars">★★★★★</div>
+        <p class="review-item-title">Quiet focus. Didn't expect that.</p>
+        <div class="review-item-author">
+          <span class="review-item-name">Priya M.</span>
+          <span class="review-item-verified"><span class="review-item-verified-icon">✓</span> Verified buyer</span>
+        </div>
+        <p class="review-item-body">The focus isn't loud. That took some adjusting. With energy drinks you feel the on-switch. Mindor puts you in the right state and holds you there. I realized it was working when I finished a three-hour writing session and hadn't noticed the time.</p>
+      </div>
+
+      <div class="review-item">
+        <div class="review-item-stars">★★★★★</div>
+        <p class="review-item-title">Skeptic, then subscriber</p>
+        <div class="review-item-author">
+          <span class="review-item-name">Marcus T.</span>
+          <span class="review-item-verified"><span class="review-item-verified-icon">✓</span> Verified buyer</span>
+        </div>
+        <p class="review-item-body">Three months convinced this category was all marketing. Tried it because a friend wouldn't let it go. The first week I noticed I was finishing deep work blocks without having drifted. Two months later, it's the one thing I keep reordering.</p>
+      </div>
+
+      <div class="review-item">
+        <div class="review-item-stars">★★★★★</div>
+        <p class="review-item-title">Works with coffee, not instead of it</p>
+        <div class="review-item-author">
+          <span class="review-item-name">Nadia C.</span>
+          <span class="review-item-verified"><span class="review-item-verified-icon">✓</span> Verified buyer</span>
+        </div>
+        <p class="review-item-body">I wasn't ready to drop my morning espresso. Turns out I didn't have to. I mix Mindor mid-morning once the coffee's worn off and it carries me through without the spike of a second cup.</p>
+      </div>
+
+      <div class="review-item">
+        <div class="review-item-stars">★★★★★</div>
+        <p class="review-item-title">Sour Candy is legitimately good</p>
+        <div class="review-item-author">
+          <span class="review-item-name">Tom B.</span>
+          <span class="review-item-verified"><span class="review-item-verified-icon">✓</span> Verified buyer</span>
+        </div>
+        <p class="review-item-body">Tastes like it should be sold at a gas station. I mean that as a compliment. Mixes clean, no chalky finish, and I actually look forward to making it. Small thing, but it matters when you're drinking it every morning.</p>
+      </div>
+
+      <div class="review-item">
+        <div class="review-item-stars">★★★★★</div>
+        <p class="review-item-title">Got through finals on this</p>
+        <div class="review-item-author">
+          <span class="review-item-name">Alex D.</span>
+          <span class="review-item-verified"><span class="review-item-verified-icon">✓</span> Verified buyer</span>
+        </div>
+        <p class="review-item-body">Five-hour library sessions, papers due at midnight, back-to-back exams. Mindor kept me on the material. Not because it made me smarter — because it stopped me drifting to my phone every eight minutes.</p>
+      </div>
+
+      <div class="review-item">
+        <div class="review-item-stars">★★★★★</div>
+        <p class="review-item-title">Replaced three supplements</p>
+        <div class="review-item-author">
+          <span class="review-item-name">Chris W.</span>
+          <span class="review-item-verified"><span class="review-item-verified-icon">✓</span> Verified buyer</span>
+        </div>
+        <p class="review-item-body">Was taking L-theanine, Alpha-GPC, and a B-complex separately. Mindor covers all of it plus compounds I wasn't getting. Cleaner routine, lower total cost. And I can actually taste it instead of choking down capsules.</p>
+      </div>
+
+      <div class="review-item">
+        <div class="review-item-stars">★★★★★</div>
+        <p class="review-item-title">Fewer scattered mornings</p>
+        <div class="review-item-author">
+          <span class="review-item-name">Jordan L.</span>
+          <span class="review-item-verified"><span class="review-item-verified-icon">✓</span> Verified buyer</span>
+        </div>
+        <p class="review-item-body">Work expands or contracts based on how well your brain cooperates. Some days you're locked in, some days you're scattered. Mindor makes the locked-in days more consistent. I've had fewer scattered mornings since I started it.</p>
+      </div>
+
+      <div class="review-item">
+        <div class="review-item-stars">★★★★★</div>
+        <p class="review-item-title">You don't feel the supplement. You feel the session.</p>
+        <div class="review-item-author">
+          <span class="review-item-name">Megan F.</span>
+          <span class="review-item-verified"><span class="review-item-verified-icon">✓</span> Verified buyer</span>
+        </div>
+        <p class="review-item-body">I came in expecting the kind of focus you feel. Sharp edges, fast thoughts, that jittery hum. Mindor is different. The work just happens. You don't feel the supplement. You feel the session going well.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== WRITE A REVIEW POPUP ===== -->
+<div class="rp-overlay" id="rpOverlay" role="dialog" aria-modal="true" aria-labelledby="rpTitle">
+  <div class="rp-panel">
+    <button class="rp-close" id="rpClose" aria-label="Close">&times;</button>
+
+    <!-- Step 1: Star selection -->
+    <div id="rpStep1">
+      <span class="rp-brand" id="rpTitle">Mindor</span>
+      <div class="rp-product-row">
+        <img class="rp-product-img" src="/assets/presales-hero.png" alt="Mindor Performance Stack">
+        <div>
+          <div class="rp-product-name">Performance Stack</div>
+          <div class="rp-product-sub">Powdered focus drink</div>
+        </div>
+      </div>
+      <p class="rp-star-prompt">Select your rating</p>
+      <div class="rp-star-picker" id="rpStarPicker">
+        <button class="rp-star-btn" data-star="1" aria-label="1 star">★</button>
+        <button class="rp-star-btn" data-star="2" aria-label="2 stars">★</button>
+        <button class="rp-star-btn" data-star="3" aria-label="3 stars">★</button>
+        <button class="rp-star-btn" data-star="4" aria-label="4 stars">★</button>
+        <button class="rp-star-btn" data-star="5" aria-label="5 stars">★</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Review form -->
+    <div id="rpStep2" style="display:none">
+      <div class="rp-chosen-stars" id="rpChosenStars">★★★★★</div>
+      <form id="rpForm" novalidate>
+        <div class="rp-field">
+          <label class="rp-label" for="rpEmail">Your email <span class="req">*</span></label>
+          <input type="email" class="rp-input" id="rpEmail" placeholder="user@example.com" autocomplete="email" required>
+        </div>
+        <div class="rp-field">
+          <label class="rp-label" for="rpName">Display name <span class="req">*</span></label>
+          <input type="text" class="rp-input" id="rpName" placeholder="Jane D" required>
+        </div>
+        <div class="rp-field">
+          <label class="rp-label" for="rpReview">Review</label>
+          <textarea class="rp-textarea" id="rpReview" placeholder="What would you tell your friends"></textarea>
+        </div>
+        <div class="rp-field">
+          <label class="rp-label" for="rpHeadline">Review headline <span class="req">*</span></label>
+          <input type="text" class="rp-input" id="rpHeadline" placeholder="Title your experience" required>
+        </div>
+        <div class="rp-field">
+          <span class="rp-label">Media</span>
+          <p class="rp-media-hint">Reviews with media are found to be more helpful</p>
+          <div class="rp-upload-btn" role="button" tabindex="0" aria-label="Upload photo or video">+</div>
+        </div>
+        <button type="submit" class="rp-submit">Done</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+
 <!-- ===== SECTION 11 — FINAL CTA ===== -->
 <section id="final-cta">
   <div class="container">
@@ -4017,32 +4648,15 @@ function hexToRgba(hex, a) {
 
 // ===== FLAVOR IMAGE CAROUSEL =====
 var FLAVOR_IMAGES = {
-  'sour-candy': [
-    '/assets/product-photos/flavor-candy.png',
-    '/assets/product-photos/tub-candy-2.webp',
-    '/assets/product-photos/tub-candy-3.webp',
-    '/assets/product-photos/tub-candy-4.webp',
-    '/assets/product-photos/powder-candy.webp'
-  ],
-  'sour-grape': [
-    '/assets/product-photos/flavor-grape.png',
-    '/assets/product-photos/tub-grape-2.webp',
-    '/assets/product-photos/tub-grape-3.webp',
-    '/assets/product-photos/tub-grape-4.webp',
-    '/assets/product-photos/powder-grape.webp'
-  ],
-  'sour-gummy-worms': [
-    '/assets/product-photos/flavor-gummy.png',
-    '/assets/product-photos/tub-gummy-2.webp',
-    '/assets/product-photos/tub-gummy-3.webp',
-    '/assets/product-photos/powder-gummy.webp'
-  ]
+  'sour-candy': ['1.png', '2.png', '3.png', '4.png', '5.png'],
+  'sour-grape': ['1.png', '2.png', '3.png', '4.png', '5.png'],
+  'sour-gummy-worms': ['1.png', '2.png', '3.png', '4.png', '5.png']
 };
 var carouselIndex = 0;
 
 function renderCarousel(flavor) {
-  var track = document.getElementById('flavorCarouselTrack');
-  var dots  = document.getElementById('flavorCarouselDots');
+  var track  = document.getElementById('flavorCarouselTrack');
+  var thumbs = document.getElementById('flavorCarouselThumbs');
   if (!track) return;
   var imgs = FLAVOR_IMAGES[flavor] || FLAVOR_IMAGES['sour-candy'];
   carouselIndex = 0;
@@ -4050,12 +4664,11 @@ function renderCarousel(flavor) {
   track.innerHTML = imgs.map(function(src, i) {
     return '<div class="carousel-slide"><img src="' + src + '" alt="' + (FLAVOR_NAMES[flavor] || 'Mindor') + '" loading="' + (i === 0 ? 'eager' : 'lazy') + '" decoding="async"></div>';
   }).join('');
-  if (dots) {
-    dots.innerHTML = imgs.map(function(_, i) {
-      return '<button class="carousel-dot' + (i === 0 ? ' active' : '') + '" onclick="goCarousel(' + i + ')" aria-label="Image ' + (i+1) + '"></button>';
+  if (thumbs) {
+    thumbs.innerHTML = imgs.map(function(src, i) {
+      return '<button class="carousel-thumb' + (i === 0 ? ' active' : '') + '" onclick="goCarousel(' + i + ')" aria-label="Image ' + (i+1) + '"><img src="' + src + '" alt="" loading="lazy" decoding="async"></button>';
     }).join('');
   }
-  // re-enable transition after reset
   requestAnimationFrame(function() {
     track.style.transition = '';
     track.style.transform = 'translateX(0)';
@@ -4067,11 +4680,20 @@ function goCarousel(idx) {
   if (!track) return;
   var count = track.querySelectorAll('.carousel-slide').length;
   if (!count) return;
-  carouselIndex = ((idx % count) + count) % count;
-  track.style.transform = 'translateX(-' + (carouselIndex * 100) + '%)';
-  var dots = document.getElementById('flavorCarouselDots');
-  if (dots) dots.querySelectorAll('.carousel-dot').forEach(function(d, i) {
-    d.classList.toggle('active', i === carouselIndex);
+  var newIdx = ((idx % count) + count) % count;
+  var isWrap = (carouselIndex === 0 && idx < 0) || (carouselIndex === count - 1 && idx >= count);
+  if (isWrap) {
+    track.style.transition = 'none';
+    carouselIndex = newIdx;
+    track.style.transform = 'translateX(-' + (carouselIndex * 100) + '%)';
+    requestAnimationFrame(function() { track.style.transition = ''; });
+  } else {
+    carouselIndex = newIdx;
+    track.style.transform = 'translateX(-' + (carouselIndex * 100) + '%)';
+  }
+  var thumbs = document.getElementById('flavorCarouselThumbs');
+  if (thumbs) thumbs.querySelectorAll('.carousel-thumb').forEach(function(t, i) {
+    t.classList.toggle('active', i === carouselIndex);
   });
 }
 
@@ -5067,6 +5689,80 @@ window.addEventListener('load', function() {
   if (hint) {
     el.addEventListener('scroll', function() { hint.style.opacity = '0'; hint.style.transition = 'opacity 0.4s'; }, { once: true });
   }
+})();
+</script>
+
+<script>
+(function() {
+  var overlay = document.getElementById('rpOverlay');
+  var closeBtn = document.getElementById('rpClose');
+  var writeBtn = document.getElementById('reviewsWriteBtn');
+  var step1 = document.getElementById('rpStep1');
+  var step2 = document.getElementById('rpStep2');
+  var chosenStarsEl = document.getElementById('rpChosenStars');
+  var starBtns = document.querySelectorAll('.rp-star-btn');
+  var chosen = 0;
+
+  function openPopup() {
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    step1.style.display = 'block';
+    step2.style.display = 'none';
+    chosen = 0;
+    starBtns.forEach(function(b) { b.classList.remove('lit'); });
+  }
+  function closePopup() {
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  if (writeBtn) writeBtn.addEventListener('click', openPopup);
+  if (closeBtn) closeBtn.addEventListener('click', closePopup);
+  overlay.addEventListener('click', function(e) { if (e.target === overlay) closePopup(); });
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closePopup(); });
+
+  starBtns.forEach(function(btn) {
+    btn.addEventListener('mouseenter', function() {
+      var val = parseInt(btn.dataset.star);
+      starBtns.forEach(function(b) { b.classList.toggle('lit', parseInt(b.dataset.star) <= val); });
+    });
+    btn.addEventListener('click', function() {
+      chosen = parseInt(btn.dataset.star);
+      chosenStarsEl.textContent = '★'.repeat(chosen) + '☆'.repeat(5 - chosen);
+      step1.style.display = 'none';
+      step2.style.display = 'block';
+    });
+  });
+  var picker = document.getElementById('rpStarPicker');
+  if (picker) {
+    picker.addEventListener('mouseleave', function() {
+      starBtns.forEach(function(b) { b.classList.toggle('lit', parseInt(b.dataset.star) <= chosen); });
+    });
+  }
+
+  var form = document.getElementById('rpForm');
+  if (form) {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      closePopup();
+    });
+  }
+
+  // Tab switching
+  var tabReviews = document.getElementById('reviewsTabReviews');
+  var tabQuestions = document.getElementById('reviewsTabQuestions');
+  if (tabReviews && tabQuestions) {
+    tabReviews.addEventListener('click', function() {
+      tabReviews.classList.add('active'); tabQuestions.classList.remove('active');
+    });
+    tabQuestions.addEventListener('click', function() {
+      tabQuestions.classList.add('active'); tabReviews.classList.remove('active');
+    });
+  }
+
+  // Ask a question — reuse popup for now
+  var askBtn = document.getElementById('reviewsAskBtn');
+  if (askBtn) askBtn.addEventListener('click', openPopup);
 })();
 </script>
 
