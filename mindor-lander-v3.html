@@ -1226,6 +1226,107 @@
     line-height: 1.65;
   }
 
+  /* ===== PRODUCT INFO BLOCK ===== */
+  .product-info-block {
+    margin-bottom: 28px;
+    padding-bottom: 24px;
+    border-bottom: 0.5px solid var(--border-subtle);
+  }
+  .pib-rating {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 10px;
+  }
+  .pib-stars {
+    font-size: 12px;
+    color: var(--execution-green);
+    letter-spacing: 2px;
+  }
+  .pib-rating-text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .pib-category {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+  .pib-tagline {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: clamp(26px, 6vw, 34px);
+    color: var(--text-primary);
+    line-height: 1.05;
+    margin-bottom: 10px;
+    letter-spacing: 0.01em;
+  }
+  .pib-price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+  .pib-price {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 22px;
+    color: var(--execution-green);
+    line-height: 1;
+  }
+  .pib-per-scoop {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--fog-grey);
+  }
+  .pib-meta {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    letter-spacing: 0.02em;
+  }
+  .pib-benefits {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+  .pib-benefit {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--fog-grey);
+    background: var(--surface2);
+    border: 0.5px solid var(--border-subtle);
+    border-radius: 100px;
+    padding: 4px 10px;
+    white-space: nowrap;
+  }
+  .pib-desc {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--fog-grey);
+    line-height: 1.65;
+    margin-bottom: 18px;
+    max-width: 560px;
+  }
+  .pib-step-header {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 10px;
+  }
+
   /* Bundle cards */
   .bundle-step {
     font-family: 'DM Sans', sans-serif;
@@ -1237,16 +1338,15 @@
     margin-bottom: 12px;
   }
   .bundle-cards {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 8px;
     margin-bottom: 16px;
   }
-  @media (min-width: 640px) {
-    .bundle-cards { flex-direction: row; }
+  .bundle-card[data-qty="3"] {
+    grid-column: 1 / -1;
   }
   .bundle-card {
-    flex: 1;
     background: var(--surface2);
     border: 1px solid var(--border-subtle);
     border-radius: 4px;
@@ -1269,23 +1369,43 @@
     background: var(--execution-green);
     color: #1A1F14;
     font-family: 'DM Sans', sans-serif;
-    font-weight: 600;
-    font-size: 8px;
-    letter-spacing: 0.12em;
+    font-weight: 700;
+    font-size: 9px;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
     padding: 4px 10px;
     border-radius: 2px;
     white-space: nowrap;
+    text-align: center;
+    line-height: 1.4;
+  }
+  .bundle-flavor-icons {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    margin-bottom: 6px;
+    margin-top: 4px;
+  }
+  .bundle-flavor-icon {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+    flex-shrink: 0;
+    border-radius: 50%;
+  }
+  .bundle-card[data-qty="3"] .bundle-flavor-icon {
+    width: 36px;
+    height: 36px;
   }
   .bundle-tubs {
     display: flex;
     justify-content: center;
     gap: 5px;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
   .tub-dot {
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
     background: var(--text-dim);
     transition: background 0.2s ease;
@@ -1294,21 +1414,23 @@
   .bundle-qty-text {
     font-family: 'Barlow Condensed', sans-serif;
     font-weight: 800;
-    font-size: 16px;
+    font-size: 14px;
     color: var(--fog-grey);
     text-transform: uppercase;
     letter-spacing: 0.06em;
     margin-bottom: 4px;
   }
+  .bundle-card[data-qty="3"] .bundle-qty-text { font-size: 16px; }
   .bundle-card.active .bundle-qty-text { color: var(--text-primary); }
   .bundle-price-big {
     font-family: 'Barlow Condensed', sans-serif;
     font-weight: 900;
-    font-size: clamp(22px, 5vw, 28px);
+    font-size: clamp(20px, 4.5vw, 26px);
     color: var(--text-primary);
     line-height: 1;
     margin-bottom: 2px;
   }
+  .bundle-card[data-qty="3"] .bundle-price-big { font-size: clamp(22px, 5vw, 28px); }
   .bundle-per-tub {
     font-family: 'DM Sans', sans-serif;
     font-size: 10px;
@@ -2072,6 +2194,23 @@
     flex-shrink: 0;
     text-align: center;
   }
+  .htu-expect-circle-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 140px;
+    height: 140px;
+  }
+  .htu-expect-circle-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .htu-expect-stat-inner {
+    position: relative;
+    text-align: center;
+  }
   .htu-expect-number {
     font-family: 'Barlow Condensed', sans-serif;
     font-weight: 900;
@@ -2176,6 +2315,180 @@
     color: var(--execution-green);
     font-weight: 600;
   }
+
+  /* ===== VS SECTION (Section 10) ===== */
+  #vs-section {
+    background: var(--bg);
+    padding: 64px 0 72px;
+    border-top: 0.5px solid var(--border-subtle);
+  }
+  @media (min-width: 768px) { #vs-section { padding: 100px 0 108px; } }
+
+  .vs-intro {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--fog-grey);
+    line-height: 1.75;
+    margin-bottom: 40px;
+  }
+
+  .vs-products {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 32px;
+    margin-bottom: 36px;
+  }
+  .vs-product {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    max-width: 180px;
+  }
+  .vs-product-img-wrap {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    position: relative;
+  }
+  .vs-product-img-wrap img {
+    width: 80%;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    position: relative;
+    z-index: 1;
+  }
+  .vs-product--mindor .vs-product-img-wrap::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 60%;
+    background: radial-gradient(ellipse at 50% 100%, rgba(226,255,71,0.13) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .vs-product--gorilla .vs-product-img-wrap img {
+    filter: grayscale(1) brightness(0.6) contrast(0.9);
+  }
+  .vs-product-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-align: center;
+  }
+  .vs-product--mindor .vs-product-name { color: var(--execution-green); }
+  .vs-product--gorilla .vs-product-name { color: var(--text-muted); }
+
+  .vs-divider-label {
+    flex-shrink: 0;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 22px;
+    color: rgba(200,201,184,0.2);
+    letter-spacing: 0.06em;
+    align-self: center;
+    padding-bottom: 24px;
+  }
+
+  .vs-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 32px;
+    border: 0.5px solid var(--border-subtle);
+    border-radius: 6px;
+  }
+  .vs-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 480px;
+  }
+  .vs-table thead tr {
+    border-bottom: 0.5px solid var(--border);
+  }
+  .vs-table th {
+    padding: 14px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-align: left;
+    background: var(--surface2);
+  }
+  .vs-table th.th-feature { color: var(--text-muted); width: 38%; }
+  .vs-table th.th-mindor {
+    color: var(--execution-green);
+    background: rgba(226,255,71,0.04);
+    border-left: 0.5px solid rgba(226,255,71,0.12);
+    border-right: 0.5px solid rgba(226,255,71,0.12);
+  }
+  .vs-table th.th-gorilla { color: #5a5a5a; }
+
+  .vs-table tbody tr {
+    border-bottom: 0.5px solid var(--border-subtle);
+    transition: background 0.15s ease;
+  }
+  .vs-table tbody tr:last-child { border-bottom: none; }
+  .vs-table tbody tr:hover { background: rgba(255,255,255,0.015); }
+
+  .vs-table td {
+    padding: 13px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+    vertical-align: top;
+  }
+  .vs-table td.td-feature {
+    color: var(--fog-grey);
+    font-size: 12px;
+    letter-spacing: 0.01em;
+  }
+  .vs-table td.td-feature em {
+    display: block;
+    font-style: normal;
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-top: 2px;
+    letter-spacing: 0.02em;
+  }
+  .vs-table td.td-mindor {
+    color: var(--text-primary);
+    font-weight: 500;
+    background: rgba(226,255,71,0.025);
+    border-left: 0.5px solid rgba(226,255,71,0.08);
+    border-right: 0.5px solid rgba(226,255,71,0.08);
+  }
+  .vs-table td.td-mindor .td-win {
+    color: var(--execution-green);
+    font-weight: 600;
+  }
+  .vs-table td.td-gorilla { color: #555; }
+  .vs-table td.td-gorilla .td-win { color: #888; font-weight: 600; }
+
+  .vs-footer {
+    background: var(--surface);
+    border: 0.5px solid var(--border-subtle);
+    border-radius: 6px;
+    padding: 28px 24px;
+  }
+  .vs-footer p {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--fog-grey);
+    line-height: 1.75;
+    margin: 0 0 14px;
+  }
+  .vs-footer p:last-child { margin-bottom: 0; color: var(--text-primary); font-weight: 500; }
+  .vs-footer p strong { color: var(--text-primary); font-weight: 500; }
 
   /* ===== FINAL CTA (Section 9) ===== */
   #final-cta {
@@ -3048,8 +3361,28 @@
   </div>
 
   <div class="container">
-    <span class="section-label">Start Your Stack</span>
-    <p class="offer-intro">One scoop, once a day. Built for the work you keep putting off to tomorrow.</p>
+    <!-- Product info block -->
+    <div class="product-info-block">
+      <div class="pib-rating">
+        <span class="pib-stars">★★★★★</span>
+        <span class="pib-rating-text">4.9 from 500+ reviews</span>
+      </div>
+      <p class="pib-category">Productivity Drink &mdash; Citrus</p>
+      <h2 class="pib-tagline">Focus that holds.</h2>
+      <div class="pib-price-row">
+        <span class="pib-price">From $36</span>
+        <span class="pib-per-scoop">&nbsp;/ $0.90 per scoop</span>
+      </div>
+      <p class="pib-meta">40 servings &middot; One tub &middot; One scoop a day</p>
+      <div class="pib-benefits">
+        <span class="pib-benefit">&#8857; Focus*</span>
+        <span class="pib-benefit">&#8859; Mental Performance*</span>
+        <span class="pib-benefit">&#9889; Clean Energy*</span>
+        <span class="pib-benefit">&#9676; Steady Attention*</span>
+      </div>
+      <p class="pib-desc">A nootropic drink built around the Steady Base; 600mg of Inositol layered with Alpha-GPC, L-Theanine, Asian Ginseng, green-tea Caffeine and B-Vitamins.</p>
+      <p class="pib-step-header">1. Choose Your Monthly Supply</p>
+    </div>
 
     <!-- Wizard progress -->
     <div class="wizard-progress" id="wizardProgress">
@@ -3065,26 +3398,38 @@
       <h3 class="wizard-step-title">Pick Your Bundle</h3>
       <div class="bundle-cards" id="bundleCards" role="radiogroup" aria-label="Choose bundle size">
         <div class="bundle-card" data-qty="1" role="radio" aria-checked="false" tabindex="0">
+          <div class="bundle-flavor-icons">
+            <img class="bundle-flavor-icon" src="/brand_assets/hf_20260518_161345_c6047e53-06a9-4d0e-98dd-04683be4d46b.png" alt="Sour Candy" loading="lazy">
+          </div>
           <div class="bundle-tubs"><span class="tub-dot"></span></div>
           <p class="bundle-qty-text">1 Tub</p>
           <p class="bundle-price-big" data-disc="$31.44">$36.99</p>
-          <p class="bundle-per-tub" data-disc="$31.44/tub">$36.99/tub</p>
+          <p class="bundle-per-tub" data-disc="$0.79/scoop">$0.90/scoop</p>
           <span class="bundle-save">&nbsp;</span>
         </div>
         <div class="bundle-card active" data-qty="2" role="radio" aria-checked="true" tabindex="0">
-          <div class="bundle-badge">Most Popular &middot; Save $9</div>
+          <div class="bundle-badge">Most Popular<br>Save $9</div>
+          <div class="bundle-flavor-icons">
+            <img class="bundle-flavor-icon" src="/brand_assets/hf_20260518_161345_c6047e53-06a9-4d0e-98dd-04683be4d46b.png" alt="Sour Candy" loading="lazy">
+            <img class="bundle-flavor-icon" src="/brand_assets/hf_20260518_161451_041559cf-fe2b-4eb0-bfbf-abdff8ed5113.png" alt="Sour Grape" loading="lazy">
+          </div>
           <div class="bundle-tubs"><span class="tub-dot"></span><span class="tub-dot"></span></div>
           <p class="bundle-qty-text">2 Tubs</p>
           <p class="bundle-price-big" data-disc="$55.24">$64.99</p>
-          <p class="bundle-per-tub" data-disc="$27.62/tub">$32.50/tub</p>
+          <p class="bundle-per-tub" data-disc="$0.69/scoop">$0.81/scoop</p>
           <span class="bundle-save">Save $9</span>
         </div>
         <div class="bundle-card" data-qty="3" role="radio" aria-checked="false" tabindex="0">
           <div class="bundle-badge" style="background:var(--text-primary);color:#1A1F14;">Best Value &middot; Save $29</div>
+          <div class="bundle-flavor-icons">
+            <img class="bundle-flavor-icon" src="/brand_assets/hf_20260518_161345_c6047e53-06a9-4d0e-98dd-04683be4d46b.png" alt="Sour Candy" loading="lazy">
+            <img class="bundle-flavor-icon" src="/brand_assets/hf_20260518_161451_041559cf-fe2b-4eb0-bfbf-abdff8ed5113.png" alt="Sour Grape" loading="lazy">
+            <img class="bundle-flavor-icon" src="/brand_assets/hf_20260518_155942_01bb4546-8f8e-47a9-b883-44ea324a2a3f.png" alt="Sour Gummy Worms" loading="lazy">
+          </div>
           <div class="bundle-tubs"><span class="tub-dot"></span><span class="tub-dot"></span><span class="tub-dot"></span></div>
           <p class="bundle-qty-text">3 Tubs</p>
           <p class="bundle-price-big" data-disc="$69.69">$81.99</p>
-          <p class="bundle-per-tub" data-disc="$23.23/tub">$27.33/tub</p>
+          <p class="bundle-per-tub" data-disc="$0.58/scoop">$0.68/scoop</p>
           <span class="bundle-save">Save $29</span>
         </div>
       </div>
@@ -3320,12 +3665,22 @@
       <div class="htu-expect-eyebrow">What to expect</div>
       <div class="htu-expect-inner">
         <div class="htu-expect-stat">
-          <div class="htu-expect-number">89%</div>
-          <span class="htu-expect-number-sub">Verified buyers</span>
+          <div class="htu-expect-circle-wrap">
+            <svg class="htu-expect-circle-svg" viewBox="0 0 140 140" width="140" height="140" aria-hidden="true">
+              <circle cx="70" cy="70" r="58" fill="none" stroke="rgba(226,255,71,0.1)" stroke-width="2.5"/>
+              <circle cx="70" cy="70" r="58" fill="none" stroke="#E2FF47" stroke-width="2.5"
+                stroke-dasharray="364.42 364.42" stroke-dashoffset="40.09"
+                stroke-linecap="round" transform="rotate(-90 70 70)"/>
+            </svg>
+            <div class="htu-expect-stat-inner">
+              <div class="htu-expect-number">89%</div>
+              <span class="htu-expect-number-sub">Verified buyers</span>
+            </div>
+          </div>
         </div>
         <div class="htu-expect-divider"></div>
         <div class="htu-expect-text">
-          The window opens about <strong>20 minutes in</strong>. You won&rsquo;t feel it, but you&rsquo;ll notice the difference. 89% of verified buyers claimed to achieve <strong>4+ hours of clean focus</strong> from a single scoop &mdash; then it fades off the same way it arrived. That&rsquo;s the Focus Arc working as it should.
+          You won&rsquo;t feel it, but you&rsquo;ll notice the difference. 89% of verified buyers claimed to achieve <strong>4+ hours of clean focus</strong> from a single scoop &mdash; then it fades off the same way it arrived.
         </div>
       </div>
     </div>
@@ -3347,7 +3702,114 @@
 </section>
 
 
-<!-- ===== SECTION 10 — FINAL CTA ===== -->
+<!-- ===== SECTION 10 — MINDOR VS. GORILLA MIND ENERGY ===== -->
+<section id="vs-section">
+  <div class="container">
+    <span class="section-label">Mindor vs. Gorilla Mind Energy</span>
+
+    <p class="vs-intro">The closest comparison most people make is Gorilla Mind Energy. Same daily slot &mdash; the morning focus drink. Different build. Here&rsquo;s the straight read, from the labels.</p>
+
+    <!-- Product shots -->
+    <div class="vs-products">
+      <div class="vs-product vs-product--mindor">
+        <div class="vs-product-img-wrap">
+          <img src="/assets/product-photos/tub-candy.webp" alt="Mindor tub" loading="lazy">
+        </div>
+        <span class="vs-product-name">Mindor</span>
+      </div>
+      <span class="vs-divider-label">VS</span>
+      <div class="vs-product vs-product--gorilla">
+        <div class="vs-product-img-wrap">
+          <!-- Replace src with /assets/gorilla-mind-can.png once the file is added to assets -->
+          <img src="/assets/gorilla-mind-can.png" alt="Gorilla Mind Energy can" loading="lazy" onerror="this.src='https://placehold.co/300x400/1a1a18/2a2a28'">
+        </div>
+        <span class="vs-product-name">Gorilla Mind Energy</span>
+      </div>
+    </div>
+
+    <!-- Comparison table -->
+    <div class="vs-table-wrap">
+      <table class="vs-table">
+        <thead>
+          <tr>
+            <th class="th-feature"></th>
+            <th class="th-mindor">Mindor</th>
+            <th class="th-gorilla">Gorilla Mind Energy</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-feature">Format</td>
+            <td class="td-mindor">Scoop into your own water bottle</td>
+            <td class="td-gorilla">Pre-mixed 16oz can</td>
+          </tr>
+          <tr>
+            <td class="td-feature">You control the pace</td>
+            <td class="td-mindor"><span class="td-win">Yes</span> &mdash; sip it over an hour</td>
+            <td class="td-gorilla">No &mdash; set by the can</td>
+          </tr>
+          <tr>
+            <td class="td-feature">Caffeine</td>
+            <td class="td-mindor">200mg, from green tea</td>
+            <td class="td-gorilla">200mg, caffeine anhydrous</td>
+          </tr>
+          <tr>
+            <td class="td-feature">Inositol<em>The Steady Base</em></td>
+            <td class="td-mindor"><span class="td-win">600mg</span></td>
+            <td class="td-gorilla">None</td>
+          </tr>
+          <tr>
+            <td class="td-feature">L-Theanine</td>
+            <td class="td-mindor">100mg</td>
+            <td class="td-gorilla">100mg</td>
+          </tr>
+          <tr>
+            <td class="td-feature">Alpha-GPC</td>
+            <td class="td-mindor">300mg</td>
+            <td class="td-gorilla"><span class="td-win">400mg</span></td>
+          </tr>
+          <tr>
+            <td class="td-feature">L-Arginine</td>
+            <td class="td-mindor"><span class="td-win">1000mg</span></td>
+            <td class="td-gorilla">None</td>
+          </tr>
+          <tr>
+            <td class="td-feature">Asian Ginseng</td>
+            <td class="td-mindor"><span class="td-win">50mg</span></td>
+            <td class="td-gorilla">None</td>
+          </tr>
+          <tr>
+            <td class="td-feature">Servings per package</td>
+            <td class="td-mindor"><span class="td-win">30</span> (one bag)</td>
+            <td class="td-gorilla">12 (per case)</td>
+          </tr>
+          <tr>
+            <td class="td-feature">Cost per serving</td>
+            <td class="td-mindor"><span class="td-win">~$1.20</span> (subscription)</td>
+            <td class="td-gorilla">~$3.00</td>
+          </tr>
+          <tr>
+            <td class="td-feature">Cost per month<em>one daily</em></td>
+            <td class="td-mindor"><span class="td-win">$36</span></td>
+            <td class="td-gorilla">~$90</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Closing copy -->
+    <div class="vs-footer">
+      <p>Gorilla Mind Energy is a serious product &mdash; and on a few ingredients, they dose harder than we do. We&rsquo;d rather be honest about that than pretend otherwise.</p>
+      <p>But focus isn&rsquo;t a list of ingredients. It&rsquo;s a format and a mechanism.</p>
+      <p>A can locks you into 16oz drunk fast. A scoop lets you pace it across an hour, which is when the Steady Base actually does its work. Their formula pushes signals harder. Ours supports the receiving end, so the signals land cleanly.</p>
+      <p>Same daily caffeine. A third of the cost. Built for the long work block, not the morning shot.</p>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ===== SECTION 11 — FINAL CTA ===== -->
 <section id="final-cta">
   <div class="container">
     <h2 class="final-headline">Put a floor under it.</h2>
@@ -4102,9 +4564,9 @@ if (steadyEl) arcObs.observe(steadyEl);
 var discountUnlocked = sessionStorage.getItem('mindor_discount') === 'FLOOR15';
 var DISC_CODE = 'FLOOR15';
 var DISC_PRICES = {
-  1: { big: '$31.44', per: '$31.44/tub', cta: 'GET 1 TUB — $31.44 →' },
-  2: { big: '$55.24', per: '$27.62/tub', cta: 'GET 2 TUBS — $55.24 →' },
-  3: { big: '$69.69', per: '$23.23/tub', cta: 'GET 3 TUBS — $69.69 →' }
+  1: { big: '$31.44', per: '$0.79/scoop', cta: 'GET 1 TUB — $31.44 →' },
+  2: { big: '$55.24', per: '$0.69/scoop', cta: 'GET 2 TUBS — $55.24 →' },
+  3: { big: '$69.69', per: '$0.58/scoop', cta: 'GET 3 TUBS — $69.69 →' }
 };
 
 function applyDiscountVisuals(animate) {

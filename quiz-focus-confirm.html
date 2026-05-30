@@ -765,9 +765,9 @@ fbq('track','ViewContent',{content_name:'Mindor Performance Stack',value:50.00,c
 
   // ── Product gallery ───────────────────────────────────────────────
   const GALLERY_IMAGES = {
-    candy: ['tub-candy','tub-candy-2','tub-candy-3','tub-candy-4','powder-candy'],
-    grape: ['tub-grape','tub-grape-2','tub-grape-3','tub-grape-4','powder-grape'],
-    gummy: ['tub-gummy','tub-gummy-2','tub-gummy-3','powder-gummy'],
+    candy: ['1','2','3','4','5'],
+    grape: ['1','2','3','4','5'],
+    gummy: ['1','2','3','4','5'],
   };
 
   let gIdx = 0;
@@ -780,7 +780,7 @@ fbq('track','ViewContent',{content_name:'Mindor Performance Stack',value:50.00,c
     const track = document.getElementById('gallery-track');
     const dots  = document.getElementById('gallery-dots');
     track.innerHTML = imgs.map((name, i) =>
-      `<div class="gallery-slide"><img src="assets/product-photos/${name}.webp" alt="Mindor ${flavor} view ${i+1}"${i > 0 ? ' loading="lazy"' : ''} draggable="false"></div>`
+      `<div class="gallery-slide"><img src="${name}.png" alt="Mindor ${flavor} view ${i+1}"${i > 0 ? ' loading="lazy"' : ''} draggable="false"></div>`
     ).join('');
     dots.innerHTML = imgs.map((_, i) =>
       `<span class="gallery-dot${i === 0 ? ' active' : ''}"></span>`
