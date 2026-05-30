@@ -1228,18 +1228,18 @@
 
   /* ===== PRODUCT INFO BLOCK ===== */
   .product-info-block {
-    margin-bottom: 28px;
-    padding-bottom: 24px;
+    margin-bottom: 24px;
+    padding-bottom: 22px;
     border-bottom: 0.5px solid var(--border-subtle);
   }
   .pib-rating {
     display: flex;
     align-items: center;
-    gap: 7px;
+    gap: 6px;
     margin-bottom: 10px;
   }
   .pib-stars {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--execution-green);
     letter-spacing: 2px;
   }
@@ -1248,83 +1248,76 @@
     font-size: 12px;
     color: var(--text-muted);
   }
-  .pib-category {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 6px;
-  }
-  .pib-tagline {
+  .pib-name {
     font-family: 'Barlow Condensed', sans-serif;
     font-weight: 800;
-    font-size: clamp(26px, 6vw, 34px);
+    font-size: clamp(22px, 5.5vw, 30px);
     color: var(--text-primary);
-    line-height: 1.05;
-    margin-bottom: 10px;
+    line-height: 1.1;
+    margin-bottom: 4px;
     letter-spacing: 0.01em;
   }
+  .pib-tagline {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    font-size: 15px;
+    color: var(--fog-grey);
+    margin-bottom: 12px;
+    line-height: 1.4;
+  }
+  .pib-tagline .pib-accent {
+    color: var(--execution-green);
+    font-weight: 500;
+  }
   .pib-price-row {
-    display: flex;
-    align-items: baseline;
-    gap: 4px;
-    margin-bottom: 8px;
-    flex-wrap: wrap;
+    margin-bottom: 6px;
   }
   .pib-price {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 900;
-    font-size: 22px;
-    color: var(--execution-green);
-    line-height: 1;
-  }
-  .pib-per-scoop {
     font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    color: var(--fog-grey);
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--text-primary);
   }
   .pib-meta {
     font-family: 'DM Sans', sans-serif;
-    font-size: 12px;
+    font-size: 13px;
     color: var(--text-muted);
-    margin-bottom: 12px;
-    letter-spacing: 0.02em;
+    margin-bottom: 14px;
   }
   .pib-benefits {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 10px;
     margin-bottom: 14px;
   }
   .pib-benefit {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     font-family: 'DM Sans', sans-serif;
-    font-size: 11px;
-    font-weight: 500;
+    font-size: 12px;
     color: var(--fog-grey);
-    background: var(--surface2);
-    border: 0.5px solid var(--border-subtle);
-    border-radius: 100px;
-    padding: 4px 10px;
-    white-space: nowrap;
+    line-height: 1.2;
   }
+  .pib-benefit-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: var(--surface2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--fog-grey);
+  }
+  .pib-benefit-icon svg { display: block; }
   .pib-desc {
     font-family: 'DM Sans', sans-serif;
     font-size: 13px;
     color: var(--fog-grey);
     line-height: 1.65;
-    margin-bottom: 18px;
-    max-width: 560px;
-  }
-  .pib-step-header {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 800;
-    font-size: 16px;
-    color: var(--text-primary);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    margin-bottom: 10px;
+    margin: 0;
   }
 
   /* Bundle cards */
@@ -2605,16 +2598,23 @@
   .proof-header-stars { font-size: 18px; color: var(--execution-green); letter-spacing: 4px; margin-bottom: 14px; }
   .proof-heading { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: clamp(24px,4vw,36px); color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.02em; margin-bottom: 8px; }
   .proof-sub { font-size: 14px; color: var(--text-muted); }
-  .proof-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
-  .proof-card { background: var(--surface2); border: 0.5px solid var(--border-subtle); border-radius: 6px; padding: 28px 26px; }
+  .proof-grid { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 20px; padding-bottom: 20px; -webkit-overflow-scrolling: touch; scrollbar-width: none; cursor: grab; user-select: none; }
+  .proof-grid::-webkit-scrollbar { display: none; }
+  .proof-grid.is-dragging { cursor: grabbing; }
+  .proof-card { background: var(--surface2); border: 0.5px solid var(--border-subtle); border-radius: 6px; padding: 28px 26px; flex: 0 0 300px; scroll-snap-align: start; }
   .proof-card-stars { font-size: 11px; color: var(--execution-green); letter-spacing: 2.5px; margin-bottom: 14px; }
   .proof-quote { font-size: 14px; color: var(--fog-grey); line-height: 1.72; margin-bottom: 22px; }
   .proof-quote::before { content: '\201C'; font-size: 26px; color: rgba(226,255,71,0.22); line-height: 0; vertical-align: -8px; margin-right: 2px; font-family: Georgia, serif; }
   .proof-attr { display: flex; align-items: center; gap: 12px; }
-  .proof-avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--surface); border: 0.5px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: var(--execution-green); flex-shrink: 0; }
+  .proof-avatar { width: 44px; height: 44px; border-radius: 50%; overflow: hidden; border: 0.5px solid var(--border); flex-shrink: 0; background: var(--surface); }
+  .proof-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .proof-name { font-size: 13px; font-weight: 600; color: var(--text-primary); line-height: 1.2; }
   .proof-role { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-  @media (max-width: 640px) { .proof-grid { grid-template-columns: 1fr; } #s-proof { padding: 60px 0; } }
+  .proof-scroll-hint { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 20px; }
+  .proof-scroll-hint span { font-size: 11px; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; }
+  .proof-scroll-hint-arrow { color: var(--execution-green); font-size: 14px; animation: hint-pulse 1.8s ease-in-out infinite; }
+  @keyframes hint-pulse { 0%, 100% { opacity: 0.4; transform: translateX(0); } 50% { opacity: 1; transform: translateX(4px); } }
+  @media (max-width: 640px) { #s-proof { padding: 60px 0; } .proof-card { flex: 0 0 280px; } }
 
   /* ===== STICKY MOBILE BAR ===== */
   #sticky-bar {
@@ -3301,7 +3301,7 @@
         <div class="proof-card-stars">★★★★★</div>
         <p class="proof-quote">I thought this was just expensive coffee at first... but I gave it a shot anyways. I thought "I'm already in this deep, might aswell go for it." I'm not exaggerating when I say this, but they should charge more for this thing. it's NUTS! And the 15% off for my email really helped past me make my decision.</p>
         <div class="proof-attr">
-          <div class="proof-avatar">MN</div>
+          <div class="proof-avatar"><img src="https://placehold.co/44x44" alt="Marcus N." loading="lazy"></div>
           <div>
             <div class="proof-name">Marcus N.</div>
             <div class="proof-role">Startup Founder</div>
@@ -3313,7 +3313,7 @@
         <div class="proof-card-stars">★★★★★</div>
         <p class="proof-quote">still drink my morning coffee but i just… stopped needing the second one? the 3pm thing is gone. didn't realize how much of my day i was losing to that until it wasn't there</p>
         <div class="proof-attr">
-          <div class="proof-avatar">PS</div>
+          <div class="proof-avatar"><img src="https://placehold.co/44x44" alt="Patel S." loading="lazy"></div>
           <div>
             <div class="proof-name">Patel S.</div>
             <div class="proof-role">Product Designer</div>
@@ -3325,7 +3325,7 @@
         <div class="proof-card-stars">★★★★★</div>
         <p class="proof-quote">4 hours studying, didn't touch my phone once. that's literally never happened. i didn't even feel it kick in i just started working and kinda forgot to stop</p>
         <div class="proof-attr">
-          <div class="proof-avatar">MT</div>
+          <div class="proof-avatar"><img src="https://placehold.co/44x44" alt="Marcus T." loading="lazy"></div>
           <div>
             <div class="proof-name">Marcus T.</div>
             <div class="proof-role">CS Student</div>
@@ -3337,7 +3337,7 @@
         <div class="proof-card-stars">★★★★★</div>
         <p class="proof-quote">I've tried at least 5 other heavily marketed "nootropic" miracle brands by now, and they were all trash... Basically sugar pills. So, after 5 tries, what's a 6th? and I guess 6th time's the charm. These people really don't lie when it comes to that focus.</p>
         <div class="proof-attr">
-          <div class="proof-avatar">TO</div>
+          <div class="proof-avatar"><img src="https://placehold.co/44x44" alt="Teresa O." loading="lazy"></div>
           <div>
             <div class="proof-name">Teresa O.</div>
             <div class="proof-role">Creative Director</div>
@@ -3345,6 +3345,11 @@
         </div>
       </div>
 
+    </div>
+    <div class="proof-scroll-hint">
+      <span class="proof-scroll-hint-arrow">›</span>
+      <span>Scroll for more</span>
+      <span class="proof-scroll-hint-arrow">›</span>
     </div>
   </div>
 </section>
@@ -3367,21 +3372,39 @@
         <span class="pib-stars">★★★★★</span>
         <span class="pib-rating-text">4.9 from 500+ reviews</span>
       </div>
-      <p class="pib-category">Productivity Drink &mdash; Citrus</p>
-      <h2 class="pib-tagline">Focus that holds.</h2>
+      <h2 class="pib-name">Productivity Drink &mdash; Citrus</h2>
+      <p class="pib-tagline"><span class="pib-accent">Focus</span> that holds.</p>
       <div class="pib-price-row">
-        <span class="pib-price">From $36</span>
-        <span class="pib-per-scoop">&nbsp;/ $0.90 per scoop</span>
+        <span class="pib-price">From $36 / $0.90 per scoop</span>
       </div>
       <p class="pib-meta">40 servings &middot; One tub &middot; One scoop a day</p>
       <div class="pib-benefits">
-        <span class="pib-benefit">&#8857; Focus*</span>
-        <span class="pib-benefit">&#8859; Mental Performance*</span>
-        <span class="pib-benefit">&#9889; Clean Energy*</span>
-        <span class="pib-benefit">&#9676; Steady Attention*</span>
+        <div class="pib-benefit">
+          <div class="pib-benefit-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/><line x1="4.22" y1="4.22" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.78" y2="19.78"/><line x1="4.22" y1="19.78" x2="6.34" y2="17.66"/><line x1="17.66" y1="6.34" x2="19.78" y2="4.22"/></svg>
+          </div>
+          <span>Focus*</span>
+        </div>
+        <div class="pib-benefit">
+          <div class="pib-benefit-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.46 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.46 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>
+          </div>
+          <span>Mental Performance*</span>
+        </div>
+        <div class="pib-benefit">
+          <div class="pib-benefit-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </div>
+          <span>Clean Energy*</span>
+        </div>
+        <div class="pib-benefit">
+          <div class="pib-benefit-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+          <span>Steady Attention*</span>
+        </div>
       </div>
       <p class="pib-desc">A nootropic drink built around the Steady Base; 600mg of Inositol layered with Alpha-GPC, L-Theanine, Asian Ginseng, green-tea Caffeine and B-Vitamins.</p>
-      <p class="pib-step-header">1. Choose Your Monthly Supply</p>
     </div>
 
     <!-- Wizard progress -->
@@ -3399,7 +3422,7 @@
       <div class="bundle-cards" id="bundleCards" role="radiogroup" aria-label="Choose bundle size">
         <div class="bundle-card" data-qty="1" role="radio" aria-checked="false" tabindex="0">
           <div class="bundle-flavor-icons">
-            <img class="bundle-flavor-icon" src="/brand_assets/hf_20260518_161345_c6047e53-06a9-4d0e-98dd-04683be4d46b.png" alt="Sour Candy" loading="lazy">
+            <img class="bundle-flavor-icon" src="/assets/product-photos/flavor-candy.png" alt="Sour Candy" loading="lazy">
           </div>
           <div class="bundle-tubs"><span class="tub-dot"></span></div>
           <p class="bundle-qty-text">1 Tub</p>
@@ -3410,8 +3433,8 @@
         <div class="bundle-card active" data-qty="2" role="radio" aria-checked="true" tabindex="0">
           <div class="bundle-badge">Most Popular<br>Save $9</div>
           <div class="bundle-flavor-icons">
-            <img class="bundle-flavor-icon" src="/brand_assets/hf_20260518_161345_c6047e53-06a9-4d0e-98dd-04683be4d46b.png" alt="Sour Candy" loading="lazy">
-            <img class="bundle-flavor-icon" src="/brand_assets/hf_20260518_161451_041559cf-fe2b-4eb0-bfbf-abdff8ed5113.png" alt="Sour Grape" loading="lazy">
+            <img class="bundle-flavor-icon" src="/assets/product-photos/flavor-candy.png" alt="Sour Candy" loading="lazy">
+            <img class="bundle-flavor-icon" src="/assets/product-photos/flavor-grape.png" alt="Sour Grape" loading="lazy">
           </div>
           <div class="bundle-tubs"><span class="tub-dot"></span><span class="tub-dot"></span></div>
           <p class="bundle-qty-text">2 Tubs</p>
@@ -3422,9 +3445,9 @@
         <div class="bundle-card" data-qty="3" role="radio" aria-checked="false" tabindex="0">
           <div class="bundle-badge" style="background:var(--text-primary);color:#1A1F14;">Best Value &middot; Save $29</div>
           <div class="bundle-flavor-icons">
-            <img class="bundle-flavor-icon" src="/brand_assets/hf_20260518_161345_c6047e53-06a9-4d0e-98dd-04683be4d46b.png" alt="Sour Candy" loading="lazy">
-            <img class="bundle-flavor-icon" src="/brand_assets/hf_20260518_161451_041559cf-fe2b-4eb0-bfbf-abdff8ed5113.png" alt="Sour Grape" loading="lazy">
-            <img class="bundle-flavor-icon" src="/brand_assets/hf_20260518_155942_01bb4546-8f8e-47a9-b883-44ea324a2a3f.png" alt="Sour Gummy Worms" loading="lazy">
+            <img class="bundle-flavor-icon" src="/assets/product-photos/flavor-candy.png" alt="Sour Candy" loading="lazy">
+            <img class="bundle-flavor-icon" src="/assets/product-photos/flavor-grape.png" alt="Sour Grape" loading="lazy">
+            <img class="bundle-flavor-icon" src="/assets/product-photos/flavor-gummy.png" alt="Sour Gummy Worms" loading="lazy">
           </div>
           <div class="bundle-tubs"><span class="tub-dot"></span><span class="tub-dot"></span><span class="tub-dot"></span></div>
           <p class="bundle-qty-text">3 Tubs</p>
@@ -4950,6 +4973,33 @@ window.addEventListener('load', function() {
       setTimeout(function() { if (circle.parentNode) circle.parentNode.removeChild(circle); }, 2100);
     });
   });
+})();
+</script>
+
+<script>
+(function() {
+  var el = document.querySelector('.proof-grid');
+  if (!el) return;
+  var isDown = false, startX, scrollLeft;
+  el.addEventListener('mousedown', function(e) {
+    isDown = true;
+    el.classList.add('is-dragging');
+    startX = e.pageX - el.offsetLeft;
+    scrollLeft = el.scrollLeft;
+  });
+  el.addEventListener('mouseleave', function() { isDown = false; el.classList.remove('is-dragging'); });
+  el.addEventListener('mouseup', function() { isDown = false; el.classList.remove('is-dragging'); });
+  el.addEventListener('mousemove', function(e) {
+    if (!isDown) return;
+    e.preventDefault();
+    var x = e.pageX - el.offsetLeft;
+    el.scrollLeft = scrollLeft - (x - startX) * 1.2;
+  });
+  // Hide scroll hint once user has scrolled
+  var hint = document.querySelector('.proof-scroll-hint');
+  if (hint) {
+    el.addEventListener('scroll', function() { hint.style.opacity = '0'; hint.style.transition = 'opacity 0.4s'; }, { once: true });
+  }
 })();
 </script>
 
