@@ -1770,6 +1770,74 @@
     text-transform: uppercase;
     color: var(--sprint-green);
   }
+  .order-line-items {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    padding-bottom: 10px;
+    border-bottom: 0.5px solid rgba(74,107,212,0.12);
+    margin-bottom: 2px;
+  }
+  .order-line-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .order-line-item-name {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--fog-grey);
+    flex: 1;
+    line-height: 1.3;
+  }
+  .order-line-item-name small {
+    display: block;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+  .order-line-item-price {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    white-space: nowrap;
+    text-align: right;
+  }
+  .order-line-item-price s {
+    font-weight: 400;
+    color: var(--text-muted);
+    font-size: 11px;
+    margin-right: 3px;
+    text-decoration-color: var(--text-muted);
+  }
+  .order-line-item-free {
+    color: var(--sprint-green);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+  }
+  .order-line-item-discount {
+    border-top: 0.5px solid rgba(74,107,212,0.12);
+    padding-top: 8px;
+    margin-top: 1px;
+  }
+  .order-line-item-disc-val {
+    color: var(--sprint-green) !important;
+  }
+  .order-discount-pct {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--sprint-green);
+    background: rgba(74,107,212,0.08);
+    border-radius: 3px;
+    padding: 2px 6px;
+    margin-left: 5px;
+    vertical-align: middle;
+  }
 
   /* ===== WIZARD ===== */
   .wizard-progress { margin-bottom: 28px; }
@@ -3870,10 +3938,22 @@
   <!-- Full-bleed carousel — outside container so it touches both edges -->
   <div class="offer-product-wrap">
     <div class="flavor-carousel" id="flavorCarousel">
-      <div class="flavor-carousel-track" id="flavorCarouselTrack"></div>
+      <div class="flavor-carousel-track" id="flavorCarouselTrack">
+        <div class="carousel-slide"><img src="1.png" alt="Mindor" loading="eager" decoding="async"></div>
+        <div class="carousel-slide"><img src="2.png" alt="Mindor" loading="lazy" decoding="async"></div>
+        <div class="carousel-slide"><img src="3.png" alt="Mindor" loading="lazy" decoding="async"></div>
+        <div class="carousel-slide"><img src="4.png" alt="Mindor" loading="lazy" decoding="async"></div>
+        <div class="carousel-slide"><img src="5.png" alt="Mindor" loading="lazy" decoding="async"></div>
+      </div>
     </div>
     <div class="carousel-thumbs-wrap">
-      <div class="carousel-thumbs" id="flavorCarouselThumbs"></div>
+      <div class="carousel-thumbs" id="flavorCarouselThumbs">
+        <button class="carousel-thumb active" onclick="goCarousel(0)" aria-label="Image 1"><img src="1.png" alt="" loading="lazy" decoding="async"></button>
+        <button class="carousel-thumb" onclick="goCarousel(1)" aria-label="Image 2"><img src="2.png" alt="" loading="lazy" decoding="async"></button>
+        <button class="carousel-thumb" onclick="goCarousel(2)" aria-label="Image 3"><img src="3.png" alt="" loading="lazy" decoding="async"></button>
+        <button class="carousel-thumb" onclick="goCarousel(3)" aria-label="Image 4"><img src="4.png" alt="" loading="lazy" decoding="async"></button>
+        <button class="carousel-thumb" onclick="goCarousel(4)" aria-label="Image 5"><img src="5.png" alt="" loading="lazy" decoding="async"></button>
+      </div>
     </div>
   </div>
 
@@ -4069,16 +4149,17 @@
 
       <!-- Order summary -->
       <div class="order-summary" id="orderSummary">
+        <div id="orderLineItems" class="order-line-items"></div>
         <div class="order-summary-line">
-          <span class="order-summary-label">Retail value</span>
+          <span class="order-summary-label">Total before discounts</span>
           <span class="order-summary-was" id="orderRetailValue">$65.98</span>
+        </div>
+        <div class="order-summary-savings" id="orderSavingsRow" style="display:none;">
+          <span id="orderSavingsText"></span>
         </div>
         <div class="order-summary-line order-summary-pay-line">
           <span class="order-summary-label">You pay today</span>
           <span class="order-summary-pay" id="orderYouPay">$64.99</span>
-        </div>
-        <div class="order-summary-savings" id="orderSavingsRow" style="display:none;">
-          <span id="orderSavingsText"></span>
         </div>
       </div>
 
@@ -4104,53 +4185,9 @@
 
 
 
-<!-- ===== SECTION 9 — HOW TO USE IT ===== -->
-<section id="how-to-use">
+<!-- ===== SECTION 8.5 — WHAT TO EXPECT ===== -->
+<section id="what-to-expect" style="background:var(--bg);padding:64px 0;border-top:0.5px solid var(--border-subtle);">
   <div class="container">
-    <span class="section-label">How To Use It</span>
-
-    <!-- Glass visual -->
-    <div class="htu-hero">
-      <div class="htu-hero-glow"></div>
-      <div class="htu-hero-glass">
-        <div class="htu-hero-shine"></div>
-        <div class="htu-hero-liquid"></div>
-      </div>
-      <span class="htu-hero-label">One scoop. One glass.</span>
-    </div>
-
-    <!-- Three steps -->
-    <div class="htu-steps">
-
-      <div class="htu-step">
-        <div class="htu-step-num">1</div>
-        <div class="htu-step-body">
-          <div class="htu-step-title">Mix one scoop into a full glass of water.</div>
-          <p class="htu-step-text">Mindor blends fully &mdash; <strong>no chunks, no residue</strong> at the bottom of the glass.</p>
-        </div>
-      </div>
-
-      <div class="htu-step">
-        <div class="htu-step-num">2</div>
-        <div class="htu-step-body">
-          <div class="htu-step-title">Drink it like a juice &mdash; slowly.</div>
-          <p class="htu-step-text">The taste is smooth and a little tart. Closer to a real drink than a supplement. <strong>Sip it over 30&ndash;60 minutes</strong> instead of slamming it.</p>
-          <span class="htu-step-note">The focus comes on cleaner that way, and it holds longer.</span>
-        </div>
-      </div>
-
-      <div class="htu-step">
-        <div class="htu-step-num">3</div>
-        <div class="htu-step-body">
-          <div class="htu-step-title">Have something in your stomach first.</div>
-          <p class="htu-step-text">Even <strong>half a banana or a piece of toast</strong> is enough. Mindor on a fully empty stomach can sit heavy or bring on a small headache.</p>
-          <span class="htu-step-note">Not for everyone, but enough people that it&rsquo;s worth saying up front.</span>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- What to expect -->
     <div class="htu-expect">
       <div class="htu-expect-eyebrow">What to expect</div>
 
@@ -4253,6 +4290,55 @@
         </div>
 
       </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== SECTION 9 — HOW TO USE IT ===== -->
+<section id="how-to-use">
+  <div class="container">
+    <span class="section-label">How To Use It</span>
+
+    <!-- Glass visual -->
+    <div class="htu-hero">
+      <div class="htu-hero-glow"></div>
+      <div class="htu-hero-glass">
+        <div class="htu-hero-shine"></div>
+        <div class="htu-hero-liquid"></div>
+      </div>
+      <span class="htu-hero-label">One scoop. One glass.</span>
+    </div>
+
+    <!-- Three steps -->
+    <div class="htu-steps">
+
+      <div class="htu-step">
+        <div class="htu-step-num">1</div>
+        <div class="htu-step-body">
+          <div class="htu-step-title">Mix one scoop into a full glass of water.</div>
+          <p class="htu-step-text">Mindor blends fully &mdash; <strong>no chunks, no residue</strong> at the bottom of the glass.</p>
+        </div>
+      </div>
+
+      <div class="htu-step">
+        <div class="htu-step-num">2</div>
+        <div class="htu-step-body">
+          <div class="htu-step-title">Drink it like a juice &mdash; slowly.</div>
+          <p class="htu-step-text">The taste is smooth and a little tart. Closer to a real drink than a supplement. <strong>Sip it over 30&ndash;60 minutes</strong> instead of slamming it.</p>
+          <span class="htu-step-note">The focus comes on cleaner that way, and it holds longer.</span>
+        </div>
+      </div>
+
+      <div class="htu-step">
+        <div class="htu-step-num">3</div>
+        <div class="htu-step-body">
+          <div class="htu-step-title">Have something in your stomach first.</div>
+          <p class="htu-step-text">Even <strong>half a banana or a piece of toast</strong> is enough. Mindor on a fully empty stomach can sit heavy or bring on a small headache.</p>
+          <span class="htu-step-note">Not for everyone, but enough people that it&rsquo;s worth saying up front.</span>
+        </div>
+      </div>
+
     </div>
 
     <!-- After the first week -->
@@ -4794,51 +4880,7 @@ function hexToRgba(hex, a) {
   return 'rgba('+r+','+g+','+b+','+a+')';
 }
 
-// ===== FLAVOR IMAGE CAROUSEL =====
-var FLAVOR_IMAGES = {
-  'sour-candy': [
-    '/assets/presales-hero.png',
-    '/assets/product-photos/tub-candy.webp',
-    '/assets/product-photos/tub-candy-2.webp',
-    '/assets/product-photos/tub-candy-3.webp',
-    '/assets/product-photos/tub-candy-4.webp'
-  ],
-  'sour-grape': [
-    '/assets/presales-grape.png',
-    '/assets/product-photos/tub-grape.webp',
-    '/assets/product-photos/tub-grape-2.webp',
-    '/assets/product-photos/tub-grape-3.webp',
-    '/assets/product-photos/tub-grape-4.webp'
-  ],
-  'sour-gummy-worms': [
-    '/assets/product-photos/tub-gummy.webp',
-    '/assets/product-photos/tub-gummy-2.webp',
-    '/assets/product-photos/tub-gummy-3.webp',
-    '/assets/product-photos/tub-gummy-4.webp'
-  ]
-};
 var carouselIndex = 0;
-
-function renderCarousel(flavor) {
-  var track  = document.getElementById('flavorCarouselTrack');
-  var thumbs = document.getElementById('flavorCarouselThumbs');
-  if (!track) return;
-  var imgs = FLAVOR_IMAGES[flavor] || FLAVOR_IMAGES['sour-candy'];
-  carouselIndex = 0;
-  track.style.transition = 'none';
-  track.innerHTML = imgs.map(function(src, i) {
-    return '<div class="carousel-slide"><img src="' + src + '" alt="' + (FLAVOR_NAMES[flavor] || 'Mindor') + '" loading="' + (i === 0 ? 'eager' : 'lazy') + '" decoding="async"></div>';
-  }).join('');
-  if (thumbs) {
-    thumbs.innerHTML = imgs.map(function(src, i) {
-      return '<button class="carousel-thumb' + (i === 0 ? ' active' : '') + '" onclick="goCarousel(' + i + ')" aria-label="Image ' + (i+1) + '"><img src="' + src + '" alt="" loading="lazy" decoding="async"></button>';
-    }).join('');
-  }
-  requestAnimationFrame(function() {
-    track.style.transition = '';
-    track.style.transform = 'translateX(0)';
-  });
-}
 
 function goCarousel(idx) {
   var track = document.getElementById('flavorCarouselTrack');
@@ -4881,8 +4923,6 @@ window.addEventListener('DOMContentLoaded', function() {
       goCarousel(carouselIndex + (dx < 0 ? 1 : -1));
     }
   }, { passive: true });
-  // Init carousel with default flavor
-  renderCarousel(selectedFlavors[0] || 'sour-candy');
 });
 
 // ===== WIZARD =====
@@ -4904,6 +4944,7 @@ function wizardGo(step, isBack) {
   if (step === 6) {
     try { fbq('track', 'InitiateCheckout', { content_ids: ['mindor-stack'], content_type: 'product', value: discountUnlocked ? BUNDLE_DISC_PRICES[selectedQty] : BUNDLE_FULL_PRICES[selectedQty], currency: 'USD', num_items: selectedQty }); } catch(e) {}
     try { clarity('event', 'initiate_checkout'); } catch(e) {}
+    updateOrderSummary();
   }
 
   var prev = document.getElementById('wizardPanel' + wizardStep);
@@ -4985,7 +5026,7 @@ var ADDON_PRODUCTS = [
     key: 'sleep',
     name: 'Sleep Formula',
     tagline: 'The other 8 hours matter too.',
-    price: 29.90,
+    price: 19.95,
     productId: 'gid://shopify/Product/9071814148251',
     variantId: 'gid://shopify/ProductVariant/48650454761627', img: '1779976665609-generated-label-image-1.jpg'
   },
@@ -5072,16 +5113,9 @@ var BUNDLE_DATA = {
 };
 
 // ===== FLAVOR ACCENT =====
-var _lastCarouselFlavor = null;
 function applyFlavorAccent() {
   var color = FLAVOR_COLORS[selectedFlavors[0]] || '#E2FF47';
   document.documentElement.style.setProperty('--flavor-accent', color);
-  // Only re-render carousel when flavor actually changes, not on every qty click
-  var f = selectedFlavors[0] || 'sour-candy';
-  if (typeof renderCarousel === 'function' && f !== _lastCarouselFlavor) {
-    _lastCarouselFlavor = f;
-    renderCarousel(f);
-  }
   // CTA button stays navy — no flavor recolor
   // Update active card border
   document.querySelectorAll('.bundle-card').forEach(function(card) {
@@ -5538,19 +5572,84 @@ function toggleBonus(key) {
 }
 
 function updateOrderSummary() {
+  var FLAVOR_LABELS = { 'sour-candy': 'Sour Candy', 'sour-grape': 'Sour Grape', 'sour-gummy-worms': 'Sour Gummy Worms' };
   var bundlePrice = discountUnlocked ? BUNDLE_DISC_PRICES[selectedQty] : BUNDLE_FULL_PRICES[selectedQty];
-  var retailBase = BUNDLE_FULL_PRICES[1] * selectedQty;
+  var bundleRetail = BUNDLE_FULL_PRICES[selectedQty];
   var giftRetail = (bonusAdded.shaker ? BONUS_PRICES.shaker : 0) + (bonusAdded.tracker ? BONUS_PRICES.tracker : 0);
   var addonTotal = ADDON_PRODUCTS.reduce(function(sum, p) { return sum + (addonAdded[p.key] ? p.price : 0); }, 0);
-  var retail = retailBase + giftRetail + addonTotal;
+  var retail = bundleRetail + giftRetail + addonTotal;
   var youPay = bundlePrice + addonTotal;
-  // Keep CTA button price in sync
+
+  // CTA button
   var cta = document.getElementById('bundleCta');
   if (cta && !cta.disabled) {
     var qtyText = selectedQty === 1 ? '1 TUB' : selectedQty + ' TUBS';
     cta.textContent = 'GET ' + qtyText + ' — $' + youPay.toFixed(2) + ' →';
   }
 
+  // Build line items
+  var lineItemsEl = document.getElementById('orderLineItems');
+  if (lineItemsEl) {
+    var html = '';
+
+    // Tubs — with flavor subtitle
+    var flavorCount = {};
+    selectedFlavors.slice(0, selectedQty).forEach(function(f) {
+      flavorCount[f] = (flavorCount[f] || 0) + 1;
+    });
+    var flavorParts = Object.keys(flavorCount).map(function(f) {
+      var label = FLAVOR_LABELS[f] || f;
+      return flavorCount[f] > 1 ? label + ' ×' + flavorCount[f] : label;
+    });
+    var flavorStr = flavorParts.join(', ');
+    var tubLabel = 'Mindor Stack — ' + selectedQty + ' Tub' + (selectedQty > 1 ? 's' : '');
+    var tubPriceHtml = discountUnlocked
+      ? '<s>$' + bundleRetail.toFixed(2) + '</s> $' + bundlePrice.toFixed(2)
+      : '$' + bundlePrice.toFixed(2);
+    html += '<div class="order-line-item">' +
+      '<div class="order-line-item-name">' + tubLabel + '<small>' + flavorStr + '</small></div>' +
+      '<div class="order-line-item-price">' + tubPriceHtml + '</div>' +
+      '</div>';
+
+    // Free gifts
+    if (bonusAdded.shaker) {
+      html += '<div class="order-line-item">' +
+        '<div class="order-line-item-name">Free Shaker</div>' +
+        '<div class="order-line-item-price"><s>$' + BONUS_PRICES.shaker.toFixed(2) + '</s> <span class="order-line-item-free">FREE</span></div>' +
+        '</div>';
+    }
+    if (bonusAdded.tracker) {
+      html += '<div class="order-line-item">' +
+        '<div class="order-line-item-name">Productivity Tracker</div>' +
+        '<div class="order-line-item-price"><s>$' + BONUS_PRICES.tracker.toFixed(2) + '</s> <span class="order-line-item-free">FREE</span></div>' +
+        '</div>';
+    }
+
+    // Paid add-ons
+    ADDON_PRODUCTS.forEach(function(p) {
+      if (addonAdded[p.key]) {
+        html += '<div class="order-line-item">' +
+          '<div class="order-line-item-name">' + p.name + '</div>' +
+          '<div class="order-line-item-price">$' + p.price.toFixed(2) + '</div>' +
+          '</div>';
+      }
+    });
+
+    // 15% email discount line
+    if (discountUnlocked) {
+      var discountAmount = bundleRetail - bundlePrice;
+      if (discountAmount > 0.005) {
+        html += '<div class="order-line-item order-line-item-discount">' +
+          '<div class="order-line-item-name">Email Discount<span class="order-discount-pct">15% OFF</span></div>' +
+          '<div class="order-line-item-price order-line-item-disc-val">-$' + discountAmount.toFixed(2) + '</div>' +
+          '</div>';
+      }
+    }
+
+    lineItemsEl.innerHTML = html;
+  }
+
+  // Totals
   var wasEl = document.getElementById('orderRetailValue');
   var payEl = document.getElementById('orderYouPay');
   var savingsRow = document.getElementById('orderSavingsRow');
@@ -5938,7 +6037,7 @@ window.addEventListener('load', function() {
     slides[current].classList.remove('is-active');
     current = (current + 1) % slides.length;
     slides[current].classList.add('is-active');
-  }, 5000);
+  }, 3000);
 })();
 </script>
 
