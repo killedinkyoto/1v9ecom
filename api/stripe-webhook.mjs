@@ -23,6 +23,43 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Signature verification failed' });
   }
 
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
+  // ── checkout.session.completed ────────────────────────────────────────────
+  // Fires once when customer finishes Stripe Checkout.
+  // We save shipping address + flavor into subscription metadata so every
+  // future invoice.payment_succeeded can fulfill with the right details.
+  if (event.type === 'checkout.session.completed') {
+    const session = event.data.object;
+    if (!session.subscription) return res.status(200).json({ ok: true, note: 'no subscription on session' });
+
+    const shipping = session.shipping_details;
+    const metaUpdate = {};
+
+    if (shipping && shipping.address) {
+      const a = shipping.address;
+      metaUpdate['ship_name']     = shipping.name || '';
+      metaUpdate['ship_line1']    = a.line1 || '';
+      metaUpdate['ship_line2']    = a.line2 || '';
+      metaUpdate['ship_city']     = a.city  || '';
+      metaUpdate['ship_state']    = a.state || '';
+      metaUpdate['ship_zip']      = a.postal_code || '';
+      metaUpdate['ship_country']  = a.country || 'US';
+    }
+
+    if (Object.keys(metaUpdate).length > 0) {
+      await stripe.subscriptions.update(session.subscription, {
+        metadata: metaUpdate
+      });
+      console.log('[webhook] saved shipping to subscription', session.subscription);
+    }
+
+    return res.status(200).json({ ok: true });
+  }
+
+  // ── invoice.payment_succeeded ─────────────────────────────────────────────
+  // Fires on every successful charge (month 1, 2, 3…).
+  // Creates a Shopify draft order so you can fulfill it.
   if (event.type !== 'invoice.payment_succeeded') {
     return res.status(200).json({ ok: true, skipped: event.type });
   }
@@ -30,36 +67,14 @@ export default async function handler(req, res) {
   const invoice = event.data.object;
   if (!invoice.subscription) return res.status(200).json({ ok: true, note: 'not a subscription invoice' });
 
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
   const subscription = await stripe.subscriptions.retrieve(invoice.subscription);
   const meta = subscription.metadata || {};
 
-  const qty = parseInt(meta.qty) || 1;
+  const qty     = parseInt(meta.qty) || 1;
   const flavors = (meta.flavors || 'sour-candy').split(',').filter(Boolean);
-  const email = invoice.customer_email || '';
+  const email   = invoice.customer_email || '';
 
-  // Try to get shipping address from the Stripe customer
-  let shippingAddress = null;
-  try {
-    const customer = await stripe.customers.retrieve(invoice.customer);
-    if (customer && customer.shipping && customer.shipping.address) {
-      const a = customer.shipping.address;
-      shippingAddress = {
-        first_name: (customer.shipping.name || '').split(' ')[0] || '',
-        last_name:  (customer.shipping.name || '').split(' ').slice(1).join(' ') || '',
-        address1: a.line1 || '',
-        address2: a.line2 || '',
-        city:     a.city  || '',
-        province: a.state || '',
-        zip:      a.postal_code || '',
-        country:  a.country || 'US'
-      };
-    }
-  } catch (e) {
-    console.error('[webhook] could not fetch customer shipping:', e.message);
-  }
-
-  // Build tub line items from flavor variant GIDs in metadata
+  // Build tub line items
   const lineCounts = {};
   flavors.forEach(function(flavor) {
     const variantGid = meta['variant_' + flavor];
@@ -74,35 +89,54 @@ export default async function handler(req, res) {
   }));
 
   // Add addons
-  const addonGids = (meta.addon_variant_ids || '').split(',').filter(Boolean);
-  addonGids.forEach(function(gid) {
-    const numericId = gid.split('/').pop();
-    if (numericId) lineItems.push({ variant_id: parseInt(numericId, 10), quantity: 1 });
+  (meta.addon_variant_ids || '').split(',').filter(Boolean).forEach(function(gid) {
+    const id = gid.split('/').pop();
+    if (id) lineItems.push({ variant_id: parseInt(id, 10), quantity: 1 });
   });
 
-  // Add free gifts (at $0 — MINDORGIFT discount applied in Shopify)
-  const giftGids = (meta.gift_variant_ids || '').split(',').filter(Boolean);
-  giftGids.forEach(function(gid) {
-    const numericId = gid.split('/').pop();
-    if (numericId) lineItems.push({ variant_id: parseInt(numericId, 10), quantity: 1, price: '0.00' });
+  // Add free gifts at $0
+  (meta.gift_variant_ids || '').split(',').filter(Boolean).forEach(function(gid) {
+    const id = gid.split('/').pop();
+    if (id) lineItems.push({ variant_id: parseInt(id, 10), quantity: 1, price: '0.00' });
   });
 
   if (lineItems.length === 0) {
-    console.error('[webhook] No variant IDs in metadata for sub', invoice.subscription);
-    return res.status(200).json({ ok: true, note: 'no variant ids — check subscription metadata' });
+    console.error('[webhook] no variant IDs for sub', invoice.subscription);
+    return res.status(200).json({ ok: true, note: 'no variant ids' });
   }
 
-  const draftOrderPayload = {
+  // Build shipping address from metadata saved at checkout.session.completed
+  let shippingAddress = null;
+  if (meta.ship_line1) {
+    const nameParts = (meta.ship_name || '').split(' ');
+    shippingAddress = {
+      first_name: nameParts[0] || '',
+      last_name:  nameParts.slice(1).join(' ') || '',
+      address1:   meta.ship_line1 || '',
+      address2:   meta.ship_line2 || '',
+      city:       meta.ship_city  || '',
+      province:   meta.ship_state || '',
+      zip:        meta.ship_zip   || '',
+      country:    meta.ship_country || 'US'
+    };
+  }
+
+  const flavorLabel = flavors.map(f => f.replace(/-/g, ' ')).join(', ');
+  const note = [
+    'Mindor Auto-Ship — Stripe sub ' + invoice.subscription,
+    'Invoice: ' + invoice.id,
+    'Flavor(s): ' + flavorLabel,
+    'Qty: ' + qty
+  ].join(' | ');
+
+  const draftPayload = {
     line_items: lineItems,
     email,
-    note: 'Mindor Auto-Ship — Stripe sub ' + invoice.subscription + ' | Invoice ' + invoice.id,
+    note,
     tags: 'subscription,auto-ship,mindor-monthly',
-    send_receipt: true
+    send_receipt: true,
+    ...(shippingAddress ? { shipping_address: shippingAddress } : {})
   };
-
-  if (shippingAddress) {
-    draftOrderPayload.shipping_address = shippingAddress;
-  }
 
   const shopifyRes = await fetch(
     `https://${process.env.SHOPIFY_DOMAIN}/admin/api/2024-01/draft_orders.json`,
@@ -112,17 +146,17 @@ export default async function handler(req, res) {
         'Content-Type': 'application/json',
         'X-Shopify-Access-Token': process.env.SHOPIFY_ADMIN_TOKEN
       },
-      body: JSON.stringify({ draft_order: draftOrderPayload })
+      body: JSON.stringify({ draft_order: draftPayload })
     }
   );
 
   if (!shopifyRes.ok) {
     const errText = await shopifyRes.text();
     console.error('[webhook] Shopify draft order failed:', errText);
-    return res.status(500).json({ error: 'Shopify draft order creation failed' });
+    return res.status(500).json({ error: 'Shopify draft order failed' });
   }
 
   const shopifyData = await shopifyRes.json();
-  console.log('[webhook] Draft order created:', shopifyData.draft_order?.id);
+  console.log('[webhook] Draft order created:', shopifyData.draft_order?.id, '| flavor:', flavorLabel);
   return res.status(200).json({ ok: true, draftOrderId: shopifyData.draft_order?.id });
 }

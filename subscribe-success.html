@@ -83,7 +83,7 @@
     <div class="check">✓</div>
     <h1>You're Subscribed.</h1>
     <p class="sub-line">First tub ships within 24–48 hours.</p>
-    <p>Your monthly auto-ship is confirmed at $28.04/mo. We'll charge your card and ship a fresh tub every 30 days. Cancel anytime.</p>
+    <p>Your monthly auto-ship is confirmed at $31.44/mo. We'll charge your card and ship a fresh tub every 30 days. Cancel anytime.</p>
     <div class="detail-box">
       <div class="detail-row">
         <span class="detail-label">Plan</span>
@@ -91,7 +91,7 @@
       </div>
       <div class="detail-row">
         <span class="detail-label">Price</span>
-        <span class="detail-value">$28.04/mo per tub</span>
+        <span class="detail-value">$31.44/mo per tub</span>
       </div>
       <div class="detail-row">
         <span class="detail-label">Next charge</span>
@@ -104,6 +104,24 @@
     next.setDate(next.getDate() + 30);
     var el = document.getElementById('detailNext');
     if (el) el.textContent = next.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+    // If addons/gifts were selected, redirect to Shopify after a short delay
+    var params = new URLSearchParams(window.location.search);
+    var checkoutUrl = params.get('checkout');
+    if (checkoutUrl) {
+      var decoded = decodeURIComponent(checkoutUrl);
+      // Show a small note
+      var note = document.createElement('p');
+      note.style.cssText = 'margin-top:24px;font-size:13px;color:#6A7A5A;';
+      note.textContent = 'Completing your add-ons in 3 seconds…';
+      document.querySelector('.card').appendChild(note);
+      var count = 3;
+      var iv = setInterval(function() {
+        count--;
+        note.textContent = 'Completing your add-ons in ' + count + ' second' + (count !== 1 ? 's' : '') + '…';
+        if (count <= 0) { clearInterval(iv); window.location.href = decoded; }
+      }, 1000);
+    }
   </script>
 </body>
 </html>

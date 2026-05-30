@@ -13,7 +13,8 @@ export default async function handler(req, res) {
     flavors = [],
     variantMap = {},
     addonVariantIds = [],
-    giftVariantIds = []
+    giftVariantIds = [],
+    shopifyCheckoutUrl = null  // if addons/gifts were selected, redirect here after Stripe
   } = req.body;
 
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -35,10 +36,12 @@ export default async function handler(req, res) {
     mode: 'subscription',
     ...(email ? { customer_email: email } : {}),
     line_items: [{ price: PRICE_ID, quantity: Number(qty) || 1 }],
-    // Collect shipping so webhook can fulfill the first order
     shipping_address_collection: { allowed_countries: ['US', 'CA', 'GB', 'AU'] },
-    success_url: `${origin}/subscribe-success?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url:  `${origin}/lander`,
+    // If addons/gifts were selected, pass Shopify checkout URL so subscribe-success can redirect
+    success_url: shopifyCheckoutUrl
+      ? `${origin}/subscribe-success?checkout=${encodeURIComponent(shopifyCheckoutUrl)}&session_id={CHECKOUT_SESSION_ID}`
+      : `${origin}/subscribe-success?session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: `${origin}/lander`,
     subscription_data: { metadata: meta }
     // No trial — first charge is immediate (Stripe IS the payment for tub 1)
   });
