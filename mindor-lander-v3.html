@@ -734,9 +734,12 @@
   }
   .switcher-wrap {
     margin-bottom: 28px;
+    display: flex;
+    justify-content: center;
   }
   .switcher {
-    display: inline-flex;
+    display: flex;
+    width: 100%;
     background: var(--surface);
     border: 1px solid var(--border-subtle);
     border-radius: 100px;
@@ -769,6 +772,8 @@
     cursor: pointer;
     position: relative;
     z-index: 1;
+    flex: 1;
+    text-align: center;
     transition: color 0.22s ease;
     -webkit-tap-highlight-color: transparent;
     white-space: nowrap;
@@ -869,7 +874,7 @@
     margin: 0;
   }
 
-  /* Focus Arc */
+  /* Focus Arc — Vertical Timeline */
   .focus-arc-wrap {
     margin-top: 52px;
   }
@@ -880,69 +885,103 @@
     letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--text-dim);
-    margin-bottom: 20px;
+    margin-bottom: 28px;
   }
-  .focus-arc-svg {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
-  .arc-path {
-    stroke-dasharray: 720;
-    stroke-dashoffset: 720;
-    transition: stroke-dashoffset 1.2s ease-out;
-  }
-  .arc-path.animated { stroke-dashoffset: 0; }
-  @media (prefers-reduced-motion: reduce) {
-    .arc-path { stroke-dashoffset: 0; transition: none; }
-    .arc-dot { opacity: 1 !important; }
-    .arc-labels li { opacity: 1 !important; transform: none !important; }
-  }
-  .arc-dot {
-    opacity: 0;
-    transition: opacity 0.4s ease;
-  }
-  .arc-dot.visible { opacity: 1; }
-  .arc-labels {
-    list-style: none;
-    margin-top: 28px;
+  /* Coffee spike indicator */
+  .vtl-coffee {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    align-items: center;
   }
-  .arc-labels li {
+  .vtl-coffee-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(239,100,70,0.85);
+    margin-bottom: 8px;
+    text-align: center;
+  }
+  .vtl-coffee-bar {
+    width: 3px;
+    height: 44px;
+    background: linear-gradient(to bottom, transparent, rgba(239,80,55,0.9) 45%, rgba(239,80,55,0.9) 80%, var(--execution-green));
+    border-radius: 999px 999px 0 0;
+  }
+  /* Vertical timeline */
+  .vtl {
+    position: relative;
     display: flex;
-    align-items: flex-start;
-    gap: 14px;
+    flex-direction: column;
+  }
+  .vtl::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    transform: translateX(-50%);
+    background: linear-gradient(to bottom, var(--execution-green) 0%, rgba(226,255,71,0.3) 100%);
+    border-radius: 0 0 999px 999px;
+  }
+  .vtl-item {
+    display: grid;
+    grid-template-columns: 1fr 20px 1fr;
+    align-items: center;
+    min-height: 80px;
+    padding: 20px 0;
+    position: relative;
+    z-index: 1;
     opacity: 0;
     transform: translateY(8px);
-    transition: opacity 0.4s ease, transform 0.4s ease;
+    transition: opacity 0.45s ease, transform 0.45s ease;
   }
-  .arc-labels li.visible { opacity: 1; transform: none; }
-  .arc-num {
+  .vtl-item.visible { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .vtl-item { opacity: 1; transform: none; transition: none; }
+  }
+  .vtl-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--execution-green);
+    border: 3px solid var(--bg);
+    box-shadow: 0 0 0 2px var(--execution-green);
+    justify-self: center;
+  }
+  .vtl-content {
+    padding: 0 14px;
+  }
+  .vtl-item.vtl-left .vtl-content { text-align: right; }
+  .vtl-item.vtl-right .vtl-content { text-align: left; }
+  .vtl-num {
     font-family: 'Barlow Condensed', sans-serif;
     font-weight: 900;
-    font-size: 30px;
+    font-size: 28px;
     color: var(--execution-green);
     line-height: 1;
-    min-width: 30px;
+    display: block;
+    margin-bottom: 2px;
   }
-  .arc-label-copy strong {
+  .vtl-content strong {
     font-family: 'Barlow Condensed', sans-serif;
     font-weight: 700;
-    font-size: 16px;
+    font-size: 15px;
     color: var(--text-primary);
     display: block;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     line-height: 1.2;
-    margin-bottom: 3px;
+    margin-bottom: 4px;
   }
-  .arc-label-copy span {
+  .vtl-content span {
     font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
+    font-size: 12px;
     color: var(--fog-grey);
     line-height: 1.5;
+    display: block;
   }
   .arc-closing {
     font-family: 'Barlow Condensed', sans-serif;
@@ -1853,6 +1892,291 @@
     max-width: 640px;
   }
 
+  /* ===== HOW TO USE IT (Section 9) ===== */
+  #how-to-use {
+    background: var(--surface);
+    padding: 64px 0 72px;
+    border-top: 0.5px solid var(--border-subtle);
+  }
+  @media (min-width: 768px) { #how-to-use { padding: 100px 0 108px; } }
+
+  .htu-hero {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto 52px;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 0.5px solid var(--border);
+    background: var(--surface2);
+    position: relative;
+    aspect-ratio: 4/3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .htu-hero-glass {
+    position: relative;
+    width: 110px;
+    height: 160px;
+    border-radius: 8px 8px 12px 12px;
+    border: 1.5px solid rgba(235,255,71,0.22);
+    background: linear-gradient(180deg, rgba(235,255,71,0.08) 0%, rgba(235,255,71,0.03) 60%, rgba(235,255,71,0.06) 100%);
+    backdrop-filter: blur(6px);
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.45), inset 0 0 20px rgba(235,255,71,0.04);
+  }
+  .htu-hero-liquid {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 55%;
+    background: linear-gradient(180deg, rgba(226,255,71,0.28) 0%, rgba(180,220,40,0.55) 100%);
+    border-radius: 0 0 10px 10px;
+  }
+  .htu-hero-liquid::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 0;
+    right: 0;
+    height: 14px;
+    background: radial-gradient(ellipse at 50% 0%, rgba(235,255,71,0.4) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .htu-hero-shine {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 18px;
+    height: 60px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 100%);
+    border-radius: 20px;
+    transform: rotate(-10deg);
+  }
+  .htu-hero-label {
+    position: absolute;
+    bottom: 16px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(226,255,71,0.55);
+  }
+  .htu-hero-glow {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(226,255,71,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .htu-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .htu-step {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    background: var(--surface2);
+    border: 0.5px solid var(--border-subtle);
+    border-radius: 6px;
+    padding: 24px;
+    transition: border-color 0.2s ease;
+  }
+  .htu-step:hover { border-color: var(--border); }
+  .htu-step-num {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba(235,255,71,0.35);
+    background: rgba(235,255,71,0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    color: var(--execution-green);
+    line-height: 1;
+  }
+  .htu-step-body { flex: 1; }
+  .htu-step-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--text-primary);
+    line-height: 1.2;
+    margin-bottom: 8px;
+    letter-spacing: 0.01em;
+  }
+  .htu-step-text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--fog-grey);
+    line-height: 1.7;
+    margin: 0;
+  }
+  .htu-step-text strong {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+  .htu-step-note {
+    display: inline-block;
+    margin-top: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-style: italic;
+    line-height: 1.6;
+  }
+
+  .htu-expect {
+    background: rgba(226,255,71,0.04);
+    border: 0.5px solid var(--border);
+    border-radius: 6px;
+    padding: 28px 24px;
+    margin-bottom: 16px;
+  }
+  .htu-expect-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--execution-green);
+    margin-bottom: 14px;
+  }
+  .htu-expect-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  @media (min-width: 640px) {
+    .htu-expect-inner {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 28px;
+    }
+  }
+  .htu-expect-stat {
+    flex-shrink: 0;
+    text-align: center;
+  }
+  .htu-expect-number {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 52px;
+    color: var(--execution-green);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .htu-expect-number-sub {
+    display: block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+  .htu-expect-divider {
+    display: none;
+  }
+  @media (min-width: 640px) {
+    .htu-expect-divider {
+      display: block;
+      width: 0.5px;
+      background: var(--border-subtle);
+      align-self: stretch;
+      flex-shrink: 0;
+    }
+  }
+  .htu-expect-text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--fog-grey);
+    line-height: 1.7;
+  }
+  .htu-expect-text strong {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  .htu-week {
+    background: var(--surface2);
+    border: 0.5px solid var(--border-subtle);
+    border-radius: 6px;
+    padding: 24px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .htu-week-icon {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    background: rgba(235,255,71,0.07);
+    border: 0.5px solid rgba(235,255,71,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+  }
+  .htu-week-body { flex: 1; }
+  .htu-week-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .htu-week-text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13.5px;
+    color: var(--fog-grey);
+    line-height: 1.7;
+  }
+  .htu-week-text strong {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+  .htu-caffeine-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+  .htu-caffeine-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.04);
+    border: 0.5px solid var(--border-subtle);
+    border-radius: 100px;
+    padding: 5px 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11.5px;
+    color: var(--fog-grey);
+  }
+  .htu-caffeine-pill b {
+    color: var(--execution-green);
+    font-weight: 600;
+  }
+
   /* ===== FINAL CTA (Section 9) ===== */
   #final-cta {
     background: linear-gradient(170deg, #243018, #161A0C, #0E1208);
@@ -2438,16 +2762,16 @@
 
     <!-- Interactive compare switcher -->
     <div class="switcher-wrap">
-      <div class="switcher" id="compareSwitcher" data-active="mindor" role="tablist" aria-label="Compare Mindor vs Others">
+      <div class="switcher" id="compareSwitcher" data-active="others" role="tablist" aria-label="Compare Mindor vs Others">
         <div class="switcher-track" id="switcherTrack" aria-hidden="true"></div>
-        <button class="switcher-btn" data-side="mindor" role="tab" aria-selected="true" aria-controls="comparePanel">Mindor</button>
-        <button class="switcher-btn" data-side="others" role="tab" aria-selected="false" aria-controls="comparePanel">Others</button>
+        <button class="switcher-btn" data-side="mindor" role="tab" aria-selected="false" aria-controls="comparePanel">Mindor</button>
+        <button class="switcher-btn" data-side="others" role="tab" aria-selected="true" aria-controls="comparePanel">Others</button>
       </div>
     </div>
 
     <div class="compare-panel" id="comparePanel">
       <!-- MINDOR steps -->
-      <div class="compare-steps mindor-steps active" id="mindorSteps">
+      <div class="compare-steps mindor-steps" id="mindorSteps">
         <div class="compare-step">
           <span class="compare-step-num">1</span>
           <div class="compare-step-copy">
@@ -2465,7 +2789,7 @@
       </div>
 
       <!-- OTHERS steps -->
-      <div class="compare-steps others-steps" id="othersSteps">
+      <div class="compare-steps others-steps active" id="othersSteps">
         <div class="compare-step">
           <span class="compare-step-num">1</span>
           <div class="compare-step-copy">
@@ -2483,59 +2807,46 @@
       </div>
     </div>
 
-    <!-- Focus Arc graphic -->
+    <!-- Focus Arc vertical timeline -->
     <div class="focus-arc-wrap">
       <p class="focus-arc-label">The Focus Arc &mdash; what the Steady Base produces</p>
-      <div class="focus-arc-svg-wrap">
-        <svg id="focusArcSvg" class="focus-arc-svg" viewBox="0 0 560 110" fill="none" aria-hidden="true">
-          <!-- Baseline -->
-          <line x1="20" y1="98" x2="540" y2="98" stroke="rgba(200,201,184,0.12)" stroke-width="0.5"/>
-          <!-- Time axis labels -->
-          <text x="20" y="108" font-size="10" fill="rgba(200,201,184,0.35)" font-family="DM Sans,sans-serif" text-anchor="middle">7am</text>
-          <text x="280" y="108" font-size="10" fill="rgba(200,201,184,0.35)" font-family="DM Sans,sans-serif" text-anchor="middle">12pm</text>
-          <text x="540" y="108" font-size="10" fill="rgba(200,201,184,0.35)" font-family="DM Sans,sans-serif" text-anchor="middle">3pm</text>
-          <!-- Coffee spike reference -->
-          <polyline points="80,96 95,30 110,96" stroke="rgba(255,255,255,0.55)" stroke-width="2" fill="none" stroke-dasharray="4,3"/>
-          <text x="95" y="18" font-size="10" font-weight="700" fill="rgba(255,255,255,0.65)" font-family="DM Sans,sans-serif" text-anchor="middle">COFFEE</text>
-          <text x="95" y="107" font-size="9" fill="rgba(255,120,60,0.85)" font-family="DM Sans,sans-serif" text-anchor="middle">SPIKE &amp; CRASH</text>
-          <!-- vs separator -->
-          <text x="137" y="60" font-size="9" font-weight="600" fill="rgba(200,201,184,0.3)" font-family="DM Sans,sans-serif" text-anchor="middle">vs</text>
-          <!-- Main arc path -->
-          <path id="arcPath" class="arc-path"
-            d="M 160,96 C 185,94 198,16 220,12 L 380,12 C 402,16 415,94 440,96"
-            stroke="var(--execution-green)" stroke-width="2.5" stroke-linecap="round"/>
-          <!-- Mindor label above plateau -->
-          <text x="300" y="6" font-size="10" font-weight="700" fill="var(--execution-green)" font-family="DM Sans,sans-serif" text-anchor="middle" opacity="0.85">MINDOR</text>
-          <!-- Marker dots -->
-          <circle id="arcDot0" class="arc-dot" cx="220" cy="12" r="4.5" fill="var(--execution-green)"/>
-          <circle id="arcDot1" class="arc-dot" cx="300" cy="12" r="4.5" fill="var(--execution-green)"/>
-          <circle id="arcDot2" class="arc-dot" cx="380" cy="12" r="4.5" fill="var(--execution-green)"/>
-        </svg>
+
+      <div class="vtl-coffee">
+        <p class="vtl-coffee-label">Coffee &mdash; Spike &amp; Crash</p>
+        <div class="vtl-coffee-bar"></div>
       </div>
 
-      <ul class="arc-labels" id="arcLabels">
-        <li id="arcLbl0">
-          <span class="arc-num">1</span>
-          <div class="arc-label-copy">
+      <div class="vtl" id="arcLabels">
+        <div class="vtl-item vtl-left" id="arcLbl0">
+          <div class="vtl-content">
+            <span class="vtl-num">1</span>
             <strong>Clean On-Ramp</strong>
             <span>Focus comes up gradually. You're sharp in about 20 minutes.</span>
           </div>
-        </li>
-        <li id="arcLbl1">
-          <span class="arc-num">2</span>
-          <div class="arc-label-copy">
+          <div class="vtl-dot"></div>
+          <div></div>
+        </div>
+
+        <div class="vtl-item vtl-right" id="arcLbl1">
+          <div></div>
+          <div class="vtl-dot"></div>
+          <div class="vtl-content">
+            <span class="vtl-num">2</span>
             <strong>Stable Plateau</strong>
             <span>You hold there for three to four hours.</span>
           </div>
-        </li>
-        <li id="arcLbl2">
-          <span class="arc-num">3</span>
-          <div class="arc-label-copy">
+        </div>
+
+        <div class="vtl-item vtl-left" id="arcLbl2">
+          <div class="vtl-content">
+            <span class="vtl-num">3</span>
             <strong>Soft Landing</strong>
             <span>It fades the way it arrived. No wall. No tense afternoon.</span>
           </div>
-        </li>
-      </ul>
+          <div class="vtl-dot"></div>
+          <div></div>
+        </div>
+      </div>
 
       <p class="arc-closing">Coffee gives you a spike. The Steady Base gives you a window.</p>
     </div>
@@ -2553,7 +2864,7 @@
     <div class="inositol-card">
       <span class="inositol-badge">The Steady Base</span>
       <h3 class="inositol-title">Inositol &mdash; 600mg</h3>
-      <p class="inositol-body">This is the layer most people have never heard of, and it's the reason Mindor works differently. Inositol supports a calm, steady focus state. The level baseline the rest of the formula is built on top of. Most focus drinks don't include it at all. It's the floor under everything else.</p>
+      <p class="inositol-body">Inositol supports the receiving end of your focus: the part your brain uses to turn signals into clean, usable attention. At 600mg, it backs up the same systems Alpha-GPC and caffeine are driving, so the alertness lands on a brain that can actually hold it.</p>
     </div>
 
     <!-- Standard ingredient grid -->
@@ -2958,7 +3269,85 @@
 </section>
 
 
-<!-- ===== SECTION 9 — FINAL CTA ===== -->
+<!-- ===== SECTION 9 — HOW TO USE IT ===== -->
+<section id="how-to-use">
+  <div class="container">
+    <span class="section-label">How To Use It</span>
+
+    <!-- Glass visual -->
+    <div class="htu-hero">
+      <div class="htu-hero-glow"></div>
+      <div class="htu-hero-glass">
+        <div class="htu-hero-shine"></div>
+        <div class="htu-hero-liquid"></div>
+      </div>
+      <span class="htu-hero-label">One scoop. One glass.</span>
+    </div>
+
+    <!-- Three steps -->
+    <div class="htu-steps">
+
+      <div class="htu-step">
+        <div class="htu-step-num">1</div>
+        <div class="htu-step-body">
+          <div class="htu-step-title">Mix one scoop into a full glass of water.</div>
+          <p class="htu-step-text">Mindor blends fully &mdash; <strong>no chunks, no residue</strong> at the bottom of the glass.</p>
+        </div>
+      </div>
+
+      <div class="htu-step">
+        <div class="htu-step-num">2</div>
+        <div class="htu-step-body">
+          <div class="htu-step-title">Drink it like a juice &mdash; slowly.</div>
+          <p class="htu-step-text">The taste is smooth and a little tart. Closer to a real drink than a supplement. <strong>Sip it over 30&ndash;60 minutes</strong> instead of slamming it.</p>
+          <span class="htu-step-note">The focus comes on cleaner that way, and it holds longer.</span>
+        </div>
+      </div>
+
+      <div class="htu-step">
+        <div class="htu-step-num">3</div>
+        <div class="htu-step-body">
+          <div class="htu-step-title">Have something in your stomach first.</div>
+          <p class="htu-step-text">Even <strong>half a banana or a piece of toast</strong> is enough. Mindor on a fully empty stomach can sit heavy or bring on a small headache.</p>
+          <span class="htu-step-note">Not for everyone, but enough people that it&rsquo;s worth saying up front.</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- What to expect -->
+    <div class="htu-expect">
+      <div class="htu-expect-eyebrow">What to expect</div>
+      <div class="htu-expect-inner">
+        <div class="htu-expect-stat">
+          <div class="htu-expect-number">89%</div>
+          <span class="htu-expect-number-sub">Verified buyers</span>
+        </div>
+        <div class="htu-expect-divider"></div>
+        <div class="htu-expect-text">
+          The window opens about <strong>20 minutes in</strong>. You won&rsquo;t feel it, but you&rsquo;ll notice the difference. 89% of verified buyers claimed to achieve <strong>4+ hours of clean focus</strong> from a single scoop &mdash; then it fades off the same way it arrived. That&rsquo;s the Focus Arc working as it should.
+        </div>
+      </div>
+    </div>
+
+    <!-- After the first week -->
+    <div class="htu-week">
+      <div class="htu-week-icon">&#x1F4C5;</div>
+      <div class="htu-week-body">
+        <div class="htu-week-eyebrow">After the first week</div>
+        <p class="htu-week-text">Once you know how your body responds, some people build up to <strong>two scoops on heavy work days</strong> &mdash; taken slowly, in a larger bottle of water, with food. Two is the ceiling we&rsquo;d recommend in a single sitting.</p>
+        <div class="htu-caffeine-row">
+          <span class="htu-caffeine-pill"><b>1 scoop</b> &rarr; 100mg caffeine (strong coffee)</span>
+          <span class="htu-caffeine-pill"><b>2 scoops</b> &rarr; 200mg caffeine (your ceiling)</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ===== SECTION 10 — FINAL CTA ===== -->
 <section id="final-cta">
   <div class="container">
     <h2 class="final-headline">Put a floor under it.</h2>
@@ -3605,18 +3994,14 @@ var arcAnimated = false;
 var arcObs = new IntersectionObserver(function(entries) {
   if (!entries[0].isIntersecting || arcAnimated) return;
   arcAnimated = true;
-  var path = document.getElementById('arcPath');
-  if (path) path.classList.add('animated');
-  var delays = [650, 950, 1200];
+  var delays = [0, 300, 600];
   [0,1,2].forEach(function(i) {
     setTimeout(function() {
-      var dot = document.getElementById('arcDot' + i);
       var lbl = document.getElementById('arcLbl' + i);
-      if (dot) dot.classList.add('visible');
       if (lbl) lbl.classList.add('visible');
     }, delays[i]);
   });
-}, { threshold: 0.3 });
+}, { threshold: 0.25 });
 var steadyEl = document.getElementById('steady-base');
 if (steadyEl) arcObs.observe(steadyEl);
 
@@ -3624,6 +4009,7 @@ if (steadyEl) arcObs.observe(steadyEl);
 (function() {
   var switcher = document.getElementById('compareSwitcher');
   var track = document.getElementById('switcherTrack');
+  var panel = document.getElementById('comparePanel');
   var mindorSteps = document.getElementById('mindorSteps');
   var othersSteps = document.getElementById('othersSteps');
   if (!switcher) return;
@@ -3637,9 +4023,10 @@ if (steadyEl) arcObs.observe(steadyEl);
 
   var btns = switcher.querySelectorAll('.switcher-btn');
 
-  // Init track size on first render
-  var initBtn = switcher.querySelector('.switcher-btn[data-side="mindor"]');
-  requestAnimationFrame(function() { setTrackToBtn(initBtn); });
+  // Init track to current active side
+  var initSide = switcher.getAttribute('data-active') || 'others';
+  var initBtn = switcher.querySelector('.switcher-btn[data-side="' + initSide + '"]');
+  requestAnimationFrame(function() { if (initBtn) setTrackToBtn(initBtn); });
 
   btns.forEach(function(btn) {
     btn.addEventListener('click', function() {
@@ -3652,30 +4039,39 @@ if (steadyEl) arcObs.observe(steadyEl);
       // Swap ARIA
       btns.forEach(function(b) { b.setAttribute('aria-selected', b === btn ? 'true' : 'false'); });
 
-      // Animate out
-      leaving.classList.remove('active');
-      leaving.classList.add('exiting');
-      leaving.style.height = leaving.offsetHeight + 'px';
+      // Lock panel height to prevent jump during position swap
+      if (panel) panel.style.height = panel.offsetHeight + 'px';
 
-      // Reset entering step opacities so stagger re-fires
+      // Zero out entering steps instantly (no transition) so stagger re-fires
       entering.querySelectorAll('.compare-step').forEach(function(s) {
+        s.style.transitionDuration = '0s';
         s.style.opacity = '0';
         s.style.transform = 'translateY(10px)';
       });
 
+      // Swap simultaneously: leaving exits (absolute), entering activates (relative)
+      leaving.classList.remove('active');
+      leaving.classList.add('exiting');
+      entering.classList.add('active');
       switcher.setAttribute('data-active', side);
       setTrackToBtn(btn);
 
+      // Re-enable transitions on next frame so stagger animates in
+      requestAnimationFrame(function() {
+        requestAnimationFrame(function() {
+          entering.querySelectorAll('.compare-step').forEach(function(s) {
+            s.style.transitionDuration = '';
+            s.style.opacity = '';
+            s.style.transform = '';
+          });
+        });
+      });
+
+      // Cleanup after transition completes
       setTimeout(function() {
         leaving.classList.remove('exiting');
-        leaving.style.height = '';
-        entering.classList.add('active');
-        // Re-enable CSS transitions for step stagger
-        entering.querySelectorAll('.compare-step').forEach(function(s) {
-          s.style.opacity = '';
-          s.style.transform = '';
-        });
-      }, 120);
+        if (panel) panel.style.height = '';
+      }, 350);
     });
   });
 })();
