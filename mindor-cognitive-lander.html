@@ -165,9 +165,680 @@
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
     }
+
+    /* ── NAV ── */
+    .site-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 16px 0;
+      transition: background 0.2s, box-shadow 0.2s;
+    }
+    .site-nav.scrolled {
+      background: rgba(236,242,251,0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 1px 0 var(--border), var(--shadow-sm);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .nav-wordmark {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 26px;
+      color: var(--sprint-blue);
+      letter-spacing: 0.04em;
+      line-height: 1;
+    }
+    .nav-cta {
+      display: inline-block;
+      background: var(--sprint-blue);
+      color: #fff;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 14px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 10px 24px;
+      border-radius: 3px;
+      text-decoration: none;
+      transition: opacity 0.15s, transform 0.15s;
+      box-shadow: var(--shadow-sm);
+    }
+    .nav-cta:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 140px 0 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -80px; left: 50%;
+      transform: translateX(-50%);
+      width: 800px; height: 600px;
+      background: radial-gradient(ellipse at 50% 30%, rgba(74,107,212,0.10) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; right: -100px;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(155,127,224,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-eyebrow { margin-bottom: 20px; }
+    .hero-headline {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: clamp(52px, 9vw, 88px);
+      color: var(--text-primary);
+      line-height: 0.92;
+      letter-spacing: -0.01em;
+      margin-bottom: 18px;
+      position: relative;
+    }
+    .hero-headline span { color: var(--sprint-blue); }
+    .hero-subhead {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: clamp(20px, 3vw, 28px);
+      color: var(--fog-grey);
+      line-height: 1.1;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      margin-bottom: 20px;
+    }
+    .hero-body {
+      max-width: 580px;
+      margin: 0 auto 32px;
+      font-size: 16px;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+    .hero-stars {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 36px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .hero-stars-icons { color: #F5A623; font-size: 15px; letter-spacing: 1px; }
+    .hero-img-wrap {
+      margin: 0 auto 40px;
+      max-width: 420px;
+      position: relative;
+    }
+    .hero-img-placeholder {
+      width: 100%;
+      aspect-ratio: 1;
+      background: linear-gradient(170deg, #D0DCF0 0%, #C2CDE8 60%, #B8C4E2 100%);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-lg);
+      border: 0.5px solid rgba(74,107,212,0.20);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-img-placeholder::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 40% 30%, rgba(255,255,255,0.25) 0%, transparent 60%);
+    }
+    .hero-img-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      color: rgba(26,32,64,0.4);
+      text-transform: uppercase;
+      text-align: center;
+      padding: 20px;
+      line-height: 1.5;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-trust-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+    }
+    .hero-trust-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+    .hero-trust-icon {
+      width: 16px;
+      height: 16px;
+      background: rgba(74,107,212,0.15);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .hero-trust-icon svg { width: 9px; height: 9px; }
+
+    /* ── TRUST BAR ── */
+    .trust-bar {
+      background: var(--deep-work-black);
+      padding: 28px 0;
+      border-top: 0.5px solid rgba(74,107,212,0.20);
+      border-bottom: 0.5px solid rgba(74,107,212,0.20);
+    }
+    .trust-bar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .trust-bar-label {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.30);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .trust-bar-logos {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      flex-wrap: wrap;
+      flex: 1;
+    }
+    .trust-bar-logo-placeholder {
+      height: 20px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 16px;
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      color: rgba(255,255,255,0.25);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .trust-bar-metric {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .trust-bar-metric-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 22px;
+      color: var(--sprint-blue);
+      line-height: 1;
+    }
+    .trust-bar-metric-label {
+      font-size: 11px;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.3;
+      max-width: 80px;
+    }
+
+    /* ── PROBLEM ── */
+    .problem-section {
+      padding: 96px 0;
+      background: var(--surface);
+      position: relative;
+      overflow: hidden;
+    }
+    .problem-section::before {
+      content: '';
+      position: absolute;
+      top: -100px; right: -120px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(155,127,224,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .problem-header { margin-bottom: 56px; }
+    .problem-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .problem-card {
+      background: var(--bg);
+      border: 0.5px solid var(--border);
+      border-radius: 6px;
+      padding: 32px 28px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .problem-card:hover { border-color: var(--border-accent); transform: translateY(-2px); }
+    .problem-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--sprint-blue), transparent);
+      opacity: 0.5;
+    }
+    .problem-card-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 48px;
+      color: rgba(74,107,212,0.12);
+      line-height: 1;
+      margin-bottom: 16px;
+      display: block;
+    }
+    .problem-card-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 22px;
+      color: var(--text-primary);
+      line-height: 1.05;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .problem-card-body { font-size: 14px; color: var(--text-muted); line-height: 1.65; }
+    .problem-pivot {
+      margin-top: 56px;
+      padding: 28px 32px;
+      background: rgba(74,107,212,0.06);
+      border: 0.5px solid var(--border-accent);
+      border-radius: 6px;
+      max-width: 680px;
+    }
+    .problem-pivot p { font-size: 15px; color: var(--text-muted); line-height: 1.7; }
+    .problem-pivot p + p { margin-top: 10px; }
+
+    /* ── INGREDIENTS ── */
+    .ingredients-section { padding: 96px 0; }
+    .ingredients-header { margin-bottom: 16px; }
+    .ingredients-intro {
+      max-width: 560px;
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 52px;
+    }
+    .ingredients-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .ingredient-card {
+      background: var(--surface);
+      border: 0.5px solid var(--border);
+      border-radius: 6px;
+      padding: 28px 24px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      position: relative;
+    }
+    .ingredient-card:hover { border-color: var(--border-accent); box-shadow: var(--shadow-md); }
+    .ingredient-icon-placeholder {
+      width: 40px; height: 40px;
+      background: rgba(74,107,212,0.10);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      font-size: 8px;
+      font-weight: 600;
+      color: var(--text-dim);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .ingredient-dose-badge {
+      display: inline-block;
+      background: var(--sprint-blue);
+      color: #fff;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.06em;
+      padding: 3px 10px;
+      border-radius: 2px;
+      margin-bottom: 10px;
+    }
+    .ingredient-role {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+      display: block;
+    }
+    .ingredient-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 20px;
+      color: var(--text-primary);
+      line-height: 1.05;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .ingredient-body { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+    .ingredients-label-note {
+      margin-top: 32px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+    .ingredients-label-note svg { flex-shrink: 0; }
+
+    /* ── MECHANISM ── */
+    .mechanism-section {
+      padding: 96px 0;
+      background: var(--surface);
+      position: relative;
+      overflow: hidden;
+    }
+    .mechanism-section::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; left: -80px;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(74,107,212,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .mechanism-header { margin-bottom: 56px; }
+    .mechanism-steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      position: relative;
+    }
+    .mechanism-steps::before {
+      content: '';
+      position: absolute;
+      top: 28px;
+      left: calc(16.66% + 16px);
+      right: calc(16.66% + 16px);
+      height: 1px;
+      background: linear-gradient(90deg, var(--sprint-blue), rgba(74,107,212,0.3));
+    }
+    .mechanism-step { padding: 0 24px; text-align: center; position: relative; }
+    .mechanism-step-num {
+      width: 56px; height: 56px;
+      background: var(--sprint-blue);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 22px;
+      color: #fff;
+      position: relative;
+      z-index: 1;
+      box-shadow: var(--shadow-md);
+    }
+    .mechanism-step-time {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sprint-blue);
+      margin-bottom: 8px;
+    }
+    .mechanism-step-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 22px;
+      color: var(--text-primary);
+      line-height: 1.05;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .mechanism-step-body { font-size: 13px; color: var(--text-muted); line-height: 1.65; }
+    .mechanism-diagram-placeholder {
+      margin-top: 56px;
+      height: 80px;
+      background: rgba(74,107,212,0.06);
+      border: 0.5px dashed var(--border-accent);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
   </style>
 </head>
 <body>
+
+  <!-- ── NAV ── -->
+  <nav class="site-nav" id="site-nav">
+    <div class="container">
+      <div class="nav-inner">
+        <a href="#" class="nav-logo">
+          <svg width="24" height="17" viewBox="0 0 40 28" fill="none" aria-hidden="true">
+            <path d="M4 22 L10 8 L16 18 L20 10 L24 18 L30 8 L36 22" stroke="#4A6BD4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="nav-wordmark">MINDOR</span>
+        </a>
+        <a href="#order" class="nav-cta">Get Mindor</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <section class="hero" id="hero">
+    <div class="container--narrow">
+      <div class="hero-eyebrow">
+        <span class="badge"><span class="badge-dot"></span>Performance Stack · Est. 2026</span>
+      </div>
+      <h1 class="hero-headline">
+        5 Compounds.<br><span>One Clean</span><br>Cognitive Window.
+      </h1>
+      <p class="hero-subhead">The Focus Stack For People Whose Work Demands Everything From Their Brain.</p>
+      <p class="hero-body">
+        You're doing the kind of work where mental clarity is the whole job. A threat hunt doesn't pause for brain fog. A code review doesn't care that your second cup wore off. You need focus that holds for a real shift — not a 45-minute caffeine spike.
+      </p>
+      <div class="hero-stars">
+        <span class="hero-stars-icons">★★★★★</span>
+        <span>4.9 · 1,200+ cognitive workers</span>
+      </div>
+      <div class="hero-img-wrap">
+        <div class="hero-img-placeholder">
+          <p class="hero-img-label">[PLACEHOLDER: 420×420<br>Product bag hero shot<br>Periwinkle / light bg]</p>
+        </div>
+      </div>
+      <div id="bundle-widget-hero" class="bundle-widget">
+        <!-- Bundle widget injected by Task 13 JS -->
+      </div>
+      <div class="hero-trust-row">
+        <div class="hero-trust-item">
+          <div class="hero-trust-icon">
+            <svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#4A6BD4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          3rd-Party Tested
+        </div>
+        <div class="hero-trust-item">
+          <div class="hero-trust-icon">
+            <svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#4A6BD4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          No Proprietary Blends
+        </div>
+        <div class="hero-trust-item">
+          <div class="hero-trust-icon">
+            <svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#4A6BD4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          Clean Exit · No Crash
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── TRUST BAR ── -->
+  <div class="trust-bar">
+    <div class="container">
+      <div class="trust-bar-inner">
+        <span class="trust-bar-label">As seen in</span>
+        <div class="trust-bar-logos">
+          <div class="trust-bar-logo-placeholder">[PUB LOGO 1]</div>
+          <div class="trust-bar-logo-placeholder">[PUB LOGO 2]</div>
+          <div class="trust-bar-logo-placeholder">[PUB LOGO 3]</div>
+          <div class="trust-bar-logo-placeholder">[PUB LOGO 4]</div>
+        </div>
+        <div class="trust-bar-metric">
+          <span class="trust-bar-metric-num">1,200+</span>
+          <span class="trust-bar-metric-label">Orders Shipped</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PROBLEM ── -->
+  <section class="problem-section">
+    <div class="container">
+      <div class="problem-header">
+        <div class="section-divider"></div>
+        <span class="eyebrow">The Problem</span>
+        <h2 class="section-headline">Your Current Stack Wasn't<br>Designed For This Kind Of Work.</h2>
+      </div>
+      <div class="problem-grid">
+        <div class="problem-card">
+          <span class="problem-card-num">01</span>
+          <p class="problem-card-title">Caffeine Spikes,<br>Doesn't Sustain</p>
+          <p class="problem-card-body">You get 45–60 minutes of sharpness, then the slope starts. By 2pm, you're technically working but producing nothing you'd be proud of. Coffee got you in. It didn't keep you there.</p>
+        </div>
+        <div class="problem-card">
+          <span class="problem-card-num">02</span>
+          <p class="problem-card-title">Jitters Are A<br>Liability Here</p>
+          <p class="problem-card-body">When you're hunting a threat, reviewing a PR, or building a model — scattered isn't just uncomfortable. It's expensive. The kind of work you do punishes overstimulation.</p>
+        </div>
+        <div class="problem-card">
+          <span class="problem-card-num">03</span>
+          <p class="problem-card-title">The Afternoon Drop<br>Doesn't Negotiate</p>
+          <p class="problem-card-body">Your 3pm session gets the worst version of your brain. Not because you're lazy or tired. Because your stimulant routine ran out and you're running the second half of the day on fumes.</p>
+        </div>
+      </div>
+      <div class="problem-pivot">
+        <p>The standard advice is to drink less coffee, sleep more, or meditate. Those things help. But they don't solve the core problem.</p>
+        <p>Your stimulant routine is built from tools designed for physical energy — not sustained cognitive output. There's a difference. And most people in your field feel it every day.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── INGREDIENTS ── -->
+  <section class="ingredients-section" id="ingredients">
+    <div class="container">
+      <div class="ingredients-header">
+        <div class="section-divider"></div>
+        <span class="eyebrow">The Stack</span>
+        <h2 class="section-headline">5 Compounds.<br>Clinically Dosed. Nothing Extra.</h2>
+      </div>
+      <p class="ingredients-intro">Full label. Every dose published. No proprietary blends, no hidden milligrams. You can verify every number on a PubMed search — and we expect you to.</p>
+      <div class="ingredients-grid">
+        <div class="ingredient-card">
+          <div class="ingredient-icon-placeholder">[ICON]</div>
+          <span class="ingredient-dose-badge">100mg</span>
+          <span class="ingredient-role">Alertness Signal</span>
+          <p class="ingredient-name">Green Tea<br>Caffeine</p>
+          <p class="ingredient-body">Supports alertness without the spike of synthetic caffeine. The green tea source metabolizes more evenly — so you get a steadier on-ramp, not a jolt.</p>
+        </div>
+        <div class="ingredient-card">
+          <div class="ingredient-icon-placeholder">[ICON]</div>
+          <span class="ingredient-dose-badge">200mg</span>
+          <span class="ingredient-role">Steadiness Signal</span>
+          <p class="ingredient-name">L-Theanine</p>
+          <p class="ingredient-body">Paired with caffeine to support smooth, steady alertness. The combination is studied for calm focus during demanding tasks. Caffeine gets you started. L-Theanine keeps you steady.</p>
+        </div>
+        <div class="ingredient-card">
+          <div class="ingredient-icon-placeholder">[ICON]</div>
+          <span class="ingredient-dose-badge">300mg</span>
+          <span class="ingredient-role">Cognitive Support</span>
+          <p class="ingredient-name">Alpha-GPC</p>
+          <p class="ingredient-body">A serious cognitive-support ingredient. Supports mental sharpness during demanding work. This is the ingredient that tells skeptical engineers the formula was built with intent, not just caffeine and hope.</p>
+        </div>
+        <div class="ingredient-card">
+          <div class="ingredient-icon-placeholder">[ICON]</div>
+          <span class="ingredient-dose-badge"><!-- [CONFIRM DOSE] --></span>
+          <span class="ingredient-role">Endurance Layer</span>
+          <p class="ingredient-name">Panax Ginseng</p>
+          <p class="ingredient-body">Supports mental stamina on long work days. This isn't the focus spike — it's what helps you stay in the session past hour three. The ingredient that makes the 3pm wall optional.</p>
+        </div>
+        <div class="ingredient-card">
+          <div class="ingredient-icon-placeholder">[ICON]</div>
+          <span class="ingredient-dose-badge"><!-- [CONFIRM DOSE] --></span>
+          <span class="ingredient-role">Infrastructure Layer</span>
+          <p class="ingredient-name">B6 + B12</p>
+          <p class="ingredient-body">Supports normal energy metabolism — how your body converts food into usable energy. Not a stimulant. A baseline support so the rest of the stack has a solid floor to work from.</p>
+        </div>
+      </div>
+      <div class="ingredients-label-note">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#8A9CC0" stroke-width="1"/><path d="M7 6v4M7 4.5v.5" stroke="#8A9CC0" stroke-width="1.2" stroke-linecap="round"/></svg>
+        These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease.
+      </div>
+    </div>
+  </section>
+
+  <!-- ── MECHANISM ── -->
+  <section class="mechanism-section">
+    <div class="container">
+      <div class="mechanism-header">
+        <div class="section-divider"></div>
+        <span class="eyebrow">How It Works</span>
+        <h2 class="section-headline">It Doesn't Push You.<br>It Clears The Floor.</h2>
+      </div>
+      <div class="mechanism-steps">
+        <div class="mechanism-step">
+          <div class="mechanism-step-num">1</div>
+          <p class="mechanism-step-time">20–30 min in</p>
+          <p class="mechanism-step-title">You're On.</p>
+          <p class="mechanism-step-body">Green tea caffeine and L-Theanine begin working. You feel alert — not anxious, not over-caffeinated. The on-ramp is smooth because the stack was designed that way.</p>
+        </div>
+        <div class="mechanism-step">
+          <div class="mechanism-step-num">2</div>
+          <p class="mechanism-step-time">Hours 1–4</p>
+          <p class="mechanism-step-title">The Window Holds.</p>
+          <p class="mechanism-step-body">Alpha-GPC and Ginseng extend your peak. You get 3–5 hours of usable focus — actual output, not the anxious busyness that passes for productivity. The session feels different.</p>
+        </div>
+        <div class="mechanism-step">
+          <div class="mechanism-step-num">3</div>
+          <p class="mechanism-step-time">End of session</p>
+          <p class="mechanism-step-title">Clean Exit.</p>
+          <p class="mechanism-step-body">No cliff. No rebound. No jitteriness at midnight wondering why you can't sleep. The session ends and you're done — tired the way you're supposed to be tired after real work.</p>
+        </div>
+      </div>
+      <div class="mechanism-diagram-placeholder">[PLACEHOLDER: Focus Arc diagram — on-ramp → plateau → clean exit]</div>
+    </div>
+  </section>
 
   <!-- sections go here -->
 
