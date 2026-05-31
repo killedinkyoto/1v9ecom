@@ -637,6 +637,8 @@
       color: var(--text-dim);
       text-transform: uppercase;
     }
+    /* Center last row of 5-card ingredients grid */
+    .ingredients-grid .ingredient-card:nth-child(4) { grid-column-start: 1; }
   </style>
 </head>
 <body>
@@ -788,14 +790,14 @@
         </div>
         <div class="ingredient-card">
           <div class="ingredient-icon-placeholder">[ICON]</div>
-          <span class="ingredient-dose-badge"><!-- [CONFIRM DOSE] --></span>
+          <span class="ingredient-dose-badge">[DOSE TBD]</span>
           <span class="ingredient-role">Endurance Layer</span>
           <p class="ingredient-name">Panax Ginseng</p>
           <p class="ingredient-body">Supports mental stamina on long work days. This isn't the focus spike — it's what helps you stay in the session past hour three. The ingredient that makes the 3pm wall optional.</p>
         </div>
         <div class="ingredient-card">
           <div class="ingredient-icon-placeholder">[ICON]</div>
-          <span class="ingredient-dose-badge"><!-- [CONFIRM DOSE] --></span>
+          <span class="ingredient-dose-badge">[DOSE TBD]</span>
           <span class="ingredient-role">Infrastructure Layer</span>
           <p class="ingredient-name">B6 + B12</p>
           <p class="ingredient-body">Supports normal energy metabolism — how your body converts food into usable energy. Not a stimulant. A baseline support so the rest of the stack has a solid floor to work from.</p>
