@@ -2556,6 +2556,12 @@
       btn.disabled = true;
       const originalText = btn.textContent;
       btn.textContent = 'Loading…';
+      // Re-enable when user navigates back (bfcache restores disabled state)
+      window.addEventListener('pageshow', function reset(e) {
+        btn.disabled = false;
+        btn.textContent = originalText;
+        window.removeEventListener('pageshow', reset);
+      });
       try {
         const productGid = FLAVOR_PRODUCTS[flavor] || FLAVOR_PRODUCTS['cool-grape'];
         const variantId = await resolveVariantId(productGid);
