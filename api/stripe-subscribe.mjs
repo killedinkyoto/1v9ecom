@@ -42,7 +42,7 @@ export default async function handler(req, res) {
     success_url: shopifyCheckoutUrl
       ? `${origin}/subscribe-success?checkout=${encodeURIComponent(shopifyCheckoutUrl)}&session_id={CHECKOUT_SESSION_ID}`
       : `${origin}/subscribe-success?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${origin}/${source === 'cognitive-lander' ? 'cognitive' : 'lander'}`,
+    cancel_url: `${origin}/${source === 'cognitive-lander' ? 'fb/lander/RW' : 'lander'}`,
     subscription_data: { metadata: meta }
     // No trial — first charge is immediate (Stripe IS the payment for tub 1)
   });

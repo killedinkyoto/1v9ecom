@@ -17,6 +17,7 @@
     { "source": "/fb/lander/relaunch", "destination": "/mindor-presales.html" },
     { "source": "/lander", "destination": "/mindor-lander-v3.html" },
     { "source": "/cognitive", "destination": "/mindor-cognitive-lander.html" },
+    { "source": "/fb/lander/RW", "destination": "/mindor-cognitive-lander.html" },
     { "source": "/subscribe-success", "destination": "/subscribe-success.html" }
   ],
   "headers": [
