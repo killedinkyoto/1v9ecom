@@ -1260,24 +1260,15 @@
 }
 
 /* ── ANNOUNCEMENT BAR ── */
-/* ── DISCOUNT BUBBLE ── */
+/* ── DISCOUNT BUBBLE TRIGGER ── */
 .discount-bubble {
   position: fixed;
   bottom: 24px;
   right: 24px;
+  z-index: 300;
 }
 @media (max-width: 768px) {
-  .discount-bubble {
-    bottom: 84px;
-    right: 16px;
-  }
-}
-.discount-bubble {
-  z-index: 300;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 8px;
+  .discount-bubble { bottom: 84px; right: 16px; }
 }
 .discount-bubble-trigger {
   background: var(--sprint-blue);
@@ -1298,77 +1289,105 @@
 }
 .discount-bubble-trigger:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(74,107,212,0.4); }
 .discount-bubble-trigger .bubble-icon { font-size: 15px; }
-.discount-bubble-panel {
-  background: #fff;
-  border: 0.5px solid var(--border-accent);
-  border-radius: 14px;
-  padding: 20px 18px 16px;
-  width: 280px;
-  box-shadow: 0 8px 40px rgba(74,107,212,0.18), 0 2px 8px rgba(74,107,212,0.10);
+
+/* ── DISCOUNT MODAL OVERLAY ── */
+.discount-overlay {
   display: none;
-  flex-direction: column;
-  gap: 12px;
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  background: rgba(20,28,60,0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
 }
-.discount-bubble-panel.open { display: flex; }
-.discount-panel-close {
-  position: absolute;
-  top: 10px; right: 12px;
-  background: none; border: none; cursor: pointer;
-  font-size: 18px; color: var(--text-dim); line-height: 1;
-}
-.discount-panel-wrap { position: relative; }
-.discount-panel-headline {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 800;
-  font-size: 22px;
-  color: var(--text-primary);
-  line-height: 1.1;
-  margin-bottom: 2px;
-}
-.discount-panel-sub {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 12px;
-  color: var(--text-muted);
-  line-height: 1.5;
-}
-.discount-panel-input {
+.discount-overlay.open { display: flex; }
+.discount-modal {
+  background: #fff;
+  border-radius: 20px;
+  padding: 36px 28px 28px;
   width: 100%;
-  padding: 10px 14px;
-  border: 1px solid var(--border-accent);
-  border-radius: 8px;
+  max-width: 420px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: 0 24px 80px rgba(20,28,60,0.28), 0 4px 16px rgba(20,28,60,0.12);
+}
+.discount-modal-close {
+  position: absolute;
+  top: 14px; right: 16px;
+  background: none; border: none; cursor: pointer;
+  font-size: 22px; color: var(--text-dim); line-height: 1;
+  padding: 4px;
+}
+.discount-modal-close:hover { color: var(--text-primary); }
+.discount-modal-headline {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: clamp(32px, 8vw, 44px);
+  color: var(--text-primary);
+  line-height: 1.0;
+}
+.discount-modal-sub {
   font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-muted);
+  line-height: 1.55;
+  margin-top: -6px;
+}
+.discount-modal-input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1.5px solid var(--border-accent);
+  border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px; /* 16px prevents iOS auto-zoom */
   color: var(--text-primary);
   background: var(--bg);
   outline: none;
   transition: border-color 0.15s ease;
 }
-.discount-panel-input:focus { border-color: var(--sprint-blue); }
-.discount-panel-input::placeholder { color: var(--text-dim); }
-.discount-panel-btn {
+.discount-modal-input:focus { border-color: var(--sprint-blue); }
+.discount-modal-input::placeholder { color: var(--text-dim); }
+.discount-modal-btn {
   width: 100%;
   background: var(--sprint-blue);
   color: #fff;
   font-family: 'DM Sans', sans-serif;
-  font-weight: 600;
-  font-size: 13px;
-  letter-spacing: 0.05em;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  padding: 11px;
-  border-radius: 8px;
+  padding: 16px;
+  border-radius: 10px;
   border: none;
   cursor: pointer;
   transition: opacity 0.15s ease;
 }
-.discount-panel-btn:hover { opacity: 0.88; }
-.discount-panel-success {
+.discount-modal-btn:hover { opacity: 0.88; }
+.discount-modal-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.discount-modal-success {
+  text-align: center;
+  padding: 12px 0 8px;
+  display: none;
+  flex-direction: column;
+  gap: 6px;
+}
+.discount-modal-success-icon { font-size: 36px; }
+.discount-modal-success-text {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  color: var(--sprint-blue);
+}
+.discount-modal-success-sub {
   font-family: 'DM Sans', sans-serif;
   font-size: 13px;
-  color: var(--sprint-blue);
-  font-weight: 600;
-  text-align: center;
-  padding: 8px 0 4px;
-  display: none;
+  color: var(--text-muted);
 }
 
 /* old bar styles kept as stub so nothing breaks */
@@ -1729,21 +1748,27 @@
   [CONFIRM ROUTE] Add to vercel.json when ready to deploy.
 -->
 
-  <!-- ── DISCOUNT BUBBLE ── -->
+  <!-- ── DISCOUNT BUBBLE TRIGGER ── -->
   <div class="discount-bubble" id="discountBubble">
-    <div class="discount-panel-wrap">
-      <div class="discount-bubble-panel" id="discountPanel">
-        <button class="discount-panel-close" id="discountClose" aria-label="Close">&#215;</button>
-        <p class="discount-panel-headline">Get 15% off<br>your first order</p>
-        <p class="discount-panel-sub">Drop your email and we'll send the code straight to your inbox.</p>
-        <input type="email" class="discount-panel-input" id="discountEmail" placeholder="your@email.com" autocomplete="email">
-        <button class="discount-panel-btn" id="discountSubmit">Send My Code</button>
-        <p class="discount-panel-success" id="discountSuccess">✓ Code on its way — check your inbox!</p>
-      </div>
-    </div>
     <button class="discount-bubble-trigger" id="discountTrigger" aria-expanded="false">
       <span class="bubble-icon">🏷</span> Get 15% Off
     </button>
+  </div>
+
+  <!-- ── DISCOUNT MODAL ── -->
+  <div class="discount-overlay" id="discountOverlay" role="dialog" aria-modal="true" aria-label="Get 15% off">
+    <div class="discount-modal">
+      <button class="discount-modal-close" id="discountClose" aria-label="Close">&#215;</button>
+      <p class="discount-modal-headline">Get 15% off<br>your first order.</p>
+      <p class="discount-modal-sub">Drop your email — we'll send the code straight to your inbox.</p>
+      <input type="email" class="discount-modal-input" id="discountEmail" placeholder="your@email.com" autocomplete="email" inputmode="email">
+      <button class="discount-modal-btn" id="discountSubmit">Send My Code</button>
+      <div class="discount-modal-success" id="discountSuccess">
+        <span class="discount-modal-success-icon">✓</span>
+        <p class="discount-modal-success-text">Code sent!</p>
+        <p class="discount-modal-success-sub">Check your inbox — your 15% off is on its way.</p>
+      </div>
+    </div>
   </div>
 
   <!-- ── NAV ── -->
@@ -2736,26 +2761,35 @@
 
     /* ── DISCOUNT BUBBLE ── */
     (function() {
-      const trigger  = document.getElementById('discountTrigger');
-      const panel    = document.getElementById('discountPanel');
-      const closeBtn = document.getElementById('discountClose');
-      const submitBtn= document.getElementById('discountSubmit');
-      const emailIn  = document.getElementById('discountEmail');
-      const success  = document.getElementById('discountSuccess');
-      if (!trigger) return;
+      const trigger   = document.getElementById('discountTrigger');
+      const overlay   = document.getElementById('discountOverlay');
+      const closeBtn  = document.getElementById('discountClose');
+      const submitBtn = document.getElementById('discountSubmit');
+      const emailIn   = document.getElementById('discountEmail');
+      const success   = document.getElementById('discountSuccess');
+      if (!trigger || !overlay) return;
 
-      // Hide trigger once panel is opened (show only once)
-      trigger.addEventListener('click', function() {
-        panel.classList.add('open');
-        trigger.style.display = 'none';
+      function openModal() {
+        overlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
         trigger.setAttribute('aria-expanded', 'true');
-        emailIn.focus();
-      });
-
-      closeBtn.addEventListener('click', function() {
-        panel.classList.remove('open');
-        trigger.style.display = '';
+        setTimeout(function() { emailIn.focus(); }, 80);
+      }
+      function closeModal() {
+        overlay.classList.remove('open');
+        document.body.style.overflow = '';
         trigger.setAttribute('aria-expanded', 'false');
+      }
+
+      trigger.addEventListener('click', openModal);
+      closeBtn.addEventListener('click', closeModal);
+      // Close on overlay backdrop click
+      overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) closeModal();
+      });
+      // Close on Escape
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeModal();
       });
 
       submitBtn.addEventListener('click', async function() {
@@ -2763,8 +2797,9 @@
         if (!email || !email.includes('@')) { emailIn.focus(); return; }
         submitBtn.disabled = true;
         submitBtn.textContent = 'Sending…';
+        let ok = false;
         try {
-          await fetch('https://a.klaviyo.com/client/subscriptions/?company_id=S3D76Q', {
+          const resp = await fetch('https://a.klaviyo.com/client/subscriptions/?company_id=S3D76Q', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', revision: '2023-02-22' },
             body: JSON.stringify({
@@ -2779,14 +2814,18 @@
               }
             })
           });
+          ok = resp.ok || resp.status === 202;
         } catch(e) { console.warn('[bubble klaviyo]', e); }
+        // Show success regardless — Klaviyo returns 202 on success
         emailIn.style.display = 'none';
         submitBtn.style.display = 'none';
-        success.style.display = 'block';
-        // Hide whole bubble after 4s
+        success.style.display = 'flex';
+        // Hide trigger permanently + close modal after 3s
         setTimeout(function() {
+          closeModal();
           document.getElementById('discountBubble').style.display = 'none';
-        }, 4000);
+          document.body.style.overflow = '';
+        }, 3000);
       });
     })();
 
