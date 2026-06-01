@@ -2790,21 +2790,7 @@
         trigger.setAttribute('aria-expanded', 'false');
       }
 
-      // Show bubble after scrolling past hero, hide near order section
-      var bubble = document.getElementById('discountBubble');
-      var hero   = document.getElementById('hero');
-      var order  = document.getElementById('order');
-      function checkBubbleVisibility() {
-        if (!bubble || !hero) return;
-        var heroBottom  = hero.getBoundingClientRect().bottom;
-        var orderTop    = order ? order.getBoundingClientRect().top : Infinity;
-        var pastHero    = heroBottom < 0;
-        var nearOrder   = orderTop < window.innerHeight * 1.2;
-        var shouldShow  = pastHero && !nearOrder;
-        bubble.classList.toggle('visible', shouldShow);
-      }
-      window.addEventListener('scroll', checkBubbleVisibility, { passive: true });
-      checkBubbleVisibility();
+      document.getElementById('discountBubble').classList.add('visible');
 
       trigger.addEventListener('click', openModal);
       closeBtn.addEventListener('click', closeModal);
