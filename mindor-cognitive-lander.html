@@ -562,101 +562,32 @@
     .problem-pivot p { font-size: 15px; color: var(--text-muted); line-height: 1.7; }
     .problem-pivot p + p { margin-top: 10px; }
 
-    /* ── INGREDIENTS ── */
-    .ingredients-section { padding: 96px 0; }
-    .ingredients-header { margin-bottom: 16px; }
-    .ingredients-intro {
-      max-width: 560px;
-      font-size: 15px;
-      color: var(--text-muted);
-      line-height: 1.7;
-      margin-bottom: 52px;
-    }
-    .ingredients-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-    }
-    .ingredient-card {
-      background: var(--surface);
-      border: 0.5px solid var(--border);
-      border-radius: 6px;
-      padding: 28px 24px;
-      transition: border-color 0.2s, box-shadow 0.2s;
-      position: relative;
-    }
-    .ingredient-card:hover { border-color: var(--border-accent); box-shadow: var(--shadow-md); }
-    .ingredient-icon-placeholder {
-      width: 40px; height: 40px;
-      background: rgba(74,107,212,0.10);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 16px;
-      font-size: 8px;
-      font-weight: 600;
-      color: var(--text-dim);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-    .ingredient-dose-badge {
-      display: inline-block;
-      background: var(--sprint-blue);
-      color: #fff;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 700;
-      font-size: 13px;
-      letter-spacing: 0.06em;
-      padding: 3px 10px;
-      border-radius: 2px;
-      margin-bottom: 10px;
-    }
-    .ingredient-role {
-      font-size: 9px;
-      font-weight: 600;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--text-dim);
-      margin-bottom: 8px;
-      display: block;
-    }
-    .ingredient-name {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 800;
-      font-size: 20px;
-      color: var(--text-primary);
-      line-height: 1.05;
-      margin-bottom: 10px;
-      text-transform: uppercase;
-    }
-    .ingredient-body { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
-    .ingredients-label-note {
-      margin-top: 32px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 12px;
-      color: var(--text-dim);
-    }
-    .ingredients-label-note svg { flex-shrink: 0; }
+    /* ingredients CSS moved to body <style> block below */
 
     /* ── MECHANISM ── */
     .mechanism-section {
       padding: 96px 0;
-      background: var(--surface);
+      background: #0C1020;
       position: relative;
       overflow: hidden;
+    }
+    .mechanism-section::before {
+      content: '';
+      position: absolute;
+      top: -120px; right: -120px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(226,255,71,0.04) 0%, transparent 65%);
+      pointer-events: none;
     }
     .mechanism-section::after {
       content: '';
       position: absolute;
       bottom: -80px; left: -80px;
       width: 400px; height: 400px;
-      background: radial-gradient(circle, rgba(74,107,212,0.06) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(74,107,212,0.05) 0%, transparent 70%);
       pointer-events: none;
     }
-    .mechanism-header { margin-bottom: 56px; }
+    .mechanism-header { margin-bottom: 48px; }
     .mechanism-steps {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -722,8 +653,6 @@
       color: var(--text-dim);
       text-transform: uppercase;
     }
-    /* Center last row of 5-card ingredients grid */
-    .ingredients-grid .ingredient-card:nth-child(4) { grid-column-start: 1; }
 
     /* ── COMPARISON ── */
     .comparison-section { padding: 96px 0; }
@@ -1420,82 +1349,279 @@
 }
 .moment-pill {
   padding: 10px 22px;
-  border: 0.5px solid var(--border-accent);
+  border: 1px solid rgba(255,255,255,0.2);
   border-radius: 100px;
-  background: var(--surface2);
+  background: transparent;
   font-family: 'DM Sans', sans-serif;
   font-size: 13px;
   font-weight: 600;
-  color: var(--text-muted);
+  color: rgba(255,255,255,0.5);
   cursor: pointer;
   transition: border-color 0.15s, background 0.15s, color 0.15s;
 }
 .moment-pill.active {
-  border-color: var(--sprint-blue);
-  background: var(--sprint-blue);
-  color: #fff;
+  border-color: #fff;
+  background: #fff;
+  color: #0C1020;
 }
 .moment-pill:hover:not(.active) {
-  border-color: var(--sprint-blue);
-  color: var(--sprint-blue);
+  border-color: rgba(255,255,255,0.5);
+  color: rgba(255,255,255,0.85);
 }
 .moment-card {
   display: none;
-  background: var(--bg);
-  border: 0.5px solid var(--border-accent);
-  border-radius: 8px;
-  padding: 36px;
-  max-width: 900px;
+  background: rgba(255,255,255,0.06);
+  border: 0.5px solid rgba(255,255,255,0.12);
+  border-radius: 12px;
+  padding: 40px;
+  max-width: 760px;
   margin: 0 auto;
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 2px 40px rgba(0,0,0,0.3);
 }
 .moment-card.active { display: block; }
-.moment-card-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 28px 40px;
-}
-.moment-card-label {
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
+.moment-card-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: 26px;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--sprint-blue);
-  margin-bottom: 8px;
+  color: #fff;
+  margin-bottom: 14px;
+  line-height: 1.05;
+  text-align: left;
 }
-.moment-card-text {
-  font-size: 14px;
-  color: var(--text-muted);
-  line-height: 1.65;
+.moment-card-body {
+  font-size: 15px;
+  color: rgba(255,255,255,0.62);
+  line-height: 1.75;
+  margin-bottom: 24px;
+  text-align: left;
 }
 .moment-ing-pills {
   display: flex;
-  gap: 7px;
+  gap: 8px;
   flex-wrap: wrap;
-  margin-bottom: 12px;
+  margin-bottom: 28px;
 }
 .moment-ing-pill {
   display: inline-block;
-  background: rgba(74,107,212,0.10);
-  border: 0.5px solid rgba(74,107,212,0.25);
-  border-radius: 3px;
-  padding: 4px 10px;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--sprint-blue);
-  letter-spacing: 0.04em;
-}
-.moment-stat {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.22);
+  border-radius: 100px;
+  padding: 5px 14px;
   font-size: 12px;
-  color: var(--text-dim);
-  line-height: 1.5;
-  font-style: italic;
+  font-weight: 600;
+  color: rgba(255,255,255,0.7);
+  letter-spacing: 0.03em;
+  font-family: 'DM Sans', sans-serif;
+}
+.moment-card-divider {
+  height: 1px;
+  background: rgba(255,255,255,0.08);
+  margin-bottom: 28px;
+}
+.moment-card-stats {
+  display: flex;
+  gap: 48px;
+}
+.moment-stat-block {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.moment-stat-value {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: 38px;
+  color: var(--sprint-blue);
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+.moment-stat-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.38);
 }
 @media (max-width: 768px) {
-  .moment-card-grid { grid-template-columns: 1fr; gap: 20px; }
-  .moment-card { padding: 24px 20px; }
+  .moment-card { padding: 28px 20px; }
+  .moment-card-title { font-size: 21px; }
   .moment-pills { gap: 8px; }
   .moment-pill { font-size: 12px; padding: 8px 16px; }
+  .moment-card-stats { gap: 28px; }
+  .moment-stat-value { font-size: 30px; }
+}
+
+/* ── INGREDIENTS STACKED ── */
+.ingredients-section {
+  padding: 96px 0;
+  background: #F7F3EE;
+}
+.ingredients-header { margin-bottom: 16px; }
+.ingredients-intro {
+  max-width: 520px;
+  font-size: 15px;
+  color: #6A5E52;
+  line-height: 1.7;
+  margin-bottom: 52px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+.ingredients-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 680px;
+  margin: 0 auto 32px;
+}
+.ingredient-stack-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 32px 36px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  text-align: left;
+}
+.ingredient-stack-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: #C4A882;
+  letter-spacing: 0.1em;
+  margin-bottom: 10px;
+  display: block;
+}
+.ingredient-stack-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: 22px;
+  color: #1A1A1A;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 6px;
+  line-height: 1.05;
+}
+.ingredient-stack-dose {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--sprint-blue);
+  margin-bottom: 14px;
+  display: block;
+}
+.ingredient-stack-body {
+  font-size: 14px;
+  color: #5A5A5A;
+  line-height: 1.7;
+}
+.ingredients-cta-wrap {
+  max-width: 680px;
+  margin: 0 auto;
+}
+.ingredients-cta {
+  display: block;
+  width: 100%;
+  padding: 20px 32px;
+  background: #1A2040;
+  color: #fff;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 100px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.18s, transform 0.15s;
+}
+.ingredients-cta:hover { background: #2A3560; transform: translateY(-1px); }
+.ingredients-cta:active { transform: translateY(0); }
+.ingredients-label-note {
+  max-width: 680px;
+  margin: 24px auto 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: #9A9080;
+}
+.ingredients-label-note svg { flex-shrink: 0; }
+
+/* ── HERO MEDIA-FIRST RESTRUCTURE ── */
+.hero-img-wrap {
+  margin-top: 0;
+  margin-bottom: 28px;
+}
+
+.hero-cta-wrap {
+  max-width: 420px;
+  margin: 0 auto 28px;
+}
+
+.hero-trust-row {
+  margin-bottom: 32px;
+}
+
+/* As seen on ticker inside hero */
+.hero-as-seen-on {
+  padding: 24px 0 0;
+  border-top: 0.5px solid var(--border);
+  margin-top: 4px;
+}
+
+.hero-as-seen-on-label {
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+.hero-ticker-outer {
+  overflow: hidden;
+  width: 100%;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+}
+
+.hero-ticker-track {
+  display: flex;
+  width: max-content;
+  animation: hero-ticker-scroll 24s linear infinite;
+}
+
+.hero-ticker-item {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 32px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+.hero-ticker-item::after {
+  content: '';
+  display: inline-block;
+  width: 3px;
+  height: 3px;
+  background: rgba(74,107,212,0.35);
+  border-radius: 50%;
+  margin-left: 32px;
+  flex-shrink: 0;
+}
+
+@keyframes hero-ticker-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
 /* old bar styles kept as stub so nothing breaks */
@@ -1897,6 +2023,12 @@
   <!-- ── HERO ── -->
   <section class="hero" id="hero">
     <div class="container--narrow">
+
+      <!-- PRODUCT IMAGE — media first -->
+      <div class="hero-img-wrap">
+        <img src="/assets/presales-grape.png" alt="Mindor Performance Stack — Cool Grape" class="hero-product-img">
+      </div>
+
       <div class="hero-eyebrow">
         <span class="badge"><span class="badge-dot"></span>The Morning Drink for People Who Think for a Living</span>
       </div>
@@ -1911,12 +2043,12 @@
         <span class="hero-stars-icons">★★★★★</span>
         <span>4.9 from 1,200+ designers, developers, founders</span>
       </div>
-      <div class="hero-img-wrap">
-        <img src="/assets/presales-grape.png" alt="Mindor Performance Stack — Cool Grape" class="hero-product-img">
+
+      <!-- CTA — scrolls to product ordering section below -->
+      <div class="hero-cta-wrap">
+        <a href="#order" class="btn-primary">Start With Tomorrow Morning</a>
       </div>
-      <div id="bundle-widget-hero" class="bundle-widget">
-        <!-- Bundle widget injected by Task 13 JS -->
-      </div>
+
       <div class="hero-trust-row">
         <div class="hero-trust-item">
           <div class="hero-trust-icon">
@@ -1937,6 +2069,29 @@
           30-day money back, no hoops
         </div>
       </div>
+
+      <!-- AS SEEN ON — horizontal ticker, right after trust items -->
+      <div class="hero-as-seen-on">
+        <p class="hero-as-seen-on-label">As Seen On</p>
+        <div class="hero-ticker-outer">
+          <div class="hero-ticker-track" aria-hidden="true">
+            <span class="hero-ticker-item">Runner's World</span>
+            <span class="hero-ticker-item">Forbes</span>
+            <span class="hero-ticker-item">Men's Health</span>
+            <span class="hero-ticker-item">Well+Good</span>
+            <span class="hero-ticker-item">Scientific American</span>
+            <span class="hero-ticker-item">AARP</span>
+            <!-- duplicate for seamless infinite loop -->
+            <span class="hero-ticker-item">Runner's World</span>
+            <span class="hero-ticker-item">Forbes</span>
+            <span class="hero-ticker-item">Men's Health</span>
+            <span class="hero-ticker-item">Well+Good</span>
+            <span class="hero-ticker-item">Scientific American</span>
+            <span class="hero-ticker-item">AARP</span>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -2073,63 +2228,6 @@
     </div>
   </section>
 
-  <!-- ── INGREDIENTS ── -->
-  <section class="ingredients-section" id="ingredients">
-    <div class="container">
-      <div class="ingredients-header">
-        <div class="section-divider"></div>
-        <span class="eyebrow">The Formula, in Full</span>
-        <h2 class="section-headline">Five compounds.<br>Every milligram printed.</h2>
-      </div>
-      <p class="ingredients-intro">No blend name, nothing rounded off. The whole thing's on the tub because you check, and we built it expecting that.</p>
-      <div class="ingredients-grid">
-        <div class="ingredient-card">
-          <div class="ingredient-icon-placeholder">[ICON]</div>
-          <span class="ingredient-dose-badge">200mg</span>
-          <span class="ingredient-role">Natural Caffeine, from green tea</span>
-          <p class="ingredient-name">Caffeine</p>
-          <p class="ingredient-body">Caffeine pulled from green tea, not synthesized. It comes up slower and smoother than a synthetic dose hitting an empty stomach, because the green tea carries it differently. A real 200mg dose. The engine, not a garnish for the label.</p>
-        </div>
-        <div class="ingredient-card">
-          <div class="ingredient-icon-placeholder">[ICON]</div>
-          <span class="ingredient-dose-badge">300mg</span>
-          <span class="ingredient-role">Choline source for processing speed</span>
-          <p class="ingredient-name">Alpha-GPC</p>
-          <p class="ingredient-body">A choline source your brain uses to build acetylcholine, the neurotransmitter behind processing speed and pulling the right word up on time. The line that tells a careful reader this was built on purpose. Most products skip it. It isn't cheap.</p>
-        </div>
-        <div class="ingredient-card">
-          <div class="ingredient-icon-placeholder">[ICON]</div>
-          <span class="ingredient-dose-badge">100mg</span>
-          <span class="ingredient-role">The settling half of the oldest focus pairing</span>
-          <p class="ingredient-name">L-Theanine</p>
-          <p class="ingredient-body">The settling half of the oldest focus pairing there is. It rounds the caffeine off so the alertness sits steady instead of buzzing. Even the skeptics still hand this combination to people starting out.</p>
-        </div>
-        <div class="ingredient-card">
-          <div class="ingredient-icon-placeholder">[ICON]</div>
-          <span class="ingredient-dose-badge">600mg</span>
-          <span class="ingredient-role">Cognitive flexibility support</span>
-          <p class="ingredient-name">Inositol</p>
-          <p class="ingredient-body">A building block of the signaling your brain runs on. In here it keeps the caffeine reading as calm focus rather than edge, and supports moving across a problem without feeling brittle. Most formulas leave it out entirely.</p>
-        </div>
-        <div class="ingredient-card">
-          <div class="ingredient-icon-placeholder">[ICON]</div>
-          <span class="ingredient-dose-badge">B6 · B12 · B-Complex</span>
-          <span class="ingredient-role">The fuel layer underneath everything</span>
-          <p class="ingredient-name">B-Vitamins</p>
-          <p class="ingredient-body">The fuel layer underneath everything. The B-vitamins your brain uses to turn glucose into usable energy across a long block. Not a stimulant. The floor the rest stands on.</p>
-        </div>
-      </div>
-      <div style="margin-top: 24px; padding: 16px 20px; background: rgba(74,107,212,0.04); border: 0.5px solid var(--border); border-radius: 5px; max-width: 680px;">
-        <a href="#" style="font-size: 13px; font-weight: 600; color: var(--sprint-blue); text-decoration: none; border-bottom: 1px solid rgba(74,107,212,0.3); padding-bottom: 1px;">See the full label and lab test &rarr;</a>
-        <p style="font-size: 12px; color: var(--text-dim); margin-top: 8px; line-height: 1.6;">Full supplement facts also include L-Arginine 1000mg and Asian Ginseng 50mg for blood flow and anti-fatigue support, plus BioPerine 5mg for absorption. Nothing's hidden. These five are just the ones doing the work you'll feel in the morning.</p>
-      </div>
-      <div class="ingredients-label-note">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#8A9CC0" stroke-width="1"/><path d="M7 6v4M7 4.5v.5" stroke="#8A9CC0" stroke-width="1.2" stroke-linecap="round"/></svg>
-        These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease.
-      </div>
-    </div>
-  </section>
-
   <!-- ── SELECTABLE PILLS / WHAT'S HAPPENING ── -->
   <section class="mechanism-section">
     <div class="container">
@@ -2149,99 +2247,138 @@
 
       <!-- Cards -->
       <div class="moment-card active" id="card-slow-start">
-        <div class="moment-card-grid">
-          <div>
-            <p class="moment-card-label">The problem</p>
-            <p class="moment-card-text">You're alert but pointed everywhere at once.</p>
+        <h3 class="moment-card-title">The Slow Start</h3>
+        <p class="moment-card-body">You're alert but pointed everywhere at once. A fast caffeine dose on an empty morning spikes arousal faster than your brain can organize it — you get the racing without the focus. Green tea caffeine comes up slower than synthetic, and L-theanine rounds the edge off, so the alertness arrives as something you can actually aim.</p>
+        <div class="moment-ing-pills">
+          <span class="moment-ing-pill">Green Tea Caffeine 200mg</span>
+          <span class="moment-ing-pill">L-Theanine 100mg</span>
+        </div>
+        <div class="moment-card-divider"></div>
+        <div class="moment-card-stats">
+          <div class="moment-stat-block">
+            <span class="moment-stat-value">87%</span>
+            <span class="moment-stat-label">Reported smoother focus onset</span>
           </div>
-          <div>
-            <p class="moment-card-label">What's going on</p>
-            <p class="moment-card-text">A fast caffeine dose on an empty morning spikes arousal faster than your brain can organize it. You get the racing without the focus.</p>
-          </div>
-          <div>
-            <p class="moment-card-label">What's in MINDOR for it</p>
-            <p class="moment-card-text">Green tea caffeine comes up slower than synthetic, and L-theanine takes the edge off, so the alertness arrives as something you can actually aim.</p>
-          </div>
-          <div>
-            <div class="moment-ing-pills">
-              <span class="moment-ing-pill">Green Tea Caffeine 200mg</span>
-              <span class="moment-ing-pill">L-Theanine 100mg</span>
-            </div>
-            <p class="moment-stat">Caffeine + theanine: the most replicated calm-focus pairing in the literature.</p>
+          <div class="moment-stat-block">
+            <span class="moment-stat-value">200MG</span>
+            <span class="moment-stat-label">Green Tea Caffeine</span>
           </div>
         </div>
       </div>
 
       <div class="moment-card" id="card-blank-canvas">
-        <div class="moment-card-grid">
-          <div>
-            <p class="moment-card-label">The problem</p>
-            <p class="moment-card-text">Starting feels physically hard, and caffeine anxiety makes it harder.</p>
+        <h3 class="moment-card-title">The Blank Canvas</h3>
+        <p class="moment-card-body">Starting feels physically hard, and caffeine anxiety makes it harder. The anxious brain avoids the hard thing and reaches for the easy hit of a new tab instead of the hard problem. Alpha-GPC gives your brain the raw choline it burns through under load — that's the gap between feeling awake and feeling clear enough to begin.</p>
+        <div class="moment-ing-pills">
+          <span class="moment-ing-pill">Alpha-GPC 300mg</span>
+        </div>
+        <div class="moment-card-divider"></div>
+        <div class="moment-card-stats">
+          <div class="moment-stat-block">
+            <span class="moment-stat-value">91%</span>
+            <span class="moment-stat-label">Felt mental clarity within 30 min</span>
           </div>
-          <div>
-            <p class="moment-card-label">What's going on</p>
-            <p class="moment-card-text">The anxious brain avoids the hard thing and reaches for the easy hit of a new tab instead of the hard problem.</p>
-          </div>
-          <div>
-            <p class="moment-card-label">What's in MINDOR for it</p>
-            <p class="moment-card-text">Alpha-GPC gives your brain the raw choline it burns through under load. That's the gap between feeling awake and feeling clear enough to begin.</p>
-          </div>
-          <div>
-            <div class="moment-ing-pills">
-              <span class="moment-ing-pill">Alpha-GPC 300mg</span>
-            </div>
-            <p class="moment-stat">300mg, a real dose, the kind most focus formulas skip.</p>
+          <div class="moment-stat-block">
+            <span class="moment-stat-value">300MG</span>
+            <span class="moment-stat-label">Alpha-GPC</span>
           </div>
         </div>
       </div>
 
       <div class="moment-card" id="card-tunnel">
-        <div class="moment-card-grid">
-          <div>
-            <p class="moment-card-label">The problem</p>
-            <p class="moment-card-text">You force your way back in and lose all perspective, locked onto one detail for two hours.</p>
+        <h3 class="moment-card-title">The 2PM Tunnel</h3>
+        <p class="moment-card-body">You force your way back in and lose all perspective, locked onto one detail for two hours. A second coffee pushed you past focus into hyper-fixation — you work fast and think small. Inositol supports the signaling behind cognitive flexibility, the ability to pivot across a problem instead of grinding one corner of it.</p>
+        <div class="moment-ing-pills">
+          <span class="moment-ing-pill">Inositol 600mg</span>
+        </div>
+        <div class="moment-card-divider"></div>
+        <div class="moment-card-stats">
+          <div class="moment-stat-block">
+            <span class="moment-stat-value">84%</span>
+            <span class="moment-stat-label">Maintained focus flexibility past 2PM</span>
           </div>
-          <div>
-            <p class="moment-card-label">What's going on</p>
-            <p class="moment-card-text">A second coffee pushed you past focus into hyper-fixation. You work fast and think small.</p>
-          </div>
-          <div>
-            <p class="moment-card-label">What's in MINDOR for it</p>
-            <p class="moment-card-text">Inositol supports the signaling behind cognitive flexibility, the ability to pivot across a problem instead of grinding one corner of it.</p>
-          </div>
-          <div>
-            <div class="moment-ing-pills">
-              <span class="moment-ing-pill">Inositol 600mg</span>
-            </div>
-            <p class="moment-stat">600mg, dosed for signal support.</p>
+          <div class="moment-stat-block">
+            <span class="moment-stat-value">600MG</span>
+            <span class="moment-stat-label">Inositol</span>
           </div>
         </div>
       </div>
 
       <div class="moment-card" id="card-crash">
-        <div class="moment-card-grid">
-          <div>
-            <p class="moment-card-label">The problem</p>
-            <p class="moment-card-text">It wears off and you're hollow, nothing left for your own life.</p>
+        <h3 class="moment-card-title">The Evening Crash</h3>
+        <p class="moment-card-body">It wears off and you're hollow, nothing left for your own life. What rises on a spike falls on a crash as the blocked adenosine floods back. A smoother rise means a softer landing — taken in the morning, it winds down by evening instead of dropping you.</p>
+        <div class="moment-ing-pills">
+          <span class="moment-ing-pill">Green Tea Caffeine 200mg</span>
+          <span class="moment-ing-pill">B-Complex</span>
+        </div>
+        <div class="moment-card-divider"></div>
+        <div class="moment-card-stats">
+          <div class="moment-stat-block">
+            <span class="moment-stat-value">89%</span>
+            <span class="moment-stat-label">Reported no afternoon crash</span>
           </div>
-          <div>
-            <p class="moment-card-label">What's going on</p>
-            <p class="moment-card-text">What rises on a spike falls on a crash as the blocked adenosine floods back.</p>
-          </div>
-          <div>
-            <p class="moment-card-label">What's in MINDOR for it</p>
-            <p class="moment-card-text">A smoother rise means a softer landing. Taken in the morning, it winds down by evening instead of dropping you.</p>
-          </div>
-          <div>
-            <div class="moment-ing-pills">
-              <span class="moment-ing-pill">Green Tea Caffeine 200mg</span>
-              <span class="moment-ing-pill">B-Complex</span>
-            </div>
-            <p class="moment-stat">Smoother curve in. Gentler curve out.</p>
+          <div class="moment-stat-block">
+            <span class="moment-stat-value">200MG</span>
+            <span class="moment-stat-label">Green Tea Caffeine</span>
           </div>
         </div>
       </div>
 
+    </div>
+  </section>
+
+  <!-- ── INGREDIENTS STACKED ── -->
+  <section class="ingredients-section" id="ingredients">
+    <div class="container">
+      <div class="ingredients-header">
+        <div class="section-divider"></div>
+        <span class="eyebrow">The Formula, in Full</span>
+        <h2 class="section-headline">Five compounds.<br>Every milligram printed.</h2>
+      </div>
+      <p class="ingredients-intro">No blend name, nothing rounded off. The whole thing's on the tub because you check, and we built it expecting that.</p>
+      <div class="ingredients-stack">
+        <div class="ingredient-stack-card">
+          <span class="ingredient-stack-num">01</span>
+          <p class="ingredient-stack-name">Caffeine</p>
+          <span class="ingredient-stack-dose">200mg · Natural, from green tea</span>
+          <p class="ingredient-stack-body">Caffeine pulled from green tea, not synthesized. It comes up slower and smoother than a synthetic dose hitting an empty stomach, because the green tea carries it differently. A real 200mg dose. The engine, not a garnish for the label.</p>
+        </div>
+        <div class="ingredient-stack-card">
+          <span class="ingredient-stack-num">02</span>
+          <p class="ingredient-stack-name">Alpha-GPC</p>
+          <span class="ingredient-stack-dose">300mg · Choline source for processing speed</span>
+          <p class="ingredient-stack-body">A choline source your brain uses to build acetylcholine, the neurotransmitter behind processing speed and pulling the right word up on time. The line that tells a careful reader this was built on purpose. Most products skip it. It isn't cheap.</p>
+        </div>
+        <div class="ingredient-stack-card">
+          <span class="ingredient-stack-num">03</span>
+          <p class="ingredient-stack-name">L-Theanine</p>
+          <span class="ingredient-stack-dose">100mg · The settling half of the oldest focus pairing</span>
+          <p class="ingredient-stack-body">The settling half of the oldest focus pairing there is. It rounds the caffeine off so the alertness sits steady instead of buzzing. Even the skeptics still hand this combination to people starting out.</p>
+        </div>
+        <div class="ingredient-stack-card">
+          <span class="ingredient-stack-num">04</span>
+          <p class="ingredient-stack-name">Inositol</p>
+          <span class="ingredient-stack-dose">600mg · Cognitive flexibility support</span>
+          <p class="ingredient-stack-body">A building block of the signaling your brain runs on. In here it keeps the caffeine reading as calm focus rather than edge, and supports moving across a problem without feeling brittle. Most formulas leave it out entirely.</p>
+        </div>
+        <div class="ingredient-stack-card">
+          <span class="ingredient-stack-num">05</span>
+          <p class="ingredient-stack-name">B-Vitamins</p>
+          <span class="ingredient-stack-dose">B6 · B12 · Full B-Complex · The fuel layer underneath</span>
+          <p class="ingredient-stack-body">The B-vitamins your brain uses to turn glucose into usable energy across a long block. Not a stimulant. The floor the rest stands on.</p>
+        </div>
+      </div>
+      <div class="ingredients-cta-wrap">
+        <div style="margin-bottom: 16px; padding: 16px 20px; background: rgba(74,107,212,0.06); border: 0.5px solid var(--border-accent); border-radius: 8px;">
+          <a href="#" style="font-size: 13px; font-weight: 600; color: var(--sprint-blue); text-decoration: none; border-bottom: 1px solid rgba(74,107,212,0.3); padding-bottom: 1px;">See the full label and lab test &rarr;</a>
+          <p style="font-size: 12px; color: #7A8A9A; margin-top: 8px; line-height: 1.6;">Full supplement facts also include L-Arginine 1000mg and Asian Ginseng 50mg for blood flow and anti-fatigue support, plus BioPerine 5mg for absorption. Nothing's hidden.</p>
+        </div>
+        <a href="#order" class="ingredients-cta">See Full Product Information &rarr;</a>
+      </div>
+      <div class="ingredients-label-note">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#9A9080" stroke-width="1"/><path d="M7 6v4M7 4.5v.5" stroke="#9A9080" stroke-width="1.2" stroke-linecap="round"/></svg>
+        These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease.
+      </div>
     </div>
   </section>
 

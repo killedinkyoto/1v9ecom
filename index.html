@@ -260,7 +260,8 @@
   .hero {
     min-height: 100vh;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: stretch;
     position: relative;
     overflow: hidden;
     padding: 0;
@@ -404,15 +405,16 @@
 
   .hero-inner {
     display: grid;
-    grid-template-columns: 1fr 420px;
-    gap: 80px;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
     align-items: center;
     max-width: 1080px;
     margin: 0 auto;
-    padding: 120px 40px;
+    padding: 100px 40px 64px;
     position: relative;
     z-index: 1;
     width: 100%;
+    flex: 1;
   }
 
   .hero-eyebrow {
@@ -557,6 +559,251 @@
     border-radius: 50%;
     background: var(--execution-green);
     flex-shrink: 0;
+  }
+
+  /* ── HERO MEDIA COLUMN (product visual, left) ── */
+  .hero-media-col {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hero-product-display {
+    position: relative;
+    width: 100%;
+    max-width: 340px;
+    aspect-ratio: 3/4;
+    background: linear-gradient(165deg, #1E2A14 0%, #131A0C 55%, #0C1008 100%);
+    border-radius: 16px 16px 20px 20px;
+    overflow: hidden;
+    box-shadow:
+      0 60px 120px rgba(0,0,0,0.65),
+      0 20px 40px rgba(0,0,0,0.4),
+      0 0 0 0.5px rgba(var(--accent-rgb),0.16),
+      inset 0 1px 0 rgba(var(--accent-rgb),0.10);
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.6s ease;
+  }
+
+  .hpd-zipper {
+    height: 8px;
+    background: var(--execution-green);
+    width: 100%;
+    flex-shrink: 0;
+    transition: background 0.5s ease;
+  }
+
+  .hpd-inner {
+    flex: 1;
+    padding: 28px 28px 32px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hpd-wordmark {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 56px;
+    color: var(--execution-green);
+    letter-spacing: 0.02em;
+    line-height: 1;
+    margin-bottom: 4px;
+    transition: color 0.5s ease;
+  }
+
+  .hpd-sub {
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+
+  .hpd-stack-list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+    margin-bottom: 24px;
+  }
+
+  .hpd-stack-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .hpd-dose {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--execution-green);
+    min-width: 46px;
+    transition: color 0.5s ease;
+  }
+
+  .hpd-dash {
+    width: 14px;
+    height: 0.5px;
+    background: var(--text-dim);
+    flex-shrink: 0;
+  }
+
+  .hpd-name {
+    color: var(--text-muted);
+    font-size: 11.5px;
+    font-weight: 400;
+  }
+
+  .hpd-badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--execution-green);
+    border: 0.5px solid rgba(var(--accent-rgb),0.25);
+    padding: 5px 10px;
+    border-radius: 2px;
+    align-self: flex-start;
+    transition: color 0.5s ease, border-color 0.5s ease;
+  }
+
+  .hpd-glow {
+    position: absolute;
+    bottom: -80px;
+    right: -80px;
+    width: 240px;
+    height: 240px;
+    background: radial-gradient(circle, rgba(var(--accent-rgb),0.07) 0%, transparent 70%);
+    pointer-events: none;
+    transition: background 0.6s ease;
+  }
+
+  /* ── HERO RATING ROW ── */
+  .hero-rating-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+
+  .hero-stars {
+    color: var(--execution-green);
+    font-size: 14px;
+    letter-spacing: 1px;
+    line-height: 1;
+  }
+
+  .hero-rating-score {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--text-primary);
+    line-height: 1;
+  }
+
+  .hero-rating-sep { color: var(--text-dim); }
+
+  .hero-rating-count {
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+  }
+
+  /* ── AS SEEN ON TICKER ── */
+  .as-seen-on {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    padding: 22px 0;
+    border-top: 0.5px solid var(--border-subtle);
+    overflow: hidden;
+  }
+
+  .as-seen-on-label {
+    text-align: center;
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 14px;
+  }
+
+  .ticker-outer {
+    overflow: hidden;
+    width: 100%;
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+  }
+
+  .ticker-track {
+    display: flex;
+    width: max-content;
+    animation: ticker-scroll 24s linear infinite;
+  }
+
+  .ticker-item {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 36px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    white-space: nowrap;
+  }
+
+  .ticker-item::after {
+    content: '';
+    display: inline-block;
+    width: 3px;
+    height: 3px;
+    background: var(--text-dim);
+    border-radius: 50%;
+    margin-left: 36px;
+    flex-shrink: 0;
+    opacity: 0.5;
+  }
+
+  @keyframes ticker-scroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ── PRODUCT ORDER SECTION ── */
+  .product-order-section {
+    background: var(--surface);
+  }
+
+  .product-order-inner {
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .product-order-headline {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(40px, 6vw, 64px);
+    color: var(--text-primary);
+    line-height: 0.92;
+    margin-bottom: 8px;
+  }
+
+  .product-order-subhead {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 40px;
+    line-height: 1.6;
   }
 
   /* ── PRODUCT CARD (hero right) ── */
@@ -1910,8 +2157,10 @@
   /* ── RESPONSIVE ── */
   @media (max-width: 860px) {
     .nav-links { display: none; }
-    .hero-inner { grid-template-columns: 1fr; gap: 40px; padding: 56px 20px 64px; }
-    .hero-card-border-wrap { max-width: 420px; width: 100%; }
+    .hero-inner { grid-template-columns: 1fr; gap: 32px; padding: 48px 20px 48px; }
+    .hero-media-col { order: -1; }
+    .hero-product-display { max-width: 300px; aspect-ratio: 3/4; }
+    .hero-card-border-wrap { max-width: 480px; width: 100%; margin: 0 auto; }
     .hero-product-card { width: 100%; }
     /* Flavor buttons readable on tablet */
     .fbtn-inner { font-size: 10px; letter-spacing: 0.11em; }
@@ -2090,14 +2339,62 @@ fbq('track','PageView');
     <div class="hero-falling-overlay"></div>
   </div>
   <div class="hero-inner">
+
+    <!-- LEFT: Product Visual (media-first) -->
+    <div class="hero-media-col">
+      <div class="hero-product-display">
+        <div class="hpd-zipper"></div>
+        <div class="hpd-inner">
+          <div class="hpd-wordmark">MINDOR</div>
+          <div class="hpd-sub">Performance Stack</div>
+          <div class="hpd-stack-list">
+            <div class="hpd-stack-item">
+              <span class="hpd-dose">100mg</span>
+              <span class="hpd-dash"></span>
+              <span class="hpd-name">Green Tea Caffeine</span>
+            </div>
+            <div class="hpd-stack-item">
+              <span class="hpd-dose">200mg</span>
+              <span class="hpd-dash"></span>
+              <span class="hpd-name">L-Theanine</span>
+            </div>
+            <div class="hpd-stack-item">
+              <span class="hpd-dose">300mg</span>
+              <span class="hpd-dash"></span>
+              <span class="hpd-name">Alpha-GPC 50%</span>
+            </div>
+            <div class="hpd-stack-item">
+              <span class="hpd-dose">200mg</span>
+              <span class="hpd-dash"></span>
+              <span class="hpd-name">Panax Ginseng</span>
+            </div>
+            <div class="hpd-stack-item">
+              <span class="hpd-dose">B6 · B12</span>
+              <span class="hpd-dash"></span>
+              <span class="hpd-name">Energy Metabolism</span>
+            </div>
+          </div>
+          <div class="hpd-badge">30 Servings · 7.5g each</div>
+          <div class="hpd-glow" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Headline, body, rating, CTA -->
     <div class="hero-content">
       <p class="hero-eyebrow">Performance Stack · Sour Candy Flavor</p>
       <div class="hero-display hero-lock-shimmer">LOCK IN.</div>
       <div class="hero-display" style="color: var(--text-primary); font-size: clamp(48px, 7vw, 80px); margin-bottom: 12px;">STAY THERE.</div>
       <h1 class="hero-headline">Deep Work Without The <span class="morph-wrap"><span class="morph-t1" id="morph-t1"></span><span class="morph-t2" id="morph-t2"></span></span></h1>
       <p class="hero-body">Mindor is a powdered nootropic focus drink engineered for founders, builders, creators, and students who need to perform — not just stay awake. Calm alertness. Sustained output. Clean exit.</p>
+      <div class="hero-rating-row">
+        <span class="hero-stars">★★★★★</span>
+        <span class="hero-rating-score">4.8</span>
+        <span class="hero-rating-sep">·</span>
+        <span class="hero-rating-count">1,200+ reviews</span>
+      </div>
       <div class="hero-actions">
-        <a href="#order" class="btn-primary">Add to Cart — $49</a>
+        <a href="#order" class="btn-primary">Get Mindor — $49</a>
         <a href="#how-it-works" class="btn-ghost">See How It Works</a>
       </div>
       <div class="hero-trust-row">
@@ -2108,113 +2405,31 @@ fbq('track','PageView');
       </div>
     </div>
 
-    <div class="hero-card-border-wrap" id="order">
-      <div class="hero-product-card">
-      <div class="product-card-zipper"></div>
-      <div class="product-card-inner">
-        <div class="product-card-wordmark">MINDOR</div>
-        <div class="product-card-sub">Performance Stack</div>
-        <div class="flavor-selector" id="flavor-selector">
-          <!-- SOUR CANDY -->
-          <button class="flavor-btn active" data-flavor="sour-candy"
-            style="--fbtn-glow:rgba(226,255,71,0.6);--fbtn-color:#E2FF47;--fbtn-shimmer:rgba(226,255,71,0.9);--fbtn-border:rgba(226,255,71,0.3);">
-            <span class="fbtn-glow" aria-hidden="true"></span>
-            <span class="fbtn-inner">
-              <svg class="fbtn-icon" width="11" height="8" viewBox="0 0 40 28" fill="none">
-                <path d="M4 22 L10 8 L16 18 L20 10 L24 18 L30 8 L36 22" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              Sour Candy
-              <svg class="fbtn-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.75 8.75L14.25 12L10.75 15.25"/>
-              </svg>
-            </span>
-            <span class="fbtn-shimmer" aria-hidden="true"></span>
-          </button>
-          <!-- SOUR GRAPE -->
-          <button class="flavor-btn" data-flavor="sour-grape"
-            style="--fbtn-glow:rgba(192,132,252,0.6);--fbtn-color:#C084FC;--fbtn-shimmer:rgba(192,132,252,0.9);--fbtn-border:rgba(192,132,252,0.3);">
-            <span class="fbtn-glow" aria-hidden="true"></span>
-            <span class="fbtn-inner">
-              <svg class="fbtn-icon" width="11" height="8" viewBox="0 0 40 28" fill="none">
-                <path d="M4 22 L10 8 L16 18 L20 10 L24 18 L30 8 L36 22" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              Sour Grape
-              <svg class="fbtn-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.75 8.75L14.25 12L10.75 15.25"/>
-              </svg>
-            </span>
-            <span class="fbtn-shimmer" aria-hidden="true"></span>
-          </button>
-          <!-- SOUR GUMMI WORM -->
-          <button class="flavor-btn" data-flavor="sour-gummi-worm"
-            style="--fbtn-glow:rgba(255,107,157,0.6);--fbtn-color:#FF6B9D;--fbtn-shimmer:rgba(255,107,157,0.9);--fbtn-border:rgba(255,107,157,0.3);">
-            <span class="fbtn-glow" aria-hidden="true"></span>
-            <span class="fbtn-inner">
-              <svg class="fbtn-icon" width="11" height="8" viewBox="0 0 40 28" fill="none">
-                <path d="M4 22 L10 8 L16 18 L20 10 L24 18 L30 8 L36 22" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              Sour Gummi Worm
-              <svg class="fbtn-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.75 8.75L14.25 12L10.75 15.25"/>
-              </svg>
-            </span>
-            <span class="fbtn-shimmer" aria-hidden="true"></span>
-          </button>
-        </div>
-        <ul class="product-card-stats">
-          <li class="stat-row">
-            <span class="stat-val">100mg</span>
-            <span class="stat-dash"></span>
-            <span class="stat-label">Green Tea Caffeine</span>
-          </li>
-          <li class="stat-row">
-            <span class="stat-val">200mg</span>
-            <span class="stat-dash"></span>
-            <span class="stat-label">L-Theanine</span>
-          </li>
-          <li class="stat-row">
-            <span class="stat-val">300mg</span>
-            <span class="stat-dash"></span>
-            <span class="stat-label">Alpha-GPC</span>
-          </li>
-          <li class="stat-row">
-            <span class="stat-val">200mg</span>
-            <span class="stat-dash"></span>
-            <span class="stat-label">Ginseng Extract</span>
-          </li>
-          <li class="stat-row">
-            <span class="stat-val">B6 · B12</span>
-            <span class="stat-dash"></span>
-            <span class="stat-label">Energy Metabolism</span>
-          </li>
-        </ul>
-        <div class="product-card-footer">
-          <div>
-            <div class="product-card-price">$49<span>/bag</span></div>
-            <div id="card-per-serving" style="font-size:10px; color:var(--text-muted); margin-top:3px; letter-spacing:0.06em;">$1.63 per serving</div>
-          </div>
-          <div class="product-card-servings">30 Servings</div>
-        </div>
-        <a href="#" class="product-card-cta">Add to Cart</a>
-        <p class="product-card-note">Free shipping over $75 · Subscribe &amp; save 15%</p>
+  </div>
+
+  <!-- AS SEEN ON — horizontal ticker, right after CTA area -->
+  <div class="as-seen-on">
+    <div class="as-seen-on-label">As Seen On</div>
+    <div class="ticker-outer">
+      <div class="ticker-track" aria-hidden="true">
+        <span class="ticker-item">Forbes</span>
+        <span class="ticker-item">Business Insider</span>
+        <span class="ticker-item">Product Hunt</span>
+        <span class="ticker-item">Morning Brew</span>
+        <span class="ticker-item">Inc. Magazine</span>
+        <span class="ticker-item">Fast Company</span>
+        <span class="ticker-item">TechCrunch</span>
+        <span class="ticker-item">Hacker News</span>
+        <!-- duplicate for seamless infinite loop -->
+        <span class="ticker-item">Forbes</span>
+        <span class="ticker-item">Business Insider</span>
+        <span class="ticker-item">Product Hunt</span>
+        <span class="ticker-item">Morning Brew</span>
+        <span class="ticker-item">Inc. Magazine</span>
+        <span class="ticker-item">Fast Company</span>
+        <span class="ticker-item">TechCrunch</span>
+        <span class="ticker-item">Hacker News</span>
       </div>
-    </div>
-      <svg class="hero-card-border-svg" id="hero-border-svg" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="overflow:visible">
-        <defs>
-          <filter id="hero-glow-filter" x="-80%" y="-80%" width="260%" height="260%">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="tight"/>
-            <feGaussianBlur in="SourceGraphic" stdDeviation="9" result="wide"/>
-            <feMerge>
-              <feMergeNode in="wide"/>
-              <feMergeNode in="tight"/>
-            </feMerge>
-          </filter>
-        </defs>
-        <!-- Static faint border -->
-        <rect id="hero-border-bg"   fill="none" stroke="rgba(226,255,71,0.07)" stroke-width="1"/>
-        <!-- Soft glow — no sharp edge, two blur passes merged -->
-        <rect id="hero-border-glow" fill="none" stroke="rgba(226,255,71,0.55)" stroke-width="2.5" filter="url(#hero-glow-filter)"/>
-      </svg>
     </div>
   </div>
 </section>
@@ -2601,6 +2816,124 @@ fbq('track','PageView');
 </section>
 
 <!-- ══════════════════════════════════════════
+     PRODUCT ORDER
+══════════════════════════════════════════ -->
+<section class="section product-order-section" id="order">
+  <div class="container">
+    <p class="section-label">Get Your Stack</p>
+    <div class="section-divider"></div>
+    <div class="product-order-inner">
+      <div class="hero-card-border-wrap">
+        <div class="hero-product-card">
+          <div class="product-card-zipper"></div>
+          <div class="product-card-inner">
+            <div class="product-card-wordmark">MINDOR</div>
+            <div class="product-card-sub">Performance Stack</div>
+            <div class="flavor-selector" id="flavor-selector">
+              <!-- SOUR CANDY -->
+              <button class="flavor-btn active" data-flavor="sour-candy"
+                style="--fbtn-glow:rgba(226,255,71,0.6);--fbtn-color:#E2FF47;--fbtn-shimmer:rgba(226,255,71,0.9);--fbtn-border:rgba(226,255,71,0.3);">
+                <span class="fbtn-glow" aria-hidden="true"></span>
+                <span class="fbtn-inner">
+                  <svg class="fbtn-icon" width="11" height="8" viewBox="0 0 40 28" fill="none">
+                    <path d="M4 22 L10 8 L16 18 L20 10 L24 18 L30 8 L36 22" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Sour Candy
+                  <svg class="fbtn-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.75 8.75L14.25 12L10.75 15.25"/>
+                  </svg>
+                </span>
+                <span class="fbtn-shimmer" aria-hidden="true"></span>
+              </button>
+              <!-- SOUR GRAPE -->
+              <button class="flavor-btn" data-flavor="sour-grape"
+                style="--fbtn-glow:rgba(192,132,252,0.6);--fbtn-color:#C084FC;--fbtn-shimmer:rgba(192,132,252,0.9);--fbtn-border:rgba(192,132,252,0.3);">
+                <span class="fbtn-glow" aria-hidden="true"></span>
+                <span class="fbtn-inner">
+                  <svg class="fbtn-icon" width="11" height="8" viewBox="0 0 40 28" fill="none">
+                    <path d="M4 22 L10 8 L16 18 L20 10 L24 18 L30 8 L36 22" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Sour Grape
+                  <svg class="fbtn-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.75 8.75L14.25 12L10.75 15.25"/>
+                  </svg>
+                </span>
+                <span class="fbtn-shimmer" aria-hidden="true"></span>
+              </button>
+              <!-- SOUR GUMMI WORM -->
+              <button class="flavor-btn" data-flavor="sour-gummi-worm"
+                style="--fbtn-glow:rgba(255,107,157,0.6);--fbtn-color:#FF6B9D;--fbtn-shimmer:rgba(255,107,157,0.9);--fbtn-border:rgba(255,107,157,0.3);">
+                <span class="fbtn-glow" aria-hidden="true"></span>
+                <span class="fbtn-inner">
+                  <svg class="fbtn-icon" width="11" height="8" viewBox="0 0 40 28" fill="none">
+                    <path d="M4 22 L10 8 L16 18 L20 10 L24 18 L30 8 L36 22" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Sour Gummi Worm
+                  <svg class="fbtn-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.75 8.75L14.25 12L10.75 15.25"/>
+                  </svg>
+                </span>
+                <span class="fbtn-shimmer" aria-hidden="true"></span>
+              </button>
+            </div>
+            <ul class="product-card-stats">
+              <li class="stat-row">
+                <span class="stat-val">100mg</span>
+                <span class="stat-dash"></span>
+                <span class="stat-label">Green Tea Caffeine</span>
+              </li>
+              <li class="stat-row">
+                <span class="stat-val">200mg</span>
+                <span class="stat-dash"></span>
+                <span class="stat-label">L-Theanine</span>
+              </li>
+              <li class="stat-row">
+                <span class="stat-val">300mg</span>
+                <span class="stat-dash"></span>
+                <span class="stat-label">Alpha-GPC</span>
+              </li>
+              <li class="stat-row">
+                <span class="stat-val">200mg</span>
+                <span class="stat-dash"></span>
+                <span class="stat-label">Ginseng Extract</span>
+              </li>
+              <li class="stat-row">
+                <span class="stat-val">B6 · B12</span>
+                <span class="stat-dash"></span>
+                <span class="stat-label">Energy Metabolism</span>
+              </li>
+            </ul>
+            <div class="product-card-footer">
+              <div>
+                <div class="product-card-price">$49<span>/bag</span></div>
+                <div id="card-per-serving" style="font-size:10px; color:var(--text-muted); margin-top:3px; letter-spacing:0.06em;">$1.63 per serving</div>
+              </div>
+              <div class="product-card-servings">30 Servings</div>
+            </div>
+            <a href="#" class="product-card-cta">Add to Cart</a>
+            <p class="product-card-note">Free shipping over $75 · Subscribe &amp; save 15%</p>
+          </div>
+        </div>
+        <svg class="hero-card-border-svg" id="hero-border-svg" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="overflow:visible">
+          <defs>
+            <filter id="hero-glow-filter" x="-80%" y="-80%" width="260%" height="260%">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="tight"/>
+              <feGaussianBlur in="SourceGraphic" stdDeviation="9" result="wide"/>
+              <feMerge>
+                <feMergeNode in="wide"/>
+                <feMergeNode in="tight"/>
+              </feMerge>
+            </filter>
+          </defs>
+          <rect id="hero-border-bg"   fill="none" stroke="rgba(226,255,71,0.07)" stroke-width="1"/>
+          <rect id="hero-border-glow" fill="none" stroke="rgba(226,255,71,0.55)" stroke-width="2.5" filter="url(#hero-glow-filter)"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
      COMPARISON
 ══════════════════════════════════════════ -->
 <section class="section" id="comparison">
@@ -2904,7 +3237,7 @@ fbq('track','PageView');
       if (navCta) navCta.textContent = 'Get Yours \u2014 ' + fmt;
 
       var heroCta = document.querySelector('.hero-actions .btn-primary');
-      if (heroCta) heroCta.textContent = 'Add to Cart \u2014 ' + fmt;
+      if (heroCta) heroCta.textContent = 'Get Mindor \u2014 ' + fmt;
 
       var finalCta = document.querySelector('.final-cta-btn-primary');
       if (finalCta) finalCta.textContent = 'Get Mindor \u2014 ' + fmt;
@@ -3297,10 +3630,7 @@ fbq('track','PageView');
       cardCta.addEventListener('click', function (e) { e.preventDefault(); addToCart(getCurrentFlavor()); });
     }
 
-    var heroCta = document.querySelector('.hero-actions .btn-primary');
-    if (heroCta) {
-      heroCta.addEventListener('click', function (e) { e.preventDefault(); addToCart(getCurrentFlavor()); });
-    }
+    // Hero CTA now scrolls to #order — no cart handler needed
 
     var finalPrimary = document.querySelector('.final-cta-btn-primary');
     if (finalPrimary) {
