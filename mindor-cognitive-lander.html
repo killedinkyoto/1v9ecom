@@ -6,6 +6,16 @@
   <meta name="description" content="Mindor Performance Stack — 5 clinically dosed compounds for remote cognitive workers. Calm alertness, no crash.">
   <title>Mindor — 5 Compounds. One Clean Cognitive Window.</title>
 
+  <!-- Meta Pixel -->
+  <script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','1460636158529685');fbq('track','PageView');</script>
+  <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1460636158529685&ev=PageView&noscript=1"/></noscript>
+
+  <!-- Microsoft Clarity -->
+  <script type="text/javascript">(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y)})(window,document,"clarity","script","wtnfe3y3tz");</script>
+
+  <!-- Vercel Analytics -->
+  <script defer src="/_vercel/insights/script.js"></script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -2501,7 +2511,82 @@
         updatePrices();
       });
 
+      container.querySelector('.widget-cta-btn').addEventListener('click', function() {
+        const selectedFlavor = (container.querySelector('.flavor-btn.selected') || {}).dataset?.flavor || 'cool-grape';
+        handleCheckout(qty, selectedFlavor, subscribe, this);
+      });
+
       updatePrices();
+    }
+
+    /* ── SHOPIFY CONFIG ── */
+    const SHOPIFY_DOMAIN = 'mindor-1950.myshopify.com';
+    const SHOPIFY_TOKEN  = 'c1f8ad6a65722ad1a022b7e5f8a8660c';
+    // Cool Grape maps to Sour Grape product
+    const FLAVOR_PRODUCTS = { 'cool-grape': 'gid://shopify/Product/9049594626203' };
+
+    async function resolveVariantId(productGid) {
+      const q = `{ product(id: "${productGid}") { variants(first:1) { nodes { id } } } }`;
+      const r = await fetch(`https://${SHOPIFY_DOMAIN}/api/2024-01/graphql.json`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Shopify-Storefront-Access-Token': SHOPIFY_TOKEN },
+        body: JSON.stringify({ query: q })
+      });
+      const d = await r.json();
+      return d?.data?.product?.variants?.nodes?.[0]?.id || null;
+    }
+
+    async function createShopifyCart(variantId, qty) {
+      const mutation = `mutation {
+        cartCreate(input: { lines: [{ merchandiseId: "${variantId}", quantity: ${qty} }] }) {
+          cart { checkoutUrl }
+          userErrors { message }
+        }
+      }`;
+      const r = await fetch(`https://${SHOPIFY_DOMAIN}/api/2024-01/graphql.json`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Shopify-Storefront-Access-Token': SHOPIFY_TOKEN },
+        body: JSON.stringify({ query: mutation })
+      });
+      const d = await r.json();
+      return d?.data?.cartCreate?.cart?.checkoutUrl || null;
+    }
+
+    async function handleCheckout(qty, flavor, subscribe, btn) {
+      btn.disabled = true;
+      const originalText = btn.textContent;
+      btn.textContent = 'Loading…';
+      try {
+        const productGid = FLAVOR_PRODUCTS[flavor] || FLAVOR_PRODUCTS['cool-grape'];
+        const variantId = await resolveVariantId(productGid);
+        if (!variantId) throw new Error('Variant not found');
+
+        if (subscribe) {
+          const resp = await fetch('/api/stripe-subscribe', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              qty,
+              flavors: [flavor],
+              variantMap: { [flavor]: variantId },
+              source: 'cognitive-lander'
+            })
+          });
+          if (!resp.ok) throw new Error('Stripe API error');
+          const { url } = await resp.json();
+          if (url) { window.location.href = url; return; }
+          throw new Error('No Stripe URL');
+        } else {
+          const checkoutUrl = await createShopifyCart(variantId, qty);
+          if (checkoutUrl) { window.location.href = checkoutUrl; return; }
+          throw new Error('No Shopify checkout URL');
+        }
+      } catch (e) {
+        console.error('[checkout]', e);
+        btn.disabled = false;
+        btn.textContent = originalText;
+        alert('Something went wrong. Please try again.');
+      }
     }
 
     /* ── FAQ ── */

@@ -1,7 +1,7 @@
 import Stripe from 'stripe';
 
-// $28.04/tub/mo — 15% off $32.99. Create in Stripe Dashboard → Products → Add price
-// Set STRIPE_PRICE_ID env var in Vercel, or replace the fallback below
+// $32.99/tub/mo — subscription price. Set STRIPE_PRICE_ID env var in Vercel.
+// Create in Stripe Dashboard → Products → Add price ($32.99 recurring monthly)
 const PRICE_ID = process.env.STRIPE_PRICE_ID || 'price_1TcVZuRsLEp3Bab3nkHcEEfY';
 
 export default async function handler(req, res) {
@@ -14,7 +14,8 @@ export default async function handler(req, res) {
     variantMap = {},
     addonVariantIds = [],
     giftVariantIds = [],
-    shopifyCheckoutUrl = null  // if addons/gifts were selected, redirect here after Stripe
+    shopifyCheckoutUrl = null,
+    source = 'lander'
   } = req.body;
 
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -41,7 +42,7 @@ export default async function handler(req, res) {
     success_url: shopifyCheckoutUrl
       ? `${origin}/subscribe-success?checkout=${encodeURIComponent(shopifyCheckoutUrl)}&session_id={CHECKOUT_SESSION_ID}`
       : `${origin}/subscribe-success?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${origin}/lander`,
+    cancel_url: `${origin}/${source === 'cognitive-lander' ? 'cognitive' : 'lander'}`,
     subscription_data: { metadata: meta }
     // No trial — first charge is immediate (Stripe IS the payment for tub 1)
   });
