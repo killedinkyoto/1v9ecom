@@ -315,6 +315,16 @@
       position: relative;
       z-index: 1;
     }
+    .hero-product-img {
+      width: 100%;
+      height: auto;
+      border-radius: 16px;
+      display: block;
+      box-shadow: var(--shadow-lg);
+      border: 0.5px solid rgba(74,107,212,0.15);
+      object-fit: cover;
+    }
+
     .hero-trust-row {
       display: flex;
       align-items: center;
@@ -346,16 +356,17 @@
     /* ── TRUST BAR ── */
     .trust-bar {
       background: var(--deep-work-black);
-      padding: 28px 0;
+      padding: 24px 32px;
       border-top: 0.5px solid rgba(74,107,212,0.20);
       border-bottom: 0.5px solid rgba(74,107,212,0.20);
+      overflow: hidden;
     }
     .trust-bar-inner {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 24px;
-      flex-wrap: wrap;
+      gap: 0;
+      max-width: 1080px;
+      margin: 0 auto;
     }
     .trust-bar-label {
       font-size: 9px;
@@ -406,6 +417,58 @@
       color: rgba(255,255,255,0.45);
       line-height: 1.3;
       max-width: 80px;
+    }
+
+    /* ── TICKER ── */
+    .trust-bar-inner {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+    .trust-bar-label-col {
+      flex-shrink: 0;
+      padding: 0 28px 0 0;
+      border-right: 0.5px solid rgba(255,255,255,0.08);
+    }
+    .ticker-wrap {
+      flex: 1;
+      overflow: hidden;
+      min-width: 0;
+      mask-image: linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
+    }
+    .ticker-track {
+      display: flex;
+      align-items: center;
+      gap: 56px;
+      width: max-content;
+      padding: 0 28px;
+      animation: ticker-scroll 28s linear infinite;
+    }
+    .ticker-track:hover { animation-play-state: paused; }
+    @keyframes ticker-scroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .ticker-track { animation: none; }
+    }
+    .ticker-logo {
+      height: 22px;
+      width: auto;
+      max-width: 130px;
+      object-fit: contain;
+      flex-shrink: 0;
+      filter: grayscale(1) invert(1);
+      mix-blend-mode: screen;
+      opacity: 0.55;
+      transition: opacity 0.2s;
+    }
+    .ticker-track:hover .ticker-logo { opacity: 0.8; }
+    .trust-bar-metric {
+      flex-shrink: 0;
+      padding-left: 28px;
+      border-left: 0.5px solid rgba(255,255,255,0.08);
     }
 
     /* ── PROBLEM ── */
@@ -1038,10 +1101,63 @@
     .footer-legal-links a:hover { color: rgba(255,255,255,0.50); }
     .footer-dshea { margin-top: 24px; padding-top: 24px; border-top: 0.5px solid rgba(255,255,255,0.06); font-size: 10px; color: rgba(255,255,255,0.18); line-height: 1.7; letter-spacing: 0.02em; }
 
+/* ── MOBILE STICKY BAR ── */
+    .mobile-sticky-bar {
+      display: none;
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 300;
+      background: rgba(236,242,251,0.97);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-top: 0.5px solid var(--border-accent);
+      padding: 12px 20px;
+      padding-bottom: max(12px, env(safe-area-inset-bottom));
+      box-shadow: 0 -4px 28px rgba(74,107,212,0.18), 0 -1px 4px rgba(74,107,212,0.08);
+      transform: translateY(100%);
+      transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .mobile-sticky-bar.visible { transform: translateY(0); }
+    .mobile-sticky-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+    .mobile-sticky-price-wrap { display: flex; flex-direction: column; gap: 1px; }
+    .mobile-sticky-amount {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 28px;
+      color: var(--text-primary);
+      line-height: 1;
+    }
+    .mobile-sticky-label { font-size: 11px; color: var(--text-dim); letter-spacing: 0.04em; }
+    .mobile-sticky-cta-btn {
+      display: inline-block;
+      background: var(--sprint-blue);
+      color: #fff;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 17px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 15px 32px;
+      border-radius: 4px;
+      text-decoration: none;
+      white-space: nowrap;
+      box-shadow: var(--shadow-sm);
+      transition: opacity 0.15s, transform 0.15s;
+      flex-shrink: 0;
+    }
+    .mobile-sticky-cta-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+    .mobile-sticky-cta-btn:active { opacity: 1; transform: translateY(0); }
+
 /* ── MOBILE ── */
 @media (max-width: 768px) {
   /* Section padding */
-  .hero { padding: 110px 0 60px; }
   .problem-section,
   .ingredients-section,
   .mechanism-section,
@@ -1052,13 +1168,28 @@
   .faq-section,
   .order-section { padding: 64px 0; }
 
-  /* Hero */
-  .hero-img-wrap { max-width: 300px; }
-  .hero-trust-row { gap: 12px; }
+  /* Sticky bar + body offset */
+  .mobile-sticky-bar { display: block; }
+  body { padding-bottom: 80px; }
 
-  /* Trust bar */
-  .trust-bar-inner { flex-direction: column; align-items: flex-start; gap: 16px; }
-  .trust-bar-logos { gap: 12px; }
+  /* Hero */
+  .hero { padding: 100px 0 48px; }
+  .hero-img-wrap {
+    max-width: 100%;
+    margin-left: -24px;
+    margin-right: -24px;
+    margin-bottom: 28px;
+  }
+  .hero-product-img { border-radius: 0; }
+  .hero-trust-row { gap: 12px; }
+  .hero-body { font-size: 15px; }
+  .hero-stars { margin-bottom: 24px; }
+
+  /* Trust bar — ticker stays as flex row on mobile, metric hidden */
+  .trust-bar-metric { display: none; }
+  .trust-bar-label-col { padding-right: 16px; border-right: none; }
+  .trust-bar { padding: 20px 0; }
+  .ticker-logo { height: 18px; }
 
   /* Problem */
   .problem-grid { grid-template-columns: 1fr; }
@@ -1076,8 +1207,18 @@
   .comparison-table th,
   .comparison-table td { padding: 10px 8px; font-size: 11px; }
 
-  /* Testimonials */
-  .testimonials-grid { grid-template-columns: 1fr; }
+  /* Testimonials — horizontal scroll carousel */
+  .testimonials-section .container { padding-right: 0; }
+  .testimonials-grid {
+    grid-template-columns: repeat(3, min(280px, 80vw));
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    padding-right: 24px;
+    padding-bottom: 4px;
+    gap: 12px;
+  }
+  .testimonial-card { scroll-snap-align: start; }
 
   /* Science */
   .science-stats { grid-template-columns: 1fr; gap: 16px; }
@@ -1107,13 +1248,382 @@
   .comparison-table th:nth-child(4),
   .comparison-table td:nth-child(4) { display: none; }
 }
+
+/* ── ANNOUNCEMENT BAR ── */
+.announcement-bar {
+  background: var(--sprint-blue);
+  padding: 10px 24px;
+  text-align: center;
+  position: relative;
+  z-index: 200;
+}
+.announcement-bar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+.announcement-bar-text {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #fff;
+  letter-spacing: 0.01em;
+}
+.announcement-bar-form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.announcement-bar-input {
+  background: rgba(255,255,255,0.15);
+  border: 0.5px solid rgba(255,255,255,0.35);
+  border-radius: 3px;
+  padding: 6px 12px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  color: #fff;
+  outline: none;
+  width: 200px;
+  transition: background 0.15s, border-color 0.15s;
+}
+.announcement-bar-input::placeholder { color: rgba(255,255,255,0.55); }
+.announcement-bar-input:focus { background: rgba(255,255,255,0.22); border-color: rgba(255,255,255,0.6); }
+.announcement-bar-submit {
+  background: #fff;
+  color: var(--sprint-blue);
+  border: none;
+  border-radius: 3px;
+  padding: 6px 14px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.15s;
+  white-space: nowrap;
+}
+.announcement-bar-submit:hover { opacity: 0.9; }
+.announcement-bar-note { font-size: 11px; color: rgba(255,255,255,0.65); }
+@media (max-width: 768px) {
+  .announcement-bar-form { display: none; }
+  .announcement-bar-text { font-size: 12px; }
+}
+
+/* ── OUTCOME STRIP ── */
+.outcome-strip {
+  background: var(--deep-work-black);
+  padding: 28px 0;
+  border-bottom: 0.5px solid rgba(74,107,212,0.20);
+}
+.outcome-strip-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+}
+.outcome-tile {
+  padding: 0 24px;
+  text-align: center;
+  border-right: 0.5px solid rgba(255,255,255,0.06);
+}
+.outcome-tile:last-child { border-right: none; }
+.outcome-tile-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: 36px;
+  color: var(--sprint-blue);
+  line-height: 1;
+  display: block;
+  margin-bottom: 4px;
+}
+.outcome-tile-label {
+  font-size: 12px;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.4;
+}
+@media (max-width: 600px) {
+  .outcome-strip-grid { grid-template-columns: repeat(2, 1fr); gap: 16px 0; }
+  .outcome-tile { border-right: none; border-bottom: 0.5px solid rgba(255,255,255,0.06); padding: 16px 16px; }
+  .outcome-tile:nth-child(2n) { border-right: none; }
+  .outcome-tile:nth-last-child(-n+2) { border-bottom: none; }
+}
+
+/* ── FOUNDER BLOCK ── */
+.founder-section {
+  padding: 96px 0;
+  background: var(--bg);
+  position: relative;
+  overflow: hidden;
+}
+.founder-section::before {
+  content: '';
+  position: absolute;
+  top: -80px; left: -100px;
+  width: 450px; height: 450px;
+  background: radial-gradient(circle, rgba(74,107,212,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+.founder-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: start;
+}
+.founder-copy .eyebrow { margin-bottom: 12px; }
+.founder-headline {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: clamp(28px, 4vw, 44px);
+  color: var(--text-primary);
+  line-height: 0.97;
+  margin-bottom: 28px;
+  text-transform: uppercase;
+}
+.founder-body { font-size: 15px; color: var(--text-muted); line-height: 1.75; }
+.founder-body p + p { margin-top: 16px; }
+.founder-sig {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 0.5px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.founder-sig-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 16px; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.04em; }
+.founder-sig-title { font-size: 11px; color: var(--text-dim); letter-spacing: 0.08em; margin-top: 2px; }
+.founder-img-placeholder {
+  width: 100%;
+  aspect-ratio: 3/4;
+  background: linear-gradient(170deg, #D0DCF0 0%, #C2CDE8 60%);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: rgba(26,32,64,0.3);
+  text-transform: uppercase;
+  box-shadow: var(--shadow-md);
+  border: 0.5px solid var(--border);
+}
+@media (max-width: 768px) {
+  .founder-inner { grid-template-columns: 1fr; gap: 40px; }
+  .founder-img-col { order: -1; }
+  .founder-img-placeholder { aspect-ratio: 4/3; }
+}
+
+/* ── TASTE SECTION ── */
+.taste-section {
+  padding: 96px 0;
+  background: var(--surface);
+  position: relative;
+}
+.taste-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+.taste-copy .eyebrow { margin-bottom: 12px; }
+.taste-headline {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: clamp(28px, 4vw, 44px);
+  color: var(--text-primary);
+  line-height: 0.97;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+.taste-body { font-size: 15px; color: var(--text-muted); line-height: 1.75; margin-bottom: 24px; }
+.taste-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+.taste-step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+.taste-step-num {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: var(--sprint-blue);
+  color: #fff;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.taste-quote {
+  padding: 20px 24px;
+  background: var(--bg);
+  border: 0.5px solid var(--border-accent);
+  border-radius: 6px;
+  font-size: 14px;
+  color: var(--text-primary);
+  line-height: 1.6;
+  font-style: italic;
+}
+.taste-quote-author { margin-top: 10px; font-size: 12px; color: var(--text-dim); font-style: normal; }
+.taste-img-placeholder {
+  width: 100%;
+  aspect-ratio: 1;
+  background: linear-gradient(145deg, #D0DCF0 0%, #C2CDE8 100%);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: rgba(26,32,64,0.3);
+  text-transform: uppercase;
+  box-shadow: var(--shadow-md);
+  border: 0.5px solid var(--border);
+}
+@media (max-width: 768px) {
+  .taste-inner { grid-template-columns: 1fr; gap: 40px; }
+  .taste-img-col { display: none; }
+}
+
+/* ── REVIEW WALL ── */
+.review-wall {
+  padding: 96px 0;
+  background: var(--bg);
+}
+.review-wall-header { margin-bottom: 52px; }
+.review-wall-grid {
+  columns: 2;
+  column-gap: 20px;
+}
+.review-wall-card {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: 6px;
+  padding: 24px;
+  break-inside: avoid;
+  margin-bottom: 20px;
+  display: block;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.review-wall-card:hover { border-color: var(--border-accent); box-shadow: var(--shadow-sm); }
+.review-wall-stars { color: #F5A623; font-size: 13px; letter-spacing: 1px; margin-bottom: 8px; }
+.review-wall-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin-bottom: 8px;
+  line-height: 1.1;
+}
+.review-wall-quote { font-size: 13px; color: var(--text-muted); line-height: 1.65; margin-bottom: 12px; }
+.review-wall-author-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 0.5px solid var(--border-subtle);
+}
+.review-wall-name { font-size: 12px; font-weight: 600; color: var(--text-primary); }
+.review-wall-badge {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--sprint-blue);
+  text-transform: uppercase;
+  background: rgba(74,107,212,0.08);
+  padding: 2px 8px;
+  border-radius: 2px;
+}
+.review-wall-cta { margin-top: 40px; text-align: center; }
+.review-wall-link {
+  font-size: 13px;
+  color: var(--sprint-blue);
+  text-decoration: none;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid rgba(74,107,212,0.3);
+  padding-bottom: 1px;
+  transition: border-color 0.15s;
+}
+.review-wall-link:hover { border-color: var(--sprint-blue); }
+@media (max-width: 768px) {
+  .review-wall-grid { columns: 1; }
+}
+
+/* ── PRICING COMPARE ── */
+.pricing-section {
+  padding: 96px 0;
+  background: var(--surface);
+}
+.pricing-header { margin-bottom: 48px; }
+.pricing-compare-rows {
+  max-width: 680px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 32px;
+}
+.pricing-compare-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 20px;
+  background: var(--bg);
+  border: 0.5px solid var(--border);
+  border-radius: 5px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+.pricing-compare-row.is-mindor {
+  background: rgba(74,107,212,0.06);
+  border-color: var(--sprint-blue);
+}
+.pricing-item-name {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 14px;
+  min-width: 160px;
+}
+.pricing-item-name.is-mindor { color: var(--sprint-blue); }
+.pricing-item-price {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  color: var(--text-primary);
+  line-height: 1;
+  white-space: nowrap;
+}
+.pricing-item-price.is-mindor { color: var(--sprint-blue); }
+.pricing-item-note { font-size: 12px; color: var(--text-dim); flex: 1; text-align: right; }
+.pricing-item-note.is-mindor { color: var(--sprint-blue); }
+.pricing-footnote { font-size: 13px; color: var(--text-muted); line-height: 1.7; max-width: 580px; padding: 16px 20px; background: rgba(74,107,212,0.04); border: 0.5px solid var(--border); border-radius: 5px; }
+@media (max-width: 600px) {
+  .pricing-compare-row { flex-wrap: wrap; gap: 8px; }
+  .pricing-item-note { flex-basis: 100%; text-align: left; }
+}
   </style>
 </head>
 <body>
 <!--
   MINDOR COGNITIVE LANDER — BUILD FLAGS
   ======================================
-  [CONFIRM PRICING] Base price $44.99/tub is a placeholder — confirm before launch.
+  [CONFIRM PRICING] Base price set to $32.99/tub — confirm Shopify product price matches before launch.
   [CONFIRM DOSE] Panax Ginseng and B6+B12 doses need confirmation from formulation sheet.
   [CONFIRM CTA] CTA buttons are placeholder — wire to Stripe checkout URL before launch.
   [CONFIRM IMAGES] All image placeholders need real product assets.
@@ -1122,6 +1632,17 @@
   [CONFIRM BADGE] Science section testing placeholder needs real certification badge.
   [CONFIRM ROUTE] Add to vercel.json when ready to deploy.
 -->
+
+  <!-- ── ANNOUNCEMENT BAR ── -->
+  <div class="announcement-bar" id="announcement-bar">
+    <div class="announcement-bar-inner">
+      <span class="announcement-bar-text">First order's 15% off. Drop your email and we'll send the code.</span>
+      <form class="announcement-bar-form" onsubmit="return false;">
+        <input type="email" class="announcement-bar-input" placeholder="your@email.com" aria-label="Email for discount">
+        <button type="submit" class="announcement-bar-submit">Get 15% Off</button>
+      </form>
+    </div>
+  </div>
 
   <!-- ── NAV ── -->
   <nav class="site-nav" id="site-nav">
@@ -1142,23 +1663,21 @@
   <section class="hero" id="hero">
     <div class="container--narrow">
       <div class="hero-eyebrow">
-        <span class="badge"><span class="badge-dot"></span>Performance Stack · Est. 2026</span>
+        <span class="badge"><span class="badge-dot"></span>Performance Stack</span>
       </div>
       <h1 class="hero-headline">
-        5 Compounds.<br><span>One Clean</span><br>Cognitive Window.
+        Wired by 10am.<br><span>Useless</span> by 2pm.
       </h1>
-      <p class="hero-subhead">The Focus Stack For People Whose Work Demands Everything From Their Brain.</p>
+      <p class="hero-subhead">That isn't your discipline running out. It's caffeine doing the only thing caffeine was ever going to do.</p>
       <p class="hero-body">
-        You're doing the kind of work where mental clarity is the whole job. A threat hunt doesn't pause for brain fog. A code review doesn't care that your second cup wore off. You need focus that holds for a real shift — not a 45-minute caffeine spike.
+        You know the shape of the day by now. The morning's sharp, the first coffee lands, you get a couple of real hours. Then the second cup does less. By mid-afternoon you're sitting there technically working, producing nothing you'd put your name on. Coffee got you in. It was never built to keep you there. MINDOR is the thing built for the back half of the day. Five compounds, dosed for a focus window that holds through a real shift, with every milligram printed on the label.
       </p>
       <div class="hero-stars">
         <span class="hero-stars-icons">★★★★★</span>
-        <span>4.9 · 1,200+ cognitive workers</span>
+        <span>4.9 from 1,200+ people who do this kind of work for a living.</span>
       </div>
       <div class="hero-img-wrap">
-        <div class="hero-img-placeholder">
-          <p class="hero-img-label">[PLACEHOLDER: 420×420<br>Product bag hero shot<br>Periwinkle / light bg]</p>
-        </div>
+        <img src="1%20SG%20NO%20BG.png" alt="Mindor Performance Stack — Cool Grape" class="hero-product-img">
       </div>
       <div id="bundle-widget-hero" class="bundle-widget">
         <!-- Bundle widget injected by Task 13 JS -->
@@ -1186,21 +1705,56 @@
     </div>
   </section>
 
-  <!-- ── TRUST BAR ── -->
-  <div class="trust-bar">
+  <!-- ── OUTCOME STRIP ── -->
+  <div class="outcome-strip">
     <div class="container">
-      <div class="trust-bar-inner">
+      <div class="outcome-strip-grid">
+        <div class="outcome-tile">
+          <span class="outcome-tile-num">3–5 HRS</span>
+          <span class="outcome-tile-label">of usable focus per session</span>
+        </div>
+        <div class="outcome-tile">
+          <span class="outcome-tile-num">5</span>
+          <span class="outcome-tile-label">compounds, every dose on the label</span>
+        </div>
+        <div class="outcome-tile">
+          <span class="outcome-tile-num">0</span>
+          <span class="outcome-tile-label">proprietary blends</span>
+        </div>
+        <div class="outcome-tile">
+          <span class="outcome-tile-num">30 DAYS</span>
+          <span class="outcome-tile-label">money back, no hoops</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PRESS STRIP ── -->
+  <div class="trust-bar">
+    <div class="trust-bar-inner">
+      <div class="trust-bar-label-col">
         <span class="trust-bar-label">As seen in</span>
-        <div class="trust-bar-logos">
-          <div class="trust-bar-logo-placeholder">[PUB LOGO 1]</div>
-          <div class="trust-bar-logo-placeholder">[PUB LOGO 2]</div>
-          <div class="trust-bar-logo-placeholder">[PUB LOGO 3]</div>
-          <div class="trust-bar-logo-placeholder">[PUB LOGO 4]</div>
+      </div>
+      <div class="ticker-wrap">
+        <div class="ticker-track">
+          <img src="a4947f059ac6c1c8eac91671188d33164c1deb96-960x480.avif" alt="Runner's World" class="ticker-logo">
+          <img src="images_2.png" alt="Forbes" class="ticker-logo">
+          <img src="Mens-Health-logo.avif" alt="Men's Health" class="ticker-logo">
+          <img src="images_3.png" alt="Well+Good" class="ticker-logo">
+          <img src="Scientific_American_logo_svg.avif" alt="Scientific American" class="ticker-logo">
+          <img src="AARP-Logo.avif" alt="AARP" class="ticker-logo">
+          <!-- duplicate set for seamless loop -->
+          <img src="a4947f059ac6c1c8eac91671188d33164c1deb96-960x480.avif" alt="" aria-hidden="true" class="ticker-logo">
+          <img src="images_2.png" alt="" aria-hidden="true" class="ticker-logo">
+          <img src="Mens-Health-logo.avif" alt="" aria-hidden="true" class="ticker-logo">
+          <img src="images_3.png" alt="" aria-hidden="true" class="ticker-logo">
+          <img src="Scientific_American_logo_svg.avif" alt="" aria-hidden="true" class="ticker-logo">
+          <img src="AARP-Logo.avif" alt="" aria-hidden="true" class="ticker-logo">
         </div>
-        <div class="trust-bar-metric">
-          <span class="trust-bar-metric-num">1,200+</span>
-          <span class="trust-bar-metric-label">Orders Shipped</span>
-        </div>
+      </div>
+      <div class="trust-bar-metric">
+        <span class="trust-bar-metric-num">1,200+</span>
+        <span class="trust-bar-metric-label">Orders Shipped</span>
       </div>
     </div>
   </div>
@@ -1211,28 +1765,52 @@
       <div class="problem-header">
         <div class="section-divider"></div>
         <span class="eyebrow">The Problem</span>
-        <h2 class="section-headline">Your Current Stack Wasn't<br>Designed For This Kind Of Work.</h2>
+        <h2 class="section-headline">The crash isn't a<br>character flaw.</h2>
       </div>
       <div class="problem-grid">
         <div class="problem-card">
           <span class="problem-card-num">01</span>
-          <p class="problem-card-title">Caffeine Spikes,<br>Doesn't Sustain</p>
-          <p class="problem-card-body">You get 45–60 minutes of sharpness, then the slope starts. By 2pm, you're technically working but producing nothing you'd be proud of. Coffee got you in. It didn't keep you there.</p>
+          <p class="problem-card-title">Coffee gives you forty good minutes, then bills you for them.</p>
+          <p class="problem-card-body">The first cup lands and you feel it. Sharp, online, ready to go. Forty, fifty minutes later the slope starts. So you have another, and it does a little less than the last one. Somewhere in there the caffeine stopped being the thing that gets you working and became the thing you need just to feel normal.</p>
         </div>
         <div class="problem-card">
           <span class="problem-card-num">02</span>
-          <p class="problem-card-title">Jitters Are A<br>Liability Here</p>
-          <p class="problem-card-body">When you're hunting a threat, reviewing a PR, or building a model — scattered isn't just uncomfortable. It's expensive. The kind of work you do punishes overstimulation.</p>
+          <p class="problem-card-title">Past a certain point, more caffeine only makes you twitchy.</p>
+          <p class="problem-card-body">The work you do punishes overstimulation. You can't trace a bug or review a model while your leg's bouncing and your chest is doing that thing. There's a kind of "alert" that's really just anxious, and the fourth coffee lives there.</p>
         </div>
         <div class="problem-card">
           <span class="problem-card-num">03</span>
-          <p class="problem-card-title">The Afternoon Drop<br>Doesn't Negotiate</p>
-          <p class="problem-card-body">Your 3pm session gets the worst version of your brain. Not because you're lazy or tired. Because your stimulant routine ran out and you're running the second half of the day on fumes.</p>
+          <p class="problem-card-title">The 3pm version of your brain is the worst one you own.</p>
+          <p class="problem-card-body">Not because you're lazy. Because the stimulant ran out and all the fatigue it was holding back shows up at once. You spend the back half of the day on fumes, doing the shallow busywork that feels like work and ships nothing.</p>
         </div>
       </div>
       <div class="problem-pivot">
-        <p>The standard advice is to drink less coffee, sleep more, or meditate. Those things help. But they don't solve the core problem.</p>
-        <p>Your stimulant routine is built from tools designed for physical energy — not sustained cognitive output. There's a difference. And most people in your field feel it every day.</p>
+        <p>The usual advice is sleep more, drink less coffee, try meditating. Fine advice, none of it touches the real problem. You've been using a tool built for a quick jolt to hold a long shift. Those are two different jobs, and most people in your line of work feel the gap every single afternoon.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOUNDER BLOCK ── -->
+  <section class="founder-section">
+    <div class="container">
+      <div class="founder-inner">
+        <div class="founder-copy">
+          <div class="section-divider"></div>
+          <span class="eyebrow">Why This Exists</span>
+          <h2 class="founder-headline">I built this on the fourth coffee that did nothing.</h2>
+          <div class="founder-body">
+            <p>For about four years I ran the company on 500-something milligrams of caffeine a day. Coffee, then a second coffee, then whatever was closest by 2pm. It worked, until it didn't. I still remember the morning it quit on me. Triple espresso, sat down to start, felt nothing. Not calm, not wired. Just a guy who'd quietly turned himself into a caffeine delivery system with the returns falling off.</p>
+            <p>So I went down the obvious roads. Stronger coffee. Energy drinks, which are a faster version of the same crash. Pre-workout at my desk, which is its own special kind of stupid. Then the nootropics, the nice-looking tubs that hid everything behind a "focus blend" and did nothing I could feel.</p>
+            <p>What finally clicked is almost dumb in hindsight. Caffeine isn't broken. It's just being asked to hold a shift it was never built to hold. It can switch you on. Staying on is somebody else's job.</p>
+            <p>So I built the short version of what I actually wanted. Dosed for the back half of the day, every milligram on the label, because I'm the one who reads the label and I had a feeling you were too.</p>
+          </div>
+          <div class="founder-sig">
+            <div>
+              <p class="founder-sig-name">[Founder Name], Founder of MINDOR</p>
+            </div>
+          </div>
+        </div>
+        <div class="founder-img-placeholder">[Founder Photo]</div>
       </div>
     </div>
   </section>
@@ -1243,45 +1821,49 @@
       <div class="ingredients-header">
         <div class="section-divider"></div>
         <span class="eyebrow">The Stack</span>
-        <h2 class="section-headline">5 Compounds.<br>Clinically Dosed. Nothing Extra.</h2>
+        <h2 class="section-headline">What's actually<br>in a scoop.</h2>
       </div>
-      <p class="ingredients-intro">Full label. Every dose published. No proprietary blends, no hidden milligrams. You can verify every number on a PubMed search — and we expect you to.</p>
+      <p class="ingredients-intro">Five compounds, every milligram printed. No blend names, nothing rounded off, nothing hiding behind a trademark. Every number on here is one search away from being checked, and we'd rather you checked it.</p>
       <div class="ingredients-grid">
         <div class="ingredient-card">
           <div class="ingredient-icon-placeholder">[ICON]</div>
-          <span class="ingredient-dose-badge">100mg</span>
-          <span class="ingredient-role">Alertness Signal</span>
-          <p class="ingredient-name">Green Tea<br>Caffeine</p>
-          <p class="ingredient-body">Supports alertness without the spike of synthetic caffeine. The green tea source metabolizes more evenly — so you get a steadier on-ramp, not a jolt.</p>
+          <span class="ingredient-dose-badge">200mg</span>
+          <span class="ingredient-role">Natural Caffeine, from green tea</span>
+          <p class="ingredient-name">Caffeine</p>
+          <p class="ingredient-body">Pulled from green tea instead of cooked up synthetically. It comes up smoother than coffee does, slower off the line, without the same jagged edge. 200mg is a real dose. This is the engine of the stack, not a sprinkle for the label.</p>
         </div>
         <div class="ingredient-card">
           <div class="ingredient-icon-placeholder">[ICON]</div>
-          <span class="ingredient-dose-badge">200mg</span>
-          <span class="ingredient-role">Steadiness Signal</span>
+          <span class="ingredient-dose-badge">100mg</span>
+          <span class="ingredient-role">The settling half</span>
           <p class="ingredient-name">L-Theanine</p>
-          <p class="ingredient-body">Paired with caffeine to support smooth, steady alertness. The combination is studied for calm focus during demanding tasks. Caffeine gets you started. L-Theanine keeps you steady.</p>
+          <p class="ingredient-body">The one combination even the skeptics on r/Nootropics still hand to people starting out. The theanine rounds the caffeine off so the alertness sits steady instead of buzzing.</p>
         </div>
         <div class="ingredient-card">
           <div class="ingredient-icon-placeholder">[ICON]</div>
           <span class="ingredient-dose-badge">300mg</span>
-          <span class="ingredient-role">Cognitive Support</span>
+          <span class="ingredient-role">Cognitive support</span>
           <p class="ingredient-name">Alpha-GPC</p>
-          <p class="ingredient-body">A serious cognitive-support ingredient. Supports mental sharpness during demanding work. This is the ingredient that tells skeptical engineers the formula was built with intent, not just caffeine and hope.</p>
+          <p class="ingredient-body">A choline source your brain uses for the real work of holding attention and pulling up the right word on time. This is the line that tells a careful reader the formula was built on purpose. Most focus products skip it because it costs actual money.</p>
         </div>
         <div class="ingredient-card">
           <div class="ingredient-icon-placeholder">[ICON]</div>
-          <span class="ingredient-dose-badge">[DOSE TBD]</span>
-          <span class="ingredient-role">Endurance Layer</span>
-          <p class="ingredient-name">Panax Ginseng</p>
-          <p class="ingredient-body">Supports mental stamina on long work days. This isn't the focus spike — it's what helps you stay in the session past hour three. The ingredient that makes the 3pm wall optional.</p>
+          <span class="ingredient-dose-badge">50mg</span>
+          <span class="ingredient-role">Anti-fatigue adaptogen</span>
+          <p class="ingredient-name">Asian (Panax) Ginseng</p>
+          <p class="ingredient-body">In here for the long stretches rather than the first twenty minutes. It's the supporting layer for hour three, not the part you feel switch on.</p>
         </div>
         <div class="ingredient-card">
           <div class="ingredient-icon-placeholder">[ICON]</div>
-          <span class="ingredient-dose-badge">[DOSE TBD]</span>
-          <span class="ingredient-role">Infrastructure Layer</span>
-          <p class="ingredient-name">B6 + B12</p>
-          <p class="ingredient-body">Supports normal energy metabolism — how your body converts food into usable energy. Not a stimulant. A baseline support so the rest of the stack has a solid floor to work from.</p>
+          <span class="ingredient-dose-badge">B6 · B12 · B-Complex</span>
+          <span class="ingredient-role">Infrastructure layer</span>
+          <p class="ingredient-name">B-Vitamins</p>
+          <p class="ingredient-body">B6 0.56mg, B12 800mcg, plus B1, B2, B3, folate, B5. Not a stimulant, not the headline, just the floor the rest of it stands on. The B-vitamins your body runs on to turn food into usable energy.</p>
         </div>
+      </div>
+      <div style="margin-top: 24px; padding: 16px 20px; background: rgba(74,107,212,0.04); border: 0.5px solid var(--border); border-radius: 5px; max-width: 680px;">
+        <a href="#" style="font-size: 13px; font-weight: 600; color: var(--sprint-blue); text-decoration: none; border-bottom: 1px solid rgba(74,107,212,0.3); padding-bottom: 1px;">See the full label and lab test &rarr;</a>
+        <p style="font-size: 12px; color: var(--text-dim); margin-top: 8px; line-height: 1.6;">Full supplement facts include L-Arginine 1000mg, Inositol 600mg, Black Pepper 5mg and the complete B-complex. None of it's hidden. These five are just the ones doing the work you'll feel.</p>
       </div>
       <div class="ingredients-label-note">
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#8A9CC0" stroke-width="1"/><path d="M7 6v4M7 4.5v.5" stroke="#8A9CC0" stroke-width="1.2" stroke-linecap="round"/></svg>
@@ -1296,29 +1878,62 @@
       <div class="mechanism-header">
         <div class="section-divider"></div>
         <span class="eyebrow">How It Works</span>
-        <h2 class="section-headline">It Doesn't Push You.<br>It Clears The Floor.</h2>
+        <h2 class="section-headline">What the next few hours<br>actually feel like.</h2>
       </div>
       <div class="mechanism-steps">
         <div class="mechanism-step">
           <div class="mechanism-step-num">1</div>
-          <p class="mechanism-step-time">20–30 min in</p>
-          <p class="mechanism-step-title">You're On.</p>
-          <p class="mechanism-step-body">Green tea caffeine and L-Theanine begin working. You feel alert — not anxious, not over-caffeinated. The on-ramp is smooth because the stack was designed that way.</p>
+          <p class="mechanism-step-time">20 to 30 minutes in</p>
+          <p class="mechanism-step-title">It comes on quiet.</p>
+          <p class="mechanism-step-body">The caffeine and theanine are working by now. You're alert, but it doesn't announce itself. No jolt, no chest flutter, just the part where sitting down and starting stops being a fight.</p>
         </div>
         <div class="mechanism-step">
           <div class="mechanism-step-num">2</div>
-          <p class="mechanism-step-time">Hours 1–4</p>
-          <p class="mechanism-step-title">The Window Holds.</p>
-          <p class="mechanism-step-body">Alpha-GPC and Ginseng extend your peak. You get 3–5 hours of usable focus — actual output, not the anxious busyness that passes for productivity. The session feels different.</p>
+          <p class="mechanism-step-time">Hours 1 to 4</p>
+          <p class="mechanism-step-title">The window stays open.</p>
+          <p class="mechanism-step-body">This is the part coffee never gave you. The Alpha-GPC and ginseng are doing their slower work in the background, and the focus holds instead of sliding off after the first hour. You get a few hours of the real thing.</p>
         </div>
         <div class="mechanism-step">
           <div class="mechanism-step-num">3</div>
-          <p class="mechanism-step-time">End of session</p>
-          <p class="mechanism-step-title">Clean Exit.</p>
-          <p class="mechanism-step-body">No cliff. No rebound. No jitteriness at midnight wondering why you can't sleep. The session ends and you're done — tired the way you're supposed to be tired after real work.</p>
+          <p class="mechanism-step-time">End of the session</p>
+          <p class="mechanism-step-title">It lets you down easy.</p>
+          <p class="mechanism-step-body">When it winds down, it winds down. No cliff. And taken earlier in the day, none of that lying-awake-at-11pm wired feeling either. You're tired the ordinary way, the way you're supposed to be after a few hours of real work.</p>
         </div>
       </div>
-      <div class="mechanism-diagram-placeholder">[PLACEHOLDER: Focus Arc diagram — on-ramp → plateau → clean exit]</div>
+      <div class="mechanism-diagram-placeholder">[PLACEHOLDER: Focus Arc diagram — smooth on-ramp, long plateau, soft landing]</div>
+    </div>
+  </section>
+
+  <!-- ── TASTE / DRINK EXPERIENCE ── -->
+  <section class="taste-section">
+    <div class="container">
+      <div class="taste-inner">
+        <div class="taste-copy">
+          <div class="section-divider"></div>
+          <span class="eyebrow">The Part Nobody Warns You About</span>
+          <h2 class="taste-headline">Most of these powders taste like a dare.</h2>
+          <p class="taste-body">If you've been through a few of these, you know the routine. The grit that won't dissolve no matter how long you shake it. The herbal, almost-rotten thing. The stomach that turns on you around week two. That's usually how the tub ends up shoved to the back of a drawer with two scoops gone. Sour Grape dissolves in about ten seconds, leaves nothing chalky at the bottom, and tastes enough like candy that reaching for it isn't a chore. It sounds like a small thing. It's the whole difference between a product you actually use and one you bought once.</p>
+          <div class="taste-steps">
+            <div class="taste-step">
+              <span class="taste-step-num">1</span>
+              Scoop one serving.
+            </div>
+            <div class="taste-step">
+              <span class="taste-step-num">2</span>
+              8 to 12 oz of water.
+            </div>
+            <div class="taste-step">
+              <span class="taste-step-num">3</span>
+              Stir and get to work.
+            </div>
+          </div>
+          <div class="taste-quote">
+            "Tastes like it should be sold at a gas station. I mean that as a compliment. Mixes clean, no chalky finish."
+            <p class="taste-quote-author">Jess O., verified buyer</p>
+          </div>
+        </div>
+        <div class="taste-img-placeholder">[Product / lifestyle photo]</div>
+      </div>
     </div>
   </section>
 
@@ -1328,7 +1943,8 @@
       <div class="comparison-header">
         <div class="section-divider"></div>
         <span class="eyebrow">The Honest Comparison</span>
-        <h2 class="section-headline">Coffee Is A Gamble.<br>This Is A System.</h2>
+        <h2 class="section-headline">How it holds up against<br>what you're already doing.</h2>
+        <p class="section-subhead" style="margin-top: 12px; font-size: 16px; font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--text-muted);">Coffee, the pre-workout you repurposed for your desk, the energy drink, and doing nothing.</p>
       </div>
       <table class="comparison-table">
         <thead>
@@ -1401,42 +2017,45 @@
       <div class="testimonials-header">
         <div class="section-divider"></div>
         <span class="eyebrow">Field Reports</span>
-        <h2 class="section-headline">From People Doing<br>The Same Kind Of Work.</h2>
+        <h2 class="section-headline">From people doing<br>the same kind of work.</h2>
       </div>
       <div class="testimonials-grid">
         <div class="testimonial-card">
           <div class="testimonial-stars">★★★★★</div>
-          <p class="testimonial-quote">"I've tried every nootropic stack on the market. Mindor is the first one where I can point to exactly what each ingredient does and why it's in there. The 3-hour focus window is real. I was skeptical. I'm not anymore."</p>
+          <p class="testimonial-quote">"4 hours studying, didn't touch my phone once. that's literally never happened. i didn't even feel it kick in, i just started working and kinda forgot to stop."</p>
           <div class="testimonial-author">
             <div class="testimonial-avatar-placeholder">[IMG]</div>
             <div>
               <p class="testimonial-name">Marcus T.</p>
-              <p class="testimonial-role">Senior Security Engineer</p>
+              <p class="testimonial-role">CS Student</p>
             </div>
           </div>
         </div>
         <div class="testimonial-card">
           <div class="testimonial-stars">★★★★★</div>
-          <p class="testimonial-quote">"I do quantitative research. I need to hold a lot of state in my head for hours at a time. The difference with Mindor is I don't feel the friction anymore. The afternoon drop just stopped being a daily problem."</p>
+          <p class="testimonial-quote">"still drink my morning coffee but i just stopped needing the second one. the 3pm thing is gone. didn't realize how much of my day i was losing to that until it wasn't there."</p>
           <div class="testimonial-author">
             <div class="testimonial-avatar-placeholder">[IMG]</div>
             <div>
-              <p class="testimonial-name">Leila K.</p>
-              <p class="testimonial-role">Quant Analyst</p>
+              <p class="testimonial-name">Patel S.</p>
+              <p class="testimonial-role">Product Designer</p>
             </div>
           </div>
         </div>
         <div class="testimonial-card">
           <div class="testimonial-stars">★★★★★</div>
-          <p class="testimonial-quote">"I was burned by 'focus supplements' before, so I read the label before I bought. No proprietary blends. Every dose is published. That alone got me to try it. Two months in and it's part of the daily pre-work ritual."</p>
+          <p class="testimonial-quote">"I've tried at least 5 other heavily marketed 'nootropic' miracle brands by now and they were all trash. Basically sugar pills. So after 5 tries, what's a 6th? These people really don't lie when it comes to focus."</p>
           <div class="testimonial-author">
             <div class="testimonial-avatar-placeholder">[IMG]</div>
             <div>
-              <p class="testimonial-name">James R.</p>
-              <p class="testimonial-role">AI Consultant</p>
+              <p class="testimonial-name">Teresa O.</p>
+              <p class="testimonial-role">Creative Director</p>
             </div>
           </div>
         </div>
+      </div>
+      <div style="margin-top: 28px; text-align: center;">
+        <a href="#" style="font-size: 13px; font-weight: 600; color: var(--sprint-blue); text-decoration: none; border-bottom: 1px solid rgba(74,107,212,0.3); padding-bottom: 1px;">Read all 1,200+ reviews &rarr;</a>
       </div>
     </div>
   </section>
@@ -1445,21 +2064,21 @@
   <section class="science-section">
     <div class="container">
       <div class="section-divider"></div>
-      <span class="eyebrow">The Science</span>
-      <h2 class="section-headline">Every Dose Is On The Label.<br>Nothing Hidden.</h2>
-      <p class="science-intro">No proprietary blends. No "focus matrix" with undisclosed milligrams. The formula is published in full because people in your field verify things — and we built this expecting you to.</p>
+      <span class="eyebrow">On The Label</span>
+      <h2 class="section-headline">Every number,<br>out in the open.</h2>
+      <p class="science-intro">No blend names. No "proprietary focus matrix" with the milligrams blacked out. The whole formula is published because the people it's built for check these things, and the entire point was to make something that holds up when you do.</p>
       <div class="science-stats">
         <div class="science-stat">
           <span class="science-stat-num">200mg</span>
-          <p class="science-stat-label"><strong>L-Theanine</strong>The dose used in peer-reviewed calm-alertness research paired with caffeine.</p>
+          <p class="science-stat-label"><strong>Caffeine from green tea</strong>Smoother on-ramp than synthetic caffeine. A real dose, not a sprinkle.</p>
         </div>
         <div class="science-stat">
           <span class="science-stat-num">300mg</span>
-          <p class="science-stat-label"><strong>Alpha-GPC</strong>The clinically studied dose for cognitive support in demanding tasks.</p>
+          <p class="science-stat-label"><strong>Alpha-GPC</strong>Choline, for holding attention. The line that shows the formula was built on purpose.</p>
         </div>
         <div class="science-stat">
-          <span class="science-stat-num">2:1</span>
-          <p class="science-stat-label"><strong>Theanine : Caffeine</strong>The ratio studied for calm alertness without the anxiety signal.</p>
+          <span class="science-stat-num">Published</span>
+          <p class="science-stat-label"><strong>In full</strong>Every dose, lab tested, verify it yourself.</p>
         </div>
       </div>
       <div class="science-testing-placeholder">[PLACEHOLDER: 3rd-party testing certification badge / lab seal]</div>
@@ -1472,11 +2091,153 @@
       <div class="guarantee-inner">
         <div class="guarantee-badge-placeholder">[PLACEHOLDER: 30-Day Guarantee Seal]</div>
         <div class="guarantee-copy">
-          <span class="eyebrow eyebrow--blue">Risk-Free</span>
-          <h2 class="guarantee-headline">If Your Brain Doesn't Notice It,<br>We'll Give You Your Money Back.</h2>
-          <p class="guarantee-body">Try Mindor for 30 days. If you don't feel the difference in your work sessions — cleaner focus, better sustained output, no afternoon drop — email us for a full refund. No hoops. No restocking fee. We're confident enough in the formula to make this simple.</p>
+          <span class="eyebrow eyebrow--blue">30 Days, No Hoops</span>
+          <h2 class="guarantee-headline">Try it for a month. If the afternoons don't change, you don't pay for it.</h2>
+          <p class="guarantee-body">Take MINDOR for thirty days. If your work sessions don't feel different, if 3pm is still a dead zone, email us and we'll refund the whole thing. No form to fill out, no restocking fee, no keeping the empty tub as evidence. The formula makes its own case or it doesn't, and if it doesn't, that one's on us.</p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- ── REVIEW WALL ── -->
+  <section class="review-wall">
+    <div class="container">
+      <div class="review-wall-header">
+        <div class="section-divider"></div>
+        <span class="eyebrow">What People Are Saying</span>
+        <h2 class="section-headline">The unfiltered version.</h2>
+        <p class="body-copy" style="margin-top: 12px;">1,200+ verified buyers. Here's a wall of them.</p>
+      </div>
+      <div class="review-wall-grid">
+        <div class="review-wall-card">
+          <div class="review-wall-stars">★★★★★</div>
+          <p class="review-wall-title">Finally stopped cycling through alternatives</p>
+          <p class="review-wall-quote">"I've run through the whole list. Pre-workout before work, cold brew at noon, caffeine pills for the afternoon. Always chasing the next dose. Mindor took that cycle off the table. Two hours into a session I'm still there, not wired, just working."</p>
+          <div class="review-wall-author-row">
+            <span class="review-wall-name">Harry D.</span>
+            <span class="review-wall-badge">Verified Buyer</span>
+          </div>
+        </div>
+        <div class="review-wall-card">
+          <div class="review-wall-stars">★★★★★</div>
+          <p class="review-wall-title">The floor I didn't know I needed</p>
+          <p class="review-wall-quote">"I run a small agency, so the cost of an unfocused morning is real. Mindor doesn't make me feel buzzed. It makes me feel like I showed up. Sit down, open the doc, work happens. That's the whole pitch and it delivers."</p>
+          <div class="review-wall-author-row">
+            <span class="review-wall-name">Matheus S.</span>
+            <span class="review-wall-badge">Verified Buyer</span>
+          </div>
+        </div>
+        <div class="review-wall-card">
+          <div class="review-wall-stars">★★★★★</div>
+          <p class="review-wall-title">Quiet focus. Didn't expect that.</p>
+          <p class="review-wall-quote">"The focus isn't loud. That took some adjusting. With energy drinks you feel the on-switch. Mindor puts you in the right state and holds you there. I realized it was working when I finished a three-hour writing session and hadn't noticed the time."</p>
+          <div class="review-wall-author-row">
+            <span class="review-wall-name">Jean T.</span>
+            <span class="review-wall-badge">Verified Buyer</span>
+          </div>
+        </div>
+        <div class="review-wall-card">
+          <div class="review-wall-stars">★★★★★</div>
+          <p class="review-wall-title">Skeptic, then subscriber</p>
+          <p class="review-wall-quote">"Three months ago I was convinced this category was all marketing. Tried it because a friend wouldn't let it go. The first week I noticed I was finishing deep work blocks without having drifted. Two months later, it's the one thing I keep reordering."</p>
+          <div class="review-wall-author-row">
+            <span class="review-wall-name">Rodrigo V.</span>
+            <span class="review-wall-badge">Verified Buyer</span>
+          </div>
+        </div>
+        <div class="review-wall-card">
+          <div class="review-wall-stars">★★★★★</div>
+          <p class="review-wall-title">Works with coffee, not instead of it</p>
+          <p class="review-wall-quote">"I wasn't ready to drop my morning espresso. Turns out I didn't have to. I mix Mindor mid-morning once the coffee's worn off and it carries me through without the spike of a second cup."</p>
+          <div class="review-wall-author-row">
+            <span class="review-wall-name">Marcus N.</span>
+            <span class="review-wall-badge">Verified Buyer</span>
+          </div>
+        </div>
+        <div class="review-wall-card">
+          <div class="review-wall-stars">★★★★★</div>
+          <p class="review-wall-title">Got through finals on this</p>
+          <p class="review-wall-quote">"Five-hour library sessions, papers due at midnight, back-to-back exams. Mindor kept me on the material. Not because it made me smarter, because it stopped me drifting to my phone every eight minutes."</p>
+          <div class="review-wall-author-row">
+            <span class="review-wall-name">Quentin R.</span>
+            <span class="review-wall-badge">Verified Buyer</span>
+          </div>
+        </div>
+        <div class="review-wall-card">
+          <div class="review-wall-stars">★★★★★</div>
+          <p class="review-wall-title">Replaced three supplements</p>
+          <p class="review-wall-quote">"Was taking L-theanine, Alpha-GPC and a B-complex separately. Mindor covers all of it plus compounds I wasn't getting. Cleaner routine, lower total cost, and I can actually taste it instead of choking down capsules."</p>
+          <div class="review-wall-author-row">
+            <span class="review-wall-name">Alexander B.</span>
+            <span class="review-wall-badge">Verified Buyer</span>
+          </div>
+        </div>
+        <div class="review-wall-card">
+          <div class="review-wall-stars">★★★★★</div>
+          <p class="review-wall-title">You don't feel the supplement. You feel the session.</p>
+          <p class="review-wall-quote">"I came in expecting the kind of focus you feel. Sharp edges, fast thoughts, that jittery hum. Mindor is different. The work just happens. You don't feel the supplement, you feel the session going well."</p>
+          <div class="review-wall-author-row">
+            <span class="review-wall-name">Tyrell W.</span>
+            <span class="review-wall-badge">Verified Buyer</span>
+          </div>
+        </div>
+        <div class="review-wall-card">
+          <div class="review-wall-stars">★★★★★</div>
+          <p class="review-wall-title">Fewer scattered mornings</p>
+          <p class="review-wall-quote">"Work expands or contracts based on how well your brain cooperates. Some days you're locked in, some days you're scattered. Mindor makes the locked-in days more consistent. I've had fewer scattered mornings since I started it."</p>
+          <div class="review-wall-author-row">
+            <span class="review-wall-name">Trish M.</span>
+            <span class="review-wall-badge">Verified Buyer</span>
+          </div>
+        </div>
+        <div class="review-wall-card">
+          <div class="review-wall-stars">★★★★★</div>
+          <p class="review-wall-title">The flavor is legitimately good</p>
+          <p class="review-wall-quote">"Tastes like it should be sold at a gas station, and I mean that as a compliment. Mixes clean, no chalky finish, and I actually look forward to making it. Small thing, but it matters when you're drinking it every morning."</p>
+          <div class="review-wall-author-row">
+            <span class="review-wall-name">Jess O.</span>
+            <span class="review-wall-badge">Verified Buyer</span>
+          </div>
+        </div>
+      </div>
+      <div class="review-wall-cta">
+        <a href="#" class="review-wall-link">Read all 1,200+ reviews &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── WHAT IT COSTS ── -->
+  <section class="pricing-section">
+    <div class="container">
+      <div class="pricing-header">
+        <div class="section-divider"></div>
+        <span class="eyebrow">What It Costs</span>
+        <h2 class="section-headline">Cheaper than the coffee<br>that quit on you.</h2>
+        <p class="body-copy" style="margin-top: 16px; max-width: 560px;">One tub runs $32.99. Thirty servings, so a bit over a dollar a day. You're not adding a new line to the budget here. You're moving money off the things that stopped working and onto the one that holds the afternoon together.</p>
+      </div>
+      <div class="pricing-compare-rows">
+        <div class="pricing-compare-row">
+          <span class="pricing-item-name">Afternoon latte</span>
+          <span class="pricing-item-price">~$5-6 / day</span>
+          <span class="pricing-item-note">and it stopped working</span>
+        </div>
+        <div class="pricing-compare-row">
+          <span class="pricing-item-name">Energy drink</span>
+          <span class="pricing-item-price">~$4 / day</span>
+          <span class="pricing-item-note">spike, then the floor</span>
+        </div>
+        <div class="pricing-compare-row">
+          <span class="pricing-item-name">That last nootropic</span>
+          <span class="pricing-item-price">~$60</span>
+          <span class="pricing-item-note">felt nothing</span>
+        </div>
+        <div class="pricing-compare-row is-mindor">
+          <span class="pricing-item-name is-mindor">MINDOR</span>
+          <span class="pricing-item-price is-mindor">~$1.10 / day</span>
+          <span class="pricing-item-note is-mindor">holds the afternoon</span>
+        </div>
+      </div>
+      <p class="pricing-footnote">A few people told us they'd been buying L-theanine, Alpha-GPC and a B-complex separately anyway. This is all three in one scoop, for less than the three of them apart.</p>
     </div>
   </section>
 
@@ -1486,7 +2247,7 @@
       <div class="faq-header">
         <div class="section-divider"></div>
         <span class="eyebrow">Questions</span>
-        <h2 class="section-headline">The Ones You're<br>Actually Thinking.</h2>
+        <h2 class="section-headline">The ones you're<br>actually asking.</h2>
       </div>
       <div class="faq-list">
         <div class="faq-item">
@@ -1495,16 +2256,16 @@
             <span class="faq-icon"><svg viewBox="0 0 10 10" fill="none" width="10" height="10"><path d="M5 2v6M2 5h6" stroke="#4A587A" stroke-width="1.5" stroke-linecap="round"/></svg></span>
           </button>
           <div class="faq-answer" role="region">
-            <p class="faq-answer-inner">Pre-workouts are built for physical output — high stimulants, vasodilators, creatine loading. Mindor is built for cognitive output. The caffeine dose is intentionally lower and cleaner. The co-ingredients — L-Theanine, Alpha-GPC, Ginseng — support the quality of your mental performance, not your ability to lift heavier.</p>
+            <p class="faq-answer-inner">Pre-workout is built to get your body moving for an hour. A big stimulant hit, usually a huge caffeine dose plus beta-alanine and whatever else, tuned for the gym. MINDOR is tuned the other way. Enough caffeine to get going, balanced with theanine so it reads as focus instead of restlessness, plus the compounds that help hold attention across a few hours. Drinking pre-workout at your desk is how you end up jittery and useless by 10:30.</p>
           </div>
         </div>
         <div class="faq-item">
           <button class="faq-question" aria-expanded="false">
-            <span class="faq-question-text">Will I feel jittery?</span>
+            <span class="faq-question-text">Will it make me jittery?</span>
             <span class="faq-icon"><svg viewBox="0 0 10 10" fill="none" width="10" height="10"><path d="M5 2v6M2 5h6" stroke="#4A587A" stroke-width="1.5" stroke-linecap="round"/></svg></span>
           </button>
           <div class="faq-answer" role="region">
-            <p class="faq-answer-inner">The 2:1 L-Theanine to caffeine ratio is specifically designed to prevent that. L-Theanine supports a smooth, steady alertness alongside the caffeine signal. Most users describe it as alert but calm — switched on without the edge. If you're particularly sensitive to caffeine, start with half a scoop.</p>
+            <p class="faq-answer-inner">Less than the same amount of coffee would, for two reasons. The caffeine's from green tea, which comes up smoother, and it's paired with L-theanine, which takes the edge off. That said, it's still 200mg of real caffeine, so if a single espresso winds you up, start with half a scoop and see where you land.</p>
           </div>
         </div>
         <div class="faq-item">
@@ -1513,7 +2274,7 @@
             <span class="faq-icon"><svg viewBox="0 0 10 10" fill="none" width="10" height="10"><path d="M5 2v6M2 5h6" stroke="#4A587A" stroke-width="1.5" stroke-linecap="round"/></svg></span>
           </button>
           <div class="faq-answer" role="region">
-            <p class="faq-answer-inner">20–30 minutes before you need to be on. Before a deep work block, before a long debugging session, before a threat hunt. Most users take it first thing in the morning, or mid-morning before their primary work block.</p>
+            <p class="faq-answer-inner">Whenever the focus actually matters. Most people take it mid-morning once the first coffee's worn off, or right before a long afternoon block. Since it's a real caffeine dose, treat the timing like coffee and don't take it late if you want to sleep.</p>
           </div>
         </div>
         <div class="faq-item">
@@ -1522,7 +2283,7 @@
             <span class="faq-icon"><svg viewBox="0 0 10 10" fill="none" width="10" height="10"><path d="M5 2v6M2 5h6" stroke="#4A587A" stroke-width="1.5" stroke-linecap="round"/></svg></span>
           </button>
           <div class="faq-answer" role="region">
-            <p class="faq-answer-inner">You can. Mindor's caffeine dose is 100mg — about the same as a standard cup of coffee. A lot of users replace their morning cup with Mindor rather than stacking them, because the session feels cleaner and lasts longer.</p>
+            <p class="faq-answer-inner">You can, and plenty do, but you probably won't need to. The whole point is to stop reaching for the second and third cup. If you do stack it with coffee, just count the caffeine, since you're adding 200mg on top of whatever's in the mug.</p>
           </div>
         </div>
         <div class="faq-item">
@@ -1531,16 +2292,34 @@
             <span class="faq-icon"><svg viewBox="0 0 10 10" fill="none" width="10" height="10"><path d="M5 2v6M2 5h6" stroke="#4A587A" stroke-width="1.5" stroke-linecap="round"/></svg></span>
           </button>
           <div class="faq-answer" role="region">
-            <p class="faq-answer-inner">The clean exit is a design feature, not an accident. Green tea caffeine metabolizes differently than synthetic caffeine — the drop-off is gradual instead of a cliff. The L-Theanine also smooths the tail end. You'll feel ready to wind down when the session ends, not wired at midnight wondering why you can't sleep.</p>
+            <p class="faq-answer-inner">It's built to come down gently rather than drop you. When the session ends you'll feel done, the ordinary kind of tired, not the hollow energy-drink crash. As with anything caffeinated, take it too late and it'll sit between you and sleep.</p>
           </div>
         </div>
         <div class="faq-item">
           <button class="faq-question" aria-expanded="false">
-            <span class="faq-question-text">How long until I notice a difference?</span>
+            <span class="faq-question-text">How long until I notice something?</span>
             <span class="faq-icon"><svg viewBox="0 0 10 10" fill="none" width="10" height="10"><path d="M5 2v6M2 5h6" stroke="#4A587A" stroke-width="1.5" stroke-linecap="round"/></svg></span>
           </button>
           <div class="faq-answer" role="region">
-            <p class="faq-answer-inner">Most people feel a difference in the first session — the on-ramp is noticeably smoother than coffee. The fuller effect builds over 2–3 weeks as Alpha-GPC's cognitive support compounds. If you've been running on energy drinks and synthetic caffeine for years, give it a few days to recalibrate before judging.</p>
+            <p class="faq-answer-inner">The caffeine-and-theanine part you'll feel the first day, inside the first half hour. The steadier, holds-through-the-afternoon part is something most people clock over the first week, usually around the third or fourth session, when they notice they didn't hit the wall.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            <span class="faq-question-text">Is the powder gritty? Does it taste bad?</span>
+            <span class="faq-icon"><svg viewBox="0 0 10 10" fill="none" width="10" height="10"><path d="M5 2v6M2 5h6" stroke="#4A587A" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          </button>
+          <div class="faq-answer" role="region">
+            <p class="faq-answer-inner">No, and that wasn't an accident. It mixes clean in about ten seconds and tastes like Sour Grape candy, because a daily thing you dread is a daily thing you quit.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" aria-expanded="false">
+            <span class="faq-question-text">Will I get dependent on this the way I did on caffeine?</span>
+            <span class="faq-icon"><svg viewBox="0 0 10 10" fill="none" width="10" height="10"><path d="M5 2v6M2 5h6" stroke="#4A587A" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          </button>
+          <div class="faq-answer" role="region">
+            <p class="faq-answer-inner">It has caffeine in it, so be about as sensible as you'd be with coffee. It's a focus tool for the days that ask a lot of you, not something to keep escalating. We're not going to pretend a caffeinated product is caffeine-free.</p>
           </div>
         </div>
       </div>
@@ -1596,9 +2375,20 @@
     </div>
   </footer>
 
+  <!-- ── MOBILE STICKY BUY BAR ── -->
+  <div class="mobile-sticky-bar" id="mobile-sticky-bar" aria-hidden="true">
+    <div class="mobile-sticky-inner">
+      <div class="mobile-sticky-price-wrap">
+        <span class="mobile-sticky-amount" id="mobile-sticky-amount">$32.99</span>
+        <span class="mobile-sticky-label">/ tub · Cool Grape</span>
+      </div>
+      <a href="#order" class="mobile-sticky-cta-btn">Add to Cart</a>
+    </div>
+  </div>
+
   <script>
     /* ── PRICING ── */
-    const BASE = 44.99;
+    const BASE = 32.99;
     const BUNDLE_DISC = { 1: 0, 2: 0.10, 3: 0.15 };
     const SUB_DISC = 0.15;
 
@@ -1638,11 +2428,9 @@
             <p class="qty-card-price-orig" data-orig="3"></p>
           </div>
         </div>
-        <span class="qty-label">Choose Flavor</span>
+        <span class="qty-label">Flavor</span>
         <div class="flavor-row">
-          <button class="flavor-btn selected" data-flavor="violet-frost">Violet Frost</button>
-          <button class="flavor-btn" data-flavor="glacier-blue">Glacier Blue</button>
-          <button class="flavor-btn" data-flavor="solar-orange">Solar Orange</button>
+          <button class="flavor-btn selected" data-flavor="cool-grape">Cool Grape</button>
         </div>
         <label class="subscribe-row">
           <input type="checkbox" class="subscribe-checkbox" checked>
@@ -1731,6 +2519,29 @@
         }
       });
     });
+
+    /* ── MOBILE STICKY BAR ── */
+    (function() {
+      const bar = document.getElementById('mobile-sticky-bar');
+      const hero = document.getElementById('hero');
+      const orderSection = document.getElementById('order');
+      if (!bar || !hero) return;
+      function checkSticky() {
+        if (window.innerWidth > 768) {
+          bar.classList.remove('visible');
+          bar.setAttribute('aria-hidden', 'true');
+          return;
+        }
+        const heroBottom = hero.getBoundingClientRect().bottom;
+        const orderTop = orderSection ? orderSection.getBoundingClientRect().top : Infinity;
+        const shouldShow = heroBottom < 0 && orderTop > window.innerHeight;
+        bar.classList.toggle('visible', shouldShow);
+        bar.setAttribute('aria-hidden', shouldShow ? 'false' : 'true');
+      }
+      window.addEventListener('scroll', checkSticky, { passive: true });
+      window.addEventListener('resize', checkSticky, { passive: true });
+      checkSticky();
+    })();
 
     /* ── NAV SCROLL ── */
     const nav = document.getElementById('site-nav');
