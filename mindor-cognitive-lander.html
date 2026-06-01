@@ -1266,6 +1266,15 @@
   bottom: 24px;
   right: 24px;
   z-index: 300;
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.discount-bubble.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 @media (max-width: 768px) {
   .discount-bubble { bottom: 84px; right: 16px; }
@@ -2780,6 +2789,22 @@
         document.body.style.overflow = '';
         trigger.setAttribute('aria-expanded', 'false');
       }
+
+      // Show bubble after scrolling past hero, hide near order section
+      var bubble = document.getElementById('discountBubble');
+      var hero   = document.getElementById('hero');
+      var order  = document.getElementById('order');
+      function checkBubbleVisibility() {
+        if (!bubble || !hero) return;
+        var heroBottom  = hero.getBoundingClientRect().bottom;
+        var orderTop    = order ? order.getBoundingClientRect().top : Infinity;
+        var pastHero    = heroBottom < 0;
+        var nearOrder   = orderTop < window.innerHeight * 1.2;
+        var shouldShow  = pastHero && !nearOrder;
+        bubble.classList.toggle('visible', shouldShow);
+      }
+      window.addEventListener('scroll', checkBubbleVisibility, { passive: true });
+      checkBubbleVisibility();
 
       trigger.addEventListener('click', openModal);
       closeBtn.addEventListener('click', closeModal);
