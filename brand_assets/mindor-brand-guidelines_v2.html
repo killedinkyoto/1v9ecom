@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mindor — Brand Guidelines v2 (Light)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --accent-purple: #9B7FE0;
+    --purple-light: #EDE8F8;
+    --deep-work-black: #1A2040;
+    --sprint-green: #4A6BD4;
+    --clean-cream: #EEF3FB;
+    --fog-grey: #3D5070;
+    --bg: #ECF2FB;
+    --surface: #E0E9F7;
+    --surface2: #D4DEF2;
+    --border: rgba(74,107,212,0.14);
+    --border-subtle: rgba(74,107,212,0.08);
+    --border-accent: rgba(74,107,212,0.30);
+    --border-active: #4A6BD4;
+    --text-primary: #1A2040;
+    --text-muted: #4A587A;
+    --text-dim: #8A9CC0;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── LAYOUT ── */
+  .page { max-width: 960px; margin: 0 auto; padding: 0 40px 120px; }
+
+  /* ── HEADER ── */
+  .brand-header {
+    padding: 60px 0 48px;
+    border-bottom: 0.5px solid var(--border);
+    margin-bottom: 72px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .brand-header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -100px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(74,107,212,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .brand-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: -40px;
+    width: 220px; height: 220px;
+    background: radial-gradient(circle, rgba(155,127,224,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .est-tag {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .brand-logo-main {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(64px, 10vw, 96px);
+    color: var(--sprint-green);
+    letter-spacing: -0.01em;
+    line-height: 0.9;
+    display: block;
+    margin-bottom: 18px;
+  }
+
+  .brand-tagline {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.16em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  /* ── SECTION LABELS ── */
+  .section {
+    margin-bottom: 72px;
+  }
+
+  .section-label {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    padding-bottom: 10px;
+    border-bottom: 0.5px solid var(--border-subtle);
+  }
+
+  /* ── TYPOGRAPHY HIGHLIGHT ── */
+  .font-hero {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 4px;
+    padding: 36px 40px;
+    margin-bottom: 16px;
+    position: relative;
+  }
+
+  .font-hero::after {
+    content: 'TOP PICK';
+    position: absolute;
+    top: 16px; right: 16px;
+    background: var(--sprint-green);
+    color: #fff;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+
+  .font-role {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .type-display {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 72px;
+    color: var(--sprint-green);
+    line-height: 0.92;
+    letter-spacing: -0.01em;
+    margin-bottom: 8px;
+  }
+
+  .type-headline {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 42px;
+    color: var(--text-primary);
+    line-height: 0.95;
+    letter-spacing: 0em;
+    margin-bottom: 6px;
+  }
+
+  .type-subhead {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 26px;
+    color: var(--fog-grey);
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  .type-body {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin-top: 16px;
+  }
+
+  .type-label-meta {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--text-dim);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-top: 4px;
+    display: block;
+  }
+
+  .type-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 16px;
+  }
+
+  .type-card {
+    background: var(--surface2);
+    border: 0.5px solid var(--border-subtle);
+    border-radius: 4px;
+    padding: 24px 24px 20px;
+  }
+
+  .type-card-label {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  /* ── COLOR SWATCHES ── */
+  .color-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+  }
+
+  .swatch {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .swatch-block {
+    height: 56px;
+    border-radius: 3px;
+    width: 100%;
+  }
+
+  .swatch-name {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--text-primary);
+    line-height: 1.3;
+  }
+
+  .swatch-hex {
+    font-size: 9px;
+    color: var(--text-muted);
+    font-family: 'DM Sans', monospace;
+    letter-spacing: 0.06em;
+  }
+
+  /* ── LOGO LOCKUPS ── */
+  .logo-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+
+  .logo-lockup {
+    border-radius: 3px;
+    padding: 24px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .logo-lockup-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 28px;
+    letter-spacing: 0.02em;
+    line-height: 1;
+  }
+
+  .logo-lockup-sub {
+    font-size: 7.5px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .logo-lockup-note {
+    font-size: 8.5px;
+    color: var(--text-muted);
+    margin-top: 6px;
+    letter-spacing: 0.04em;
+  }
+
+  /* lockup variants */
+  .lu-light { background: var(--surface); border: 0.5px solid var(--border-subtle); }
+  .lu-light .logo-lockup-name { color: var(--sprint-green); }
+  .lu-light .logo-lockup-sub { color: var(--text-muted); }
+  .lu-light .logo-lockup-note { color: var(--text-dim); }
+
+  .lu-white { background: #fff; border: 0.5px solid rgba(74,107,212,0.1); }
+  .lu-white .logo-lockup-name { color: var(--deep-work-black); }
+  .lu-white .logo-lockup-sub { color: #6B80A0; }
+  .lu-white .logo-lockup-note { color: #9AACCB; }
+
+  .lu-purple { background: #7C5CBF; }
+  .lu-purple .logo-lockup-name { color: #fff; }
+  .lu-purple .logo-lockup-sub { color: rgba(255,255,255,0.6); }
+  .lu-purple .logo-lockup-note { color: rgba(255,255,255,0.38); }
+
+  .lu-navy { background: var(--deep-work-black); }
+  .lu-navy .logo-lockup-name { color: #C4ADFF; }
+  .lu-navy .logo-lockup-sub { color: rgba(74,107,212,0.7); }
+  .lu-navy .logo-lockup-note { color: rgba(255,255,255,0.3); }
+
+  /* ── PACKAGING SECTION ── */
+  .pack-layout {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+
+  .bag-mockup {
+    background: linear-gradient(170deg, #D0DCF0 0%, #C2CDE8 60%, #B8C4E2 100%);
+    border-radius: 10px 10px 6px 6px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(74,107,212,0.18), 0 4px 16px rgba(74,107,212,0.10), inset 0 0 0 0.5px rgba(74,107,212,0.2);
+  }
+
+  .bag-zipper {
+    height: 8px;
+    background: var(--sprint-green);
+    width: 100%;
+  }
+
+  .bag-inner {
+    padding: 20px 22px 24px;
+  }
+
+  .bag-wordmark {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 38px;
+    color: var(--deep-work-black);
+    letter-spacing: 0.02em;
+    line-height: 1;
+  }
+
+  .bag-stack-label {
+    font-size: 8px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    color: var(--sprint-green);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .bag-pill {
+    display: inline-block;
+    background: var(--sprint-green);
+    color: #fff;
+    font-size: 7px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+  }
+
+  .bag-stats-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 16px;
+  }
+
+  .bag-stat-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 7px;
+  }
+
+  .bag-stat-val {
+    color: var(--sprint-green);
+    font-weight: 700;
+    min-width: 30px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.04em;
+  }
+
+  .bag-stat-dash {
+    width: 12px;
+    height: 0.5px;
+    background: rgba(74,107,212,0.4);
+    flex-shrink: 0;
+  }
+
+  .bag-stat-label { color: #4A587A; }
+
+  .bag-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 0.5px solid rgba(74,107,212,0.18);
+    padding-top: 10px;
+    margin-top: 6px;
+  }
+
+  .bag-flavor { font-size: 7px; color: #6A80A8; letter-spacing: 0.1em; text-transform: uppercase; }
+  .bag-servings {
+    font-size: 7px; font-weight: 700; color: var(--sprint-green);
+    border: 0.5px solid var(--sprint-green);
+    padding: 2px 6px; border-radius: 2px; letter-spacing: 0.1em; text-transform: uppercase;
+  }
+
+  .pack-specs { display: flex; flex-direction: column; gap: 16px; }
+
+  .spec-item {
+    border-left: 2px solid var(--border);
+    padding-left: 16px;
+  }
+
+  .spec-item.active { border-left-color: var(--sprint-green); }
+
+  .spec-key {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 3px;
+  }
+
+  .spec-val {
+    font-size: 13px;
+    color: var(--text-primary);
+    line-height: 1.4;
+  }
+
+  .spec-val em {
+    font-style: normal;
+    color: var(--sprint-green);
+  }
+
+  /* ── M-WAVE MARK ── */
+  .mark-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .mark-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .mark-bg {
+    width: 72px; height: 72px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mark-label {
+    font-size: 8px;
+    color: var(--text-muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  .mark-wordmark {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 20px;
+    height: 72px;
+    border-radius: 4px;
+  }
+
+  .mark-wordmark-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 28px;
+    letter-spacing: 0.06em;
+  }
+
+  /* ── TAGLINES ── */
+  .tagline-list { display: flex; flex-direction: column; gap: 8px; }
+
+  .tagline-item {
+    padding: 14px 20px;
+    border-radius: 3px;
+    border: 0.5px solid var(--border-subtle);
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: border-color 0.2s;
+  }
+
+  .tagline-item.primary {
+    border-color: var(--sprint-green);
+    background: rgba(74,107,212,0.06);
+  }
+
+  .tagline-item.primary .tagline-dot { background: var(--sprint-green); }
+
+  .tagline-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--text-dim);
+    flex-shrink: 0;
+  }
+
+  .tagline-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+  }
+
+  .tagline-item.primary .tagline-text { color: var(--sprint-green); }
+
+  /* ── VOICE ── */
+  .voice-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .voice-card {
+    background: var(--surface);
+    border: 0.5px solid var(--border-subtle);
+    border-radius: 4px;
+    padding: 24px;
+  }
+
+  .voice-card.is-card {
+    border-color: var(--border);
+  }
+
+  .voice-card-title {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--sprint-green);
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 0.5px solid var(--border-subtle);
+  }
+
+  .voice-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+
+  .voice-item {
+    font-size: 13px;
+    color: var(--text-primary);
+    padding-left: 14px;
+    position: relative;
+    line-height: 1.4;
+  }
+
+  .voice-item::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--sprint-green);
+    font-size: 10px;
+  }
+
+  .voice-item.not {
+    color: var(--text-muted);
+    text-decoration: line-through;
+    text-decoration-color: rgba(74,107,212,0.25);
+  }
+
+  .voice-item.not::before { color: var(--text-dim); content: '✕'; font-size: 9px; top: 2px; }
+
+  /* ── HEADLINE HOOKS ── */
+  .hook-list { display: flex; flex-direction: column; gap: 8px; }
+
+  .hook-item {
+    padding: 16px 20px;
+    border-radius: 3px;
+    border: 0.5px solid var(--border-subtle);
+    background: var(--surface);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 0.03em;
+    color: var(--fog-grey);
+    font-style: italic;
+    transition: all 0.15s;
+    cursor: default;
+  }
+
+  .hook-item:hover {
+    border-color: rgba(74,107,212,0.3);
+    color: var(--text-primary);
+  }
+
+  .hook-item.featured {
+    border-color: var(--sprint-green);
+    background: rgba(74,107,212,0.06);
+    color: var(--sprint-green);
+    font-style: normal;
+    font-weight: 800;
+    font-size: 20px;
+  }
+
+  /* ── GRADIENT SHOWCASE ── */
+  .gradient-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .gradient-swatch {
+    height: 80px;
+    border-radius: 6px;
+    display: flex;
+    align-items: flex-end;
+    padding: 10px 12px;
+  }
+
+  .gradient-label {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    line-height: 1.2;
+  }
+
+  /* ── SPACING TOKENS ── */
+  .spacing-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .spacing-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .spacing-bar {
+    background: rgba(74,107,212,0.15);
+    border: 1px solid rgba(74,107,212,0.25);
+    border-radius: 2px;
+    width: 24px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .spacing-val {
+    font-size: 9px;
+    color: var(--text-muted);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── BORDER RADIUS ── */
+  .radius-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+
+  .radius-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .radius-box {
+    width: 56px;
+    height: 40px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+  }
+
+  .radius-val {
+    font-size: 9px;
+    color: var(--text-muted);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── FOOTER ── */
+  .brand-footer {
+    border-top: 0.5px solid var(--border);
+    padding-top: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-wordmark {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 28px;
+    color: var(--sprint-green);
+    letter-spacing: 0.04em;
+  }
+
+  .footer-note {
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.08em;
+  }
+
+  /* ── DIVIDER ── */
+  .section-divider {
+    width: 32px;
+    height: 2px;
+    background: var(--sprint-green);
+    margin-bottom: 20px;
+    border-radius: 1px;
+  }
+
+  /* ── ICON SYSTEM ── */
+  .icon-grid {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+
+  .icon-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 16px;
+    background: var(--surface);
+    border: 0.5px solid var(--border-subtle);
+    border-radius: 6px;
+    min-width: 72px;
+  }
+
+  .icon-label {
+    font-size: 8px;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  /* ── DO / DON'T ── */
+  .dos-donts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 8px;
+  }
+
+  .dd-col { display: flex; flex-direction: column; gap: 8px; }
+
+  .dd-header {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    border-radius: 2px;
+    margin-bottom: 4px;
+  }
+
+  .dd-header.do { background: rgba(74,107,212,0.1); color: var(--sprint-green); }
+  .dd-header.dont { background: rgba(200,74,74,0.08); color: #C84A4A; }
+
+  .dd-item {
+    font-size: 12px;
+    color: var(--text-primary);
+    padding: 10px 12px;
+    border-radius: 3px;
+    background: var(--surface);
+    border: 0.5px solid var(--border-subtle);
+    line-height: 1.4;
+  }
+
+  .dd-item.do { border-left: 2px solid var(--sprint-green); }
+  .dd-item.dont { border-left: 2px solid #C84A4A; color: var(--text-muted); }
+
+  /* ── VERSION BADGE ── */
+  .version-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(74,107,212,0.1);
+    border: 0.5px solid rgba(74,107,212,0.25);
+    border-radius: 100px;
+    padding: 4px 12px 4px 8px;
+    margin-bottom: 14px;
+  }
+
+  .version-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--sprint-green);
+  }
+
+  .version-text {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--sprint-green);
+    text-transform: uppercase;
+  }
+
+  /* Responsive */
+  @media (max-width: 720px) {
+    .page { padding: 0 20px 80px; }
+    .color-grid { grid-template-columns: repeat(3, 1fr); }
+    .logo-grid { grid-template-columns: repeat(2, 1fr); }
+    .pack-layout { grid-template-columns: 1fr; }
+    .type-grid { grid-template-columns: 1fr; }
+    .voice-grid { grid-template-columns: 1fr; }
+    .bag-mockup { max-width: 240px; margin: 0 auto; }
+    .gradient-grid { grid-template-columns: 1fr; }
+    .dos-donts { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ── HEADER ── -->
+  <header class="brand-header">
+    <p class="est-tag">Performance Stack · Est. 2026</p>
+    <div class="version-badge">
+      <div class="version-dot"></div>
+      <span class="version-text">Light Theme — v2</span>
+    </div>
+    <span class="brand-logo-main">MINDOR</span>
+    <p class="brand-tagline">Stop chasing focus. Build a controllable state.</p>
+  </header>
+
+  <!-- ── COLOR SYSTEM ── -->
+  <section class="section">
+    <p class="section-label">Brand Color System — Light Theme</p>
+    <div class="color-grid">
+      <div class="swatch">
+        <div class="swatch-block" style="background:#4A6BD4;"></div>
+        <span class="swatch-name">Sprint Blue</span>
+        <span class="swatch-hex">#4A6BD4</span>
+      </div>
+      <div class="swatch">
+        <div class="swatch-block" style="background:#1A2040;"></div>
+        <span class="swatch-name">Deep Work Navy</span>
+        <span class="swatch-hex">#1A2040</span>
+      </div>
+      <div class="swatch">
+        <div class="swatch-block" style="background:#9B7FE0;"></div>
+        <span class="swatch-name">Signal Purple</span>
+        <span class="swatch-hex">#9B7FE0</span>
+      </div>
+      <div class="swatch">
+        <div class="swatch-block" style="background:#ECF2FB; border: 0.5px solid rgba(74,107,212,0.18);"></div>
+        <span class="swatch-name">Page Base</span>
+        <span class="swatch-hex">#ECF2FB</span>
+      </div>
+      <div class="swatch">
+        <div class="swatch-block" style="background:#E0E9F7; border: 0.5px solid rgba(74,107,212,0.18);"></div>
+        <span class="swatch-name">Surface</span>
+        <span class="swatch-hex">#E0E9F7</span>
+      </div>
+      <div class="swatch">
+        <div class="swatch-block" style="background:#EDE8F8; border: 0.5px solid rgba(155,127,224,0.2);"></div>
+        <span class="swatch-name">Soft Lavender</span>
+        <span class="swatch-hex">#EDE8F8</span>
+      </div>
+    </div>
+
+    <!-- Gradients -->
+    <p class="section-label" style="margin-top: 28px;">Approved Gradients</p>
+    <div class="gradient-grid">
+      <div class="gradient-swatch" style="background: linear-gradient(135deg, #ECF2FB 0%, #D4DEF2 100%);">
+        <span class="gradient-label" style="color: var(--text-muted);">Soft Page<br>Wash</span>
+      </div>
+      <div class="gradient-swatch" style="background: radial-gradient(ellipse at 60% 20%, rgba(74,107,212,0.12) 0%, transparent 60%), linear-gradient(135deg, #E0E9F7, #D4DEF2);">
+        <span class="gradient-label" style="color: var(--text-muted);">Hero<br>Surface</span>
+      </div>
+      <div class="gradient-swatch" style="background: linear-gradient(135deg, #3A2860 0%, #5A3D9A 100%);">
+        <span class="gradient-label" style="color: rgba(255,255,255,0.6);">Purple<br>Depth</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── LOGO LOCKUPS ── -->
+  <section class="section">
+    <p class="section-label">Logo Lockups</p>
+    <div class="logo-grid">
+      <div class="logo-lockup lu-light">
+        <div class="logo-lockup-name">MINDOR</div>
+        <div class="logo-lockup-sub">Performance Stack</div>
+        <div class="logo-lockup-note">Primary · Light BG</div>
+      </div>
+      <div class="logo-lockup lu-white">
+        <div class="logo-lockup-name">MINDOR</div>
+        <div class="logo-lockup-sub">Performance Stack</div>
+        <div class="logo-lockup-note">On White</div>
+      </div>
+      <div class="logo-lockup lu-purple">
+        <div class="logo-lockup-name">MINDOR</div>
+        <div class="logo-lockup-sub">Performance Stack</div>
+        <div class="logo-lockup-note">Accent · Purple BG</div>
+      </div>
+      <div class="logo-lockup lu-navy">
+        <div class="logo-lockup-name">MINDOR</div>
+        <div class="logo-lockup-sub">Performance Stack</div>
+        <div class="logo-lockup-note">Dark Navy BG</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── TYPOGRAPHY ── -->
+  <section class="section">
+    <p class="section-label">Typography System</p>
+
+    <div class="font-hero">
+      <p class="font-role">Display / Hero — Barlow Condensed 900</p>
+      <div class="type-display">LOCK IN.</div>
+      <div class="type-headline">Deep Work Without The Crash</div>
+      <div class="type-subhead">Built For Builders, Not Biohackers.</div>
+      <p class="type-body">Built for founders, operators, and creators who need calm alertness — not stimulant chaos.</p>
+      <span class="type-label-meta">30 Servings · Operator Blend · Focus Stack</span>
+    </div>
+
+    <div class="type-grid">
+      <div class="type-card">
+        <p class="type-card-label">Headline — Barlow Condensed 800</p>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:28px;color:var(--text-primary);line-height:1;margin-bottom:8px;">Stop Chasing Focus.<br>Build A Steady Baseline.</div>
+        <span class="type-label-meta">Used for section heads, ad headlines, subheads</span>
+      </div>
+      <div class="type-card">
+        <p class="type-card-label">Body Copy — DM Sans 400</p>
+        <div style="font-family:'DM Sans',sans-serif;font-size:14px;color:var(--fog-grey);line-height:1.65;">The focus stack for people who have to perform. Not another caffeine product. A smarter daily driver for builders who need their mind online.</div>
+        <span class="type-label-meta">Used for body text, product descriptors</span>
+      </div>
+      <div class="type-card">
+        <p class="type-card-label">Label / Meta — DM Sans 500</p>
+        <div style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;">Performance Stack · Est. 2026</div>
+        <div style="font-family:'DM Sans',sans-serif;font-size:10px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:var(--sprint-green);">Execution Focus · Deep Work</div>
+        <span class="type-label-meta">Used for tags, badges, meta labels</span>
+      </div>
+      <div class="type-card">
+        <p class="type-card-label">Condensed Sub — Barlow Condensed 700</p>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:18px;letter-spacing:0.06em;text-transform:uppercase;color:var(--fog-grey);line-height:1.1;margin-bottom:6px;">Calm Control &gt; More Stimulation.<br>Execution Focus. Clean Exit.</div>
+        <span class="type-label-meta">Used for callouts, product badges</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PACKAGING ── -->
+  <section class="section">
+    <p class="section-label">Packaging — Resealable Stand-Up Bag</p>
+    <div class="pack-layout">
+
+      <!-- Bag mockup -->
+      <div>
+        <div class="bag-mockup">
+          <div class="bag-zipper"></div>
+          <div class="bag-inner">
+            <div class="bag-wordmark">MINDOR</div>
+            <div class="bag-stack-label">Performance Stack</div>
+            <div class="bag-pill">Execution Focus · Deep Work</div>
+            <ul class="bag-stats-list">
+              <li class="bag-stat-row"><span class="bag-stat-val">100mg</span><span class="bag-stat-dash"></span><span class="bag-stat-label">Green Tea Caffeine</span></li>
+              <li class="bag-stat-row"><span class="bag-stat-val">200mg</span><span class="bag-stat-dash"></span><span class="bag-stat-label">L-Theanine</span></li>
+              <li class="bag-stat-row"><span class="bag-stat-val">300mg</span><span class="bag-stat-dash"></span><span class="bag-stat-label">Alpha-GPC</span></li>
+              <li class="bag-stat-row"><span class="bag-stat-val">B6 · B12</span><span class="bag-stat-dash"></span><span class="bag-stat-label">Energy Metabolism</span></li>
+              <li class="bag-stat-row"><span class="bag-stat-val">Ginseng</span><span class="bag-stat-dash"></span><span class="bag-stat-label">Mental Stamina</span></li>
+            </ul>
+            <div class="bag-footer">
+              <span class="bag-flavor">Violet Frost</span>
+              <span class="bag-servings">30 Servings</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Specs -->
+      <div class="pack-specs">
+        <div class="spec-item active">
+          <p class="spec-key">Format</p>
+          <p class="spec-val">Resealable stand-up kraft/matte bag with metallic inner lining — same format as Everyday Dose &amp; RYZE</p>
+        </div>
+        <div class="spec-item active">
+          <p class="spec-key">Primary Color</p>
+          <p class="spec-val">Periwinkle Blue <em>(#C2CDE8)</em> — cool, premium, clinical. Signals precision over hype</p>
+        </div>
+        <div class="spec-item active">
+          <p class="spec-key">Accent</p>
+          <p class="spec-val">Sprint Blue <em>(#4A6BD4)</em> — zipper, stripe, wordmark accent. High contrast on light bag</p>
+        </div>
+        <div class="spec-item">
+          <p class="spec-key">Typography on Pack</p>
+          <p class="spec-val">Barlow Condensed 900 for wordmark · DM Sans Light for descriptors</p>
+        </div>
+        <div class="spec-item">
+          <p class="spec-key">Finish</p>
+          <p class="spec-val">Matte soft-touch laminate on bag, spot UV gloss on MINDOR wordmark only</p>
+        </div>
+        <div class="spec-item">
+          <p class="spec-key">SKU Differentiation</p>
+          <p class="spec-val">Accent stripe color swaps per flavor: <em>Violet Frost</em> (hero), Glacier Blue, Solar Orange</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── BRAND MARK ── -->
+  <section class="section">
+    <p class="section-label">Brand Mark — The M-Wave</p>
+    <div class="mark-row">
+
+      <div class="mark-item">
+        <div class="mark-bg" style="background:var(--surface2); border: 0.5px solid var(--border);">
+          <svg width="40" height="28" viewBox="0 0 40 28" fill="none">
+            <path d="M4 22 L10 8 L16 18 L20 10 L24 18 L30 8 L36 22" stroke="#4A6BD4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="mark-label">Bare</span>
+      </div>
+
+      <div class="mark-item">
+        <div class="mark-bg" style="background:var(--surface2); border: 1.5px solid rgba(74,107,212,0.45); border-radius:8px;">
+          <svg width="40" height="28" viewBox="0 0 40 28" fill="none">
+            <path d="M4 22 L10 8 L16 18 L20 10 L24 18 L30 8 L36 22" stroke="#4A6BD4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="mark-label">Outlined</span>
+      </div>
+
+      <div class="mark-item">
+        <div class="mark-bg" style="background:#4A6BD4; border-radius:8px;">
+          <svg width="40" height="28" viewBox="0 0 40 28" fill="none">
+            <path d="M4 22 L10 8 L16 18 L20 10 L24 18 L30 8 L36 22" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="mark-label">Filled</span>
+      </div>
+
+      <div class="mark-item">
+        <div class="mark-bg" style="background:#9B7FE0; border-radius:8px;">
+          <svg width="40" height="28" viewBox="0 0 40 28" fill="none">
+            <path d="M4 22 L10 8 L16 18 L20 10 L24 18 L30 8 L36 22" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="mark-label">Purple</span>
+      </div>
+
+      <div class="mark-item">
+        <div class="mark-bg" style="background:#1A2040; border-radius:8px;">
+          <svg width="40" height="28" viewBox="0 0 40 28" fill="none">
+            <path d="M4 22 L10 8 L16 18 L20 10 L24 18 L30 8 L36 22" stroke="#C4ADFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="mark-label">Navy</span>
+      </div>
+
+      <div class="mark-item" style="flex-direction:row;gap:10px;align-items:center;">
+        <div class="mark-wordmark" style="background:var(--surface2); border: 0.5px solid var(--border); border-radius:6px; gap:12px;">
+          <svg width="28" height="20" viewBox="0 0 40 28" fill="none">
+            <path d="M4 22 L10 8 L16 18 L20 10 L24 18 L30 8 L36 22" stroke="#4A6BD4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="mark-wordmark-text" style="color:#4A6BD4;">MINDOR</span>
+        </div>
+        <span class="mark-label">Wordmark Lockup</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── TAGLINES ── -->
+  <section class="section">
+    <p class="section-label">Tagline Options</p>
+    <div class="tagline-list">
+      <div class="tagline-item primary">
+        <div class="tagline-dot"></div>
+        <span class="tagline-text">Stop Chasing Focus.</span>
+      </div>
+      <div class="tagline-item">
+        <div class="tagline-dot"></div>
+        <span class="tagline-text">Lock In. Stay There.</span>
+      </div>
+      <div class="tagline-item">
+        <div class="tagline-dot"></div>
+        <span class="tagline-text">Built For Builders, Not Biohackers.</span>
+      </div>
+      <div class="tagline-item">
+        <div class="tagline-dot"></div>
+        <span class="tagline-text">Deep Work. Clean Exit.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── BRAND VOICE ── -->
+  <section class="section">
+    <p class="section-label">Brand Voice &amp; Tone</p>
+    <div class="voice-grid">
+      <div class="voice-card is-card">
+        <div class="voice-card-title">Mindor Is</div>
+        <ul class="voice-list">
+          <li class="voice-item">Sharp. Direct. Confident.</li>
+          <li class="voice-item">Identity-driven, operator-coded</li>
+          <li class="voice-item">Slightly intense, never goofy</li>
+          <li class="voice-item">Credible — shows its work</li>
+          <li class="voice-item">Intimate to the buyer's pain</li>
+        </ul>
+      </div>
+      <div class="voice-card">
+        <div class="voice-card-title">Mindor Is Not</div>
+        <ul class="voice-list">
+          <li class="voice-item not">Bro-science hype</li>
+          <li class="voice-item not">Yoga-wellness soft</li>
+          <li class="voice-item not">Generic "clean energy" noise</li>
+          <li class="voice-item not">Lab-coat stiff</li>
+          <li class="voice-item not">Hustle-culture cringe</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── DO / DON'T ── -->
+  <section class="section">
+    <p class="section-label">Design Do's &amp; Don'ts</p>
+    <div class="dos-donts">
+      <div class="dd-col">
+        <div class="dd-header do">Do</div>
+        <div class="dd-item do">Use CSS tokens — never hardcode hex values</div>
+        <div class="dd-item do">Layer radial gradients for surface depth</div>
+        <div class="dd-item do">Animate only <code>transform</code> and <code>opacity</code></div>
+        <div class="dd-item do">Barlow Condensed for display, DM Sans for body</div>
+        <div class="dd-item do">Sprint Blue (#4A6BD4) as the primary interactive accent</div>
+        <div class="dd-item do">Signal Purple (#9B7FE0) for accent badges and interactive highlights</div>
+      </div>
+      <div class="dd-col">
+        <div class="dd-header dont">Don't</div>
+        <div class="dd-item dont">Use <code>transition-all</code> — it causes layout thrash</div>
+        <div class="dd-item dont">Mix more than 2 font families on one surface</div>
+        <div class="dd-item dont">Use <code>position: sticky</code> on content in unequal grids</div>
+        <div class="dd-item dont">Default Tailwind palette — never generic pastel-on-white</div>
+        <div class="dd-item dont">Flat box shadows with no color tint</div>
+        <div class="dd-item dont">Generic AI fonts (Inter, Roboto, Arial, system-ui)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── HEADLINE HOOKS ── -->
+  <section class="section">
+    <p class="section-label">Headline Hooks — Top Performers To Test</p>
+    <div class="hook-list">
+      <div class="hook-item featured">"The Focus Stack For People Who Have To Perform."</div>
+      <div class="hook-item">"Coffee isn't focus. It's a gamble."</div>
+      <div class="hook-item">"Locked in for the work that matters — without the chaos."</div>
+      <div class="hook-item">"The ritual built for builders, not biohackers."</div>
+      <div class="hook-item">"Your work deserves better fuel than an energy drink."</div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer class="brand-footer">
+    <span class="footer-wordmark">MINDOR</span>
+    <span class="footer-note">Performance Stack · Brand Guidelines v2 · Light Theme · Est. 2026</span>
+  </footer>
+
+</div>
+</body>
+</html>
