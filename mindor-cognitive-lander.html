@@ -1410,6 +1410,94 @@
   color: var(--text-muted);
 }
 
+/* ── SELECTABLE MOMENT PILLS ── */
+.moment-pills {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+.moment-pill {
+  padding: 10px 22px;
+  border: 0.5px solid var(--border-accent);
+  border-radius: 100px;
+  background: var(--surface2);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+.moment-pill.active {
+  border-color: var(--sprint-blue);
+  background: var(--sprint-blue);
+  color: #fff;
+}
+.moment-pill:hover:not(.active) {
+  border-color: var(--sprint-blue);
+  color: var(--sprint-blue);
+}
+.moment-card {
+  display: none;
+  background: var(--bg);
+  border: 0.5px solid var(--border-accent);
+  border-radius: 8px;
+  padding: 36px;
+  max-width: 900px;
+  margin: 0 auto;
+  box-shadow: var(--shadow-md);
+}
+.moment-card.active { display: block; }
+.moment-card-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px 40px;
+}
+.moment-card-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sprint-blue);
+  margin-bottom: 8px;
+}
+.moment-card-text {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+.moment-ing-pills {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.moment-ing-pill {
+  display: inline-block;
+  background: rgba(74,107,212,0.10);
+  border: 0.5px solid rgba(74,107,212,0.25);
+  border-radius: 3px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--sprint-blue);
+  letter-spacing: 0.04em;
+}
+.moment-stat {
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.5;
+  font-style: italic;
+}
+@media (max-width: 768px) {
+  .moment-card-grid { grid-template-columns: 1fr; gap: 20px; }
+  .moment-card { padding: 24px 20px; }
+  .moment-pills { gap: 8px; }
+  .moment-pill { font-size: 12px; padding: 8px 16px; }
+}
+
 /* old bar styles kept as stub so nothing breaks */
 .announcement-bar { display: none; }
 .announcement-bar-input {
@@ -1810,18 +1898,18 @@
   <section class="hero" id="hero">
     <div class="container--narrow">
       <div class="hero-eyebrow">
-        <span class="badge"><span class="badge-dot"></span>Performance Stack</span>
+        <span class="badge"><span class="badge-dot"></span>The Morning Drink for People Who Think for a Living</span>
       </div>
       <h1 class="hero-headline">
-        Wired by 10am.<br><span>Useless</span> by 2pm.
+        It's 8am. The file's open.<br><span>Still nothing.</span>
       </h1>
-      <p class="hero-subhead">That isn't your discipline running out. It's caffeine doing the only thing caffeine was ever going to do.</p>
+      <p class="hero-subhead">The morning is the sharpest your brain gets all day, and it's the part you lose warming up. MINDOR gets you in by nine.</p>
       <p class="hero-body">
-        You know the shape of the day by now. The morning's sharp, the first coffee lands, you get a couple of real hours. Then the second cup does less. By mid-afternoon you're sitting there technically working, producing nothing you'd put your name on. Coffee got you in. It was never built to keep you there. MINDOR is the thing built for the back half of the day. Five compounds, dosed for a focus window that holds through a real shift, with every milligram printed on the label.
+        Black coffee on an empty stomach doesn't hand you clarity. It hands you urgency. Heart up, mind in ten directions, blank canvas worse than before. This is built the other way around.
       </p>
       <div class="hero-stars">
         <span class="hero-stars-icons">★★★★★</span>
-        <span>4.9 from 1,200+ people who do this kind of work for a living.</span>
+        <span>4.9 from 1,200+ designers, developers, founders</span>
       </div>
       <div class="hero-img-wrap">
         <img src="/assets/presales-grape.png" alt="Mindor Performance Stack — Cool Grape" class="hero-product-img">
@@ -1834,19 +1922,19 @@
           <div class="hero-trust-icon">
             <svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#4A6BD4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          3rd-Party Tested
+          One tub, no subscription required
         </div>
         <div class="hero-trust-item">
           <div class="hero-trust-icon">
             <svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#4A6BD4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          No Proprietary Blends
+          Free US shipping
         </div>
         <div class="hero-trust-item">
           <div class="hero-trust-icon">
             <svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#4A6BD4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          Clean Exit · No Crash
+          30-day money back, no hoops
         </div>
       </div>
     </div>
@@ -1857,8 +1945,8 @@
     <div class="container">
       <div class="outcome-strip-grid">
         <div class="outcome-tile">
-          <span class="outcome-tile-num">3–5 HRS</span>
-          <span class="outcome-tile-label">of usable focus per session</span>
+          <span class="outcome-tile-num">IN BY 9</span>
+          <span class="outcome-tile-label">and stays there until lunch</span>
         </div>
         <div class="outcome-tile">
           <span class="outcome-tile-num">5</span>
@@ -1866,7 +1954,7 @@
         </div>
         <div class="outcome-tile">
           <span class="outcome-tile-num">0</span>
-          <span class="outcome-tile-label">proprietary blends</span>
+          <span class="outcome-tile-label">proprietary blends or hidden doses</span>
         </div>
         <div class="outcome-tile">
           <span class="outcome-tile-num">30 DAYS</span>
@@ -1906,33 +1994,59 @@
     </div>
   </div>
 
-  <!-- ── PROBLEM ── -->
+  <!-- ── EMOTIONAL MIRROR ── -->
   <section class="problem-section">
     <div class="container">
       <div class="problem-header">
         <div class="section-divider"></div>
-        <span class="eyebrow">The Problem</span>
-        <h2 class="section-headline">The crash isn't a<br>character flaw.</h2>
+        <span class="eyebrow">You Already Know the Feeling</span>
+        <h2 class="section-headline">Busy all morning. Nothing shipped.</h2>
       </div>
       <div class="problem-grid">
         <div class="problem-card">
           <span class="problem-card-num">01</span>
-          <p class="problem-card-title">Coffee gives you forty good minutes, then bills you for them.</p>
-          <p class="problem-card-body">The first cup lands and you feel it. Sharp, online, ready to go. Forty, fifty minutes later the slope starts. So you have another, and it does a little less than the last one. Somewhere in there the caffeine stopped being the thing that gets you working and became the thing you need just to feel normal.</p>
+          <p class="problem-card-title">The start that won't come</p>
+          <p class="problem-card-body">Ten in the morning. The interesting problem is right there on the canvas, the one you got into this work to solve. And you can't start. So you check Slack, then a tab you didn't mean to open, then you tidy a folder. Motion that isn't work.</p>
         </div>
         <div class="problem-card">
           <span class="problem-card-num">02</span>
-          <p class="problem-card-title">Past a certain point, more caffeine only makes you twitchy.</p>
-          <p class="problem-card-body">The work you do punishes overstimulation. You can't trace a bug or review a model while your leg's bouncing and your chest is doing that thing. There's a kind of "alert" that's really just anxious, and the fourth coffee lives there.</p>
+          <p class="problem-card-title">Fast, but stupid</p>
+          <p class="problem-card-body">The second coffee kicks in and you finally move, except now you're nudging one button by a pixel for two hours. Working quickly, thinking small. You've lost the whole shape of the thing you're supposed to be building.</p>
         </div>
         <div class="problem-card">
           <span class="problem-card-num">03</span>
-          <p class="problem-card-title">The 3pm version of your brain is the worst one you own.</p>
-          <p class="problem-card-body">Not because you're lazy. Because the stimulant ran out and all the fatigue it was holding back shows up at once. You spend the back half of the day on fumes, doing the shallow busywork that feels like work and ships nothing.</p>
+          <p class="problem-card-title">Hollow by 5:30</p>
+          <p class="problem-card-body">The stimulant wears off and there's nothing underneath it. Head tight at the temples, no creative energy left for your own projects, your people, your life. You close the laptop with the quiet sense that you traded another good day for mediocre output.</p>
         </div>
       </div>
-      <div class="problem-pivot">
-        <p>The usual advice is sleep more, drink less coffee, try meditating. Fine advice, none of it touches the real problem. You've been using a tool built for a quick jolt to hold a long shift. Those are two different jobs, and most people in your line of work feel the gap every single afternoon.</p>
+    </div>
+  </section>
+
+  <!-- ── THE SHIFT ── -->
+  <section class="section--dark" style="position:relative; overflow:hidden;">
+    <div class="container" style="position:relative;">
+      <div style="text-align:center; margin-bottom: 48px;">
+        <div class="section-divider" style="background: rgba(74,107,212,0.5);"></div>
+        <span class="eyebrow" style="color: rgba(74,107,212,0.7);">The Part Nobody Tells You</span>
+        <h2 class="section-headline" style="color:#fff;">The coffee isn't waking<br>you up. It's winding you up.</h2>
+      </div>
+      <div style="max-width: 640px; margin: 0 auto;">
+        <p style="font-size: 15px; color: rgba(255,255,255,0.65); line-height: 1.75;">You've been told the slow start is a discipline problem. It isn't. High-dose caffeine on an empty, already-stressed morning pushes you past focus into urgency, and an anxious brain avoids the hard thing. You're the kind of person who reads the label and solves the problems that don't have textbook answers, so you'll appreciate the actual mechanism: a smoother caffeine, buffered by theanine, fed by choline. Calm alertness has been in the research for decades. It was just never in a good product.</p>
+      </div>
+      <!-- Curve visual -->
+      <div style="max-width: 640px; margin: 40px auto 0; background: rgba(255,255,255,0.03); border: 0.5px solid rgba(74,107,212,0.25); border-radius: 8px; padding: 32px 28px;">
+        <svg viewBox="0 0 560 130" width="100%" height="auto" aria-hidden="true" style="display:block;">
+          <!-- Left chart: jagged spike -->
+          <line x1="20" y1="108" x2="240" y2="108" stroke="rgba(255,255,255,0.10)" stroke-width="1"/>
+          <path d="M30,102 C50,100 65,20 90,12 C105,8 115,30 125,70 C135,95 155,108 240,108" stroke="rgba(200,80,80,0.55)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <text x="130" y="124" text-anchor="middle" font-size="9.5" fill="rgba(255,255,255,0.28)" font-family="DM Sans, sans-serif" letter-spacing="0.1em" text-transform="uppercase">WHAT YOU'RE ON</text>
+          <!-- Divider -->
+          <line x1="280" y1="12" x2="280" y2="108" stroke="rgba(255,255,255,0.06)" stroke-width="1" stroke-dasharray="3 3"/>
+          <!-- Right chart: smooth plateau -->
+          <line x1="320" y1="108" x2="540" y2="108" stroke="rgba(255,255,255,0.10)" stroke-width="1"/>
+          <path d="M330,102 C345,100 365,40 390,30 C415,22 435,26 460,32 C480,38 510,65 540,90" stroke="#4A6BD4" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <text x="435" y="124" text-anchor="middle" font-size="9.5" fill="rgba(74,107,212,0.7)" font-family="DM Sans, sans-serif" letter-spacing="0.1em">MINDOR</text>
+        </svg>
       </div>
     </div>
   </section>
@@ -1944,12 +2058,9 @@
         <div class="founder-copy">
           <div class="section-divider"></div>
           <span class="eyebrow">Why This Exists</span>
-          <h2 class="founder-headline">I built this on the fourth coffee that did nothing.</h2>
+          <h2 class="founder-headline">I built this because I was the guy reorganizing folders.</h2>
           <div class="founder-body">
-            <p>For about four years I ran the company on 500-something milligrams of caffeine a day. Coffee, then a second coffee, then whatever was closest by 2pm. It worked, until it didn't. I still remember the morning it quit on me. Triple espresso, sat down to start, felt nothing. Not calm, not wired. Just a guy who'd quietly turned himself into a caffeine delivery system with the returns falling off.</p>
-            <p>So I went down the obvious roads. Stronger coffee. Energy drinks, which are a faster version of the same crash. Pre-workout at my desk, which is its own special kind of stupid. Then the nootropics, the nice-looking tubs that hid everything behind a "focus blend" and did nothing I could feel.</p>
-            <p>What finally clicked is almost dumb in hindsight. Caffeine isn't broken. It's just being asked to hold a shift it was never built to hold. It can switch you on. Staying on is somebody else's job.</p>
-            <p>So I built the short version of what I actually wanted. Dosed for the back half of the day, every milligram on the label, because I'm the one who reads the label and I had a feeling you were too.</p>
+            <p>Four years of pour-over plus a backup energy drink and the belief that if I wasn't a little wired I wasn't working. The mornings got worse. So I read the mechanism and built the short version of what I couldn't find. Every milligram on the label, because I read labels too.</p>
           </div>
           <div class="founder-sig">
             <div>
@@ -1967,50 +2078,50 @@
     <div class="container">
       <div class="ingredients-header">
         <div class="section-divider"></div>
-        <span class="eyebrow">The Stack</span>
-        <h2 class="section-headline">What's actually<br>in a scoop.</h2>
+        <span class="eyebrow">The Formula, in Full</span>
+        <h2 class="section-headline">Five compounds.<br>Every milligram printed.</h2>
       </div>
-      <p class="ingredients-intro">Five compounds, every milligram printed. No blend names, nothing rounded off, nothing hiding behind a trademark. Every number on here is one search away from being checked, and we'd rather you checked it.</p>
+      <p class="ingredients-intro">No blend name, nothing rounded off. The whole thing's on the tub because you check, and we built it expecting that.</p>
       <div class="ingredients-grid">
         <div class="ingredient-card">
           <div class="ingredient-icon-placeholder">[ICON]</div>
           <span class="ingredient-dose-badge">200mg</span>
           <span class="ingredient-role">Natural Caffeine, from green tea</span>
           <p class="ingredient-name">Caffeine</p>
-          <p class="ingredient-body">Pulled from green tea instead of cooked up synthetically. It comes up smoother than coffee does, slower off the line, without the same jagged edge. 200mg is a real dose. This is the engine of the stack, not a sprinkle for the label.</p>
-        </div>
-        <div class="ingredient-card">
-          <div class="ingredient-icon-placeholder">[ICON]</div>
-          <span class="ingredient-dose-badge">100mg</span>
-          <span class="ingredient-role">The settling half</span>
-          <p class="ingredient-name">L-Theanine</p>
-          <p class="ingredient-body">The one combination even the skeptics on r/Nootropics still hand to people starting out. The theanine rounds the caffeine off so the alertness sits steady instead of buzzing.</p>
+          <p class="ingredient-body">Caffeine pulled from green tea, not synthesized. It comes up slower and smoother than a synthetic dose hitting an empty stomach, because the green tea carries it differently. A real 200mg dose. The engine, not a garnish for the label.</p>
         </div>
         <div class="ingredient-card">
           <div class="ingredient-icon-placeholder">[ICON]</div>
           <span class="ingredient-dose-badge">300mg</span>
-          <span class="ingredient-role">Cognitive support</span>
+          <span class="ingredient-role">Choline source for processing speed</span>
           <p class="ingredient-name">Alpha-GPC</p>
-          <p class="ingredient-body">A choline source your brain uses for the real work of holding attention and pulling up the right word on time. This is the line that tells a careful reader the formula was built on purpose. Most focus products skip it because it costs actual money.</p>
+          <p class="ingredient-body">A choline source your brain uses to build acetylcholine, the neurotransmitter behind processing speed and pulling the right word up on time. The line that tells a careful reader this was built on purpose. Most products skip it. It isn't cheap.</p>
         </div>
         <div class="ingredient-card">
           <div class="ingredient-icon-placeholder">[ICON]</div>
-          <span class="ingredient-dose-badge">50mg</span>
-          <span class="ingredient-role">Anti-fatigue adaptogen</span>
-          <p class="ingredient-name">Asian (Panax) Ginseng</p>
-          <p class="ingredient-body">In here for the long stretches rather than the first twenty minutes. It's the supporting layer for hour three, not the part you feel switch on.</p>
+          <span class="ingredient-dose-badge">100mg</span>
+          <span class="ingredient-role">The settling half of the oldest focus pairing</span>
+          <p class="ingredient-name">L-Theanine</p>
+          <p class="ingredient-body">The settling half of the oldest focus pairing there is. It rounds the caffeine off so the alertness sits steady instead of buzzing. Even the skeptics still hand this combination to people starting out.</p>
+        </div>
+        <div class="ingredient-card">
+          <div class="ingredient-icon-placeholder">[ICON]</div>
+          <span class="ingredient-dose-badge">600mg</span>
+          <span class="ingredient-role">Cognitive flexibility support</span>
+          <p class="ingredient-name">Inositol</p>
+          <p class="ingredient-body">A building block of the signaling your brain runs on. In here it keeps the caffeine reading as calm focus rather than edge, and supports moving across a problem without feeling brittle. Most formulas leave it out entirely.</p>
         </div>
         <div class="ingredient-card">
           <div class="ingredient-icon-placeholder">[ICON]</div>
           <span class="ingredient-dose-badge">B6 · B12 · B-Complex</span>
-          <span class="ingredient-role">Infrastructure layer</span>
+          <span class="ingredient-role">The fuel layer underneath everything</span>
           <p class="ingredient-name">B-Vitamins</p>
-          <p class="ingredient-body">B6 0.56mg, B12 800mcg, plus B1, B2, B3, folate, B5. Not a stimulant, not the headline, just the floor the rest of it stands on. The B-vitamins your body runs on to turn food into usable energy.</p>
+          <p class="ingredient-body">The fuel layer underneath everything. The B-vitamins your brain uses to turn glucose into usable energy across a long block. Not a stimulant. The floor the rest stands on.</p>
         </div>
       </div>
       <div style="margin-top: 24px; padding: 16px 20px; background: rgba(74,107,212,0.04); border: 0.5px solid var(--border); border-radius: 5px; max-width: 680px;">
         <a href="#" style="font-size: 13px; font-weight: 600; color: var(--sprint-blue); text-decoration: none; border-bottom: 1px solid rgba(74,107,212,0.3); padding-bottom: 1px;">See the full label and lab test &rarr;</a>
-        <p style="font-size: 12px; color: var(--text-dim); margin-top: 8px; line-height: 1.6;">Full supplement facts include L-Arginine 1000mg, Inositol 600mg, Black Pepper 5mg and the complete B-complex. None of it's hidden. These five are just the ones doing the work you'll feel.</p>
+        <p style="font-size: 12px; color: var(--text-dim); margin-top: 8px; line-height: 1.6;">Full supplement facts also include L-Arginine 1000mg and Asian Ginseng 50mg for blood flow and anti-fatigue support, plus BioPerine 5mg for absorption. Nothing's hidden. These five are just the ones doing the work you'll feel in the morning.</p>
       </div>
       <div class="ingredients-label-note">
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#8A9CC0" stroke-width="1"/><path d="M7 6v4M7 4.5v.5" stroke="#8A9CC0" stroke-width="1.2" stroke-linecap="round"/></svg>
@@ -2019,35 +2130,118 @@
     </div>
   </section>
 
-  <!-- ── MECHANISM ── -->
+  <!-- ── SELECTABLE PILLS / WHAT'S HAPPENING ── -->
   <section class="mechanism-section">
     <div class="container">
       <div class="mechanism-header">
         <div class="section-divider"></div>
-        <span class="eyebrow">How It Works</span>
-        <h2 class="section-headline">What the next few hours<br>actually feel like.</h2>
+        <span class="eyebrow">The Science, in Plain Terms</span>
+        <h2 class="section-headline">What's actually happening<br>in your morning</h2>
       </div>
-      <div class="mechanism-steps">
-        <div class="mechanism-step">
-          <div class="mechanism-step-num">1</div>
-          <p class="mechanism-step-time">20 to 30 minutes in</p>
-          <p class="mechanism-step-title">It comes on quiet.</p>
-          <p class="mechanism-step-body">The caffeine and theanine are working by now. You're alert, but it doesn't announce itself. No jolt, no chest flutter, just the part where sitting down and starting stops being a fight.</p>
-        </div>
-        <div class="mechanism-step">
-          <div class="mechanism-step-num">2</div>
-          <p class="mechanism-step-time">Hours 1 to 4</p>
-          <p class="mechanism-step-title">The window stays open.</p>
-          <p class="mechanism-step-body">This is the part coffee never gave you. The Alpha-GPC and ginseng are doing their slower work in the background, and the focus holds instead of sliding off after the first hour. You get a few hours of the real thing.</p>
-        </div>
-        <div class="mechanism-step">
-          <div class="mechanism-step-num">3</div>
-          <p class="mechanism-step-time">End of the session</p>
-          <p class="mechanism-step-title">It lets you down easy.</p>
-          <p class="mechanism-step-body">When it winds down, it winds down. No cliff. And taken earlier in the day, none of that lying-awake-at-11pm wired feeling either. You're tired the ordinary way, the way you're supposed to be after a few hours of real work.</p>
+
+      <!-- Pills -->
+      <div class="moment-pills" id="momentPills">
+        <button class="moment-pill active" data-moment="slow-start">The slow start</button>
+        <button class="moment-pill" data-moment="blank-canvas">The blank canvas</button>
+        <button class="moment-pill" data-moment="tunnel">The 2pm tunnel</button>
+        <button class="moment-pill" data-moment="crash">The evening crash</button>
+      </div>
+
+      <!-- Cards -->
+      <div class="moment-card active" id="card-slow-start">
+        <div class="moment-card-grid">
+          <div>
+            <p class="moment-card-label">The problem</p>
+            <p class="moment-card-text">You're alert but pointed everywhere at once.</p>
+          </div>
+          <div>
+            <p class="moment-card-label">What's going on</p>
+            <p class="moment-card-text">A fast caffeine dose on an empty morning spikes arousal faster than your brain can organize it. You get the racing without the focus.</p>
+          </div>
+          <div>
+            <p class="moment-card-label">What's in MINDOR for it</p>
+            <p class="moment-card-text">Green tea caffeine comes up slower than synthetic, and L-theanine takes the edge off, so the alertness arrives as something you can actually aim.</p>
+          </div>
+          <div>
+            <div class="moment-ing-pills">
+              <span class="moment-ing-pill">Green Tea Caffeine 200mg</span>
+              <span class="moment-ing-pill">L-Theanine 100mg</span>
+            </div>
+            <p class="moment-stat">Caffeine + theanine: the most replicated calm-focus pairing in the literature.</p>
+          </div>
         </div>
       </div>
-      <div class="mechanism-diagram-placeholder">[PLACEHOLDER: Focus Arc diagram — smooth on-ramp, long plateau, soft landing]</div>
+
+      <div class="moment-card" id="card-blank-canvas">
+        <div class="moment-card-grid">
+          <div>
+            <p class="moment-card-label">The problem</p>
+            <p class="moment-card-text">Starting feels physically hard, and caffeine anxiety makes it harder.</p>
+          </div>
+          <div>
+            <p class="moment-card-label">What's going on</p>
+            <p class="moment-card-text">The anxious brain avoids the hard thing and reaches for the easy hit of a new tab instead of the hard problem.</p>
+          </div>
+          <div>
+            <p class="moment-card-label">What's in MINDOR for it</p>
+            <p class="moment-card-text">Alpha-GPC gives your brain the raw choline it burns through under load. That's the gap between feeling awake and feeling clear enough to begin.</p>
+          </div>
+          <div>
+            <div class="moment-ing-pills">
+              <span class="moment-ing-pill">Alpha-GPC 300mg</span>
+            </div>
+            <p class="moment-stat">300mg, a real dose, the kind most focus formulas skip.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="moment-card" id="card-tunnel">
+        <div class="moment-card-grid">
+          <div>
+            <p class="moment-card-label">The problem</p>
+            <p class="moment-card-text">You force your way back in and lose all perspective, locked onto one detail for two hours.</p>
+          </div>
+          <div>
+            <p class="moment-card-label">What's going on</p>
+            <p class="moment-card-text">A second coffee pushed you past focus into hyper-fixation. You work fast and think small.</p>
+          </div>
+          <div>
+            <p class="moment-card-label">What's in MINDOR for it</p>
+            <p class="moment-card-text">Inositol supports the signaling behind cognitive flexibility, the ability to pivot across a problem instead of grinding one corner of it.</p>
+          </div>
+          <div>
+            <div class="moment-ing-pills">
+              <span class="moment-ing-pill">Inositol 600mg</span>
+            </div>
+            <p class="moment-stat">600mg, dosed for signal support.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="moment-card" id="card-crash">
+        <div class="moment-card-grid">
+          <div>
+            <p class="moment-card-label">The problem</p>
+            <p class="moment-card-text">It wears off and you're hollow, nothing left for your own life.</p>
+          </div>
+          <div>
+            <p class="moment-card-label">What's going on</p>
+            <p class="moment-card-text">What rises on a spike falls on a crash as the blocked adenosine floods back.</p>
+          </div>
+          <div>
+            <p class="moment-card-label">What's in MINDOR for it</p>
+            <p class="moment-card-text">A smoother rise means a softer landing. Taken in the morning, it winds down by evening instead of dropping you.</p>
+          </div>
+          <div>
+            <div class="moment-ing-pills">
+              <span class="moment-ing-pill">Green Tea Caffeine 200mg</span>
+              <span class="moment-ing-pill">B-Complex</span>
+            </div>
+            <p class="moment-stat">Smoother curve in. Gentler curve out.</p>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -2057,9 +2251,9 @@
       <div class="taste-inner">
         <div class="taste-copy">
           <div class="section-divider"></div>
-          <span class="eyebrow">The Part Nobody Warns You About</span>
-          <h2 class="taste-headline">Most of these powders taste like a dare.</h2>
-          <p class="taste-body">If you've been through a few of these, you know the routine. The grit that won't dissolve no matter how long you shake it. The herbal, almost-rotten thing. The stomach that turns on you around week two. That's usually how the tub ends up shoved to the back of a drawer with two scoops gone. Sour Grape dissolves in about ten seconds, leaves nothing chalky at the bottom, and tastes enough like candy that reaching for it isn't a chore. It sounds like a small thing. It's the whole difference between a product you actually use and one you bought once.</p>
+          <span class="eyebrow">Tasting Notes</span>
+          <h2 class="taste-headline">Cold grape juice, basically.</h2>
+          <p class="taste-body">Crisp, a little tart, light enough to sip through a long block without going sour on an empty stomach. It dissolves fully and leaves nothing chalky at the bottom — which if you've tried the mushroom-coffee era of this category, you know is not a given. A daily thing you dread is a daily thing you quit. This one you'll actually look forward to.</p>
           <div class="taste-steps">
             <div class="taste-step">
               <span class="taste-step-num">1</span>
@@ -2067,15 +2261,15 @@
             </div>
             <div class="taste-step">
               <span class="taste-step-num">2</span>
-              8 to 12 oz of water.
+              8 to 12 oz of cold water.
             </div>
             <div class="taste-step">
               <span class="taste-step-num">3</span>
-              Stir and get to work.
+              Stir, and get into the file before you reach for anything else.
             </div>
           </div>
           <div class="taste-quote">
-            "Tastes like it should be sold at a gas station. I mean that as a compliment. Mixes clean, no chalky finish."
+            "Tastes like it should be sold at a gas station, and I mean that as a compliment. Mixes clean, no chalky finish, and I actually look forward to making it."
             <p class="taste-quote-author">Jess O., verified buyer</p>
           </div>
         </div>
@@ -2090,8 +2284,8 @@
       <div class="comparison-header">
         <div class="section-divider"></div>
         <span class="eyebrow">The Honest Comparison</span>
-        <h2 class="section-headline">How it holds up against<br>what you're already doing.</h2>
-        <p class="section-subhead" style="margin-top: 12px; font-size: 16px; font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--text-muted);">Coffee, the pre-workout you repurposed for your desk, the energy drink, and doing nothing.</p>
+        <h2 class="section-headline">Calm mornings vs.<br>messy afternoons.</h2>
+        <p class="section-subhead" style="margin-top: 12px; font-size: 16px; font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--text-muted);">MINDOR mornings are calm. Coffee afternoons are messy. Here's what that looks like on paper.</p>
       </div>
       <table class="comparison-table">
         <thead>
@@ -2163,8 +2357,8 @@
     <div class="container">
       <div class="testimonials-header">
         <div class="section-divider"></div>
-        <span class="eyebrow">Field Reports</span>
-        <h2 class="section-headline">From people doing<br>the same kind of work.</h2>
+        <span class="eyebrow">On Desks Like Yours</span>
+        <h2 class="section-headline">From people who get paid<br>for their ideas.</h2>
       </div>
       <div class="testimonials-grid">
         <div class="testimonial-card">
@@ -2211,24 +2405,27 @@
   <section class="science-section">
     <div class="container">
       <div class="section-divider"></div>
-      <span class="eyebrow">On The Label</span>
-      <h2 class="section-headline">Every number,<br>out in the open.</h2>
-      <p class="science-intro">No blend names. No "proprietary focus matrix" with the milligrams blacked out. The whole formula is published because the people it's built for check these things, and the entire point was to make something that holds up when you do.</p>
+      <span class="eyebrow">Not Our Claims. The Literature's.</span>
+      <h2 class="section-headline">We'd rather you didn't<br>take our word for it.</h2>
+      <p class="science-intro">You can verify every line of this without leaving the room. A few of the things the published research supports about what's in the tub:</p>
       <div class="science-stats">
         <div class="science-stat">
-          <span class="science-stat-num">200mg</span>
-          <p class="science-stat-label"><strong>Caffeine from green tea</strong>Smoother on-ramp than synthetic caffeine. A real dose, not a sprinkle.</p>
+          <span class="science-stat-num">200+100mg</span>
+          <p class="science-stat-label"><strong>Caffeine + L-Theanine</strong>Most-replicated calm-focus pairing in the cognitive performance literature.</p>
         </div>
         <div class="science-stat">
           <span class="science-stat-num">300mg</span>
-          <p class="science-stat-label"><strong>Alpha-GPC</strong>Choline, for holding attention. The line that shows the formula was built on purpose.</p>
+          <p class="science-stat-label"><strong>Alpha-GPC</strong>Bioavailable choline donor that crosses the blood-brain barrier. The dose most formulas skip.</p>
         </div>
         <div class="science-stat">
-          <span class="science-stat-num">Published</span>
-          <p class="science-stat-label"><strong>In full</strong>Every dose, lab tested, verify it yourself.</p>
+          <span class="science-stat-num">8–12Hz</span>
+          <p class="science-stat-label"><strong>Alpha brainwaves</strong>The state people call relaxed focus. Associated with L-theanine in the research.</p>
         </div>
       </div>
-      <div class="science-testing-placeholder">[PLACEHOLDER: 3rd-party testing certification badge / lab seal]</div>
+      <div style="text-align:center; margin-top: 8px;">
+        <a href="#" style="font-size: 13px; font-weight: 600; color: rgba(74,107,212,0.7); text-decoration: none; border-bottom: 1px solid rgba(74,107,212,0.3); padding-bottom: 1px;">Read the studies &rarr;</a>
+      </div>
+      <div class="science-testing-placeholder" style="margin-top: 32px;">[PLACEHOLDER: 3rd-party testing certification badge / lab seal]</div>
     </div>
   </section>
 
@@ -2238,9 +2435,10 @@
       <div class="guarantee-inner">
         <div class="guarantee-badge-placeholder">[PLACEHOLDER: 30-Day Guarantee Seal]</div>
         <div class="guarantee-copy">
-          <span class="eyebrow eyebrow--blue">30 Days, No Hoops</span>
-          <h2 class="guarantee-headline">Try it for a month. If the afternoons don't change, you don't pay for it.</h2>
-          <p class="guarantee-body">Take MINDOR for thirty days. If your work sessions don't feel different, if 3pm is still a dead zone, email us and we'll refund the whole thing. No form to fill out, no restocking fee, no keeping the empty tub as evidence. The formula makes its own case or it doesn't, and if it doesn't, that one's on us.</p>
+          <span class="eyebrow eyebrow--blue">Own Your Mornings</span>
+          <h2 class="guarantee-headline">Try it on your hardest morning.</h2>
+          <p class="guarantee-body">Thirty days. Use it on the morning you'd normally lose. If it doesn't change how that morning goes, email us and we refund the tub.</p>
+          <p class="guarantee-body" style="margin-top: 16px; font-size: 14px; color: var(--text-dim); font-style: italic;">Your ideas are your currency. No reason to keep funding them with borrowed, anxious energy.</p>
         </div>
       </div>
     </div>
@@ -2358,33 +2556,47 @@
     <div class="container">
       <div class="pricing-header">
         <div class="section-divider"></div>
-        <span class="eyebrow">What It Costs</span>
-        <h2 class="section-headline">Cheaper than the coffee<br>that quit on you.</h2>
-        <p class="body-copy" style="margin-top: 16px; max-width: 560px;">One tub runs $32.99. Thirty servings, so a bit over a dollar a day. You're not adding a new line to the budget here. You're moving money off the things that stopped working and onto the one that holds the afternoon together.</p>
+        <span class="eyebrow">The Math</span>
+        <h2 class="section-headline">You can buy these five<br>separately. People do.</h2>
+        <p class="body-copy" style="margin-top: 16px; max-width: 560px;">Plenty of this audience was already buying half of this off separate shelves. Here's roughly what that runs per month, bought one ingredient at a time.</p>
       </div>
       <div class="pricing-compare-rows">
         <div class="pricing-compare-row">
-          <span class="pricing-item-name">Afternoon latte</span>
-          <span class="pricing-item-price">~$5-6 / day</span>
-          <span class="pricing-item-note">and it stopped working</span>
+          <span class="pricing-item-name">Alpha-GPC (300mg/day)</span>
+          <span class="pricing-item-price">~$XX / mo</span>
+          <span class="pricing-item-note">[verify]</span>
         </div>
         <div class="pricing-compare-row">
-          <span class="pricing-item-name">Energy drink</span>
-          <span class="pricing-item-price">~$4 / day</span>
-          <span class="pricing-item-note">spike, then the floor</span>
+          <span class="pricing-item-name">L-Theanine (100mg/day)</span>
+          <span class="pricing-item-price">~$XX / mo</span>
+          <span class="pricing-item-note">[verify]</span>
         </div>
         <div class="pricing-compare-row">
-          <span class="pricing-item-name">That last nootropic</span>
-          <span class="pricing-item-price">~$60</span>
-          <span class="pricing-item-note">felt nothing</span>
+          <span class="pricing-item-name">Inositol (600mg/day)</span>
+          <span class="pricing-item-price">~$XX / mo</span>
+          <span class="pricing-item-note">[verify]</span>
+        </div>
+        <div class="pricing-compare-row">
+          <span class="pricing-item-name">Green tea caffeine</span>
+          <span class="pricing-item-price">~$XX / mo</span>
+          <span class="pricing-item-note">[verify]</span>
+        </div>
+        <div class="pricing-compare-row">
+          <span class="pricing-item-name">B-complex</span>
+          <span class="pricing-item-price">~$XX / mo</span>
+          <span class="pricing-item-note">[verify]</span>
         </div>
         <div class="pricing-compare-row is-mindor">
-          <span class="pricing-item-name is-mindor">MINDOR</span>
-          <span class="pricing-item-price is-mindor">~$1.10 / day</span>
-          <span class="pricing-item-note is-mindor">holds the afternoon</span>
+          <span class="pricing-item-name is-mindor">MINDOR — all five in one scoop</span>
+          <span class="pricing-item-price is-mindor">$32.99 / mo</span>
+          <span class="pricing-item-note is-mindor">~$1.10 / day</span>
         </div>
       </div>
-      <p class="pricing-footnote">A few people told us they'd been buying L-theanine, Alpha-GPC and a B-complex separately anyway. This is all three in one scoop, for less than the three of them apart.</p>
+      <p class="pricing-footnote">Same compounds, one tub, one drink, for about a dollar a day. The afternoon latte that buys you forty minutes is five or six. You're not adding a line to the budget. You're consolidating one you already had.</p>
+      <div style="margin-top: 20px; padding: 16px 20px; background: rgba(74,107,212,0.04); border: 0.5px solid var(--border); border-radius: 5px; max-width: 680px;">
+        <p style="font-size: 13px; font-style: italic; color: var(--text-primary);">★★★★★ "Was taking L-theanine, Alpha-GPC and a B-complex separately. Mindor covers all of it plus compounds I wasn't getting. Cleaner routine, lower total cost."</p>
+        <p style="font-size: 12px; color: var(--text-dim); margin-top: 6px;">Alexander B., verified buyer</p>
+      </div>
     </div>
   </section>
 
@@ -2393,80 +2605,71 @@
     <div class="container">
       <div class="faq-header">
         <div class="section-divider"></div>
-        <span class="eyebrow">Questions</span>
-        <h2 class="section-headline">The ones you're<br>actually asking.</h2>
+        <span class="eyebrow">The Ones You're Actually Asking</span>
+        <h2 class="section-headline">The questions that<br>actually matter.</h2>
       </div>
       <div class="faq-list">
         <div class="faq-item">
           <button class="faq-question" aria-expanded="false">
-            <span class="faq-question-text">How is this different from a pre-workout?</span>
+            <span class="faq-question-text">Is this just cheap caffeine behind a proprietary blend?</span>
             <span class="faq-icon"><svg viewBox="0 0 10 10" fill="none" width="10" height="10"><path d="M5 2v6M2 5h6" stroke="#4A587A" stroke-width="1.5" stroke-linecap="round"/></svg></span>
           </button>
           <div class="faq-answer" role="region">
-            <p class="faq-answer-inner">Pre-workout is built to get your body moving for an hour. A big stimulant hit, usually a huge caffeine dose plus beta-alanine and whatever else, tuned for the gym. MINDOR is tuned the other way. Enough caffeine to get going, balanced with theanine so it reads as focus instead of restlessness, plus the compounds that help hold attention across a few hours. Drinking pre-workout at your desk is how you end up jittery and useless by 10:30.</p>
+            <p class="faq-answer-inner">No, and you can confirm it in ten seconds. Every milligram is printed on the tub. 300mg Alpha-GPC, 600mg Inositol, 100mg L-theanine, 200mg green tea caffeine, the full B-complex — all of it. When a brand hides the formula behind a "focus matrix," it's usually cheap caffeine and a decorative dusting of the expensive stuff. There's nothing to hide here, so we don't.</p>
           </div>
         </div>
         <div class="faq-item">
           <button class="faq-question" aria-expanded="false">
-            <span class="faq-question-text">Will it make me jittery?</span>
+            <span class="faq-question-text">I've tried caffeine and theanine before and didn't feel much. Why is this different?</span>
             <span class="faq-icon"><svg viewBox="0 0 10 10" fill="none" width="10" height="10"><path d="M5 2v6M2 5h6" stroke="#4A587A" stroke-width="1.5" stroke-linecap="round"/></svg></span>
           </button>
           <div class="faq-answer" role="region">
-            <p class="faq-answer-inner">Less than the same amount of coffee would, for two reasons. The caffeine's from green tea, which comes up smoother, and it's paired with L-theanine, which takes the edge off. That said, it's still 200mg of real caffeine, so if a single espresso winds you up, start with half a scoop and see where you land.</p>
+            <p class="faq-answer-inner">Two reasons. The choline and the dose. A plain caffeine-theanine pill skips the choline donor, so when you fire up your processing speed you burn through your acetylcholine and end up awake but empty. The 300mg of Alpha-GPC is the part that fills that gap. And a powder in cold water absorbs faster and more evenly than a hard capsule sitting in your stomach.</p>
           </div>
         </div>
         <div class="faq-item">
           <button class="faq-question" aria-expanded="false">
-            <span class="faq-question-text">When should I take it?</span>
+            <span class="faq-question-text">Will it make me feel wired or robotic, like a prescription stimulant?</span>
             <span class="faq-icon"><svg viewBox="0 0 10 10" fill="none" width="10" height="10"><path d="M5 2v6M2 5h6" stroke="#4A587A" stroke-width="1.5" stroke-linecap="round"/></svg></span>
           </button>
           <div class="faq-answer" role="region">
-            <p class="faq-answer-inner">Whenever the focus actually matters. Most people take it mid-morning once the first coffee's worn off, or right before a long afternoon block. Since it's a real caffeine dose, treat the timing like coffee and don't take it late if you want to sleep.</p>
+            <p class="faq-answer-inner">No. Prescription stimulants flood your dopamine and can flatten you out, which is the opposite of what creative work needs. This is calm alertness, not vibration. You won't feel like you're buzzing in your chair. You'll notice you looked up and three hours had gone by.</p>
           </div>
         </div>
         <div class="faq-item">
           <button class="faq-question" aria-expanded="false">
-            <span class="faq-question-text">Can I take it with my morning coffee?</span>
+            <span class="faq-question-text">What does it taste like? Is it full of chemical sweetener?</span>
             <span class="faq-icon"><svg viewBox="0 0 10 10" fill="none" width="10" height="10"><path d="M5 2v6M2 5h6" stroke="#4A587A" stroke-width="1.5" stroke-linecap="round"/></svg></span>
           </button>
           <div class="faq-answer" role="region">
-            <p class="faq-answer-inner">You can, and plenty do, but you probably won't need to. The whole point is to stop reaching for the second and third cup. If you do stack it with coffee, just count the caffeine, since you're adding 200mg on top of whatever's in the mug.</p>
+            <p class="faq-answer-inner">Cold grape juice, crisp and light, made to sip through a long morning on an empty stomach without going sour. No heavy syrup, no dye, none of the cloying pre-workout aftertaste. It mixes clean in about ten seconds and leaves nothing chalky at the bottom.</p>
           </div>
         </div>
         <div class="faq-item">
           <button class="faq-question" aria-expanded="false">
-            <span class="faq-question-text">Is there a crash afterward?</span>
+            <span class="faq-question-text">Am I going to get trapped in a subscription I can't cancel?</span>
             <span class="faq-icon"><svg viewBox="0 0 10 10" fill="none" width="10" height="10"><path d="M5 2v6M2 5h6" stroke="#4A587A" stroke-width="1.5" stroke-linecap="round"/></svg></span>
           </button>
           <div class="faq-answer" role="region">
-            <p class="faq-answer-inner">It's built to come down gently rather than drop you. When the session ends you'll feel done, the ordinary kind of tired, not the hollow energy-drink crash. As with anything caffeinated, take it too late and it'll sit between you and sleep.</p>
+            <p class="faq-answer-inner">No, and this one matters to us, because it's happened to all of us. You can buy a single tub with no subscription at all. If you do subscribe and save, cancelling is one click — stated plainly, no chatbot maze, no ten confirmation screens. We're not going to make leaving harder than joining.</p>
           </div>
         </div>
         <div class="faq-item">
           <button class="faq-question" aria-expanded="false">
-            <span class="faq-question-text">How long until I notice something?</span>
+            <span class="faq-question-text">Do I have to give up coffee?</span>
             <span class="faq-icon"><svg viewBox="0 0 10 10" fill="none" width="10" height="10"><path d="M5 2v6M2 5h6" stroke="#4A587A" stroke-width="1.5" stroke-linecap="round"/></svg></span>
           </button>
           <div class="faq-answer" role="region">
-            <p class="faq-answer-inner">The caffeine-and-theanine part you'll feel the first day, inside the first half hour. The steadier, holds-through-the-afternoon part is something most people clock over the first week, usually around the third or fourth session, when they notice they didn't hit the wall.</p>
+            <p class="faq-answer-inner">You don't. Plenty of people keep the morning cup and just stop needing the second and third. It's not a detox, it's a steadier morning. Most people drift down on their own once the mornings stop being a fight.</p>
           </div>
         </div>
         <div class="faq-item">
           <button class="faq-question" aria-expanded="false">
-            <span class="faq-question-text">Is the powder gritty? Does it taste bad?</span>
+            <span class="faq-question-text">How fast will I notice?</span>
             <span class="faq-icon"><svg viewBox="0 0 10 10" fill="none" width="10" height="10"><path d="M5 2v6M2 5h6" stroke="#4A587A" stroke-width="1.5" stroke-linecap="round"/></svg></span>
           </button>
           <div class="faq-answer" role="region">
-            <p class="faq-answer-inner">No, and that wasn't an accident. It mixes clean in about ten seconds and tastes like Sour Grape candy, because a daily thing you dread is a daily thing you quit.</p>
-          </div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-question" aria-expanded="false">
-            <span class="faq-question-text">Will I get dependent on this the way I did on caffeine?</span>
-            <span class="faq-icon"><svg viewBox="0 0 10 10" fill="none" width="10" height="10"><path d="M5 2v6M2 5h6" stroke="#4A587A" stroke-width="1.5" stroke-linecap="round"/></svg></span>
-          </button>
-          <div class="faq-answer" role="region">
-            <p class="faq-answer-inner">It has caffeine in it, so be about as sensible as you'd be with coffee. It's a focus tool for the days that ask a lot of you, not something to keep escalating. We're not going to pretend a caffeinated product is caffeine-free.</p>
+            <p class="faq-answer-inner">The calm-alertness part — day one, inside the first half hour. The steadier-mornings part is something most people clock in the first week, usually the third or fourth time they realize they got into the work without the usual fight.</p>
           </div>
         </div>
       </div>
@@ -2478,9 +2681,9 @@
     <div class="container">
       <div class="order-header">
         <div class="section-divider" style="margin: 0 auto 20px;"></div>
-        <span class="eyebrow" style="text-align:center; display:block;">Build Your Stack</span>
-        <h2 class="section-headline">Your Brain Does The Work.<br>Let The Stack Hold The Window.</h2>
-        <p class="body-copy" style="margin-top:16px;">Try Mindor for 30 days. If it doesn't change what your work sessions feel like, we'll refund you in full.</p>
+        <span class="eyebrow" style="text-align:center; display:block;">Own Your Mornings</span>
+        <h2 class="section-headline">Start with tomorrow morning.</h2>
+        <p class="body-copy" style="margin-top:16px;">One tub, no subscription required. Free US shipping. 30-day money back, no hoops.</p>
       </div>
       <div id="bundle-widget-order" class="bundle-widget">
         <!-- Injected by JS -->
@@ -2848,6 +3051,21 @@
           document.getElementById('discountBubble').style.display = 'none';
           document.body.style.overflow = '';
         }, 3000);
+      });
+    })();
+
+    /* ── SELECTABLE MOMENT PILLS ── */
+    (function() {
+      const pills = document.querySelectorAll('.moment-pill');
+      const cards = document.querySelectorAll('.moment-card');
+      pills.forEach(function(pill) {
+        pill.addEventListener('click', function() {
+          pills.forEach(function(p) { p.classList.remove('active'); });
+          cards.forEach(function(c) { c.classList.remove('active'); });
+          pill.classList.add('active');
+          var target = document.getElementById('card-' + pill.dataset.moment);
+          if (target) target.classList.add('active');
+        });
       });
     })();
 
