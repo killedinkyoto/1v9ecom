@@ -1260,33 +1260,111 @@
 }
 
 /* ── ANNOUNCEMENT BAR ── */
-.announcement-bar {
-  background: var(--sprint-blue);
-  padding: 10px 24px;
-  text-align: center;
-  position: relative;
-  z-index: 200;
-}
-.announcement-bar-inner {
+/* ── DISCOUNT BUBBLE ── */
+.discount-bubble {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 300;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  max-width: 1080px;
-  margin: 0 auto;
-}
-.announcement-bar-text {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 13px;
-  font-weight: 500;
-  color: #fff;
-  letter-spacing: 0.01em;
-}
-.announcement-bar-form {
-  display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-end;
   gap: 8px;
 }
+.discount-bubble-trigger {
+  background: var(--sprint-blue);
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: 100px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(74,107,212,0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.discount-bubble-trigger:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(74,107,212,0.4); }
+.discount-bubble-trigger .bubble-icon { font-size: 15px; }
+.discount-bubble-panel {
+  background: #fff;
+  border: 0.5px solid var(--border-accent);
+  border-radius: 14px;
+  padding: 20px 18px 16px;
+  width: 280px;
+  box-shadow: 0 8px 40px rgba(74,107,212,0.18), 0 2px 8px rgba(74,107,212,0.10);
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+}
+.discount-bubble-panel.open { display: flex; }
+.discount-panel-close {
+  position: absolute;
+  top: 10px; right: 12px;
+  background: none; border: none; cursor: pointer;
+  font-size: 18px; color: var(--text-dim); line-height: 1;
+}
+.discount-panel-wrap { position: relative; }
+.discount-panel-headline {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  color: var(--text-primary);
+  line-height: 1.1;
+  margin-bottom: 2px;
+}
+.discount-panel-sub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+.discount-panel-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--border-accent);
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: var(--text-primary);
+  background: var(--bg);
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+.discount-panel-input:focus { border-color: var(--sprint-blue); }
+.discount-panel-input::placeholder { color: var(--text-dim); }
+.discount-panel-btn {
+  width: 100%;
+  background: var(--sprint-blue);
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 11px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+.discount-panel-btn:hover { opacity: 0.88; }
+.discount-panel-success {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  color: var(--sprint-blue);
+  font-weight: 600;
+  text-align: center;
+  padding: 8px 0 4px;
+  display: none;
+}
+
+/* old bar styles kept as stub so nothing breaks */
+.announcement-bar { display: none; }
 .announcement-bar-input {
   background: rgba(255,255,255,0.15);
   border: 0.5px solid rgba(255,255,255,0.35);
@@ -1643,15 +1721,21 @@
   [CONFIRM ROUTE] Add to vercel.json when ready to deploy.
 -->
 
-  <!-- ── ANNOUNCEMENT BAR ── -->
-  <div class="announcement-bar" id="announcement-bar">
-    <div class="announcement-bar-inner">
-      <span class="announcement-bar-text">First order's 15% off. Drop your email and we'll send the code.</span>
-      <form class="announcement-bar-form" onsubmit="return false;">
-        <input type="email" class="announcement-bar-input" placeholder="your@email.com" aria-label="Email for discount">
-        <button type="submit" class="announcement-bar-submit">Get 15% Off</button>
-      </form>
+  <!-- ── DISCOUNT BUBBLE ── -->
+  <div class="discount-bubble" id="discountBubble">
+    <div class="discount-panel-wrap">
+      <div class="discount-bubble-panel" id="discountPanel">
+        <button class="discount-panel-close" id="discountClose" aria-label="Close">&#215;</button>
+        <p class="discount-panel-headline">Get 15% off<br>your first order</p>
+        <p class="discount-panel-sub">Drop your email and we'll send the code straight to your inbox.</p>
+        <input type="email" class="discount-panel-input" id="discountEmail" placeholder="your@email.com" autocomplete="email">
+        <button class="discount-panel-btn" id="discountSubmit">Send My Code</button>
+        <p class="discount-panel-success" id="discountSuccess">✓ Code on its way — check your inbox!</p>
+      </div>
     </div>
+    <button class="discount-bubble-trigger" id="discountTrigger" aria-expanded="false">
+      <span class="bubble-icon">🏷</span> Get 15% Off
+    </button>
   </div>
 
   <!-- ── NAV ── -->
@@ -2641,6 +2725,62 @@
         nav.classList.toggle('scrolled', window.scrollY > 60);
       }, { passive: true });
     }
+
+    /* ── DISCOUNT BUBBLE ── */
+    (function() {
+      const trigger  = document.getElementById('discountTrigger');
+      const panel    = document.getElementById('discountPanel');
+      const closeBtn = document.getElementById('discountClose');
+      const submitBtn= document.getElementById('discountSubmit');
+      const emailIn  = document.getElementById('discountEmail');
+      const success  = document.getElementById('discountSuccess');
+      if (!trigger) return;
+
+      // Hide trigger once panel is opened (show only once)
+      trigger.addEventListener('click', function() {
+        panel.classList.add('open');
+        trigger.style.display = 'none';
+        trigger.setAttribute('aria-expanded', 'true');
+        emailIn.focus();
+      });
+
+      closeBtn.addEventListener('click', function() {
+        panel.classList.remove('open');
+        trigger.style.display = '';
+        trigger.setAttribute('aria-expanded', 'false');
+      });
+
+      submitBtn.addEventListener('click', async function() {
+        const email = emailIn.value.trim();
+        if (!email || !email.includes('@')) { emailIn.focus(); return; }
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending…';
+        try {
+          await fetch('https://a.klaviyo.com/client/subscriptions/?company_id=S3D76Q', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', revision: '2023-02-22' },
+            body: JSON.stringify({
+              data: {
+                type: 'subscription',
+                attributes: {
+                  list_id: 'TUAJJE',
+                  email,
+                  custom_source: 'cognitive-lander-bubble',
+                  properties: { discount_popup: true }
+                }
+              }
+            })
+          });
+        } catch(e) { console.warn('[bubble klaviyo]', e); }
+        emailIn.style.display = 'none';
+        submitBtn.style.display = 'none';
+        success.style.display = 'block';
+        // Hide whole bubble after 4s
+        setTimeout(function() {
+          document.getElementById('discountBubble').style.display = 'none';
+        }, 4000);
+      });
+    })();
 
     /* ── INIT WIDGETS ── */
     buildWidget('bundle-widget-hero');
