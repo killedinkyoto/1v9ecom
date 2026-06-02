@@ -3180,7 +3180,21 @@
         trigger.setAttribute('aria-expanded', 'false');
       }
 
-      document.getElementById('discountBubble').classList.add('visible');
+      var bubble = document.getElementById('discountBubble');
+      var scrollTimer = null;
+      var hasScrolledPastHero = false;
+
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 500) hasScrolledPastHero = true;
+        if (!hasScrolledPastHero) return;
+        // Hide while scrolling
+        bubble.classList.remove('visible');
+        clearTimeout(scrollTimer);
+        // Re-show 700ms after scroll stops
+        scrollTimer = setTimeout(function() {
+          bubble.classList.add('visible');
+        }, 700);
+      }, { passive: true });
 
       trigger.addEventListener('click', openModal);
       closeBtn.addEventListener('click', closeModal);
