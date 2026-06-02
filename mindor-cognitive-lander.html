@@ -3182,18 +3182,14 @@
 
       var bubble = document.getElementById('discountBubble');
       var scrollTimer = null;
-      var hasScrolledPastHero = false;
+      bubble.classList.add('visible');
 
       window.addEventListener('scroll', function() {
-        if (window.scrollY > 500) hasScrolledPastHero = true;
-        if (!hasScrolledPastHero) return;
-        // Hide while scrolling
         bubble.classList.remove('visible');
         clearTimeout(scrollTimer);
-        // Re-show 700ms after scroll stops
         scrollTimer = setTimeout(function() {
           bubble.classList.add('visible');
-        }, 700);
+        }, 300);
       }, { passive: true });
 
       trigger.addEventListener('click', openModal);
