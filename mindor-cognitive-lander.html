@@ -1328,15 +1328,44 @@
   padding: 12px 0 8px;
   display: none;
   flex-direction: column;
-  gap: 6px;
+  gap: 10px;
 }
 .discount-modal-success-icon { font-size: 36px; }
 .discount-modal-success-text {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+.discount-code-box {
+  background: var(--surface2);
+  border: 2px dashed var(--sprint-blue);
+  border-radius: 12px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+}
+.discount-code-value {
   font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 800;
-  font-size: 22px;
+  font-weight: 900;
+  font-size: 32px;
+  letter-spacing: 3px;
   color: var(--sprint-blue);
 }
+.discount-code-copy {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+}
+.discount-code-copy.copied { color: #22c55e; text-decoration: none; }
 .discount-modal-success-sub {
   font-family: 'DM Sans', sans-serif;
   font-size: 13px;
@@ -2000,13 +2029,17 @@
     <div class="discount-modal">
       <button class="discount-modal-close" id="discountClose" aria-label="Close">&#215;</button>
       <p class="discount-modal-headline">Get 15% off<br>your first order.</p>
-      <p class="discount-modal-sub">Drop your email — we'll send the code straight to your inbox.</p>
+      <p class="discount-modal-sub">Drop your email to unlock your code.</p>
       <input type="email" class="discount-modal-input" id="discountEmail" placeholder="your@email.com" autocomplete="email" inputmode="email">
-      <button class="discount-modal-btn" id="discountSubmit">Send My Code</button>
+      <button class="discount-modal-btn" id="discountSubmit">Unlock My Code</button>
       <div class="discount-modal-success" id="discountSuccess">
-        <span class="discount-modal-success-icon">✓</span>
-        <p class="discount-modal-success-text">Code sent!</p>
-        <p class="discount-modal-success-sub">Check your inbox — your 15% off is on its way.</p>
+        <span class="discount-modal-success-icon">🎉</span>
+        <p class="discount-modal-success-text">Your 15% off code:</p>
+        <div class="discount-code-box" id="discountCodeBox">
+          <span class="discount-code-value">HVCO-STACK</span>
+          <button class="discount-code-copy" id="discountCopyBtn">tap to copy</button>
+        </div>
+        <p class="discount-modal-success-sub">Apply at checkout — works on your first order.</p>
       </div>
     </div>
   </div>
@@ -3164,7 +3197,7 @@
         const email = emailIn.value.trim();
         if (!email || !email.includes('@')) { emailIn.focus(); return; }
         submitBtn.disabled = true;
-        submitBtn.textContent = 'Sending…';
+        submitBtn.textContent = 'Unlocking…';
         let ok = false;
         try {
           const resp = await fetch('https://a.klaviyo.com/client/subscriptions/?company_id=S3D76Q', {
@@ -3184,16 +3217,21 @@
           });
           ok = resp.ok || resp.status === 202;
         } catch(e) { console.warn('[bubble klaviyo]', e); }
-        // Show success regardless — Klaviyo returns 202 on success
+        // Show code immediately on screen
         emailIn.style.display = 'none';
         submitBtn.style.display = 'none';
         success.style.display = 'flex';
-        // Hide trigger permanently + close modal after 3s
-        setTimeout(function() {
-          closeModal();
-          document.getElementById('discountBubble').style.display = 'none';
-          document.body.style.overflow = '';
-        }, 3000);
+        document.getElementById('discountBubble').style.display = 'none';
+        // Copy to clipboard on tap
+        var copyBtn = document.getElementById('discountCopyBtn');
+        var codeBox = document.getElementById('discountCodeBox');
+        function copyCode() {
+          navigator.clipboard.writeText('HVCO-STACK').catch(function() {});
+          copyBtn.textContent = 'copied!';
+          copyBtn.classList.add('copied');
+        }
+        copyBtn.addEventListener('click', function(e) { e.stopPropagation(); copyCode(); });
+        codeBox.addEventListener('click', copyCode);
       });
     })();
 
