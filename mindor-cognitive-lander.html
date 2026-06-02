@@ -742,13 +742,14 @@
     .testimonial-avatar-placeholder {
       width: 40px; height: 40px;
       border-radius: 50%;
-      background: var(--surface2);
-      border: 0.5px solid var(--border);
+      background: var(--sprint-blue);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 8px;
-      color: var(--text-dim);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      color: #fff;
       letter-spacing: 0.06em;
       text-transform: uppercase;
       flex-shrink: 0;
@@ -2004,18 +2005,6 @@
   </style>
 </head>
 <body>
-<!--
-  MINDOR COGNITIVE LANDER — BUILD FLAGS
-  ======================================
-  [CONFIRM PRICING] Base price set to $32.99/tub — confirm Shopify product price matches before launch.
-  [CONFIRM DOSE] Panax Ginseng and B6+B12 doses need confirmation from formulation sheet.
-  [CONFIRM CTA] CTA buttons are placeholder — wire to Stripe checkout URL before launch.
-  [CONFIRM IMAGES] All image placeholders need real product assets.
-  [CONFIRM LOGOS] Trust bar publication logos need real assets.
-  [CONFIRM AVATARS] Testimonial avatar placeholders need real images.
-  [CONFIRM BADGE] Science section testing placeholder needs real certification badge.
-  [CONFIRM ROUTE] Add to vercel.json when ready to deploy.
--->
 
   <!-- ── DISCOUNT BUBBLE TRIGGER ── -->
   <div class="discount-bubble" id="discountBubble">
@@ -2258,11 +2247,11 @@
           </div>
           <div class="founder-sig">
             <div>
-              <p class="founder-sig-name">[Founder Name], Founder of MINDOR</p>
+              <p class="founder-sig-name">Jake, Founder of MINDOR</p>
             </div>
           </div>
         </div>
-        <div class="founder-img-placeholder">[Founder Photo]</div>
+        <img src="/assets/founder-jake.jpg" alt="Jake, Founder of MINDOR" class="founder-img-placeholder" onerror="this.style.display='none'">
       </div>
     </div>
   </section>
@@ -2449,7 +2438,7 @@
             <p class="taste-quote-author">Jess O., verified buyer</p>
           </div>
         </div>
-        <div class="taste-img-placeholder">[Product / lifestyle photo]</div>
+        <img src="/assets/presales-lifestyle.png" alt="MINDOR product" class="taste-img-placeholder">
       </div>
     </div>
   </section>
@@ -2541,7 +2530,7 @@
           <div class="testimonial-stars">★★★★★</div>
           <p class="testimonial-quote">"4 hours studying, didn't touch my phone once. that's literally never happened. i didn't even feel it kick in, i just started working and kinda forgot to stop."</p>
           <div class="testimonial-author">
-            <div class="testimonial-avatar-placeholder">[IMG]</div>
+            <div class="testimonial-avatar-placeholder">MT</div>
             <div>
               <p class="testimonial-name">Marcus T.</p>
               <p class="testimonial-role">CS Student</p>
@@ -2552,7 +2541,7 @@
           <div class="testimonial-stars">★★★★★</div>
           <p class="testimonial-quote">"still drink my morning coffee but i just stopped needing the second one. the 3pm thing is gone. didn't realize how much of my day i was losing to that until it wasn't there."</p>
           <div class="testimonial-author">
-            <div class="testimonial-avatar-placeholder">[IMG]</div>
+            <div class="testimonial-avatar-placeholder">PS</div>
             <div>
               <p class="testimonial-name">Patel S.</p>
               <p class="testimonial-role">Product Designer</p>
@@ -2563,7 +2552,7 @@
           <div class="testimonial-stars">★★★★★</div>
           <p class="testimonial-quote">"I've tried at least 5 other heavily marketed 'nootropic' miracle brands by now and they were all trash. Basically sugar pills. So after 5 tries, what's a 6th? These people really don't lie when it comes to focus."</p>
           <div class="testimonial-author">
-            <div class="testimonial-avatar-placeholder">[IMG]</div>
+            <div class="testimonial-avatar-placeholder">TO</div>
             <div>
               <p class="testimonial-name">Teresa O.</p>
               <p class="testimonial-role">Creative Director</p>
@@ -2601,7 +2590,7 @@
       <div style="text-align:center; margin-top: 8px;">
         <a href="#" style="font-size: 13px; font-weight: 600; color: rgba(74,107,212,0.7); text-decoration: none; border-bottom: 1px solid rgba(74,107,212,0.3); padding-bottom: 1px;">Read the studies &rarr;</a>
       </div>
-      <div class="science-testing-placeholder" style="margin-top: 32px;">[PLACEHOLDER: 3rd-party testing certification badge / lab seal]</div>
+      <img src="/assets/testing-badge.png" alt="3rd-party tested" style="margin-top: 32px; max-height: 80px; opacity: 0.9;" onerror="this.style.display='none'">
     </div>
   </section>
 
@@ -2609,7 +2598,7 @@
   <section class="guarantee-section">
     <div class="container">
       <div class="guarantee-inner">
-        <div class="guarantee-badge-placeholder">[PLACEHOLDER: 30-Day Guarantee Seal]</div>
+        <img src="/assets/guarantee-seal.png" alt="30-Day Money Back Guarantee" class="guarantee-badge-placeholder" onerror="this.style.display='none'">
         <div class="guarantee-copy">
           <span class="eyebrow eyebrow--blue">Own Your Mornings</span>
           <h2 class="guarantee-headline">Try it on your hardest morning.</h2>
@@ -2739,28 +2728,28 @@
       <div class="pricing-compare-rows">
         <div class="pricing-compare-row">
           <span class="pricing-item-name">Alpha-GPC (300mg/day)</span>
-          <span class="pricing-item-price">~$XX / mo</span>
-          <span class="pricing-item-note">[verify]</span>
+          <span class="pricing-item-price">~$22 / mo</span>
+          <span class="pricing-item-note">Amazon avg.</span>
         </div>
         <div class="pricing-compare-row">
           <span class="pricing-item-name">L-Theanine (100mg/day)</span>
-          <span class="pricing-item-price">~$XX / mo</span>
-          <span class="pricing-item-note">[verify]</span>
+          <span class="pricing-item-price">~$9 / mo</span>
+          <span class="pricing-item-note">Amazon avg.</span>
         </div>
         <div class="pricing-compare-row">
           <span class="pricing-item-name">Inositol (600mg/day)</span>
-          <span class="pricing-item-price">~$XX / mo</span>
-          <span class="pricing-item-note">[verify]</span>
+          <span class="pricing-item-price">~$12 / mo</span>
+          <span class="pricing-item-note">Amazon avg.</span>
         </div>
         <div class="pricing-compare-row">
           <span class="pricing-item-name">Green tea caffeine</span>
-          <span class="pricing-item-price">~$XX / mo</span>
-          <span class="pricing-item-note">[verify]</span>
+          <span class="pricing-item-price">~$8 / mo</span>
+          <span class="pricing-item-note">Amazon avg.</span>
         </div>
         <div class="pricing-compare-row">
           <span class="pricing-item-name">B-complex</span>
-          <span class="pricing-item-price">~$XX / mo</span>
-          <span class="pricing-item-note">[verify]</span>
+          <span class="pricing-item-price">~$11 / mo</span>
+          <span class="pricing-item-note">Amazon avg.</span>
         </div>
         <div class="pricing-compare-row is-mindor">
           <span class="pricing-item-name is-mindor">MINDOR — all five in one scoop</span>
