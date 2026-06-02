@@ -54,17 +54,21 @@
       font-weight: 400;
       line-height: 1.65;
       overflow-x: hidden;
-    }
-
-    /* ── GLOBAL ALIGNMENT ── */
-    h1, h2, h3, h4,
-    .section-headline, .section-subhead, .eyebrow,
-    .hero-headline, .hero-subhead, .hero-kicker,
-    .problem-card, .mechanism-step, .ingredient-card,
-    .science-point, .guarantee-copy, .founder-copy,
-    .taste-copy, .benefit-card, .step-card, .feature-card {
       text-align: center;
     }
+
+    /* Un-center elements that should stay left-aligned */
+    nav, nav *,
+    input, textarea, select,
+    .comparison-table td, .comparison-table th,
+    .faq-question, .faq-answer,
+    .footer-links, .footer-legal,
+    .pricing-item-note { text-align: left; }
+
+    /* Table cells that need center */
+    .comparison-table td:not(:first-child),
+    .comparison-table th:not(:first-child) { text-align: center; }
+
 
     /* ── SHARED LAYOUT ── */
     .container,
@@ -1739,7 +1743,9 @@
   border-top: 0.5px solid var(--border);
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 12px;
+  text-align: center;
 }
 .founder-sig-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 16px; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.04em; }
 .founder-sig-title { font-size: 11px; color: var(--text-dim); letter-spacing: 0.08em; margin-top: 2px; }
