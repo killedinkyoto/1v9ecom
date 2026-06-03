@@ -3268,6 +3268,76 @@
 .upsell-summary-divider { height: 1px; background: #D8E0F0; }
 .upsell-summary-total .upsell-summary-label { font-weight: 700; }
 .upsell-summary-total .upsell-summary-price { font-size: 18px; }
+
+/* Checkmark Success Overlay */
+.upsell-checkmark-overlay {
+  display: none;
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.95);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+}
+.upsell-checkmark-overlay.active {
+  display: flex;
+}
+.checkmark-wrapper {
+  width: 80px;
+  height: 80px;
+}
+.checkmark-svg {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: block;
+  stroke-width: 4;
+  stroke: var(--sprint-blue);
+  stroke-miterlimit: 10;
+  box-shadow: inset 0px 0px 0px var(--sprint-blue);
+  animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out 0s both;
+}
+.checkmark-circle {
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  stroke-width: 4;
+  stroke-miterlimit: 10;
+  stroke: var(--sprint-blue);
+  fill: none;
+  animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+.checkmark-check {
+  transform-origin: 50% 50%;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  stroke-width: 5;
+  stroke: #fff;
+  animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.6s forwards;
+}
+.upsell-skip:hover {
+  color: var(--text-primary);
+  text-decoration: underline;
+}
+
+@keyframes stroke {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes scale {
+  0%, 100% {
+    transform: none;
+  }
+  50% {
+    transform: scale3d(1.1, 1.1, 1);
+  }
+}
+@keyframes fill {
+  100% {
+    box-shadow: inset 0px 0px 0px 40px var(--sprint-blue);
+  }
+}
 </style>
 </head>
 <body>
@@ -4627,6 +4697,17 @@
   <div class="upsell-overlay" id="upsellOverlay" role="dialog" aria-modal="true">
     <div class="upsell-modal">
       <button class="upsell-close" id="upsellClose" aria-label="Close">&#215;</button>
+
+      <!-- Checkmark Success Overlay -->
+      <div class="upsell-checkmark-overlay" id="upsellCheckmarkOverlay">
+        <div class="checkmark-wrapper">
+          <svg class="checkmark-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+            <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+            <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+          </svg>
+        </div>
+      </div>
+
       <div class="upsell-progress" id="upsellProgress">
         <span class="upsell-progress-step active" data-step="1">1</span>
         <span class="upsell-progress-line"></span>
@@ -4644,9 +4725,8 @@
           <span class="upsell-fact-label">Research note</span>
           <p class="upsell-fact-text">Your brain runs on creatine. A 2024 study found that one dose helped sleep-deprived adults think faster and remember more within hours.</p>
         </div>
-        <div class="upsell-nav">
-          <button class="upsell-skip" onclick="upsellStep(2)">Skip →</button>
-          <button class="btn-primary" style="flex:1" onclick="upsellStep(2)">Continue →</button>
+        <div class="upsell-nav" style="justify-content: center;">
+          <button class="upsell-skip" onclick="upsellStep(2)">Not today</button>
         </div>
       </div>
 
@@ -4659,9 +4739,9 @@
           <span class="upsell-fact-label">Research note</span>
           <p class="upsell-fact-text">Magnesium quiets your brain while glycine cools your body down, so you sleep deeper and wake up sharper.</p>
         </div>
-        <div class="upsell-nav">
+        <div class="upsell-nav" style="flex-direction: column; gap: 12px; align-items: center; width: 100%;">
+          <button class="btn-primary" style="width: 100%;" onclick="upsellStep(3)">Review Order →</button>
           <button class="upsell-skip" onclick="upsellStep(1)">← Back</button>
-          <button class="btn-primary" style="flex:1" onclick="upsellStep(3)">Review Order →</button>
         </div>
       </div>
 
@@ -4930,10 +5010,24 @@
     }
 
     function upsellToggle(key) {
+      const wasAdded = upsellAdded[key];
       upsellAdded[key] = !upsellAdded[key];
       renderUpsellCards('upsellAddonCreatine', ['creatine']);
       renderUpsellCards('upsellAddonSleep', ['sleep', 'magnesium']);
       upsellRenderSummary();
+
+      if (key === 'creatine' && !wasAdded) {
+        const overlay = document.getElementById('upsellCheckmarkOverlay');
+        if (overlay) {
+          overlay.classList.add('active');
+          setTimeout(() => {
+            overlay.classList.remove('active');
+            upsellStep(2);
+          }, 1000);
+        } else {
+          upsellStep(2);
+        }
+      }
     }
 
     function upsellStep(n) {
