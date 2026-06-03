@@ -3075,6 +3075,199 @@
     .guarantee-cta:active {
       transform: translateY(0);
     }
+
+/* ── UPSELL WIZARD ── */
+.upsell-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(10,12,20,0.6);
+  backdrop-filter: blur(6px);
+  z-index: 500;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.upsell-overlay.open { display: flex; }
+.upsell-modal {
+  background: #fff;
+  border-radius: 20px;
+  padding: 32px 24px 24px;
+  width: 100%;
+  max-width: 420px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.upsell-close {
+  position: absolute;
+  top: 14px; right: 16px;
+  background: none; border: none; cursor: pointer;
+  font-size: 22px; color: var(--text-muted); line-height: 1; padding: 4px;
+}
+.upsell-progress {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 4px;
+}
+.upsell-progress-step {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: #E8EDF5;
+  color: #9AA3B5;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.upsell-progress-step.active { background: var(--sprint-blue); color: #fff; }
+.upsell-progress-line { flex: 1; max-width: 40px; height: 2px; background: #E8EDF5; }
+.upsell-panel { display: none; flex-direction: column; gap: 12px; }
+.upsell-panel.active { display: flex; }
+.upsell-hook {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: clamp(24px, 6vw, 32px);
+  color: var(--text-primary);
+  line-height: 1.1;
+  margin: 0;
+  text-align: center;
+}
+.upsell-sub {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  text-align: center;
+  text-transform: uppercase;
+  margin: 0;
+}
+.upsell-addon-list {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.upsell-addon-card {
+  flex: 0 0 calc(50% - 5px);
+  max-width: 160px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: #F2F5FB;
+  border: 1.5px solid #D8E0F0;
+  border-radius: 12px;
+  padding: 14px 10px 12px;
+  transition: border-color 0.2s;
+  cursor: pointer;
+}
+.upsell-addon-card.added { border-color: var(--sprint-blue); background: rgba(74,107,212,0.06); }
+.upsell-addon-img {
+  width: 64px; height: 64px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: #dde4f0;
+  margin-bottom: 8px;
+}
+.upsell-addon-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--text-primary);
+  margin-bottom: 3px;
+  line-height: 1.2;
+}
+.upsell-addon-tagline { font-size: 11px; color: var(--text-muted); line-height: 1.4; margin-bottom: 6px; }
+.upsell-addon-price {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--sprint-blue);
+  margin-bottom: 8px;
+}
+.upsell-addon-btn {
+  width: 100%;
+  background: transparent;
+  border: 1px solid var(--sprint-blue);
+  color: var(--sprint-blue);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 7px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.upsell-addon-btn.added { background: var(--sprint-blue); color: #fff; }
+.upsell-fact {
+  background: #F2F5FB;
+  border-radius: 10px;
+  padding: 12px 16px;
+}
+.upsell-fact-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--sprint-blue);
+  display: block;
+  margin-bottom: 4px;
+}
+.upsell-fact-text { font-size: 12px; color: var(--text-muted); line-height: 1.55; margin: 0; }
+.upsell-nav {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.upsell-skip {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 13px;
+  cursor: pointer;
+  padding: 0 4px;
+  flex-shrink: 0;
+}
+.upsell-review-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 22px;
+  color: var(--text-primary);
+  text-align: center;
+  margin: 0;
+}
+.upsell-summary {
+  background: #F2F5FB;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.upsell-summary-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  font-size: 13px;
+  gap: 8px;
+}
+.upsell-summary-label { color: var(--text-primary); font-weight: 500; flex: 1; }
+.upsell-summary-price { color: var(--sprint-blue); font-weight: 700; font-family: 'Barlow Condensed', sans-serif; font-size: 15px; white-space: nowrap; }
+.upsell-summary-divider { height: 1px; background: #D8E0F0; }
+.upsell-summary-total .upsell-summary-label { font-weight: 700; }
+.upsell-summary-total .upsell-summary-price { font-size: 18px; }
 </style>
 </head>
 <body>
@@ -4430,6 +4623,60 @@
     </div>
   </section>
 
+  <!-- ── UPSELL WIZARD ── -->
+  <div class="upsell-overlay" id="upsellOverlay" role="dialog" aria-modal="true">
+    <div class="upsell-modal">
+      <button class="upsell-close" id="upsellClose" aria-label="Close">&#215;</button>
+      <div class="upsell-progress" id="upsellProgress">
+        <span class="upsell-progress-step active" data-step="1">1</span>
+        <span class="upsell-progress-line"></span>
+        <span class="upsell-progress-step" data-step="2">2</span>
+        <span class="upsell-progress-line"></span>
+        <span class="upsell-progress-step" data-step="3">3</span>
+      </div>
+
+      <!-- Step 1: Creatine -->
+      <div class="upsell-panel active" id="upsellPanel1">
+        <p class="upsell-hook">Your brain is 73% water.<br>This hydrates it.</p>
+        <p class="upsell-sub">OPTIONAL ADD-ON</p>
+        <div class="upsell-addon-list" id="upsellAddonCreatine"></div>
+        <div class="upsell-fact">
+          <span class="upsell-fact-label">Research note</span>
+          <p class="upsell-fact-text">Your brain runs on creatine. A 2024 study found that one dose helped sleep-deprived adults think faster and remember more within hours.</p>
+        </div>
+        <div class="upsell-nav">
+          <button class="upsell-skip" onclick="upsellStep(2)">Skip →</button>
+          <button class="btn-primary" style="flex:1" onclick="upsellStep(2)">Continue →</button>
+        </div>
+      </div>
+
+      <!-- Step 2: Sleep -->
+      <div class="upsell-panel" id="upsellPanel2">
+        <p class="upsell-hook">A focused brain is a well-rested one.</p>
+        <p class="upsell-sub">OPTIONAL ADD-ONS</p>
+        <div class="upsell-addon-list" id="upsellAddonSleep"></div>
+        <div class="upsell-fact">
+          <span class="upsell-fact-label">Research note</span>
+          <p class="upsell-fact-text">Magnesium quiets your brain while glycine cools your body down, so you sleep deeper and wake up sharper.</p>
+        </div>
+        <div class="upsell-nav">
+          <button class="upsell-skip" onclick="upsellStep(1)">← Back</button>
+          <button class="btn-primary" style="flex:1" onclick="upsellStep(3)">Review Order →</button>
+        </div>
+      </div>
+
+      <!-- Step 3: Review + Checkout -->
+      <div class="upsell-panel" id="upsellPanel3">
+        <h3 class="upsell-review-title">Review Your Order</h3>
+        <div class="upsell-summary" id="upsellSummary"></div>
+        <button class="btn-primary" id="upsellCheckoutBtn" onclick="upsellCheckout()">Complete Order →</button>
+        <div class="upsell-nav" style="margin-top:8px;justify-content:center;">
+          <button class="upsell-skip" onclick="upsellStep(2)">← Back</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- ── FOOTER ── -->
   <footer class="site-footer">
     <div class="container">
@@ -4646,26 +4893,10 @@
         const variantId = await resolveVariantId(productGid);
         if (!variantId) throw new Error('Variant not found');
 
-        if (subscribe) {
-          const resp = await fetch('/api/stripe-subscribe', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              qty,
-              flavors: [flavor],
-              variantMap: { [flavor]: variantId },
-              source: 'cognitive-lander'
-            })
-          });
-          if (!resp.ok) throw new Error('Stripe API error');
-          const { url } = await resp.json();
-          if (url) { window.location.href = url; return; }
-          throw new Error('No Stripe URL');
-        } else {
-          const checkoutUrl = await createShopifyCart(variantId, qty);
-          if (checkoutUrl) { window.location.href = checkoutUrl; return; }
-          throw new Error('No Shopify checkout URL');
-        }
+        // Open upsell wizard before checkout
+        btn.disabled = false;
+        btn.textContent = originalText;
+        openUpsellWizard(qty, flavor, subscribe, variantId);
       } catch (e) {
         console.error('[checkout]', e);
         btn.disabled = false;
@@ -4673,6 +4904,132 @@
         alert('Something went wrong. Please try again.');
       }
     }
+
+    /* ── UPSELL WIZARD ── */
+    const UPSELL_PRODUCTS = [
+      { key: 'creatine', name: 'Creatine Hydration', tagline: 'Train harder. Recover faster.', price: 19.99, variantId: 'gid://shopify/ProductVariant/48650528587931', img: '/assets/creatine.jpg' },
+      { key: 'sleep',    name: 'Sleep Formula',      tagline: 'The other 8 hours matter too.',  price: 19.95, variantId: 'gid://shopify/ProductVariant/48650454761627', img: '/assets/sleep-formula.jpg' },
+      { key: 'magnesium',name: 'Magnesium Glycinate', tagline: 'Calm from the inside out.',     price: 14.99, variantId: 'gid://shopify/ProductVariant/48650208837787', img: '/assets/magnesium.jpg' }
+    ];
+    const upsellAdded = { creatine: false, sleep: false, magnesium: false };
+    let upsellQty = 1, upsellFlavor = 'cool-grape', upsellSubscribe = false, upsellVariantId = null;
+
+    function renderUpsellCards(containerId, keys) {
+      const list = document.getElementById(containerId);
+      if (!list) return;
+      list.innerHTML = UPSELL_PRODUCTS.filter(p => keys.includes(p.key)).map(p => {
+        const added = upsellAdded[p.key];
+        return `<div class="upsell-addon-card${added ? ' added' : ''}" onclick="upsellToggle('${p.key}')">
+          <img class="upsell-addon-img" src="${p.img}" alt="${p.name}">
+          <div class="upsell-addon-name">${p.name}</div>
+          <div class="upsell-addon-tagline">${p.tagline}</div>
+          <div class="upsell-addon-price">+$${p.price.toFixed(2)}</div>
+          <button class="upsell-addon-btn${added ? ' added' : ''}">${added ? '✓ Added' : '+ Add'}</button>
+        </div>`;
+      }).join('');
+    }
+
+    function upsellToggle(key) {
+      upsellAdded[key] = !upsellAdded[key];
+      renderUpsellCards('upsellAddonCreatine', ['creatine']);
+      renderUpsellCards('upsellAddonSleep', ['sleep', 'magnesium']);
+      upsellRenderSummary();
+    }
+
+    function upsellStep(n) {
+      document.querySelectorAll('.upsell-panel').forEach(p => p.classList.remove('active'));
+      document.getElementById('upsellPanel' + n).classList.add('active');
+      document.querySelectorAll('.upsell-progress-step').forEach(s => {
+        s.classList.toggle('active', parseInt(s.dataset.step) <= n);
+      });
+      if (n === 3) upsellRenderSummary();
+    }
+
+    function upsellRenderSummary() {
+      const BASE = 32.99;
+      const BUNDLE_DISC = { 1: 0, 2: 0.10, 3: 0.15 };
+      const tubTotal = BASE * upsellQty * (1 - (BUNDLE_DISC[upsellQty] || 0)) * (upsellSubscribe ? 0.85 : 1);
+      const addonTotal = UPSELL_PRODUCTS.filter(p => upsellAdded[p.key]).reduce((s, p) => s + p.price, 0);
+      const flavorLabel = { 'cool-grape': 'Cool Grape', 'sour-candy': 'Sour Candy', 'sour-gummy-worms': 'Sour Gummy' }[upsellFlavor] || upsellFlavor;
+      let html = `<div class="upsell-summary-line">
+        <span class="upsell-summary-label">MINDOR ×${upsellQty} (${flavorLabel})${upsellSubscribe ? ' — Subscribe' : ''}</span>
+        <span class="upsell-summary-price">$${tubTotal.toFixed(2)}</span>
+      </div>`;
+      UPSELL_PRODUCTS.filter(p => upsellAdded[p.key]).forEach(p => {
+        html += `<div class="upsell-summary-line">
+          <span class="upsell-summary-label">${p.name}</span>
+          <span class="upsell-summary-price">+$${p.price.toFixed(2)}</span>
+        </div>`;
+      });
+      html += `<div class="upsell-summary-divider"></div>
+        <div class="upsell-summary-line upsell-summary-total">
+          <span class="upsell-summary-label">Total today</span>
+          <span class="upsell-summary-price">$${(tubTotal + addonTotal).toFixed(2)}</span>
+        </div>`;
+      document.getElementById('upsellSummary').innerHTML = html;
+    }
+
+    async function upsellCheckout() {
+      const btn = document.getElementById('upsellCheckoutBtn');
+      btn.disabled = true;
+      btn.textContent = 'Loading…';
+      try {
+        const addonLines = UPSELL_PRODUCTS.filter(p => upsellAdded[p.key] && p.variantId)
+          .map(p => ({ merchandiseId: p.variantId, quantity: 1 }));
+
+        if (upsellSubscribe) {
+          // Stripe for tubs, Shopify for addons if any
+          let shopifyUrl = null;
+          if (addonLines.length > 0) {
+            const mut = `mutation { cartCreate(input: { lines: [${addonLines.map(l => `{ merchandiseId: "${l.merchandiseId}", quantity: 1 }`).join(',')}] }) { cart { checkoutUrl } } }`;
+            const r = await fetch(`https://${SHOPIFY_DOMAIN}/api/2024-01/graphql.json`, { method:'POST', headers:{'Content-Type':'application/json','X-Shopify-Storefront-Access-Token':SHOPIFY_TOKEN}, body: JSON.stringify({query: mut}) });
+            const d = await r.json();
+            shopifyUrl = d?.data?.cartCreate?.cart?.checkoutUrl || null;
+          }
+          const resp = await fetch('/api/stripe-subscribe', {
+            method: 'POST', headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({ qty: upsellQty, flavors: [upsellFlavor], variantMap: { [upsellFlavor]: upsellVariantId }, source: 'cognitive-lander', shopifyCheckoutUrl: shopifyUrl })
+          });
+          const { url } = await resp.json();
+          window.location.href = url;
+        } else {
+          const tubLine = { merchandiseId: upsellVariantId, quantity: upsellQty };
+          const lines = [tubLine, ...addonLines];
+          const mut = `mutation { cartCreate(input: { lines: [${lines.map(l => `{ merchandiseId: "${l.merchandiseId}", quantity: ${l.quantity} }`).join(',')}] }) { cart { checkoutUrl } } }`;
+          const r = await fetch(`https://${SHOPIFY_DOMAIN}/api/2024-01/graphql.json`, { method:'POST', headers:{'Content-Type':'application/json','X-Shopify-Storefront-Access-Token':SHOPIFY_TOKEN}, body: JSON.stringify({query: mut}) });
+          const d = await r.json();
+          let url = d?.data?.cartCreate?.cart?.checkoutUrl;
+          if (url) window.location.href = url;
+          else throw new Error('No checkout URL');
+        }
+      } catch(e) {
+        console.error('[upsell checkout]', e);
+        btn.disabled = false;
+        btn.textContent = 'Complete Order →';
+      }
+    }
+
+    // Open wizard from main checkout button
+    function openUpsellWizard(qty, flavor, subscribe, variantId) {
+      upsellQty = qty; upsellFlavor = flavor; upsellSubscribe = subscribe; upsellVariantId = variantId;
+      upsellAdded.creatine = false; upsellAdded.sleep = false; upsellAdded.magnesium = false;
+      renderUpsellCards('upsellAddonCreatine', ['creatine']);
+      renderUpsellCards('upsellAddonSleep', ['sleep', 'magnesium']);
+      upsellStep(1);
+      document.getElementById('upsellOverlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    document.getElementById('upsellClose').addEventListener('click', () => {
+      document.getElementById('upsellOverlay').classList.remove('open');
+      document.body.style.overflow = '';
+    });
+    document.getElementById('upsellOverlay').addEventListener('click', e => {
+      if (e.target === document.getElementById('upsellOverlay')) {
+        document.getElementById('upsellOverlay').classList.remove('open');
+        document.body.style.overflow = '';
+      }
+    });
 
     /* ── FAQ ── */
     document.querySelectorAll('.faq-question').forEach(btn => {
