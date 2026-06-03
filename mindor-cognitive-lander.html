@@ -54,17 +54,21 @@
       font-weight: 400;
       line-height: 1.65;
       overflow-x: hidden;
-    }
-
-    /* ── GLOBAL ALIGNMENT ── */
-    h1, h2, h3, h4,
-    .section-headline, .section-subhead, .eyebrow,
-    .hero-headline, .hero-subhead, .hero-kicker,
-    .problem-card, .mechanism-step, .ingredient-card,
-    .science-point, .guarantee-copy, .founder-copy,
-    .taste-copy, .benefit-card, .step-card, .feature-card {
       text-align: center;
     }
+
+    /* Un-center elements that should stay left-aligned */
+    nav, nav *,
+    input, textarea, select,
+    .comparison-table td, .comparison-table th,
+    .faq-question, .faq-answer,
+    .footer-links, .footer-legal,
+    .pricing-item-note { text-align: left; }
+
+    /* Table cells that need center */
+    .comparison-table td:not(:first-child),
+    .comparison-table th:not(:first-child) { text-align: center; }
+
 
     /* ── SHARED LAYOUT ── */
     .container,
@@ -804,13 +808,14 @@
     .testimonial-avatar-placeholder {
       width: 40px; height: 40px;
       border-radius: 50%;
-      background: var(--surface2);
-      border: 0.5px solid var(--border);
+      background: var(--sprint-blue);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 8px;
-      color: var(--text-dim);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      color: #fff;
       letter-spacing: 0.06em;
       text-transform: uppercase;
       flex-shrink: 0;
@@ -900,11 +905,12 @@
       pointer-events: none;
     }
     .guarantee-badge-placeholder {
-      width: 100px; height: 100px;
-      border-radius: 50%;
-      background: rgba(74,107,212,0.10);
-      border: 2px solid rgba(74,107,212,0.25);
-      display: flex;
+      width: 140px; height: auto;
+      border-radius: 0;
+      background: none;
+      border: none;
+      display: block;
+      mix-blend-mode: multiply;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
@@ -1388,15 +1394,44 @@
   padding: 12px 0 8px;
   display: none;
   flex-direction: column;
-  gap: 6px;
+  gap: 10px;
 }
 .discount-modal-success-icon { font-size: 36px; }
 .discount-modal-success-text {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+.discount-code-box {
+  background: var(--surface2);
+  border: 2px dashed var(--sprint-blue);
+  border-radius: 12px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+}
+.discount-code-value {
   font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 800;
-  font-size: 22px;
+  font-weight: 900;
+  font-size: 32px;
+  letter-spacing: 3px;
   color: var(--sprint-blue);
 }
+.discount-code-copy {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+}
+.discount-code-copy.copied { color: #22c55e; text-decoration: none; }
 .discount-modal-success-sub {
   font-family: 'DM Sans', sans-serif;
   font-size: 13px;
@@ -1803,7 +1838,9 @@
   border-top: 0.5px solid var(--border);
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 12px;
+  text-align: center;
 }
 .founder-sig-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 16px; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.04em; }
 .founder-sig-title { font-size: 11px; color: var(--text-dim); letter-spacing: 0.08em; margin-top: 2px; }
@@ -2989,18 +3026,6 @@
 </style>
 </head>
 <body>
-<!--
-  MINDOR COGNITIVE LANDER — BUILD FLAGS
-  ======================================
-  [CONFIRM PRICING] Base price set to $32.99/tub — confirm Shopify product price matches before launch.
-  [CONFIRM DOSE] Panax Ginseng and B6+B12 doses need confirmation from formulation sheet.
-  [CONFIRM CTA] CTA buttons are placeholder — wire to Stripe checkout URL before launch.
-  [CONFIRM IMAGES] All image placeholders need real product assets.
-  [CONFIRM LOGOS] Trust bar publication logos need real assets.
-  [CONFIRM AVATARS] Testimonial avatar placeholders need real images.
-  [CONFIRM BADGE] Science section testing placeholder needs real certification badge.
-  [CONFIRM ROUTE] Add to vercel.json when ready to deploy.
--->
 
   <!-- ── DISCOUNT BUBBLE TRIGGER ── -->
   <div class="discount-bubble" id="discountBubble">
@@ -3014,13 +3039,17 @@
     <div class="discount-modal">
       <button class="discount-modal-close" id="discountClose" aria-label="Close">&#215;</button>
       <p class="discount-modal-headline">Get 15% off<br>your first order.</p>
-      <p class="discount-modal-sub">Drop your email — we'll send the code straight to your inbox.</p>
+      <p class="discount-modal-sub">Drop your email to unlock your code.</p>
       <input type="email" class="discount-modal-input" id="discountEmail" placeholder="your@email.com" autocomplete="email" inputmode="email">
-      <button class="discount-modal-btn" id="discountSubmit">Send My Code</button>
+      <button class="discount-modal-btn" id="discountSubmit">Unlock My Code</button>
       <div class="discount-modal-success" id="discountSuccess">
-        <span class="discount-modal-success-icon">✓</span>
-        <p class="discount-modal-success-text">Code sent!</p>
-        <p class="discount-modal-success-sub">Check your inbox — your 15% off is on its way.</p>
+        <span class="discount-modal-success-icon">🎉</span>
+        <p class="discount-modal-success-text">Your 15% off code:</p>
+        <div class="discount-code-box" id="discountCodeBox">
+          <span class="discount-code-value">HVCO-STACK</span>
+          <button class="discount-code-copy" id="discountCopyBtn">tap to copy</button>
+        </div>
+        <p class="discount-modal-success-sub">Apply at checkout — works on your first order.</p>
       </div>
     </div>
   </div>
@@ -3234,11 +3263,11 @@
           </div>
           <div class="founder-sig">
             <div>
-              <p class="founder-sig-name">[Founder Name], Founder of MINDOR</p>
+              <p class="founder-sig-name">Founder of MINDOR</p>
             </div>
           </div>
         </div>
-        <div class="founder-img-placeholder">[Founder Photo]</div>
+        <img src="/assets/founder-jake.jpg" alt="Jake, Founder of MINDOR" class="founder-img-placeholder" onerror="this.style.display='none'">
       </div>
     </div>
   </section>
@@ -3493,7 +3522,7 @@
           <div class="testimonial-stars">★★★★★</div>
           <p class="testimonial-quote">"4 hours studying, didn't touch my phone once. that's literally never happened. i didn't even feel it kick in, i just started working and kinda forgot to stop."</p>
           <div class="testimonial-author">
-            <div class="testimonial-avatar-placeholder">[IMG]</div>
+            <div class="testimonial-avatar-placeholder">MT</div>
             <div>
               <p class="testimonial-name">Marcus T.</p>
               <p class="testimonial-role">CS Student</p>
@@ -3504,7 +3533,7 @@
           <div class="testimonial-stars">★★★★★</div>
           <p class="testimonial-quote">"still drink my morning coffee but i just stopped needing the second one. the 3pm thing is gone. didn't realize how much of my day i was losing to that until it wasn't there."</p>
           <div class="testimonial-author">
-            <div class="testimonial-avatar-placeholder">[IMG]</div>
+            <div class="testimonial-avatar-placeholder">PS</div>
             <div>
               <p class="testimonial-name">Patel S.</p>
               <p class="testimonial-role">Product Designer</p>
@@ -3515,7 +3544,7 @@
           <div class="testimonial-stars">★★★★★</div>
           <p class="testimonial-quote">"I've tried at least 5 other heavily marketed 'nootropic' miracle brands by now and they were all trash. Basically sugar pills. So after 5 tries, what's a 6th? These people really don't lie when it comes to focus."</p>
           <div class="testimonial-author">
-            <div class="testimonial-avatar-placeholder">[IMG]</div>
+            <div class="testimonial-avatar-placeholder">TO</div>
             <div>
               <p class="testimonial-name">Teresa O.</p>
               <p class="testimonial-role">Creative Director</p>
@@ -3553,7 +3582,7 @@
       <div style="text-align:center; margin-top: 8px;">
         <a href="#" style="font-size: 13px; font-weight: 600; color: rgba(74,107,212,0.7); text-decoration: none; border-bottom: 1px solid rgba(74,107,212,0.3); padding-bottom: 1px;">Read the studies &rarr;</a>
       </div>
-      <div class="science-testing-placeholder" style="margin-top: 32px;">[PLACEHOLDER: 3rd-party testing certification badge / lab seal]</div>
+      <img src="/assets/guarentee-seal.png" alt="Third party lab tested" style="margin-top: 32px; max-height: 80px; opacity: 0.9;">
     </div>
   </section>
 
@@ -3568,7 +3597,7 @@
         <h2 class="section-headline">Start with tomorrow morning.</h2>
         <p class="body-copy" style="margin-top:16px;">One tub, no subscription required. Free US shipping. 30-day money back, no hoops.</p>
       </div>
-      
+
       <div class="order-grid">
         <!-- Left Column: Carousel -->
         <div class="order-media-col">
@@ -3610,7 +3639,7 @@
             </div>
           </div>
         </div>
-        
+
         <!-- Right Column: selectors -->
         <div class="order-widget-col">
           <!-- Product Information Header Block -->
@@ -3643,7 +3672,7 @@
               <button class="tab-btn" data-tab="ingredients"><span>02</span> Ingredients</button>
               <button class="tab-btn" data-tab="program"><span>03</span> Program</button>
             </nav>
-            
+
             <!-- Tab 1: How to Enjoy -->
             <div class="tab-content active" id="tab-content-enjoy">
               <div class="tab-pane-header">
@@ -3651,7 +3680,7 @@
                 <span class="tab-pane-meta">3 Simple Steps</span>
               </div>
               <p class="tab-pane-description">Mix one scoop into water or your favorite smoothie for a delicious grape focus boost — ready in under 30 seconds.</p>
-              
+
               <div class="enjoy-steps-grid">
                 <div class="enjoy-step-card">
                   <div class="enjoy-media-placeholder">
@@ -3685,7 +3714,7 @@
                 </div>
               </div>
             </div>
-            
+
             <!-- Tab 2: Ingredients -->
             <div class="tab-content" id="tab-content-ingredients">
               <div class="tab-pane-header">
@@ -3693,7 +3722,7 @@
                 <span class="tab-pane-meta">14 Ingredients</span>
               </div>
               <p class="tab-pane-description">4 categories of clinically-dosed vitamins, amino acids, nootropics, and adaptogens.</p>
-              
+
               <div class="ingredients-accordion">
                 <!-- Accordion 1: Vitamins -->
                 <div class="accordion-item">
@@ -3713,7 +3742,7 @@
                     </div>
                   </div>
                 </div>
-                
+
                 <!-- Accordion 2: Nootropics -->
                 <div class="accordion-item">
                   <div class="accordion-header">
@@ -3732,7 +3761,7 @@
                     </div>
                   </div>
                 </div>
-                
+
                 <!-- Accordion 3: Amino Acids -->
                 <div class="accordion-item">
                   <div class="accordion-header">
@@ -3751,7 +3780,7 @@
                     </div>
                   </div>
                 </div>
-                
+
                 <!-- Accordion 4: Adaptogens -->
                 <div class="accordion-item">
                   <div class="accordion-header">
@@ -3772,7 +3801,7 @@
                 </div>
               </div>
             </div>
-            
+
             <!-- Tab 3: Program -->
             <div class="tab-content" id="tab-content-program">
               <div class="tab-pane-header">
@@ -3780,7 +3809,7 @@
                 <span class="tab-pane-meta">30-Day Protocol</span>
               </div>
               <p class="tab-pane-description">Built to work with your body's natural circadian rhythms for sustained productivity without the crash.</p>
-              
+
               <div class="ingredients-accordion">
                 <div class="accordion-item">
                   <div class="accordion-header">
@@ -4641,7 +4670,17 @@
         trigger.setAttribute('aria-expanded', 'false');
       }
 
-      document.getElementById('discountBubble').classList.add('visible');
+      var bubble = document.getElementById('discountBubble');
+      var scrollTimer = null;
+      bubble.classList.add('visible');
+
+      window.addEventListener('scroll', function() {
+        bubble.classList.remove('visible');
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(function() {
+          bubble.classList.add('visible');
+        }, 300);
+      }, { passive: true });
 
       trigger.addEventListener('click', openModal);
       closeBtn.addEventListener('click', closeModal);
@@ -4658,7 +4697,7 @@
         const email = emailIn.value.trim();
         if (!email || !email.includes('@')) { emailIn.focus(); return; }
         submitBtn.disabled = true;
-        submitBtn.textContent = 'Sending…';
+        submitBtn.textContent = 'Unlocking…';
         let ok = false;
         try {
           const resp = await fetch('https://a.klaviyo.com/client/subscriptions/?company_id=S3D76Q', {
@@ -4678,16 +4717,21 @@
           });
           ok = resp.ok || resp.status === 202;
         } catch(e) { console.warn('[bubble klaviyo]', e); }
-        // Show success regardless — Klaviyo returns 202 on success
+        // Show code immediately on screen
         emailIn.style.display = 'none';
         submitBtn.style.display = 'none';
         success.style.display = 'flex';
-        // Hide trigger permanently + close modal after 3s
-        setTimeout(function() {
-          closeModal();
-          document.getElementById('discountBubble').style.display = 'none';
-          document.body.style.overflow = '';
-        }, 3000);
+        document.getElementById('discountBubble').style.display = 'none';
+        // Copy to clipboard on tap
+        var copyBtn = document.getElementById('discountCopyBtn');
+        var codeBox = document.getElementById('discountCodeBox');
+        function copyCode() {
+          navigator.clipboard.writeText('HVCO-STACK').catch(function() {});
+          copyBtn.textContent = 'copied!';
+          copyBtn.classList.add('copied');
+        }
+        copyBtn.addEventListener('click', function(e) { e.stopPropagation(); copyCode(); });
+        codeBox.addEventListener('click', copyCode);
       });
     })();
 
