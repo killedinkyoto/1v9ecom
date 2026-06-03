@@ -152,10 +152,10 @@
       color: #fff;
       font-family: 'Barlow Condensed', sans-serif;
       font-weight: 800;
-      font-size: 18px;
-      letter-spacing: 0.04em;
+      font-size: 20px;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
-      padding: 16px 40px;
+      padding: 20px 40px;
       border-radius: 4px;
       border: none;
       cursor: pointer;
@@ -279,17 +279,19 @@
       animation: seen-in-ticker-scroll 24s linear infinite;
     }
     .seen-in-logo {
-      height: 20px;
-      width: auto;
-      object-fit: contain;
-      margin: 0 24px;
-      opacity: 0.45;
-      filter: grayscale(1);
+      display: inline-block;
+      margin: 0 28px;
+      opacity: 0.5;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      white-space: nowrap;
       transition: opacity 0.2s;
     }
-    .seen-in-logo:hover {
-      opacity: 0.8;
-    }
+    .seen-in-logo:hover { opacity: 0.8; }
     @keyframes seen-in-ticker-scroll {
       0% { transform: translateX(0); }
       100% { transform: translateX(-50%); }
@@ -1164,10 +1166,10 @@
       color: #fff;
       font-family: 'Barlow Condensed', sans-serif;
       font-weight: 800;
-      font-size: 17px;
-      letter-spacing: 0.05em;
+      font-size: 19px;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
-      padding: 15px 32px;
+      padding: 18px 36px;
       border-radius: 4px;
       text-decoration: none;
       white-space: nowrap;
@@ -2888,6 +2890,13 @@
     grid-template-columns: 1fr;
     gap: 32px;
   }
+  .order-widget-col {
+    text-align: center;
+  }
+  .product-info-rating,
+  .product-info-badges {
+    justify-content: center;
+  }
 }
 
 @media (max-width: 768px) {
@@ -3080,19 +3089,18 @@
         <span class="seen-in-label">SEEN IN</span>
         <div class="seen-in-ticker-outer">
           <div class="seen-in-ticker-track" aria-hidden="true">
-            <img src="a4947f059ac6c1c8eac91671188d33164c1deb96-960x480.avif" alt="Runner's World" class="seen-in-logo">
-            <img src="AARP-Logo.avif" alt="AARP" class="seen-in-logo">
-            <img src="images_2.png" alt="Forbes" class="seen-in-logo">
-            <img src="images_3.png" alt="Well+Good" class="seen-in-logo">
-            <img src="Mens-Health-logo.avif" alt="Men's Health" class="seen-in-logo">
-            <img src="Scientific_American_logo_svg.avif" alt="Scientific American" class="seen-in-logo">
-            <!-- duplicates for seamless loop -->
-            <img src="a4947f059ac6c1c8eac91671188d33164c1deb96-960x480.avif" alt="Runner's World" class="seen-in-logo">
-            <img src="AARP-Logo.avif" alt="AARP" class="seen-in-logo">
-            <img src="images_2.png" alt="Forbes" class="seen-in-logo">
-            <img src="images_3.png" alt="Well+Good" class="seen-in-logo">
-            <img src="Mens-Health-logo.avif" alt="Men's Health" class="seen-in-logo">
-            <img src="Scientific_American_logo_svg.avif" alt="Scientific American" class="seen-in-logo">
+            <span class="seen-in-logo">Runner's World</span>
+            <span class="seen-in-logo">Forbes</span>
+            <span class="seen-in-logo">Men's Health</span>
+            <span class="seen-in-logo">Well+Good</span>
+            <span class="seen-in-logo">Scientific American</span>
+            <span class="seen-in-logo">AARP</span>
+            <span class="seen-in-logo">Runner's World</span>
+            <span class="seen-in-logo">Forbes</span>
+            <span class="seen-in-logo">Men's Health</span>
+            <span class="seen-in-logo">Well+Good</span>
+            <span class="seen-in-logo">Scientific American</span>
+            <span class="seen-in-logo">AARP</span>
           </div>
         </div>
       </div>
@@ -3109,11 +3117,11 @@
             <button class="carousel-nav-btn prev" onclick="heroCarouselPrev()" aria-label="Previous Slide">&lsaquo;</button>
             <div class="order-carousel-track-viewport" id="heroCarouselViewport">
               <div class="order-carousel-track" id="heroCarouselTrack">
-                <div class="order-carousel-slide"><img src="ex1.png" alt="MINDOR Performance Stack 1"></div>
-                <div class="order-carousel-slide"><img src="ex2.png" alt="MINDOR Performance Stack 2"></div>
-                <div class="order-carousel-slide"><img src="ex3.png" alt="MINDOR Performance Stack 3"></div>
-                <div class="order-carousel-slide"><img src="ex4.png" alt="MINDOR Performance Stack 4"></div>
-                <div class="order-carousel-slide"><img src="ex5.png" alt="MINDOR Performance Stack 5"></div>
+                <div class="order-carousel-slide"><img src="/assets/product-photos/tub-grape.webp" alt="MINDOR Cool Grape Tub"></div>
+                <div class="order-carousel-slide"><img src="/assets/product-photos/tub-grape-2.webp" alt="MINDOR Cool Grape Tub"></div>
+                <div class="order-carousel-slide"><img src="/assets/product-photos/tub-grape-3.webp" alt="MINDOR Cool Grape Tub"></div>
+                <div class="order-carousel-slide"><img src="/assets/product-photos/tub-grape-4.webp" alt="MINDOR Cool Grape Tub"></div>
+                <div class="order-carousel-slide"><img src="/assets/product-photos/powder-grape.webp" alt="MINDOR Powder"></div>
               </div>
             </div>
             <button class="carousel-nav-btn next" onclick="heroCarouselNext()" aria-label="Next Slide">&rsaquo;</button>
@@ -3606,36 +3614,14 @@
               <button class="carousel-nav-btn prev" onclick="orderCarouselPrev()" aria-label="Previous Slide">&lsaquo;</button>
               <div class="order-carousel-track-viewport" id="orderCarouselViewport">
                 <div class="order-carousel-track" id="orderCarouselTrack">
-                  <div class="order-carousel-slide"><img src="ex1.png" alt="MINDOR Product Info 1"></div>
-                  <div class="order-carousel-slide"><img src="ex2.png" alt="MINDOR Product Info 2"></div>
-                  <div class="order-carousel-slide"><img src="ex3.png" alt="MINDOR Product Info 3"></div>
-                  <div class="order-carousel-slide"><img src="ex4.png" alt="MINDOR Product Info 4"></div>
-                  <div class="order-carousel-slide"><img src="ex5.png" alt="MINDOR Product Info 5"></div>
+                  <div class="order-carousel-slide"><img src="/assets/product-photos/tub-grape.webp" alt="MINDOR Cool Grape Tub"></div>
+                  <div class="order-carousel-slide"><img src="/assets/product-photos/tub-grape-2.webp" alt="MINDOR Cool Grape Tub"></div>
+                  <div class="order-carousel-slide"><img src="/assets/product-photos/tub-grape-3.webp" alt="MINDOR Cool Grape Tub"></div>
+                  <div class="order-carousel-slide"><img src="/assets/product-photos/tub-grape-4.webp" alt="MINDOR Cool Grape Tub"></div>
+                  <div class="order-carousel-slide"><img src="/assets/product-photos/powder-grape.webp" alt="MINDOR Powder"></div>
                 </div>
               </div>
               <button class="carousel-nav-btn next" onclick="orderCarouselNext()" aria-label="Next Slide">&rsaquo;</button>
-            </div>
-            <div class="order-carousel-thumbs" id="orderCarouselThumbs">
-              <button class="order-carousel-thumb active" onclick="setOrderCarouselSlide(0)">
-                <img src="ex1.png" alt="Thumb 1">
-                <span>PRODUCT</span>
-              </button>
-              <button class="order-carousel-thumb" onclick="setOrderCarouselSlide(1)">
-                <img src="ex2.png" alt="Thumb 2">
-                <span>TRANSPARENCY</span>
-              </button>
-              <button class="order-carousel-thumb" onclick="setOrderCarouselSlide(2)">
-                <img src="ex3.png" alt="Thumb 3">
-                <span>REPLACEMENT</span>
-              </button>
-              <button class="order-carousel-thumb" onclick="setOrderCarouselSlide(3)">
-                <img src="ex4.png" alt="Thumb 4">
-                <span>COMPARISON</span>
-              </button>
-              <button class="order-carousel-thumb" onclick="setOrderCarouselSlide(4)">
-                <img src="ex5.png" alt="Thumb 5">
-                <span>RITUAL</span>
-              </button>
             </div>
           </div>
         </div>
@@ -3990,10 +3976,10 @@
           <thead>
             <tr>
               <th></th>
-              <th class="col-mindor"><img src="2 SG NO BG.png" alt="MINDOR" class="comparison-product-img"></th>
-              <th><img src="magic mind.png" alt="Magic Mind" class="comparison-product-img"></th>
-              <th><img src="Clarity_Carousel_Hero.png" alt="Thesis" class="comparison-product-img"></th>
-              <th><img src="ryze.png" alt="Mushroom Coffee" class="comparison-product-img"></th>
+              <th class="col-mindor"><img src="/assets/product-photos/tub-grape.webp" alt="MINDOR" class="comparison-product-img"></th>
+              <th><span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;">Magic Mind</span></th>
+              <th><span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;">Thesis</span></th>
+              <th><span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;">Ryze</span></th>
             </tr>
           </thead>
           <tbody>
@@ -4343,9 +4329,7 @@
   <section class="guarantee-section">
     <div class="container">
       <div class="guarantee-inner">
-        <div class="guarantee-badge-placeholder" style="background: none; border: none;">
-          <img src="hf_20260602_025319_8f1e9dcd-dffb-47f6-8b5b-7a12c976f5b1.png" alt="30-Day Guarantee Seal" style="width: 100px; height: 100px; object-fit: contain;">
-        </div>
+        <img src="/assets/gaurantee-seal.png" alt="30-Day Money Back Guarantee" class="guarantee-badge-placeholder">
         <div class="guarantee-copy">
           <span class="eyebrow eyebrow--blue">Own Your Mornings</span>
           <h2 class="guarantee-headline">Try it on your hardest morning.</h2>
