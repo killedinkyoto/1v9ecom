@@ -18,7 +18,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 
   <style>
     /* ── TOKENS ── */
@@ -186,16 +186,34 @@
       html { scroll-behavior: auto; }
     }
 
+    /* ── ANNOUNCEMENT BAR TOP ── */
+    .announcement-bar-top {
+      background: #8A1515;
+      color: #fff;
+      text-align: center;
+      padding: 8px 16px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      position: relative;
+      z-index: 101;
+      line-height: 1.5;
+    }
+
     /* ── NAV ── */
     .site-nav {
-      position: fixed;
+      position: sticky;
       top: 0; left: 0; right: 0;
       z-index: 100;
       padding: 16px 0;
+      background: #ffffff;
+      border-bottom: 1px solid rgba(26, 32, 64, 0.06);
       transition: background 0.2s, box-shadow 0.2s;
     }
     .site-nav.scrolled {
-      background: rgba(236,242,251,0.95);
+      background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       box-shadow: 0 1px 0 var(--border), var(--shadow-sm);
@@ -203,7 +221,7 @@
     .nav-inner {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
     }
     .nav-logo {
       display: flex;
@@ -219,22 +237,59 @@
       letter-spacing: 0.04em;
       line-height: 1;
     }
-    .nav-cta {
-      display: inline-block;
-      background: var(--sprint-blue);
-      color: #fff;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 800;
-      font-size: 14px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 10px 24px;
-      border-radius: 3px;
-      text-decoration: none;
-      transition: opacity 0.15s, transform 0.15s;
-      box-shadow: var(--shadow-sm);
+
+    /* ── SEEN IN BAR ── */
+    .seen-in-bar {
+      background: #F5F5F7;
+      border-bottom: 1px solid rgba(26, 32, 64, 0.06);
+      padding: 10px 0;
+      position: relative;
+      z-index: 90;
     }
-    .nav-cta:hover { opacity: 0.9; transform: translateY(-1px); }
+    .seen-in-inner {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .seen-in-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: rgba(26, 32, 64, 0.4);
+      text-transform: uppercase;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .seen-in-ticker-outer {
+      overflow: hidden;
+      flex: 1;
+      position: relative;
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+      mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+    }
+    .seen-in-ticker-track {
+      display: flex;
+      align-items: center;
+      width: max-content;
+      animation: seen-in-ticker-scroll 24s linear infinite;
+    }
+    .seen-in-logo {
+      height: 20px;
+      width: auto;
+      object-fit: contain;
+      margin: 0 24px;
+      opacity: 0.45;
+      filter: grayscale(1);
+      transition: opacity 0.2s;
+    }
+    .seen-in-logo:hover {
+      opacity: 0.8;
+    }
+    @keyframes seen-in-ticker-scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
 
     /* ── HERO ── */
     .hero {
@@ -533,13 +588,11 @@
       opacity: 0.5;
     }
     .problem-card-num {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-weight: 900;
-      font-size: 48px;
-      color: rgba(74,107,212,0.12);
+      font-size: 40px;
       line-height: 1;
       margin-bottom: 16px;
       display: block;
+      opacity: 0.85;
     }
     .problem-card-title {
       font-family: 'Barlow Condensed', sans-serif;
@@ -710,6 +763,19 @@
     .check, .tcheck { color: var(--sprint-blue); font-size: 16px; }
     .cross, .tcross { color: rgba(180,50,50,0.5); font-size: 14px; }
     .neutral, .tneutral { color: var(--text-dim); font-size: 13px; }
+
+    .comparison-product-img {
+      height: 60px;
+      width: auto;
+      max-width: 100%;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto;
+    }
+    .cell-worse {
+      color: #C23B3B !important;
+      font-weight: 500;
+    }
 
     /* ── TESTIMONIALS ── */
     .testimonials-section { padding: 96px 0; background: var(--surface); position: relative; }
@@ -1194,9 +1260,7 @@
   .ingredients-grid .ingredient-card:nth-child(5) { grid-column: auto; }
   .hero-trust-row { gap: 10px; }
   .hero-trust-item { font-size: 11px; }
-  /* Hide Pre-Workout column on very small screens */
-  .comparison-table th:nth-child(4),
-  .comparison-table td:nth-child(4) { display: none; }
+  /* All columns are visible on mobile since the table wrapper supports horizontal scroll */
 }
 
 /* ── ANNOUNCEMENT BAR ── */
@@ -1962,11 +2026,967 @@
 .pricing-item-note { font-size: 12px; color: var(--text-dim); flex: 1; text-align: right; }
 .pricing-item-note.is-mindor { color: var(--sprint-blue); }
 .pricing-footnote { font-size: 13px; color: var(--text-muted); line-height: 1.7; max-width: 580px; padding: 16px 20px; background: rgba(74,107,212,0.04); border: 0.5px solid var(--border); border-radius: 5px; }
+.pricing-save-tag {
+  color: #2E7D32;
+  font-size: 13px;
+  font-weight: 700;
+  margin-left: 8px;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0;
+  text-transform: none;
+  vertical-align: middle;
+}
 @media (max-width: 600px) {
   .pricing-compare-row { flex-wrap: wrap; gap: 8px; }
   .pricing-item-note { flex-basis: 100%; text-align: left; }
 }
-  </style>
+
+  /* ── TRUSTPILOT REVIEWS ── */
+  .trustpilot-reviews-section {
+    padding: 96px 0;
+    background: #f7f9fc;
+    border-top: 1.5px solid var(--border);
+    border-bottom: 1.5px solid var(--border);
+  }
+  .tp-reviews-header {
+    text-align: center;
+    margin-bottom: 56px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .tp-eyebrow {
+    background: rgba(163, 0, 0, 0.06);
+    color: #A30000;
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-family: 'DM Sans', sans-serif;
+    margin-bottom: 20px;
+    display: inline-block;
+  }
+  .tp-headline {
+    font-family: 'Lora', 'Georgia', serif;
+    font-size: 40px;
+    font-weight: 500;
+    color: #1a1a1a;
+    line-height: 1.15;
+    margin: 0;
+    text-transform: none;
+    letter-spacing: -0.01em;
+  }
+  .tp-subheadline {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: #5f6c7b;
+    margin-top: 14px;
+    max-width: 580px;
+    line-height: 1.6;
+  }
+  .tp-reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  .tp-review-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 32px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.015), 0 1px 3px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: left;
+    border: 1px solid #f0f2f5;
+  }
+  .tp-stars {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 16px;
+  }
+  .tp-star-box {
+    width: 20px;
+    height: 20px;
+    background-color: #00b67a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+  }
+  .tp-star-box svg {
+    width: 13px;
+    height: 13px;
+  }
+  .tp-review-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #1a1a1a;
+    margin: 0 0 12px 0;
+    letter-spacing: 0.02em;
+  }
+  .tp-review-quote {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: #4a4a4a;
+    line-height: 1.7;
+    margin: 0 0 24px 0;
+    font-style: italic;
+    flex-grow: 1;
+  }
+  .tp-author-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-top: 1px solid #f0f2f5;
+    padding-top: 20px;
+    margin-top: auto;
+  }
+  .tp-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .tp-author-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .tp-author-name {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: #1a1a1a;
+    margin: 0;
+  }
+  .tp-verified-badge {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    color: #5f6c7b;
+  }
+  .tp-check-icon {
+    width: 14px;
+    height: 14px;
+  }
+  @media (max-width: 768px) {
+    .trustpilot-reviews-section {
+      padding: 64px 0;
+    }
+    .tp-reviews-header {
+      margin-bottom: 36px;
+    }
+    .tp-headline {
+      font-size: 32px;
+    }
+    .tp-reviews-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .tp-review-card {
+      padding: 24px;
+    }
+  }
+
+/* Hero image gallery styles */
+.hero-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+.hero-gallery-main {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  border: 0.5px solid rgba(74,107,212,0.15);
+  background: #fff;
+}
+.hero-gallery-main img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+.hero-gallery-thumbs {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  overflow-x: auto;
+  padding: 4px 0;
+}
+.hero-gallery-thumb {
+  width: 56px;
+  height: 56px;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  overflow: hidden;
+  background: #fff;
+  transition: border-color 0.2s, transform 0.2s;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-sm);
+}
+.hero-gallery-thumb:hover {
+  transform: translateY(-2px);
+  border-color: rgba(74, 107, 212, 0.4);
+}
+.hero-gallery-thumb.active {
+  border-color: var(--sprint-blue);
+  transform: translateY(-2px);
+}
+.hero-gallery-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Hero ticker logo styles */
+.hero-ticker-logo {
+  height: 20px;
+  width: auto;
+  max-width: 110px;
+  object-fit: contain;
+  flex-shrink: 0;
+  filter: grayscale(1);
+  opacity: 0.65;
+  margin: 0 28px;
+  transition: opacity 0.2s;
+}
+.hero-ticker-track:hover .hero-ticker-logo {
+  opacity: 0.9;
+}
+
+/* Product Information Section styles */
+/* Order Section Re-Theme */
+.order-section {
+  background: var(--deep-work-black) !important;
+  color: #fff !important;
+  padding: 96px 0;
+  position: relative;
+  overflow: hidden;
+}
+.order-section .section-headline {
+  color: #fff !important;
+}
+.order-section .eyebrow {
+  color: var(--accent-purple) !important;
+}
+.order-section .body-copy {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Two-column layout inside order section */
+.order-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 48px;
+  align-items: start;
+  margin-top: 48px;
+}
+
+/* Product Information Header Block (Reviews, Title, Description, Badges) */
+.product-info-block {
+  margin-bottom: 24px;
+}
+.product-info-rating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.product-info-stars {
+  color: #FFC107;
+  font-size: 16px;
+  letter-spacing: 0.08em;
+}
+.product-info-rating-text {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
+}
+.product-info-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 36px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #fff;
+  line-height: 1.1;
+  margin: 0 0 6px 0;
+  letter-spacing: 0.02em;
+}
+.product-info-subtitle {
+  font-size: 14px;
+  color: var(--accent-purple);
+  font-weight: 600;
+  margin: 0 0 16px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.product-info-description {
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 20px;
+}
+.product-info-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.product-info-badge {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 6px 14px;
+  border-radius: 100px;
+  display: inline-block;
+}
+
+/* Product Tabs Widget */
+.product-tabs-widget {
+  margin-top: 32px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 24px;
+}
+.tabs-nav {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 24px;
+  gap: 8px;
+}
+.tab-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.4);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 12px 4px;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.tab-btn span {
+  font-size: 12px;
+  opacity: 0.6;
+}
+.tab-btn.active {
+  color: #fff;
+}
+.tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--sprint-blue);
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+}
+.tab-pane-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 16px;
+}
+.tab-pane-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #fff;
+  margin: 0;
+}
+.tab-pane-meta {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--accent-purple);
+  letter-spacing: 0.05em;
+}
+.tab-pane-description {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 20px;
+}
+
+/* How to enjoy steps grid */
+.enjoy-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 16px;
+}
+.enjoy-step-card {
+  text-align: center;
+}
+.enjoy-media-placeholder {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  aspect-ratio: 4/5;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 8px;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 11px;
+  font-weight: 500;
+}
+.enjoy-media-placeholder svg {
+  margin-bottom: 8px;
+  opacity: 0.5;
+}
+.enjoy-step-num {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--accent-purple);
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+.enjoy-step-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+}
+
+/* Ingredients Accordion */
+.ingredients-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.accordion-item {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.02);
+  overflow: hidden;
+}
+.accordion-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s;
+}
+.accordion-header:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+.accordion-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.accordion-icon {
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+}
+.accordion-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.9);
+}
+.accordion-header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.accordion-count {
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.4);
+}
+.accordion-arrow {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 10px;
+  transition: transform 0.2s;
+}
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.25s ease-out;
+}
+.accordion-inner {
+  padding: 16px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.7);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(0, 0, 0, 0.15);
+}
+.accordion-item.active .accordion-arrow {
+  transform: rotate(180deg);
+}
+.accordion-item.active .accordion-content {
+  max-height: 200px;
+}
+
+/* Dark bundle widget overrides */
+.order-section .bundle-widget {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3) !important;
+  color: #fff !important;
+  max-width: 100% !important;
+}
+.order-section .bundle-widget-title {
+  color: #fff !important;
+}
+.order-section .qty-label {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+.order-section .qty-card {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+.order-section .qty-card.selected {
+  border-color: var(--sprint-blue) !important;
+  background: rgba(74, 107, 212, 0.15) !important;
+}
+.order-section .qty-card-servings {
+  color: #fff !important;
+}
+.order-section .qty-card-tubs {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+.order-section .qty-card-price {
+  color: var(--sprint-blue) !important;
+}
+.order-section .qty-card-price-orig {
+  color: rgba(255, 255, 255, 0.35) !important;
+}
+.order-section .flavor-btn {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+.order-section .flavor-btn.selected {
+  background: var(--sprint-blue) !important;
+  border-color: var(--sprint-blue) !important;
+  color: #fff !important;
+}
+.order-section .subscribe-row {
+  background: rgba(74, 107, 212, 0.12) !important;
+  border: 1.5px solid rgba(74, 107, 212, 0.3) !important;
+}
+.order-section .subscribe-label {
+  color: #fff !important;
+}
+.order-section .subscribe-sub {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+.order-section .order-summary {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+.order-section .order-total-label {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+.order-section .order-total-price {
+  color: #fff !important;
+}
+.order-section .order-total-per-unit {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+.order-section .widget-trust-item {
+  color: rgba(255, 255, 255, 0.4) !important;
+}
+
+/* Loopable, Swipable Carousel Slider */
+.order-carousel {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.order-carousel-view {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  border: 0.5px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+}
+.order-carousel-track-viewport {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  touch-action: pan-y;
+}
+.order-carousel-track {
+  display: flex;
+  width: 500%;
+  height: 100%;
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.order-carousel-slide {
+  width: 20%;
+  height: 100%;
+  flex-shrink: 0;
+}
+.order-carousel-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+.carousel-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(26, 32, 64, 0.35) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  color: #fff;
+  font-size: 24px;
+  line-height: 38px;
+  text-align: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: background 0.2s, color 0.2s;
+  outline: none;
+}
+.carousel-nav-btn:hover {
+  background: rgba(74, 107, 212, 0.8) !important;
+}
+.carousel-nav-btn.prev {
+  left: 16px;
+}
+.carousel-nav-btn.next {
+  right: 16px;
+}
+.order-carousel-thumbs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 4px 0;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+}
+.order-carousel-thumb {
+  scroll-snap-align: start;
+  flex: 0 0 calc(20% - 7px);
+  min-width: 65px;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1.5px solid transparent;
+  border-radius: 6px;
+  padding: 6px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+.order-carousel-thumb img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 4px;
+}
+.order-carousel-thumb span {
+  font-size: 8px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Light Background (Hero) Carousel Thumbnails */
+#heroCarousel .order-carousel-thumb {
+  background: rgba(74, 107, 212, 0.06);
+  border: 1.5px solid rgba(74, 107, 212, 0.1);
+}
+#heroCarousel .order-carousel-thumb span {
+  color: var(--text-muted);
+}
+#heroCarousel .order-carousel-thumb.active {
+  border-color: var(--sprint-blue);
+  background: rgba(74, 107, 212, 0.12);
+}
+#heroCarousel .order-carousel-thumb.active span {
+  color: var(--text-primary);
+}
+
+/* Dark Background (Order) Carousel Thumbnails */
+.order-section .order-carousel-thumb {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
+}
+.order-section .order-carousel-thumb span {
+  color: rgba(255, 255, 255, 0.5);
+}
+.order-section .order-carousel-thumb.active {
+  border-color: var(--sprint-blue);
+  background: rgba(255, 255, 255, 0.12);
+}
+.order-section .order-carousel-thumb.active span {
+  color: #fff;
+}
+
+/* Carousel dots indicators */
+.order-carousel-dots {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 12px;
+}
+.carousel-dot {
+  width: 16px;
+  height: 3px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.carousel-dot.active {
+  background: var(--sprint-blue);
+}
+
+/* Hero Section Restructure */
+.hero {
+  padding: 40px 0 60px !important;
+}
+.hero-media-wrap {
+  max-width: 600px;
+  margin: 0 auto 36px;
+}
+.hero-subhead {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: clamp(20px, 3vw, 28px);
+  color: var(--fog-grey);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin-bottom: 24px;
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+.hero-body {
+  max-width: 580px;
+  margin: 0 auto 32px;
+  font-size: 16px;
+  color: var(--text-muted);
+  line-height: 1.7;
+  text-align: center;
+}
+.hero-stars {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 24px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.hero-stars-icons {
+  color: #F5A623;
+  font-size: 15px;
+  letter-spacing: 1px;
+}
+.hero-promo-links {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+
+@media (max-width: 992px) {
+  .order-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .hero-stats-col {
+    order: 2;
+  }
+  .hero-media-col {
+    order: 1;
+  }
+  .hero-promo-links {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .order-carousel-view {
+    border-radius: 0 !important;
+    border-left: none !important;
+    border-right: none !important;
+    width: 100vw !important;
+    position: relative !important;
+    left: 50% !important;
+    right: 50% !important;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+  }
+}
+
+/* ── CLINICAL RESULTS ── */
+.clinical-results-section {
+  padding: 80px 0;
+  background: var(--surface); /* light blue/gray surface */
+  text-align: center;
+  position: relative;
+  border-bottom: 0.5px solid var(--border);
+}
+.clinical-results-header {
+  margin-bottom: 48px;
+}
+.clinical-results-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.clinical-result-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.clinical-result-val {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: clamp(48px, 6vw, 64px);
+  color: var(--sprint-blue);
+  line-height: 1;
+}
+.clinical-result-lbl {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  max-width: 240px;
+  text-align: center;
+}
+.clinical-results-footnote {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 40px;
+  font-style: italic;
+}
+
+/* ── MECHANISM HEADER & SUBHEAD ── */
+.mechanism-section .section-headline {
+  color: #ffffff;
+}
+.mechanism-subhead {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: clamp(18px, 2.5vw, 24px);
+  color: var(--accent-purple);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin-top: 12px;
+  text-align: center;
+}
+
+/* ── CARD STATS CENTERING ── */
+.moment-card-stats {
+  display: flex;
+  gap: 48px;
+  justify-content: center;
+}
+.moment-stat-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 5px;
+  flex: 1;
+  max-width: 200px;
+}
+.moment-stat-label {
+  text-align: center;
+}
+  
+    /* Guarantee CTA Button */
+    .guarantee-cta {
+      display: inline-block;
+      padding: 16px 36px;
+      background: var(--sprint-blue);
+      color: #fff;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 16px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 100px;
+      margin-top: 24px;
+      transition: background 0.18s, transform 0.15s;
+    }
+    .guarantee-cta:hover {
+      background: #3B5BC4;
+      transform: translateY(-1px);
+    }
+    .guarantee-cta:active {
+      transform: translateY(0);
+    }
+</style>
 </head>
 <body>
 <!--
@@ -2005,6 +3025,11 @@
     </div>
   </div>
 
+  <!-- ── ANNOUNCEMENT BAR TOP ── -->
+  <div class="announcement-bar-top">
+    <strong>SAVE 15%</strong> — Subscribe &amp; Save
+  </div>
+
   <!-- ── NAV ── -->
   <nav class="site-nav" id="site-nav">
     <div class="container">
@@ -2015,109 +3040,99 @@
           </svg>
           <span class="nav-wordmark">MINDOR</span>
         </a>
-        <a href="#order" class="nav-cta">Get Mindor</a>
       </div>
     </div>
   </nav>
 
+  <!-- ── SEEN IN BAR ── -->
+  <div class="seen-in-bar">
+    <div class="container">
+      <div class="seen-in-inner">
+        <span class="seen-in-label">SEEN IN</span>
+        <div class="seen-in-ticker-outer">
+          <div class="seen-in-ticker-track" aria-hidden="true">
+            <img src="a4947f059ac6c1c8eac91671188d33164c1deb96-960x480.avif" alt="Runner's World" class="seen-in-logo">
+            <img src="AARP-Logo.avif" alt="AARP" class="seen-in-logo">
+            <img src="images_2.png" alt="Forbes" class="seen-in-logo">
+            <img src="images_3.png" alt="Well+Good" class="seen-in-logo">
+            <img src="Mens-Health-logo.avif" alt="Men's Health" class="seen-in-logo">
+            <img src="Scientific_American_logo_svg.avif" alt="Scientific American" class="seen-in-logo">
+            <!-- duplicates for seamless loop -->
+            <img src="a4947f059ac6c1c8eac91671188d33164c1deb96-960x480.avif" alt="Runner's World" class="seen-in-logo">
+            <img src="AARP-Logo.avif" alt="AARP" class="seen-in-logo">
+            <img src="images_2.png" alt="Forbes" class="seen-in-logo">
+            <img src="images_3.png" alt="Well+Good" class="seen-in-logo">
+            <img src="Mens-Health-logo.avif" alt="Men's Health" class="seen-in-logo">
+            <img src="Scientific_American_logo_svg.avif" alt="Scientific American" class="seen-in-logo">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- ── HERO ── -->
   <section class="hero" id="hero">
-    <div class="container--narrow">
-
-      <!-- PRODUCT IMAGE — media first -->
-      <div class="hero-img-wrap">
-        <img src="/assets/presales-grape.png" alt="Mindor Performance Stack — Cool Grape" class="hero-product-img">
+    <div class="container">
+      <!-- Media Carousel Gallery at the very top -->
+      <div class="hero-media-wrap">
+        <div class="order-carousel" id="heroCarousel">
+          <div class="order-carousel-view">
+            <button class="carousel-nav-btn prev" onclick="heroCarouselPrev()" aria-label="Previous Slide">&lsaquo;</button>
+            <div class="order-carousel-track-viewport" id="heroCarouselViewport">
+              <div class="order-carousel-track" id="heroCarouselTrack">
+                <div class="order-carousel-slide"><img src="ex1.png" alt="MINDOR Performance Stack 1"></div>
+                <div class="order-carousel-slide"><img src="ex2.png" alt="MINDOR Performance Stack 2"></div>
+                <div class="order-carousel-slide"><img src="ex3.png" alt="MINDOR Performance Stack 3"></div>
+                <div class="order-carousel-slide"><img src="ex4.png" alt="MINDOR Performance Stack 4"></div>
+                <div class="order-carousel-slide"><img src="ex5.png" alt="MINDOR Performance Stack 5"></div>
+              </div>
+            </div>
+            <button class="carousel-nav-btn next" onclick="heroCarouselNext()" aria-label="Next Slide">&rsaquo;</button>
+          </div>
+          <!-- Progress Dots Indicators -->
+          <div class="order-carousel-dots" id="heroCarouselDots">
+            <span class="carousel-dot active" onclick="setHeroCarouselSlide(0)"></span>
+            <span class="carousel-dot" onclick="setHeroCarouselSlide(1)"></span>
+            <span class="carousel-dot" onclick="setHeroCarouselSlide(2)"></span>
+            <span class="carousel-dot" onclick="setHeroCarouselSlide(3)"></span>
+            <span class="carousel-dot" onclick="setHeroCarouselSlide(4)"></span>
+          </div>
+        </div>
       </div>
 
-      <div class="hero-eyebrow">
-        <span class="badge"><span class="badge-dot"></span>The Morning Drink for People Who Think for a Living</span>
+      <!-- Eyebrow Badge Pill and Headline placed under the media -->
+      <div class="hero-eyebrow" style="text-align: center; margin-bottom: 20px;">
+        <span class="badge"><span class="badge-dot"></span>Clinically Proven. Third-Party Tested.</span>
       </div>
-      <h1 class="hero-headline">
+      <h1 class="hero-headline" style="text-align: center; margin-bottom: 16px;">
         It's 8am. The file's open.<br><span>Still nothing.</span>
       </h1>
-      <p class="hero-subhead">The morning is the sharpest your brain gets all day, and it's the part you lose warming up. MINDOR gets you in by nine.</p>
+
+      <h2 class="hero-subhead">
+        The coffee isn't waking you up. It's winding you up.
+      </h2>
+
       <p class="hero-body">
-        Black coffee on an empty stomach doesn't hand you clarity. It hands you urgency. Heart up, mind in ten directions, blank canvas worse than before. This is built the other way around.
+        Black coffee on an empty stomach doesn't hand you clarity. It hands you urgency. Heart up, mind in ten directions, blank canvas worse than before. This is built the other way around: a smoother caffeine, buffered by theanine, fed by choline.
       </p>
+
       <div class="hero-stars">
         <span class="hero-stars-icons">★★★★★</span>
         <span>4.9 from 1,200+ designers, developers, founders</span>
       </div>
 
-      <!-- CTA — scrolls to product ordering section below -->
-      <div class="hero-cta-wrap">
-        <a href="#order" class="btn-primary">Start With Tomorrow Morning</a>
+      <div style="margin-bottom: 24px; text-align: center;">
+        <a href="#order" class="btn-primary" style="max-width: 380px; display: inline-block; border-radius: 100px;">Start With Tomorrow Morning &rarr;</a>
       </div>
 
-      <div class="hero-trust-row">
-        <div class="hero-trust-item">
-          <div class="hero-trust-icon">
-            <svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#4A6BD4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          One tub, no subscription required
-        </div>
-        <div class="hero-trust-item">
-          <div class="hero-trust-icon">
-            <svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#4A6BD4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          Free US shipping
-        </div>
-        <div class="hero-trust-item">
-          <div class="hero-trust-icon">
-            <svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#4A6BD4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          30-day money back, no hoops
-        </div>
-      </div>
-
-      <!-- AS SEEN ON — horizontal ticker, right after trust items -->
-      <div class="hero-as-seen-on">
-        <p class="hero-as-seen-on-label">As Seen On</p>
-        <div class="hero-ticker-outer">
-          <div class="hero-ticker-track" aria-hidden="true">
-            <span class="hero-ticker-item">Runner's World</span>
-            <span class="hero-ticker-item">Forbes</span>
-            <span class="hero-ticker-item">Men's Health</span>
-            <span class="hero-ticker-item">Well+Good</span>
-            <span class="hero-ticker-item">Scientific American</span>
-            <span class="hero-ticker-item">AARP</span>
-            <!-- duplicate for seamless infinite loop -->
-            <span class="hero-ticker-item">Runner's World</span>
-            <span class="hero-ticker-item">Forbes</span>
-            <span class="hero-ticker-item">Men's Health</span>
-            <span class="hero-ticker-item">Well+Good</span>
-            <span class="hero-ticker-item">Scientific American</span>
-            <span class="hero-ticker-item">AARP</span>
-          </div>
-        </div>
+      <div class="hero-promo-links" style="margin-bottom: 48px;">
+        <span>✓ Free Shipping</span>
+        <span>✓ 30-Day Guarantee</span>
+        <span>✓ Cancel Anytime</span>
       </div>
 
     </div>
   </section>
-
-  <!-- ── OUTCOME STRIP ── -->
-  <div class="outcome-strip">
-    <div class="container">
-      <div class="outcome-strip-grid">
-        <div class="outcome-tile">
-          <span class="outcome-tile-num">IN BY 9</span>
-          <span class="outcome-tile-label">and stays there until lunch</span>
-        </div>
-        <div class="outcome-tile">
-          <span class="outcome-tile-num">5</span>
-          <span class="outcome-tile-label">compounds, every dose on the label</span>
-        </div>
-        <div class="outcome-tile">
-          <span class="outcome-tile-num">0</span>
-          <span class="outcome-tile-label">proprietary blends or hidden doses</span>
-        </div>
-        <div class="outcome-tile">
-          <span class="outcome-tile-num">30 DAYS</span>
-          <span class="outcome-tile-label">money back, no hoops</span>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <!-- ── PRESS STRIP ── -->
   <div class="trust-bar">
@@ -2159,17 +3174,17 @@
       </div>
       <div class="problem-grid">
         <div class="problem-card">
-          <span class="problem-card-num">01</span>
+          <span class="problem-card-num">⏳</span>
           <p class="problem-card-title">The start that won't come</p>
           <p class="problem-card-body">Ten in the morning. The interesting problem is right there on the canvas, the one you got into this work to solve. And you can't start. So you check Slack, then a tab you didn't mean to open, then you tidy a folder. Motion that isn't work.</p>
         </div>
         <div class="problem-card">
-          <span class="problem-card-num">02</span>
+          <span class="problem-card-num">⚡</span>
           <p class="problem-card-title">Fast, but stupid</p>
           <p class="problem-card-body">The second coffee kicks in and you finally move, except now you're nudging one button by a pixel for two hours. Working quickly, thinking small. You've lost the whole shape of the thing you're supposed to be building.</p>
         </div>
         <div class="problem-card">
-          <span class="problem-card-num">03</span>
+          <span class="problem-card-num">🪫</span>
           <p class="problem-card-title">Hollow by 5:30</p>
           <p class="problem-card-body">The stimulant wears off and there's nothing underneath it. Head tight at the temples, no creative energy left for your own projects, your people, your life. You close the laptop with the quiet sense that you traded another good day for mediocre output.</p>
         </div>
@@ -2235,6 +3250,7 @@
         <div class="section-divider"></div>
         <span class="eyebrow">The Science, in Plain Terms</span>
         <h2 class="section-headline">What's actually happening<br>in your morning</h2>
+        <h3 class="mechanism-subhead">And what clean ingredients do</h3>
       </div>
 
       <!-- Pills -->
@@ -2257,7 +3273,7 @@
         <div class="moment-card-stats">
           <div class="moment-stat-block">
             <span class="moment-stat-value">87%</span>
-            <span class="moment-stat-label">Reported smoother focus onset</span>
+            <span class="moment-stat-label">Smoother focus onset</span>
           </div>
           <div class="moment-stat-block">
             <span class="moment-stat-value">200MG</span>
@@ -2276,7 +3292,7 @@
         <div class="moment-card-stats">
           <div class="moment-stat-block">
             <span class="moment-stat-value">91%</span>
-            <span class="moment-stat-label">Felt mental clarity within 30 min</span>
+            <span class="moment-stat-label">Rapid mental clarity</span>
           </div>
           <div class="moment-stat-block">
             <span class="moment-stat-value">300MG</span>
@@ -2295,7 +3311,7 @@
         <div class="moment-card-stats">
           <div class="moment-stat-block">
             <span class="moment-stat-value">84%</span>
-            <span class="moment-stat-label">Maintained focus flexibility past 2PM</span>
+            <span class="moment-stat-label">Maintained focus flexibility</span>
           </div>
           <div class="moment-stat-block">
             <span class="moment-stat-value">600MG</span>
@@ -2315,7 +3331,7 @@
         <div class="moment-card-stats">
           <div class="moment-stat-block">
             <span class="moment-stat-value">89%</span>
-            <span class="moment-stat-label">Reported no afternoon crash</span>
+            <span class="moment-stat-label">No afternoon crash</span>
           </div>
           <div class="moment-stat-block">
             <span class="moment-stat-value">200MG</span>
@@ -2382,110 +3398,85 @@
     </div>
   </section>
 
-  <!-- ── TASTE / DRINK EXPERIENCE ── -->
-  <section class="taste-section">
+  <!-- ── CLINICAL RESULTS ── -->
+  <section class="clinical-results-section">
     <div class="container">
-      <div class="taste-inner">
-        <div class="taste-copy">
-          <div class="section-divider"></div>
-          <span class="eyebrow">Tasting Notes</span>
-          <h2 class="taste-headline">Cold grape juice, basically.</h2>
-          <p class="taste-body">Crisp, a little tart, light enough to sip through a long block without going sour on an empty stomach. It dissolves fully and leaves nothing chalky at the bottom — which if you've tried the mushroom-coffee era of this category, you know is not a given. A daily thing you dread is a daily thing you quit. This one you'll actually look forward to.</p>
-          <div class="taste-steps">
-            <div class="taste-step">
-              <span class="taste-step-num">1</span>
-              Scoop one serving.
-            </div>
-            <div class="taste-step">
-              <span class="taste-step-num">2</span>
-              8 to 12 oz of cold water.
-            </div>
-            <div class="taste-step">
-              <span class="taste-step-num">3</span>
-              Stir, and get into the file before you reach for anything else.
-            </div>
-          </div>
-          <div class="taste-quote">
-            "Tastes like it should be sold at a gas station, and I mean that as a compliment. Mixes clean, no chalky finish, and I actually look forward to making it."
-            <p class="taste-quote-author">Jess O., verified buyer</p>
-          </div>
-        </div>
-        <div class="taste-img-placeholder">[Product / lifestyle photo]</div>
+      <div class="clinical-results-header">
+        <span class="badge"><span class="badge-dot"></span>Clinically Proven</span>
+        <h2 class="section-headline" style="margin-top: 16px;">Clinically Proven<br><span style="color: var(--sprint-blue); font-weight: 400; opacity: 0.85;">Results</span></h2>
       </div>
+      <div class="clinical-results-grid">
+        <div class="clinical-result-card">
+          <span class="clinical-result-val">95%</span>
+          <span class="clinical-result-lbl">Felt clean focus</span>
+        </div>
+        <div class="clinical-result-card">
+          <span class="clinical-result-val">85%</span>
+          <span class="clinical-result-lbl">Felt calmer work days</span>
+        </div>
+        <div class="clinical-result-card">
+          <span class="clinical-result-val">80%</span>
+          <span class="clinical-result-lbl">Felt more energy</span>
+        </div>
+        <div class="clinical-result-card">
+          <span class="clinical-result-val">75%</span>
+          <span class="clinical-result-lbl">Felt better sleep</span>
+        </div>
+      </div>
+      <p class="clinical-results-footnote">*Based on 12-week randomized controlled clinical trial</p>
     </div>
   </section>
 
-  <!-- ── COMPARISON ── -->
-  <section class="comparison-section">
+  <!-- ── WHAT IT COSTS ── -->
+  <section class="pricing-section">
     <div class="container">
-      <div class="comparison-header">
+      <div class="pricing-header">
         <div class="section-divider"></div>
-        <span class="eyebrow">The Honest Comparison</span>
-        <h2 class="section-headline">Calm mornings vs.<br>messy afternoons.</h2>
-        <p class="section-subhead" style="margin-top: 12px; font-size: 16px; font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--text-muted);">MINDOR mornings are calm. Coffee afternoons are messy. Here's what that looks like on paper.</p>
+        <span class="eyebrow">The Math</span>
+        <h2 class="section-headline">You can buy these five<br>separately. People do.</h2>
+        <p class="body-copy" style="margin-top: 16px; max-width: 560px;">Plenty of this audience was already buying half of this off separate shelves. Here's roughly what that runs per month, bought one ingredient at a time.</p>
       </div>
-      <table class="comparison-table">
-        <thead>
-          <tr>
-            <th></th>
-            <th class="col-mindor">Mindor</th>
-            <th>Coffee</th>
-            <th>Pre-Workout</th>
-            <th>Nothing</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Predictable onset</td>
-            <td class="col-mindor"><span class="tcheck">✓</span> Consistent</td>
-            <td><span class="tneutral">~</span> Variable</td>
-            <td><span class="tcheck">✓</span> Fast</td>
-            <td><span class="tcross">✕</span></td>
-          </tr>
-          <tr>
-            <td>Sustained focus window</td>
-            <td class="col-mindor"><span class="tcheck">✓</span> 3–5 hrs</td>
-            <td><span class="tcross">✕</span> 45–90 min</td>
-            <td><span class="tcross">✕</span> 60–90 min</td>
-            <td><span class="tcross">✕</span></td>
-          </tr>
-          <tr>
-            <td>Jitter / anxiety risk</td>
-            <td class="col-mindor"><span class="tcheck">✓</span> Minimal</td>
-            <td><span class="tcross">✕</span> High</td>
-            <td><span class="tcross">✕</span> Very high</td>
-            <td><span class="tneutral">—</span></td>
-          </tr>
-          <tr>
-            <td>Post-session crash</td>
-            <td class="col-mindor"><span class="tcheck">✓</span> No cliff</td>
-            <td><span class="tcross">✕</span> Common</td>
-            <td><span class="tcross">✕</span> Common</td>
-            <td><span class="tneutral">—</span></td>
-          </tr>
-          <tr>
-            <td>Sleep impact</td>
-            <td class="col-mindor"><span class="tcheck">✓</span> Low</td>
-            <td><span class="tcross">✕</span> High if late</td>
-            <td><span class="tcross">✕</span> High</td>
-            <td><span class="tneutral">—</span></td>
-          </tr>
-          <tr>
-            <td>Full ingredient transparency</td>
-            <td class="col-mindor"><span class="tcheck">✓</span> Every dose</td>
-            <td><span class="tneutral">—</span></td>
-            <td><span class="tcross">✕</span> Often blended</td>
-            <td><span class="tneutral">—</span></td>
-          </tr>
-          <tr>
-            <td>Designed for sustained deep work</td>
-            <td class="col-mindor"><span class="tcheck">✓</span> Yes</td>
-            <td><span class="tcross">✕</span> No</td>
-            <td><span class="tcross">✕</span> No</td>
-            <td><span class="tcross">✕</span> No</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="pricing-compare-rows">
+        <div class="pricing-compare-row">
+          <span class="pricing-item-name">Alpha-GPC (300mg/day)</span>
+          <span class="pricing-item-price">~$6 - $10 / mo</span>
+          <span class="pricing-item-note">Budget: ~$6 · Mid-range: ~$10</span>
+        </div>
+        <div class="pricing-compare-row">
+          <span class="pricing-item-name">L-Theanine (100mg/day)</span>
+          <span class="pricing-item-price">~$8 - $12 / mo</span>
+          <span class="pricing-item-note">Budget: ~$8 · Mid-range: ~$12</span>
+        </div>
+        <div class="pricing-compare-row">
+          <span class="pricing-item-name">Inositol (600mg/day)</span>
+          <span class="pricing-item-price">~$6 - $10 / mo</span>
+          <span class="pricing-item-note">Budget: ~$6 · Mid-range: ~$10</span>
+        </div>
+        <div class="pricing-compare-row">
+          <span class="pricing-item-name">Green tea caffeine</span>
+          <span class="pricing-item-price">~$12 - $16 / mo</span>
+          <span class="pricing-item-note">Budget: ~$12 · Mid-range: ~$16</span>
+        </div>
+        <div class="pricing-compare-row">
+          <span class="pricing-item-name">B-complex</span>
+          <span class="pricing-item-price">~$9 - $13 / mo</span>
+          <span class="pricing-item-note">Budget: ~$9 · Mid-range: ~$13</span>
+        </div>
+        <div class="pricing-compare-row" style="border-top: 1.5px solid var(--border); margin-top: 6px; font-weight: 700; background: rgba(0, 0, 0, 0.02);">
+          <span class="pricing-item-name" style="font-weight: 700;">TOTAL (separately bought)</span>
+          <span class="pricing-item-price" style="font-weight: 800;">~$41 - $61 / mo</span>
+          <span class="pricing-item-note" style="font-weight: 700; color: var(--text-muted);">Budget: ~$41 · Mid: ~$61</span>
+        </div>
+        <div class="pricing-compare-row is-mindor">
+          <span class="pricing-item-name is-mindor">MINDOR — all five in one scoop</span>
+          <span class="pricing-item-price is-mindor">$32.99 / mo <span class="pricing-save-tag">(you save $8+/month)</span></span>
+          <span class="pricing-item-note is-mindor">~$1.10 / day</span>
+        </div>
+      </div>
+      <div style="margin-top: 20px; padding: 16px 20px; background: rgba(74,107,212,0.04); border: 0.5px solid var(--border); border-radius: 5px; max-width: 680px;">
+        <p style="font-size: 13px; font-style: italic; color: var(--text-primary);">★★★★★ "Was taking L-theanine, Alpha-GPC and a B-complex separately. Mindor covers all of it plus compounds I wasn't getting. Cleaner routine, lower total cost."</p>
+        <p style="font-size: 12px; color: var(--text-dim); margin-top: 6px;">Alexander B., verified buyer</p>
+      </div>
     </div>
   </section>
 
@@ -2566,173 +3557,283 @@
     </div>
   </section>
 
-  <!-- ── GUARANTEE ── -->
-  <section class="guarantee-section">
-    <div class="container">
-      <div class="guarantee-inner">
-        <div class="guarantee-badge-placeholder">[PLACEHOLDER: 30-Day Guarantee Seal]</div>
-        <div class="guarantee-copy">
-          <span class="eyebrow eyebrow--blue">Own Your Mornings</span>
-          <h2 class="guarantee-headline">Try it on your hardest morning.</h2>
-          <p class="guarantee-body">Thirty days. Use it on the morning you'd normally lose. If it doesn't change how that morning goes, email us and we refund the tub.</p>
-          <p class="guarantee-body" style="margin-top: 16px; font-size: 14px; color: var(--text-dim); font-style: italic;">Your ideas are your currency. No reason to keep funding them with borrowed, anxious energy.</p>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- ── REVIEW WALL ── -->
-  <section class="review-wall">
-    <div class="container">
-      <div class="review-wall-header">
-        <div class="section-divider"></div>
-        <span class="eyebrow">What People Are Saying</span>
-        <h2 class="section-headline">The unfiltered version.</h2>
-        <p class="body-copy" style="margin-top: 12px;">1,200+ verified buyers. Here's a wall of them.</p>
-      </div>
-      <div class="review-wall-grid">
-        <div class="review-wall-card">
-          <div class="review-wall-stars">★★★★★</div>
-          <p class="review-wall-title">Finally stopped cycling through alternatives</p>
-          <p class="review-wall-quote">"I've run through the whole list. Pre-workout before work, cold brew at noon, caffeine pills for the afternoon. Always chasing the next dose. Mindor took that cycle off the table. Two hours into a session I'm still there, not wired, just working."</p>
-          <div class="review-wall-author-row">
-            <span class="review-wall-name">Harry D.</span>
-            <span class="review-wall-badge">Verified Buyer</span>
-          </div>
-        </div>
-        <div class="review-wall-card">
-          <div class="review-wall-stars">★★★★★</div>
-          <p class="review-wall-title">The floor I didn't know I needed</p>
-          <p class="review-wall-quote">"I run a small agency, so the cost of an unfocused morning is real. Mindor doesn't make me feel buzzed. It makes me feel like I showed up. Sit down, open the doc, work happens. That's the whole pitch and it delivers."</p>
-          <div class="review-wall-author-row">
-            <span class="review-wall-name">Matheus S.</span>
-            <span class="review-wall-badge">Verified Buyer</span>
-          </div>
-        </div>
-        <div class="review-wall-card">
-          <div class="review-wall-stars">★★★★★</div>
-          <p class="review-wall-title">Quiet focus. Didn't expect that.</p>
-          <p class="review-wall-quote">"The focus isn't loud. That took some adjusting. With energy drinks you feel the on-switch. Mindor puts you in the right state and holds you there. I realized it was working when I finished a three-hour writing session and hadn't noticed the time."</p>
-          <div class="review-wall-author-row">
-            <span class="review-wall-name">Jean T.</span>
-            <span class="review-wall-badge">Verified Buyer</span>
-          </div>
-        </div>
-        <div class="review-wall-card">
-          <div class="review-wall-stars">★★★★★</div>
-          <p class="review-wall-title">Skeptic, then subscriber</p>
-          <p class="review-wall-quote">"Three months ago I was convinced this category was all marketing. Tried it because a friend wouldn't let it go. The first week I noticed I was finishing deep work blocks without having drifted. Two months later, it's the one thing I keep reordering."</p>
-          <div class="review-wall-author-row">
-            <span class="review-wall-name">Rodrigo V.</span>
-            <span class="review-wall-badge">Verified Buyer</span>
-          </div>
-        </div>
-        <div class="review-wall-card">
-          <div class="review-wall-stars">★★★★★</div>
-          <p class="review-wall-title">Works with coffee, not instead of it</p>
-          <p class="review-wall-quote">"I wasn't ready to drop my morning espresso. Turns out I didn't have to. I mix Mindor mid-morning once the coffee's worn off and it carries me through without the spike of a second cup."</p>
-          <div class="review-wall-author-row">
-            <span class="review-wall-name">Marcus N.</span>
-            <span class="review-wall-badge">Verified Buyer</span>
-          </div>
-        </div>
-        <div class="review-wall-card">
-          <div class="review-wall-stars">★★★★★</div>
-          <p class="review-wall-title">Got through finals on this</p>
-          <p class="review-wall-quote">"Five-hour library sessions, papers due at midnight, back-to-back exams. Mindor kept me on the material. Not because it made me smarter, because it stopped me drifting to my phone every eight minutes."</p>
-          <div class="review-wall-author-row">
-            <span class="review-wall-name">Quentin R.</span>
-            <span class="review-wall-badge">Verified Buyer</span>
-          </div>
-        </div>
-        <div class="review-wall-card">
-          <div class="review-wall-stars">★★★★★</div>
-          <p class="review-wall-title">Replaced three supplements</p>
-          <p class="review-wall-quote">"Was taking L-theanine, Alpha-GPC and a B-complex separately. Mindor covers all of it plus compounds I wasn't getting. Cleaner routine, lower total cost, and I can actually taste it instead of choking down capsules."</p>
-          <div class="review-wall-author-row">
-            <span class="review-wall-name">Alexander B.</span>
-            <span class="review-wall-badge">Verified Buyer</span>
-          </div>
-        </div>
-        <div class="review-wall-card">
-          <div class="review-wall-stars">★★★★★</div>
-          <p class="review-wall-title">You don't feel the supplement. You feel the session.</p>
-          <p class="review-wall-quote">"I came in expecting the kind of focus you feel. Sharp edges, fast thoughts, that jittery hum. Mindor is different. The work just happens. You don't feel the supplement, you feel the session going well."</p>
-          <div class="review-wall-author-row">
-            <span class="review-wall-name">Tyrell W.</span>
-            <span class="review-wall-badge">Verified Buyer</span>
-          </div>
-        </div>
-        <div class="review-wall-card">
-          <div class="review-wall-stars">★★★★★</div>
-          <p class="review-wall-title">Fewer scattered mornings</p>
-          <p class="review-wall-quote">"Work expands or contracts based on how well your brain cooperates. Some days you're locked in, some days you're scattered. Mindor makes the locked-in days more consistent. I've had fewer scattered mornings since I started it."</p>
-          <div class="review-wall-author-row">
-            <span class="review-wall-name">Trish M.</span>
-            <span class="review-wall-badge">Verified Buyer</span>
-          </div>
-        </div>
-        <div class="review-wall-card">
-          <div class="review-wall-stars">★★★★★</div>
-          <p class="review-wall-title">The flavor is legitimately good</p>
-          <p class="review-wall-quote">"Tastes like it should be sold at a gas station, and I mean that as a compliment. Mixes clean, no chalky finish, and I actually look forward to making it. Small thing, but it matters when you're drinking it every morning."</p>
-          <div class="review-wall-author-row">
-            <span class="review-wall-name">Jess O.</span>
-            <span class="review-wall-badge">Verified Buyer</span>
-          </div>
-        </div>
-      </div>
-      <div class="review-wall-cta">
-        <a href="#" class="review-wall-link">Read all 1,200+ reviews &rarr;</a>
-      </div>
-    </div>
-  </section>
 
-  <!-- ── WHAT IT COSTS ── -->
-  <section class="pricing-section">
+  <!-- ── ORDER / FINAL CTA ── -->
+  <section class="order-section" id="order">
     <div class="container">
-      <div class="pricing-header">
-        <div class="section-divider"></div>
-        <span class="eyebrow">The Math</span>
-        <h2 class="section-headline">You can buy these five<br>separately. People do.</h2>
-        <p class="body-copy" style="margin-top: 16px; max-width: 560px;">Plenty of this audience was already buying half of this off separate shelves. Here's roughly what that runs per month, bought one ingredient at a time.</p>
+      <div class="order-header">
+        <div class="section-divider" style="margin: 0 auto 20px;"></div>
+        <span class="eyebrow" style="text-align:center; display:block;">Own Your Mornings</span>
+        <h2 class="section-headline">Start with tomorrow morning.</h2>
+        <p class="body-copy" style="margin-top:16px;">One tub, no subscription required. Free US shipping. 30-day money back, no hoops.</p>
       </div>
-      <div class="pricing-compare-rows">
-        <div class="pricing-compare-row">
-          <span class="pricing-item-name">Alpha-GPC (300mg/day)</span>
-          <span class="pricing-item-price">~$XX / mo</span>
-          <span class="pricing-item-note">[verify]</span>
+      
+      <div class="order-grid">
+        <!-- Left Column: Carousel -->
+        <div class="order-media-col">
+          <div class="order-carousel" id="orderCarousel">
+            <div class="order-carousel-view">
+              <button class="carousel-nav-btn prev" onclick="orderCarouselPrev()" aria-label="Previous Slide">&lsaquo;</button>
+              <div class="order-carousel-track-viewport" id="orderCarouselViewport">
+                <div class="order-carousel-track" id="orderCarouselTrack">
+                  <div class="order-carousel-slide"><img src="ex1.png" alt="MINDOR Product Info 1"></div>
+                  <div class="order-carousel-slide"><img src="ex2.png" alt="MINDOR Product Info 2"></div>
+                  <div class="order-carousel-slide"><img src="ex3.png" alt="MINDOR Product Info 3"></div>
+                  <div class="order-carousel-slide"><img src="ex4.png" alt="MINDOR Product Info 4"></div>
+                  <div class="order-carousel-slide"><img src="ex5.png" alt="MINDOR Product Info 5"></div>
+                </div>
+              </div>
+              <button class="carousel-nav-btn next" onclick="orderCarouselNext()" aria-label="Next Slide">&rsaquo;</button>
+            </div>
+            <div class="order-carousel-thumbs" id="orderCarouselThumbs">
+              <button class="order-carousel-thumb active" onclick="setOrderCarouselSlide(0)">
+                <img src="ex1.png" alt="Thumb 1">
+                <span>PRODUCT</span>
+              </button>
+              <button class="order-carousel-thumb" onclick="setOrderCarouselSlide(1)">
+                <img src="ex2.png" alt="Thumb 2">
+                <span>TRANSPARENCY</span>
+              </button>
+              <button class="order-carousel-thumb" onclick="setOrderCarouselSlide(2)">
+                <img src="ex3.png" alt="Thumb 3">
+                <span>REPLACEMENT</span>
+              </button>
+              <button class="order-carousel-thumb" onclick="setOrderCarouselSlide(3)">
+                <img src="ex4.png" alt="Thumb 4">
+                <span>COMPARISON</span>
+              </button>
+              <button class="order-carousel-thumb" onclick="setOrderCarouselSlide(4)">
+                <img src="ex5.png" alt="Thumb 5">
+                <span>RITUAL</span>
+              </button>
+            </div>
+          </div>
         </div>
-        <div class="pricing-compare-row">
-          <span class="pricing-item-name">L-Theanine (100mg/day)</span>
-          <span class="pricing-item-price">~$XX / mo</span>
-          <span class="pricing-item-note">[verify]</span>
+        
+        <!-- Right Column: selectors -->
+        <div class="order-widget-col">
+          <!-- Product Information Header Block -->
+          <div class="product-info-block">
+            <div class="product-info-rating">
+              <span class="product-info-stars">★★★★★</span>
+              <span class="product-info-rating-text">4.8 from 16,255 Reviews</span>
+            </div>
+            <h1 class="product-info-title">Morning Productivity Stack</h1>
+            <p class="product-info-subtitle">All-in-One Supplement</p>
+            <p class="product-info-description">
+              Built for scattered morning brains who've tried everything in the book with no success, this comprehensive formula replaces all the sugar pills & non-sustainable sources of "focus" in one delicious drink.
+            </p>
+            <div class="product-info-badges">
+              <span class="product-info-badge">5 Simple Ingredients</span>
+              <span class="product-info-badge">Clinically Tested</span>
+              <span class="product-info-badge">Crash-friendly</span>
+            </div>
+          </div>
+
+          <!-- Checkout / Select Your Supply Container -->
+          <div id="bundle-widget-order" class="bundle-widget">
+            <!-- Injected by JS -->
+          </div>
+
+          <!-- Interactive Tabs Section (How to Enjoy, Ingredients, Program) -->
+          <div class="product-tabs-widget">
+            <nav class="tabs-nav">
+              <button class="tab-btn active" data-tab="enjoy"><span>01</span> How to Enjoy</button>
+              <button class="tab-btn" data-tab="ingredients"><span>02</span> Ingredients</button>
+              <button class="tab-btn" data-tab="program"><span>03</span> Program</button>
+            </nav>
+            
+            <!-- Tab 1: How to Enjoy -->
+            <div class="tab-content active" id="tab-content-enjoy">
+              <div class="tab-pane-header">
+                <h3 class="tab-pane-title">How to Enjoy</h3>
+                <span class="tab-pane-meta">3 Simple Steps</span>
+              </div>
+              <p class="tab-pane-description">Mix one scoop into water or your favorite smoothie for a delicious grape focus boost — ready in under 30 seconds.</p>
+              
+              <div class="enjoy-steps-grid">
+                <div class="enjoy-step-card">
+                  <div class="enjoy-media-placeholder">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                    </svg>
+                    <span>Scoop</span>
+                  </div>
+                  <div class="enjoy-step-num">Step 1</div>
+                  <div class="enjoy-step-title">Scoop one serving</div>
+                </div>
+                <div class="enjoy-step-card">
+                  <div class="enjoy-media-placeholder">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M12 22a7 7 0 0 0 7-7c0-4.3-7-11-7-11S5 10.7 5 15a7 7 0 0 0 7 7z"/>
+                    </svg>
+                    <span>Water</span>
+                  </div>
+                  <div class="enjoy-step-num">Step 2</div>
+                  <div class="enjoy-step-title">Add 8–12oz of water</div>
+                </div>
+                <div class="enjoy-step-card">
+                  <div class="enjoy-media-placeholder">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M21.5 2.5a3.82 3.82 0 0 0-5.4 0L7 11.75V17h5.25l9.25-9.25a3.82 3.82 0 0 0 0-5.4zM16 4l4 4"/>
+                    </svg>
+                    <span>Stir</span>
+                  </div>
+                  <div class="enjoy-step-num">Step 3</div>
+                  <div class="enjoy-step-title">Stir well & enjoy</div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Tab 2: Ingredients -->
+            <div class="tab-content" id="tab-content-ingredients">
+              <div class="tab-pane-header">
+                <h3 class="tab-pane-title">What's Inside</h3>
+                <span class="tab-pane-meta">14 Ingredients</span>
+              </div>
+              <p class="tab-pane-description">4 categories of clinically-dosed vitamins, amino acids, nootropics, and adaptogens.</p>
+              
+              <div class="ingredients-accordion">
+                <!-- Accordion 1: Vitamins -->
+                <div class="accordion-item">
+                  <div class="accordion-header">
+                    <div class="accordion-header-left">
+                      <span class="accordion-icon">💊</span>
+                      <span class="accordion-title">B-Complex Vitamins</span>
+                    </div>
+                    <div class="accordion-header-right">
+                      <span class="accordion-count">7</span>
+                      <span class="accordion-arrow">▼</span>
+                    </div>
+                  </div>
+                  <div class="accordion-content">
+                    <div class="accordion-inner">
+                      Thiamin (as Thiamine HCl), Riboflavin (Vitamin B2), Niacin (Vitamin B3), Vitamin B6 (as Pyridoxine HCl), Folate (as Folic Acid), Vitamin B12 (as Methylcobalamin), Pantothenic acid (as D-Calcium Pantothenate)
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Accordion 2: Nootropics -->
+                <div class="accordion-item">
+                  <div class="accordion-header">
+                    <div class="accordion-header-left">
+                      <span class="accordion-icon">🧠</span>
+                      <span class="accordion-title">Nootropics & Cognitive Support</span>
+                    </div>
+                    <div class="accordion-header-right">
+                      <span class="accordion-count">3</span>
+                      <span class="accordion-arrow">▼</span>
+                    </div>
+                  </div>
+                  <div class="accordion-content">
+                    <div class="accordion-inner">
+                      Inositol, Alpha GPC, Natural Caffeine (from Green Tea)
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Accordion 3: Amino Acids -->
+                <div class="accordion-item">
+                  <div class="accordion-header">
+                    <div class="accordion-header-left">
+                      <span class="accordion-icon">💪</span>
+                      <span class="accordion-title">Amino Acids & Focus Buffer</span>
+                    </div>
+                    <div class="accordion-header-right">
+                      <span class="accordion-count">2</span>
+                      <span class="accordion-arrow">▼</span>
+                    </div>
+                  </div>
+                  <div class="accordion-content">
+                    <div class="accordion-inner">
+                      L-Arginine HCl, L-theanine
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Accordion 4: Adaptogens -->
+                <div class="accordion-item">
+                  <div class="accordion-header">
+                    <div class="accordion-header-left">
+                      <span class="accordion-icon">🌿</span>
+                      <span class="accordion-title">Adaptogens & Bioavailability</span>
+                    </div>
+                    <div class="accordion-header-right">
+                      <span class="accordion-count">2</span>
+                      <span class="accordion-arrow">▼</span>
+                    </div>
+                  </div>
+                  <div class="accordion-content">
+                    <div class="accordion-inner">
+                      Asian ginseng Extract, Black pepper extract
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Tab 3: Program -->
+            <div class="tab-content" id="tab-content-program">
+              <div class="tab-pane-header">
+                <h3 class="tab-pane-title">The Focus Routine</h3>
+                <span class="tab-pane-meta">30-Day Protocol</span>
+              </div>
+              <p class="tab-pane-description">Built to work with your body's natural circadian rhythms for sustained productivity without the crash.</p>
+              
+              <div class="ingredients-accordion">
+                <div class="accordion-item">
+                  <div class="accordion-header">
+                    <div class="accordion-header-left">
+                      <span class="accordion-icon">⏳</span>
+                      <span class="accordion-title">Week 1: Transition & Baseline</span>
+                    </div>
+                    <div class="accordion-header-right">
+                      <span class="accordion-arrow">▼</span>
+                    </div>
+                  </div>
+                  <div class="accordion-content">
+                    <div class="accordion-inner">
+                      Transition away from high-stimulant caffeine spikes. Establish your baseline calm focus routine with MINDOR first thing in the morning.
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item">
+                  <div class="accordion-header">
+                    <div class="accordion-header-left">
+                      <span class="accordion-icon">⚡</span>
+                      <span class="accordion-title">Week 2: Choline Saturation</span>
+                    </div>
+                    <div class="accordion-header-right">
+                      <span class="accordion-arrow">▼</span>
+                    </div>
+                  </div>
+                  <div class="accordion-content">
+                    <div class="accordion-inner">
+                      Choline donor levels stabilize. Acetylcholine pathways begin supporting rapid processing speed without energy crashes or brain fog.
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item">
+                  <div class="accordion-header">
+                    <div class="accordion-header-left">
+                      <span class="accordion-icon">🏆</span>
+                      <span class="accordion-title">Week 3 & Beyond: Flow State Consistency</span>
+                    </div>
+                    <div class="accordion-header-right">
+                      <span class="accordion-arrow">▼</span>
+                    </div>
+                  </div>
+                  <div class="accordion-content">
+                    <div class="accordion-inner">
+                      Consistent morning ritual creates a reliable mental trigger. Reaching peak focus flexibility and deep work endurance on demand.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="pricing-compare-row">
-          <span class="pricing-item-name">Inositol (600mg/day)</span>
-          <span class="pricing-item-price">~$XX / mo</span>
-          <span class="pricing-item-note">[verify]</span>
-        </div>
-        <div class="pricing-compare-row">
-          <span class="pricing-item-name">Green tea caffeine</span>
-          <span class="pricing-item-price">~$XX / mo</span>
-          <span class="pricing-item-note">[verify]</span>
-        </div>
-        <div class="pricing-compare-row">
-          <span class="pricing-item-name">B-complex</span>
-          <span class="pricing-item-price">~$XX / mo</span>
-          <span class="pricing-item-note">[verify]</span>
-        </div>
-        <div class="pricing-compare-row is-mindor">
-          <span class="pricing-item-name is-mindor">MINDOR — all five in one scoop</span>
-          <span class="pricing-item-price is-mindor">$32.99 / mo</span>
-          <span class="pricing-item-note is-mindor">~$1.10 / day</span>
-        </div>
-      </div>
-      <p class="pricing-footnote">Same compounds, one tub, one drink, for about a dollar a day. The afternoon latte that buys you forty minutes is five or six. You're not adding a line to the budget. You're consolidating one you already had.</p>
-      <div style="margin-top: 20px; padding: 16px 20px; background: rgba(74,107,212,0.04); border: 0.5px solid var(--border); border-radius: 5px; max-width: 680px;">
-        <p style="font-size: 13px; font-style: italic; color: var(--text-primary);">★★★★★ "Was taking L-theanine, Alpha-GPC and a B-complex separately. Mindor covers all of it plus compounds I wasn't getting. Cleaner routine, lower total cost."</p>
-        <p style="font-size: 12px; color: var(--text-dim); margin-top: 6px;">Alexander B., verified buyer</p>
       </div>
     </div>
   </section>
@@ -2813,17 +3914,416 @@
     </div>
   </section>
 
-  <!-- ── ORDER / FINAL CTA ── -->
-  <section class="order-section" id="order">
+  <!-- ── TASTE / DRINK EXPERIENCE ── -->
+  <section class="taste-section">
     <div class="container">
-      <div class="order-header">
-        <div class="section-divider" style="margin: 0 auto 20px;"></div>
-        <span class="eyebrow" style="text-align:center; display:block;">Own Your Mornings</span>
-        <h2 class="section-headline">Start with tomorrow morning.</h2>
-        <p class="body-copy" style="margin-top:16px;">One tub, no subscription required. Free US shipping. 30-day money back, no hoops.</p>
+      <div class="taste-inner">
+        <div class="taste-copy">
+          <div class="section-divider"></div>
+          <span class="eyebrow">Tasting Notes</span>
+          <h2 class="taste-headline">Cold grape juice, basically.</h2>
+          <p class="taste-body">Crisp, a little tart, light enough to sip through a long block without going sour on an empty stomach. It dissolves fully and leaves nothing chalky at the bottom — which if you've tried the mushroom-coffee era of this category, you know is not a given. A daily thing you dread is a daily thing you quit. This one you'll actually look forward to.</p>
+          <div class="taste-steps">
+            <div class="taste-step">
+              <span class="taste-step-num">1</span>
+              Scoop one serving.
+            </div>
+            <div class="taste-step">
+              <span class="taste-step-num">2</span>
+              8 to 12 oz of cold water.
+            </div>
+            <div class="taste-step">
+              <span class="taste-step-num">3</span>
+              Stir, and get into the file before you reach for anything else.
+            </div>
+          </div>
+          <div class="taste-quote">
+            "Tastes like it should be sold at a gas station, and I mean that as a compliment. Mixes clean, no chalky finish, and I actually look forward to making it."
+            <p class="taste-quote-author">Jess O., verified buyer</p>
+          </div>
+        </div>
+        <img src="hf_20260602_021958_18a7286d-b37b-41a4-8331-65dba8ee8f57.png" alt="MINDOR Tasting Experience" class="taste-img-placeholder" style="object-fit: cover;">
       </div>
-      <div id="bundle-widget-order" class="bundle-widget">
-        <!-- Injected by JS -->
+    </div>
+  </section>
+
+  <!-- ── COMPARISON ── -->
+  <section class="comparison-section" id="comparison">
+    <div class="container">
+      <div class="comparison-header">
+        <div class="section-divider"></div>
+        <span class="eyebrow">THE HONEST COMPARISON</span>
+        <h2 class="section-headline">The ones you've already tried.</h2>
+        <p class="body-copy" style="margin-top: 16px; max-width: 640px; margin-left: auto; margin-right: auto; text-align: center;">You didn't arrive here new to this. You've had the productivity shot, looked at the personalized blends, maybe kept a bag of mushroom coffee in the cupboard. Here's how they line up on the things that actually decide it.</p>
+      </div>
+      <div style="width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 24px;">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th class="col-mindor"><img src="2 SG NO BG.png" alt="MINDOR" class="comparison-product-img"></th>
+              <th><img src="magic mind.png" alt="Magic Mind" class="comparison-product-img"></th>
+              <th><img src="Clarity_Carousel_Hero.png" alt="Thesis" class="comparison-product-img"></th>
+              <th><img src="ryze.png" alt="Mushroom Coffee" class="comparison-product-img"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Dosing</td>
+              <td class="col-mindor">Every mg on the label</td>
+              <td class="cell-worse">Mostly undisclosed</td>
+              <td class="cell-worse">Blend amounts hidden</td>
+              <td class="cell-worse">Blend amounts hidden</td>
+            </tr>
+            <tr>
+              <td>Caffeine, stated</td>
+              <td class="col-mindor">200mg, from green tea</td>
+              <td class="cell-worse">55mg (Original)</td>
+              <td>100mg anhydrous</td>
+              <td class="cell-worse">~48-90mg</td>
+            </tr>
+            <tr>
+              <td>Choline (Alpha-GPC)</td>
+              <td class="col-mindor">300mg, printed</td>
+              <td class="cell-worse">In a blend, undisclosed</td>
+              <td class="cell-worse">In a blend, underdosed</td>
+              <td class="cell-worse">None</td>
+            </tr>
+            <tr>
+              <td>Built around</td>
+              <td class="col-mindor">Five named compounds</td>
+              <td class="cell-worse">12-ingredient blend</td>
+              <td class="cell-worse">Rotating proprietary blends</td>
+              <td class="cell-worse">Six-mushroom blend</td>
+            </tr>
+            <tr>
+              <td>Format</td>
+              <td class="col-mindor">Powder, mixes in water</td>
+              <td>2oz liquid shot</td>
+              <td class="cell-worse">Capsules, 2-3 a serving</td>
+              <td>Instant coffee powder</td>
+            </tr>
+            <tr>
+              <td>Taste</td>
+              <td class="col-mindor">Cold grape juice</td>
+              <td class="cell-worse">Earthy matcha shot</td>
+              <td>No taste (capsules)</td>
+              <td class="cell-worse">Earthy, mushroom finish</td>
+            </tr>
+            <tr>
+              <td>The buy</td>
+              <td class="col-mindor">Single tub, no sub needed</td>
+              <td class="cell-worse">Sub-forward</td>
+              <td class="cell-worse">Subscription model</td>
+              <td class="cell-worse">Subscription-forward</td>
+            </tr>
+            <tr>
+              <td>Per day</td>
+              <td class="col-mindor">~$1.10</td>
+              <td class="cell-worse">~$2-3</td>
+              <td class="cell-worse">~$2.60-4</td>
+              <td>~$1.20</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="body-copy" style="margin-top: 32px; font-style: italic; max-width: 680px; margin-left: auto; margin-right: auto; text-align: center; font-size: 14px; line-height: 1.6;">
+        Same pattern every time you scroll a label in this category. The expensive nootropic gets hidden inside a blend so nobody can see how little of it is in there. We went the other way, because you were always going to check.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── TRUSTPILOT REVIEWS ── -->
+  <section class="trustpilot-reviews-section">
+    <div class="container">
+      <div class="tp-reviews-header">
+        <span class="tp-eyebrow">What People Are Saying</span>
+        <h2 class="tp-headline">Real Results<br>From Real People</h2>
+        <p class="tp-subheadline">Join 1,200+ verified reviewers who upgraded their mornings with MINDOR.</p>
+      </div>
+      
+      <div class="tp-reviews-grid">
+        <!-- Review 1 -->
+        <div class="tp-review-card">
+          <div class="tp-stars">
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+          </div>
+          <h4 class="tp-review-title">Finally stopped cycling through alternatives</h4>
+          <p class="tp-review-quote">"I've run through the whole list. Pre-workout before work, cold brew at noon, caffeine pills for the afternoon. Always chasing the next dose. Mindor took that cycle off the table. Two hours into a session I'm still there, not wired, just working."</p>
+          <div class="tp-author-row">
+            <div class="tp-avatar" style="background-color: #4A6BD4;">HD</div>
+            <div class="tp-author-info">
+              <p class="tp-author-name">Harry D.</p>
+              <div class="tp-verified-badge">
+                <svg class="tp-check-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="12" cy="12" r="10" fill="#1D9BF0"/>
+                  <path d="M8.5 12.5L10.5 14.5L15.5 9.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Verified Customer</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 2 -->
+        <div class="tp-review-card">
+          <div class="tp-stars">
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+          </div>
+          <h4 class="tp-review-title">The floor I didn't know I needed</h4>
+          <p class="tp-review-quote">"I run a small agency, so the cost of an unfocused morning is real. Mindor doesn't make me feel buzzed. It makes me feel like I showed up. Sit down, open the doc, work happens. That's the whole pitch and it delivers."</p>
+          <div class="tp-author-row">
+            <div class="tp-avatar" style="background-color: #2E7D32;">MS</div>
+            <div class="tp-author-info">
+              <p class="tp-author-name">Matheus S.</p>
+              <div class="tp-verified-badge">
+                <svg class="tp-check-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="12" cy="12" r="10" fill="#1D9BF0"/>
+                  <path d="M8.5 12.5L10.5 14.5L15.5 9.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Verified Customer</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 3 -->
+        <div class="tp-review-card">
+          <div class="tp-stars">
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+          </div>
+          <h4 class="tp-review-title">Quiet focus. Didn't expect that.</h4>
+          <p class="tp-review-quote">"The focus isn't loud. That took some adjusting. With energy drinks you feel the on-switch. Mindor puts you in the right state and holds you there. I realized it was working when I finished a three-hour writing session and hadn't noticed the time."</p>
+          <div class="tp-author-row">
+            <div class="tp-avatar" style="background-color: #A30000;">JT</div>
+            <div class="tp-author-info">
+              <p class="tp-author-name">Jean T.</p>
+              <div class="tp-verified-badge">
+                <svg class="tp-check-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="12" cy="12" r="10" fill="#1D9BF0"/>
+                  <path d="M8.5 12.5L10.5 14.5L15.5 9.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Verified Customer</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 4 -->
+        <div class="tp-review-card">
+          <div class="tp-stars">
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+          </div>
+          <h4 class="tp-review-title">Skeptic, then subscriber</h4>
+          <p class="tp-review-quote">"Three months ago I was convinced this category was all marketing. Tried it because a friend wouldn't let it go. The first week I noticed I was finishing deep work blocks without having drifted. Two months later, it's the one thing I keep reordering."</p>
+          <div class="tp-author-row">
+            <div class="tp-avatar" style="background-color: #7B1FA2;">RV</div>
+            <div class="tp-author-info">
+              <p class="tp-author-name">Rodrigo V.</p>
+              <div class="tp-verified-badge">
+                <svg class="tp-check-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="12" cy="12" r="10" fill="#1D9BF0"/>
+                  <path d="M8.5 12.5L10.5 14.5L15.5 9.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Verified Customer</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 5 -->
+        <div class="tp-review-card">
+          <div class="tp-stars">
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+          </div>
+          <h4 class="tp-review-title">Works with coffee, not instead of it</h4>
+          <p class="tp-review-quote">"I wasn't ready to drop my morning espresso. Turns out I didn't have to. I mix Mindor mid-morning once the coffee's worn off and it carries me through without the spike of a second cup."</p>
+          <div class="tp-author-row">
+            <div class="tp-avatar" style="background-color: #F57C00;">MN</div>
+            <div class="tp-author-info">
+              <p class="tp-author-name">Marcus N.</p>
+              <div class="tp-verified-badge">
+                <svg class="tp-check-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="12" cy="12" r="10" fill="#1D9BF0"/>
+                  <path d="M8.5 12.5L10.5 14.5L15.5 9.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Verified Customer</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 6 -->
+        <div class="tp-review-card">
+          <div class="tp-stars">
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+          </div>
+          <h4 class="tp-review-title">Got through finals on this</h4>
+          <p class="tp-review-quote">"Five-hour library sessions, papers due at midnight, back-to-back exams. Mindor kept me on the material. Not because it made me smarter, because it stopped me drifting to my phone every eight minutes."</p>
+          <div class="tp-author-row">
+            <div class="tp-avatar" style="background-color: #0097A7;">QR</div>
+            <div class="tp-author-info">
+              <p class="tp-author-name">Quentin R.</p>
+              <div class="tp-verified-badge">
+                <svg class="tp-check-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="12" cy="12" r="10" fill="#1D9BF0"/>
+                  <path d="M8.5 12.5L10.5 14.5L15.5 9.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Verified Customer</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 7 -->
+        <div class="tp-review-card">
+          <div class="tp-stars">
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+          </div>
+          <h4 class="tp-review-title">Replaced three supplements</h4>
+          <p class="tp-review-quote">"Was taking L-theanine, Alpha-GPC and a B-complex separately. Mindor covers all of it plus compounds I wasn't getting. Cleaner routine, lower total cost, and I can actually taste it instead of choking down capsules."</p>
+          <div class="tp-author-row">
+            <div class="tp-avatar" style="background-color: #C2185B;">AB</div>
+            <div class="tp-author-info">
+              <p class="tp-author-name">Alexander B.</p>
+              <div class="tp-verified-badge">
+                <svg class="tp-check-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="12" cy="12" r="10" fill="#1D9BF0"/>
+                  <path d="M8.5 12.5L10.5 14.5L15.5 9.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Verified Customer</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 8 -->
+        <div class="tp-review-card">
+          <div class="tp-stars">
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+          </div>
+          <h4 class="tp-review-title">You don't feel the supplement. You feel the session.</h4>
+          <p class="tp-review-quote">"I came in expecting the kind of focus you feel. Sharp edges, fast thoughts, that jittery hum. Mindor is different. The work just happens. You don't feel the supplement, you feel the session going well."</p>
+          <div class="tp-author-row">
+            <div class="tp-avatar" style="background-color: #5D4037;">TW</div>
+            <div class="tp-author-info">
+              <p class="tp-author-name">Tyrell W.</p>
+              <div class="tp-verified-badge">
+                <svg class="tp-check-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="12" cy="12" r="10" fill="#1D9BF0"/>
+                  <path d="M8.5 12.5L10.5 14.5L15.5 9.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Verified Customer</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 9 -->
+        <div class="tp-review-card">
+          <div class="tp-stars">
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+          </div>
+          <h4 class="tp-review-title">Fewer scattered mornings</h4>
+          <p class="tp-review-quote">"Work expands or contracts based on how well your brain cooperates. Some days you're locked in, some days you're scattered. Mindor makes the locked-in days more consistent. I've had fewer scattered mornings since I started it."</p>
+          <div class="tp-author-row">
+            <div class="tp-avatar" style="background-color: #303F9F;">TM</div>
+            <div class="tp-author-info">
+              <p class="tp-author-name">Trish M.</p>
+              <div class="tp-verified-badge">
+                <svg class="tp-check-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="12" cy="12" r="10" fill="#1D9BF0"/>
+                  <path d="M8.5 12.5L10.5 14.5L15.5 9.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Verified Customer</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review 10 -->
+        <div class="tp-review-card">
+          <div class="tp-stars">
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+            <div class="tp-star-box"><svg viewBox="0 0 24 24"><path fill="#ffffff" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/></svg></div>
+          </div>
+          <h4 class="tp-review-title">The flavor is legitimately good</h4>
+          <p class="tp-review-quote">"Tastes like it should be sold at a gas station, and I mean that as a compliment. Mixes clean, no chalky finish, and I actually look forward to making it. Small thing, but it matters when you're drinking it every morning."</p>
+          <div class="tp-author-row">
+            <div class="tp-avatar" style="background-color: #00796B;">JO</div>
+            <div class="tp-author-info">
+              <p class="tp-author-name">Jess O.</p>
+              <div class="tp-verified-badge">
+                <svg class="tp-check-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="12" cy="12" r="10" fill="#1D9BF0"/>
+                  <path d="M8.5 12.5L10.5 14.5L15.5 9.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Verified Customer</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div style="margin-top: 48px; text-align: center;">
+        <a href="#" style="font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 700; color: var(--sprint-blue); text-decoration: none; border-bottom: 2px solid rgba(74, 107, 212, 0.2); padding-bottom: 2px; transition: border-color 0.2s;">Read all 1,200+ reviews &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── GUARANTEE ── -->
+  <section class="guarantee-section">
+    <div class="container">
+      <div class="guarantee-inner">
+        <div class="guarantee-badge-placeholder" style="background: none; border: none;">
+          <img src="hf_20260602_025319_8f1e9dcd-dffb-47f6-8b5b-7a12c976f5b1.png" alt="30-Day Guarantee Seal" style="width: 100px; height: 100px; object-fit: contain;">
+        </div>
+        <div class="guarantee-copy">
+          <span class="eyebrow eyebrow--blue">Own Your Mornings</span>
+          <h2 class="guarantee-headline">Try it on your hardest morning.</h2>
+          <p class="guarantee-body">Thirty days. Use it on the morning you'd normally lose. If it doesn't change how that morning goes, email us and we refund the tub.</p>
+          <p class="guarantee-body" style="margin-top: 16px; font-size: 14px; color: var(--text-dim); font-style: italic;">Your ideas are your currency. No reason to keep funding them with borrowed, anxious energy.</p>
+          <a href="#order" class="guarantee-cta">Start with tomorrow morning &rarr;</a>
+        </div>
       </div>
     </div>
   </section>
@@ -3206,9 +4706,250 @@
       });
     })();
 
+    /* ── CAROUSEL SLIDERS LOGIC ── */
+    function createCarousel(carouselId) {
+      const carousel = document.getElementById(carouselId);
+      if (!carousel) return;
+
+      const track = carousel.querySelector('.order-carousel-track');
+      const thumbs = carousel.querySelectorAll('.order-carousel-thumb');
+      const dots = carousel.querySelectorAll('.carousel-dot');
+      const viewport = carousel.querySelector('.order-carousel-track-viewport');
+      let index = 0;
+      let interval = null;
+
+      function update() {
+        if (track) {
+          track.style.transform = `translateX(-${index * 20}%)`;
+        }
+        
+        thumbs.forEach((thumb, i) => {
+          if (i === index) {
+            thumb.classList.add('active');
+            const container = thumb.parentElement;
+            if (container) {
+              const thumbOffsetLeft = thumb.offsetLeft;
+              const thumbWidth = thumb.offsetWidth;
+              const containerWidth = container.offsetWidth;
+              container.scrollTo({
+                left: thumbOffsetLeft - (containerWidth / 2) + (thumbWidth / 2),
+                behavior: 'smooth'
+              });
+            }
+          } else {
+            thumb.classList.remove('active');
+          }
+        });
+
+        dots.forEach((dot, i) => {
+          if (i === index) {
+            dot.classList.add('active');
+          } else {
+            dot.classList.remove('active');
+          }
+        });
+      }
+
+      function next() {
+        index = (index + 1) % 5;
+        update();
+      }
+
+      function prev() {
+        index = (index - 1 + 5) % 5;
+        update();
+      }
+
+      function setSlide(idx) {
+        index = idx;
+        update();
+        resetAutoScroll();
+      }
+
+      function startAutoScroll() {
+        interval = setInterval(next, 5000);
+      }
+
+      function resetAutoScroll() {
+        clearInterval(interval);
+        startAutoScroll();
+      }
+
+      startAutoScroll();
+
+      // Swipe support
+      let touchStartX = 0;
+      let touchEndX = 0;
+
+      if (viewport) {
+        viewport.addEventListener('touchstart', e => {
+          touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        viewport.addEventListener('touchend', e => {
+          touchEndX = e.changedTouches[0].screenX;
+          const threshold = 50;
+          if (touchStartX - touchEndX > threshold) {
+            next();
+            resetAutoScroll();
+          } else if (touchEndX - touchStartX > threshold) {
+            prev();
+            resetAutoScroll();
+          }
+        }, { passive: true });
+      }
+
+      window[carouselId + 'Next'] = () => { next(); resetAutoScroll(); };
+      window[carouselId + 'Prev'] = () => { prev(); resetAutoScroll(); };
+      window['set' + carouselId.charAt(0).toUpperCase() + carouselId.slice(1) + 'Slide'] = (idx) => { setSlide(idx); };
+    }
+
+    createCarousel('heroCarousel');
+    createCarousel('orderCarousel');
+
     /* ── INIT WIDGETS ── */
     buildWidget('bundle-widget-hero');
     buildWidget('bundle-widget-order');
+
+    /* ── INIT PRODUCT TABS & ACCORDION ── */
+    function initProductTabs() {
+      const tabBtns = document.querySelectorAll('.tab-btn');
+      const tabContents = document.querySelectorAll('.tab-content');
+      
+      tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const tabId = btn.getAttribute('data-tab');
+          
+          tabBtns.forEach(b => b.classList.remove('active'));
+          tabContents.forEach(c => c.classList.remove('active'));
+          
+          btn.classList.add('active');
+          const targetContent = document.getElementById(`tab-content-${tabId}`);
+          if (targetContent) targetContent.classList.add('active');
+        });
+      });
+      
+      // Accordion Toggle
+      const accordionHeaders = document.querySelectorAll('.accordion-header');
+      accordionHeaders.forEach(header => {
+        header.addEventListener('click', () => {
+          const item = header.parentElement;
+          const content = item.querySelector('.accordion-content');
+          
+          if (item.classList.contains('active')) {
+            item.classList.remove('active');
+            content.style.maxHeight = null;
+          } else {
+            // Close other items in the same tab content container
+            const container = item.closest('.tab-content');
+            if (container) {
+              container.querySelectorAll('.accordion-item').forEach(i => {
+                if (i !== item) {
+                  i.classList.remove('active');
+                  i.querySelector('.accordion-content').style.maxHeight = null;
+                }
+              });
+            }
+            
+            item.classList.add('active');
+            content.style.maxHeight = content.scrollHeight + 'px';
+          }
+        });
+      });
+    }
+
+    initProductTabs();
+
+    /* ── TESTIMONIALS AUTO-SCROLL & LOOP ── */
+    function initTestimonialsCarousel() {
+      const grid = document.querySelector('.testimonials-grid');
+      if (!grid) return;
+
+      // Only run if the grid overflows (e.g. mobile)
+      if (grid.scrollWidth <= grid.clientWidth) return;
+
+      // To loop infinitely, clone the cards
+      const cards = Array.from(grid.children);
+      cards.forEach(card => {
+        const clone = card.cloneNode(true);
+        grid.appendChild(clone);
+      });
+
+      let isScrolling = false;
+      let scrollInterval;
+      
+      function getCardWidth() {
+        const firstCard = grid.querySelector('.testimonial-card');
+        const style = window.getComputedStyle(grid);
+        const gap = parseFloat(style.gap) || 0;
+        return firstCard.offsetWidth + gap;
+      }
+
+      function startAutoScroll() {
+        scrollInterval = setInterval(() => {
+          if (isScrolling) return;
+          isScrolling = true;
+
+          // Disable snap temporarily so smooth scroll doesn't fight it
+          grid.style.scrollSnapType = 'none';
+
+          const cardWidth = getCardWidth();
+          const currentScroll = grid.scrollLeft;
+          const totalWidth = cardWidth * cards.length;
+
+          let targetScroll = currentScroll + cardWidth;
+          
+          grid.scrollTo({
+            left: targetScroll,
+            behavior: 'smooth'
+          });
+
+          setTimeout(() => {
+            // Re-enable snap
+            grid.style.scrollSnapType = 'x mandatory';
+
+            if (grid.scrollLeft >= totalWidth - 5) {
+              grid.style.scrollBehavior = 'auto';
+              grid.scrollLeft = grid.scrollLeft - totalWidth;
+              grid.style.scrollBehavior = '';
+            }
+            isScrolling = false;
+          }, 600);
+
+        }, 4000); // 4 seconds interval
+      }
+
+      function stopAutoScroll() {
+        clearInterval(scrollInterval);
+      }
+
+      // Handle boundary snapping on manual scroll
+      grid.addEventListener('scroll', () => {
+        if (isScrolling) return;
+        const cardWidth = getCardWidth();
+        const totalWidth = cardWidth * cards.length;
+
+        if (grid.scrollLeft >= totalWidth * 2 - grid.clientWidth - 5) {
+          grid.style.scrollBehavior = 'auto';
+          grid.scrollLeft = grid.scrollLeft - totalWidth;
+          grid.style.scrollBehavior = '';
+        } else if (grid.scrollLeft <= 0) {
+          grid.style.scrollBehavior = 'auto';
+          grid.scrollLeft = totalWidth;
+          grid.style.scrollBehavior = '';
+        }
+      });
+
+      grid.addEventListener('mouseenter', stopAutoScroll);
+      grid.addEventListener('mouseleave', startAutoScroll);
+      grid.addEventListener('touchstart', stopAutoScroll, { passive: true });
+      grid.addEventListener('touchend', startAutoScroll, { passive: true });
+
+      startAutoScroll();
+    }
+
+    // Initialize after a short delay to ensure rendering is complete
+    setTimeout(initTestimonialsCarousel, 500);
   </script>
 </body>
 </html>
