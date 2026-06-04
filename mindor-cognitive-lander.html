@@ -7,6 +7,8 @@
   <title>Mindor — 5 Compounds. One Clean Cognitive Window.</title>
 
   <script>if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; } window.scrollTo(0, 0);</script>
+  <script>if (sessionStorage.getItem('mindor_splash_seen')) { document.documentElement.classList.add('splash-done'); }</script>
+  <style>.splash-done .splash-overlay { display: none !important; }</style>
   <!-- Meta Pixel -->
   <script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','1460636158529685');fbq('track','PageView');</script>
   <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1460636158529685&ev=PageView&noscript=1"/></noscript>
@@ -1343,6 +1345,186 @@
 }
 .discount-bubble-trigger:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(74,107,212,0.4); }
 .discount-bubble-trigger .bubble-icon { font-size: 15px; }
+
+/* ── SPLASH INTRO OVERLAY ── */
+.splash-overlay {
+  display: flex;
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: #0A0E28;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 24px 20px;
+}
+.splash-overlay.hidden { display: none; }
+.splash-card {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  margin: auto;
+  padding: 8px 0 32px;
+}
+.splash-img-frame {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 24px;
+  overflow: hidden;
+  flex-shrink: 0;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.55);
+}
+.splash-img-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.splash-headline {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: clamp(28px, 7vw, 40px);
+  color: #fff;
+  line-height: 1.0;
+  text-align: center;
+  letter-spacing: -0.01em;
+}
+.splash-body {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.72;
+  text-align: center;
+}
+.splash-cta {
+  width: 100%;
+  background: #4A6BD4;
+  color: #fff;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 20px 32px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 8px 32px rgba(74,107,212,0.45);
+  transition: opacity 0.15s, transform 0.15s;
+}
+.splash-cta:hover { opacity: 0.9; transform: translateY(-1px); }
+.splash-cta:active { transform: translateY(0); opacity: 1; }
+
+/* ── SCROLL POPUP (fullscreen) ── */
+.scroll-popup-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9500;
+  background-color: rgba(10,14,40,0.72);
+  background-image: url('/assets/hf_20260603_225340_ed4ce638-fb58-478f-9359-1b5ce56b264c.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.scroll-popup-overlay.open { display: flex; }
+.scroll-popup-card {
+  width: 100%;
+  max-width: 440px;
+  background: rgba(255,255,255,0.10);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,0.20);
+  border-radius: 24px;
+  padding: 40px 32px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.45);
+}
+.scroll-popup-close {
+  position: absolute;
+  top: 14px; right: 16px;
+  background: none; border: none; cursor: pointer;
+  font-size: 22px; color: rgba(255,255,255,0.6); line-height: 1; padding: 4px;
+  transition: color 0.15s;
+}
+.scroll-popup-close:hover { color: #fff; }
+.scroll-popup-eyebrow {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px; font-weight: 600; letter-spacing: 0.22em;
+  text-transform: uppercase; color: rgba(255,255,255,0.55);
+}
+.scroll-popup-headline {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 900;
+  font-size: clamp(34px, 8vw, 48px);
+  color: #fff;
+  line-height: 1.0;
+}
+.scroll-popup-sub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px; font-weight: 400;
+  color: rgba(255,255,255,0.70);
+  line-height: 1.55; margin-top: -6px;
+}
+.scroll-popup-input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1.5px solid rgba(255,255,255,0.25);
+  border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  color: #fff;
+  background: rgba(255,255,255,0.10);
+  outline: none;
+  transition: border-color 0.15s;
+}
+.scroll-popup-input:focus { border-color: rgba(255,255,255,0.6); }
+.scroll-popup-input::placeholder { color: rgba(255,255,255,0.40); }
+.scroll-popup-btn {
+  width: 100%;
+  background: var(--sprint-blue);
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700; font-size: 15px;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 16px; border-radius: 10px; border: none;
+  cursor: pointer; transition: opacity 0.15s;
+}
+.scroll-popup-btn:hover { opacity: 0.88; }
+.scroll-popup-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.scroll-popup-success {
+  text-align: center; display: none;
+  flex-direction: column; gap: 12px; padding: 8px 0;
+}
+.scroll-popup-success-icon { font-size: 40px; }
+.scroll-popup-success-text {
+  font-family: 'DM Sans', sans-serif; font-size: 16px;
+  font-weight: 600; color: #fff;
+}
+.scroll-popup-success-sub {
+  font-family: 'DM Sans', sans-serif; font-size: 13px;
+  color: rgba(255,255,255,0.6);
+}
+.scroll-popup-skip {
+  text-align: center;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px; color: rgba(255,255,255,0.40);
+  cursor: pointer; text-decoration: underline;
+  background: none; border: none; padding: 0;
+  transition: color 0.15s;
+}
+.scroll-popup-skip:hover { color: rgba(255,255,255,0.70); }
 
 /* ── DISCOUNT MODAL OVERLAY ── */
 .discount-overlay {
@@ -3342,6 +3524,18 @@
 </head>
 <body>
 
+  <!-- ── SPLASH INTRO OVERLAY ── -->
+  <div class="splash-overlay" id="splashOverlay" role="dialog" aria-modal="true" aria-label="Welcome to Mindor">
+    <div class="splash-card">
+      <div class="splash-img-frame">
+        <img src="/assets/hf_20260603_225340_ed4ce638-fb58-478f-9359-1b5ce56b264c.png" alt="MINDOR Performance Stack — purple powder being poured into ice water" loading="eager">
+      </div>
+      <h2 class="splash-headline">Introducing America's Best-Selling Focus Stack For Remote Workers</h2>
+      <p class="splash-body">MINDOR Performance Stack is our best-seller thanks to our simple, effective, and transparent formula.<br><br>The hypnosis-like focus comes only from 5 ingredients, which are all printed on the label. Down to the milligram.<br><br>This formula supports a clean focus mechanism with a smooth on-ramp, and an even smoother off-ramp. You don't feel it happening, you just notice after the fact.<br><br>This means no more late work, actually being present for team meetings, no more blanking out in front of your screen, no more scrolling on facebook during crucial work time, and finally getting your work done in time, so you have more time to spend on the things that actually matter — family, hobbies, or just me time.</p>
+      <button class="splash-cta" id="splashCta">Show Me The Solution</button>
+    </div>
+  </div>
+
   <!-- ── DISCOUNT BUBBLE TRIGGER ── -->
   <div class="discount-bubble" id="discountBubble">
     <button class="discount-bubble-trigger" id="discountTrigger" aria-expanded="false">
@@ -3366,6 +3560,24 @@
         </div>
         <p class="discount-modal-success-sub">Apply at checkout — works on your first order.</p>
       </div>
+    </div>
+  </div>
+
+  <!-- ── SCROLL POPUP ── -->
+  <div class="scroll-popup-overlay" id="scrollPopupOverlay" role="dialog" aria-modal="true" aria-label="Get 15% off">
+    <div class="scroll-popup-card">
+      <button class="scroll-popup-close" id="scrollPopupClose" aria-label="Close">&#215;</button>
+      <span class="scroll-popup-eyebrow">Limited Time Offer</span>
+      <p class="scroll-popup-headline">Get 15% off<br>your first order.</p>
+      <p class="scroll-popup-sub">Drop your email and we'll send your discount code instantly.</p>
+      <input type="email" class="scroll-popup-input" id="scrollPopupEmail" placeholder="your@email.com" autocomplete="email" inputmode="email">
+      <button class="scroll-popup-btn" id="scrollPopupSubmit">Unlock My 15% Off</button>
+      <div class="scroll-popup-success" id="scrollPopupSuccess">
+        <span class="scroll-popup-success-icon">🎉</span>
+        <p class="scroll-popup-success-text">Your code: HVCO-STACK</p>
+        <p class="scroll-popup-success-sub">Apply at checkout — works on your first order.</p>
+      </div>
+      <button class="scroll-popup-skip" id="scrollPopupSkip">No thanks, I'll pay full price</button>
     </div>
   </div>
 
@@ -5414,6 +5626,97 @@
     }
 
     initProductTabs();
+
+    /* ── SPLASH INTRO OVERLAY ── */
+    (function() {
+      var splash = document.getElementById('splashOverlay');
+      var cta    = document.getElementById('splashCta');
+      if (!splash || !cta) return;
+      function closeSplash() {
+        splash.classList.add('hidden');
+        document.body.style.overflow = '';
+        sessionStorage.setItem('mindor_splash_seen', '1');
+      }
+      document.body.style.overflow = 'hidden';
+      cta.addEventListener('click', closeSplash);
+    })();
+
+    /* ── SCROLL POPUP: auto-trigger 5s after #order enters view ── */
+    (function() {
+      var overlay    = document.getElementById('scrollPopupOverlay');
+      var closeBtn   = document.getElementById('scrollPopupClose');
+      var skipBtn    = document.getElementById('scrollPopupSkip');
+      var submitBtn  = document.getElementById('scrollPopupSubmit');
+      var emailIn    = document.getElementById('scrollPopupEmail');
+      var success    = document.getElementById('scrollPopupSuccess');
+      var target     = document.getElementById('order');
+      if (!overlay || !target) return;
+
+      var SESSION_KEY = 'mindor_scroll_popup_seen';
+      if (sessionStorage.getItem(SESSION_KEY)) return;
+
+      var timer = null;
+      var shown = false;
+
+      function openPopup() {
+        if (shown) return;
+        shown = true;
+        sessionStorage.setItem(SESSION_KEY, '1');
+        overlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        setTimeout(function() { if (emailIn) emailIn.focus(); }, 80);
+      }
+
+      function closePopup() {
+        overlay.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting && !shown) {
+            timer = setTimeout(openPopup, 5000);
+          } else {
+            clearTimeout(timer);
+          }
+        });
+      }, { threshold: 0.15 });
+
+      observer.observe(target);
+
+      closeBtn.addEventListener('click', closePopup);
+      skipBtn.addEventListener('click', closePopup);
+      overlay.addEventListener('click', function(e) { if (e.target === overlay) closePopup(); });
+      document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closePopup(); });
+
+      submitBtn.addEventListener('click', async function() {
+        var email = emailIn.value.trim();
+        if (!email || !email.includes('@')) { emailIn.focus(); return; }
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending…';
+        try {
+          await fetch('https://a.klaviyo.com/client/subscriptions/?company_id=S3D76Q', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', revision: '2023-02-22' },
+            body: JSON.stringify({
+              data: {
+                type: 'subscription',
+                attributes: {
+                  list_id: 'TUAJJE',
+                  email: email,
+                  custom_source: 'cognitive-lander-scroll-popup',
+                  properties: { scroll_popup: true }
+                }
+              }
+            })
+          });
+        } catch(e) { console.warn('[scroll popup klaviyo]', e); }
+        emailIn.style.display = 'none';
+        submitBtn.style.display = 'none';
+        skipBtn.style.display = 'none';
+        success.style.display = 'flex';
+      });
+    })();
 
   </script>
 </body>
