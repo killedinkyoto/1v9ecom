@@ -6,7 +6,7 @@
   <meta name="description" content="Mindor Performance Stack — 5 clinically dosed compounds for remote cognitive workers. Calm alertness, no crash.">
   <title>Mindor — 5 Compounds. One Clean Cognitive Window.</title>
 
-  <script>if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; } window.scrollTo(0, 0);</script>
+  <script>if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; } window.scrollTo(0, 0); window.addEventListener('pageshow', function() { document.body.style.overflow = ''; document.getElementById('upsellOverlay') && document.getElementById('upsellOverlay').classList.remove('open'); });</script>
   <script>if (sessionStorage.getItem('mindor_splash_seen')) { document.documentElement.classList.add('splash-done'); }</script>
   <style>.splash-done .splash-overlay { display: none !important; }</style>
   <!-- Meta Pixel -->
@@ -5165,6 +5165,8 @@
       window.addEventListener('pageshow', function reset(e) {
         btn.disabled = false;
         btn.textContent = originalText;
+        document.body.style.overflow = '';
+        document.getElementById('upsellOverlay')?.classList.remove('open');
         window.removeEventListener('pageshow', reset);
       });
       try {
