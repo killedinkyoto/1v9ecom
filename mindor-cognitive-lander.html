@@ -3536,32 +3536,6 @@
     </div>
   </div>
 
-  <!-- ── DISCOUNT BUBBLE TRIGGER ── -->
-  <div class="discount-bubble" id="discountBubble">
-    <button class="discount-bubble-trigger" id="discountTrigger" aria-expanded="false">
-      <span class="bubble-icon">🏷</span> Get 15% Off
-    </button>
-  </div>
-
-  <!-- ── DISCOUNT MODAL ── -->
-  <div class="discount-overlay" id="discountOverlay" role="dialog" aria-modal="true" aria-label="Get 15% off">
-    <div class="discount-modal">
-      <button class="discount-modal-close" id="discountClose" aria-label="Close">&#215;</button>
-      <p class="discount-modal-headline">Get 15% off<br>your first order.</p>
-      <p class="discount-modal-sub">Drop your email to unlock your code.</p>
-      <input type="email" class="discount-modal-input" id="discountEmail" placeholder="your@email.com" autocomplete="email" inputmode="email">
-      <button class="discount-modal-btn" id="discountSubmit">Unlock My Code</button>
-      <div class="discount-modal-success" id="discountSuccess">
-        <span class="discount-modal-success-icon">🎉</span>
-        <p class="discount-modal-success-text">Your 15% off code:</p>
-        <div class="discount-code-box" id="discountCodeBox">
-          <span class="discount-code-value">HVCO-STACK</span>
-          <button class="discount-code-copy" id="discountCopyBtn">tap to copy</button>
-        </div>
-        <p class="discount-modal-success-sub">Apply at checkout — works on your first order.</p>
-      </div>
-    </div>
-  </div>
 
   <!-- ── SCROLL POPUP ── -->
   <div class="scroll-popup-overlay" id="scrollPopupOverlay" role="dialog" aria-modal="true" aria-label="Get 15% off">
@@ -5373,92 +5347,6 @@
       }, { passive: true });
     }
 
-    /* ── DISCOUNT BUBBLE ── */
-    (function() {
-      const trigger   = document.getElementById('discountTrigger');
-      const overlay   = document.getElementById('discountOverlay');
-      const closeBtn  = document.getElementById('discountClose');
-      const submitBtn = document.getElementById('discountSubmit');
-      const emailIn   = document.getElementById('discountEmail');
-      const success   = document.getElementById('discountSuccess');
-      if (!trigger || !overlay) return;
-
-      function openModal() {
-        overlay.classList.add('open');
-        document.body.style.overflow = 'hidden';
-        trigger.setAttribute('aria-expanded', 'true');
-        setTimeout(function() { emailIn.focus(); }, 80);
-      }
-      function closeModal() {
-        overlay.classList.remove('open');
-        document.body.style.overflow = '';
-        trigger.setAttribute('aria-expanded', 'false');
-      }
-
-      var bubble = document.getElementById('discountBubble');
-      var scrollTimer = null;
-      bubble.classList.add('visible');
-
-      window.addEventListener('scroll', function() {
-        bubble.classList.remove('visible');
-        clearTimeout(scrollTimer);
-        scrollTimer = setTimeout(function() {
-          bubble.classList.add('visible');
-        }, 300);
-      }, { passive: true });
-
-      trigger.addEventListener('click', openModal);
-      closeBtn.addEventListener('click', closeModal);
-      // Close on overlay backdrop click
-      overlay.addEventListener('click', function(e) {
-        if (e.target === overlay) closeModal();
-      });
-      // Close on Escape
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') closeModal();
-      });
-
-      submitBtn.addEventListener('click', async function() {
-        const email = emailIn.value.trim();
-        if (!email || !email.includes('@')) { emailIn.focus(); return; }
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Unlocking…';
-        let ok = false;
-        try {
-          const resp = await fetch('https://a.klaviyo.com/client/subscriptions/?company_id=S3D76Q', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', revision: '2023-02-22' },
-            body: JSON.stringify({
-              data: {
-                type: 'subscription',
-                attributes: {
-                  list_id: 'Rcw3z7',
-                  email,
-                  custom_source: 'cognitive-lander-bubble',
-                  properties: { discount_popup: true }
-                }
-              }
-            })
-          });
-          ok = resp.ok || resp.status === 202;
-        } catch(e) { console.warn('[bubble klaviyo]', e); }
-        // Show code immediately on screen
-        emailIn.style.display = 'none';
-        submitBtn.style.display = 'none';
-        success.style.display = 'flex';
-        document.getElementById('discountBubble').style.display = 'none';
-        // Copy to clipboard on tap
-        var copyBtn = document.getElementById('discountCopyBtn');
-        var codeBox = document.getElementById('discountCodeBox');
-        function copyCode() {
-          navigator.clipboard.writeText('HVCO-STACK').catch(function() {});
-          copyBtn.textContent = 'copied!';
-          copyBtn.classList.add('copied');
-        }
-        copyBtn.addEventListener('click', function(e) { e.stopPropagation(); copyCode(); });
-        codeBox.addEventListener('click', copyCode);
-      });
-    })();
 
     /* ── SELECTABLE MOMENT PILLS ── */
     (function() {
