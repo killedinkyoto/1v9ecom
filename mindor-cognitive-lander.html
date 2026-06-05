@@ -10,7 +10,7 @@
   <script>if (sessionStorage.getItem('mindor_splash_seen')) { document.documentElement.classList.add('splash-done'); }</script>
   <style>.splash-done .splash-overlay { display: none !important; }</style>
   <!-- Meta Pixel -->
-  <script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','1460636158529685');fbq('track','PageView');</script>
+  <script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','1460636158529685');fbq('track','PageView');fbq('track','ViewContent',{content_name:'MINDOR Performance Stack',content_category:'Nootropics',content_ids:['mindor-stack'],content_type:'product',value:32.99,currency:'USD'});</script>
   <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1460636158529685&ev=PageView&noscript=1"/></noscript>
 
   <!-- Microsoft Clarity -->
@@ -5135,6 +5135,9 @@
       btn.disabled = true;
       const originalText = btn.textContent;
       btn.textContent = 'Loading…';
+      const BASE = 32.99, BUNDLE_DISC = {1:0,2:0.10,3:0.15};
+      const cartValue = +(BASE * qty * (1 - (BUNDLE_DISC[qty]||0)) * (subscribe ? 0.85 : 1)).toFixed(2);
+      try { fbq('track','AddToCart',{content_ids:['mindor-stack'],content_type:'product',value:cartValue,currency:'USD',num_items:qty}); } catch(e) {}
       // Re-enable when user navigates back (bfcache restores disabled state)
       window.addEventListener('pageshow', function reset(e) {
         btn.disabled = false;
@@ -5242,6 +5245,12 @@
       const btn = document.getElementById('upsellCheckoutBtn');
       btn.disabled = true;
       btn.textContent = 'Loading…';
+      try {
+        const BASE = 32.99, BUNDLE_DISC = {1:0,2:0.10,3:0.15};
+        const tubVal = +(BASE * upsellQty * (1-(BUNDLE_DISC[upsellQty]||0)) * (upsellSubscribe?0.85:1)).toFixed(2);
+        const addonVal = UPSELL_PRODUCTS.filter(p=>upsellAdded[p.key]).reduce((s,p)=>s+p.price,0);
+        fbq('track','InitiateCheckout',{content_ids:['mindor-stack'],content_type:'product',value:+(tubVal+addonVal).toFixed(2),currency:'USD',num_items:upsellQty});
+      } catch(e) {}
       try {
         const addonLines = UPSELL_PRODUCTS.filter(p => upsellAdded[p.key] && p.variantId)
           .map(p => ({ merchandiseId: p.variantId, quantity: 1 }));
