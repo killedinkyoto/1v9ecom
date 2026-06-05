@@ -99,6 +99,8 @@
       </div>
     </div>
   </div>
+  <!-- Meta Pixel -->
+  <script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','1460636158529685');fbq('track','PageView');</script>
   <script>
     var next = new Date();
     next.setDate(next.getDate() + 30);
@@ -106,7 +108,14 @@
     if (el) el.textContent = next.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
     // If addons/gifts were selected, redirect to Shopify after a short delay
+    // Fire Purchase event for Meta Pixel
     var params = new URLSearchParams(window.location.search);
+    (function() {
+      var BASE = 32.99, BUNDLE_DISC = {1:0, 2:0.10, 3:0.15}, SUB_DISC = 0.15;
+      var qty = parseInt(params.get('qty')) || 1;
+      var value = +(BASE * qty * (1 - (BUNDLE_DISC[qty]||0)) * (1 - SUB_DISC)).toFixed(2);
+      try { fbq('track','Purchase',{value:value,currency:'USD',content_ids:['mindor-stack'],content_type:'product',num_items:qty}); } catch(e) {}
+    })();
     var checkoutUrl = params.get('checkout');
     if (checkoutUrl) {
       var decoded = decodeURIComponent(checkoutUrl);

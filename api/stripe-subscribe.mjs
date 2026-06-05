@@ -66,8 +66,8 @@ export default async function handler(req, res) {
     }],
     shipping_address_collection: { allowed_countries: ['US', 'CA', 'GB', 'AU'] },
     success_url: shopifyCheckoutUrl
-      ? `${origin}/subscribe-success?checkout=${encodeURIComponent(shopifyCheckoutUrl)}&session_id={CHECKOUT_SESSION_ID}`
-      : `${origin}/subscribe-success?session_id={CHECKOUT_SESSION_ID}`,
+      ? `${origin}/subscribe-success?checkout=${encodeURIComponent(shopifyCheckoutUrl)}&qty=${qty}&session_id={CHECKOUT_SESSION_ID}`
+      : `${origin}/subscribe-success?qty=${qty}&session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${origin}/${source === 'cognitive-lander' ? 'fb/lander/RW' : 'lander'}`,
     subscription_data: { metadata: meta }
   });
